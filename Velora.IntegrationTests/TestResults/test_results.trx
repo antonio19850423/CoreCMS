@@ -1,0 +1,532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="9665cbea-30ed-44e6-84ef-13c5b8ba463c" name="ASUS@DESKTOP-JLBIAKI 2025-08-24 12:55:11" runUser="DESKTOP-JLBIAKI\ASUS" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-08-24T12:55:11.9911304+03:30" queuing="2025-08-24T12:55:11.9911310+03:30" start="2025-08-24T12:55:08.2432004+03:30" finish="2025-08-24T12:55:12.5238837+03:30" />
+  <TestSettings name="default" id="ab861bcb-43c5-4fe5-9775-b5359a9b028e">
+    <Deployment runDeploymentRoot="ASUS_DESKTOP-JLBIAKI_2025-08-24_12_55_11" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a818aff0-e98f-4b0e-adfd-d0e7d8f94612" testId="b79856c1-3cf0-206f-948d-2bb101e2d0c1" testName="Resource CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.0020344" startTime="2025-08-24T12:55:08.7894842+03:30" endTime="2025-08-24T12:55:11.7989228+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a818aff0-e98f-4b0e-adfd-d0e7d8f94612">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).</Message>
+          <StackTrace>   at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+   at Velora.IntegrationTests.Controllers.ResourceControllerTests.Resource_CRUD_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\ResourceControllerTests.cs:line 57&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5050f8ce-d700-479c-be29-6955f6b5030e" testId="10b1dfa1-157b-4a93-4cd3-8ec8bb66fc89" testName="User CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.3066475" startTime="2025-08-24T12:55:08.7894016+03:30" endTime="2025-08-24T12:55:12.1037789+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5050f8ce-d700-479c-be29-6955f6b5030e">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Text.Json.JsonException : The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.&#xD;
+---- System.Text.Json.JsonReaderException : The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. LineNumber: 0 | BytePositionInLine: 0.</Message>
+          <StackTrace>   at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, JsonReaderException ex)&#xD;
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)&#xD;
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)&#xD;
+   at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)&#xD;
+   at System.Net.Http.Json.HttpContentJsonExtensions.ReadFromJsonAsyncCore[T](HttpContent content, JsonSerializerOptions options, CancellationToken cancellationToken)&#xD;
+   at Velora.IntegrationTests.Controllers.UserControllerTests.User_CRUD_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserControllerTests.cs:line 87&#xD;
+--- End of stack trace from previous location ---&#xD;
+----- Inner Stack Trace -----&#xD;
+   at System.Text.Json.ThrowHelper.ThrowJsonReaderException(Utf8JsonReader&amp; json, ExceptionResource resource, Byte nextByte, ReadOnlySpan`1 bytes)&#xD;
+   at System.Text.Json.Utf8JsonReader.Read()&#xD;
+   at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="85b3cae9-7c67-4382-b364-fbab46f706eb" testId="b5d22e55-b799-4250-6a09-a71c225f9b63" testName="ResourceType CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.3836492" startTime="2025-08-24T12:55:08.7894365+03:30" endTime="2025-08-24T12:55:12.2039540+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85b3cae9-7c67-4382-b364-fbab46f706eb" />
+    <UnitTestResult executionId="1d93ce43-1ae7-42fb-8511-9e6d851151b1" testId="39dde640-b3c5-6f3b-1f5a-34cfe2467b30" testName="UserProfile CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.4528776" startTime="2025-08-24T12:55:08.9324146+03:30" endTime="2025-08-24T12:55:12.3892786+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d93ce43-1ae7-42fb-8511-9e6d851151b1">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).</Message>
+          <StackTrace>   at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+   at Velora.IntegrationTests.Controllers.UserProfileControllerTests.UserProfile_CRUD_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserProfileControllerTests.cs:line 57&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4c7b0d9c-5ad0-4f4b-b0d7-68b2a6c465b2" testId="d04b71c7-04f5-3d43-6908-baee4f77ea2d" testName="Register and Login should succeed" computerName="DESKTOP-JLBIAKI" duration="00:00:02.5114471" startTime="2025-08-24T12:55:08.7879277+03:30" endTime="2025-08-24T12:55:11.3589243+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4c7b0d9c-5ad0-4f4b-b0d7-68b2a6c465b2">
+      <Output>
+        <ErrorInfo>
+          <Message>Expected registeredUser!.Success to be True, but found False.</Message>
+          <StackTrace>   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)&#xD;
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)&#xD;
+   at FluentAssertions.Execution.AssertionScope.AddPreFormattedFailure(String formattedFailureMessage)&#xD;
+   at FluentAssertions.Execution.AssertionChain.FailWith(Func`1 getFailureReason)&#xD;
+   at FluentAssertions.Execution.AssertionChain.FailWith(Func`1 getFailureReason)&#xD;
+   at FluentAssertions.Execution.AssertionChain.FailWith(String message, Object[] args)&#xD;
+   at FluentAssertions.Primitives.BooleanAssertions`1.BeTrue(String because, Object[] becauseArgs)&#xD;
+   at Velora.IntegrationTests.AuthControllerTests.RegisterAndLogin_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\AuthControllerTests.cs:line 38&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="02745206-16fa-4f2c-a402-93d246432c79" testId="348f9148-d6b9-1afc-31ea-28569e892153" testName="Permission CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.0022987" startTime="2025-08-24T12:55:08.7894614+03:30" endTime="2025-08-24T12:55:11.7981678+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02745206-16fa-4f2c-a402-93d246432c79">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).</Message>
+          <StackTrace>   at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+   at Velora.IntegrationTests.Controllers.PermissionControllerTests.Permission_CRUD_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\PermissionControllerTests.cs:line 53&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1cc85a65-63d9-42a8-870a-8043ec565257" testId="0782e79c-db97-75c7-5d07-07893e41e60d" testName="UserRole CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.3218162" startTime="2025-08-24T12:55:08.9324678+03:30" endTime="2025-08-24T12:55:12.2587202+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1cc85a65-63d9-42a8-870a-8043ec565257">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).</Message>
+          <StackTrace>   at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+   at Velora.IntegrationTests.Controllers.UserRoleControllerTests.UserRole_CRUD_Should_Succeed() in E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserRoleControllerTests.cs:line 51&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="250c71d2-8355-4a0b-8676-974da1c69b78" testId="5ec9c0ce-c2a0-e3de-ea4f-44d43901099d" testName="Role CRUD should succeed (Create, Get, Update, Delete)" computerName="DESKTOP-JLBIAKI" duration="00:00:03.3835085" startTime="2025-08-24T12:55:08.7893427+03:30" endTime="2025-08-24T12:55:12.2050616+03:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="250c71d2-8355-4a0b-8676-974da1c69b78" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="UserProfile CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="39dde640-b3c5-6f3b-1f5a-34cfe2467b30">
+      <Execution id="1d93ce43-1ae7-42fb-8511-9e6d851151b1" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.UserProfileControllerTests" name="UserProfile_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="UserRole CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="0782e79c-db97-75c7-5d07-07893e41e60d">
+      <Execution id="1cc85a65-63d9-42a8-870a-8043ec565257" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.UserRoleControllerTests" name="UserRole_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="Resource CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="b79856c1-3cf0-206f-948d-2bb101e2d0c1">
+      <Execution id="a818aff0-e98f-4b0e-adfd-d0e7d8f94612" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.ResourceControllerTests" name="Resource_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="Register and Login should succeed" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="d04b71c7-04f5-3d43-6908-baee4f77ea2d">
+      <Execution id="4c7b0d9c-5ad0-4f4b-b0d7-68b2a6c465b2" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.AuthControllerTests" name="RegisterAndLogin_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="User CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="10b1dfa1-157b-4a93-4cd3-8ec8bb66fc89">
+      <Execution id="5050f8ce-d700-479c-be29-6955f6b5030e" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.UserControllerTests" name="User_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="ResourceType CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="b5d22e55-b799-4250-6a09-a71c225f9b63">
+      <Execution id="85b3cae9-7c67-4382-b364-fbab46f706eb" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.ResourceTypeControllerTests" name="ResourceType_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="Role CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="5ec9c0ce-c2a0-e3de-ea4f-44d43901099d">
+      <Execution id="250c71d2-8355-4a0b-8676-974da1c69b78" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RoleControllerTests" name="Role_CRUD_Should_Succeed" />
+    </UnitTest>
+    <UnitTest name="Permission CRUD should succeed (Create, Get, Update, Delete)" storage="e:\afe\projects\velora\velora.integrationtests\bin\debug\net9.0\velora.integrationtests.dll" id="348f9148-d6b9-1afc-31ea-28569e892153">
+      <Execution id="02745206-16fa-4f2c-a402-93d246432c79" />
+      <TestMethod codeBase="E:\Afe\Projects\Velora\Velora.IntegrationTests\bin\Debug\net9.0\Velora.IntegrationTests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Velora.IntegrationTests.Controllers.PermissionControllerTests" name="Permission_CRUD_Should_Succeed" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b79856c1-3cf0-206f-948d-2bb101e2d0c1" executionId="a818aff0-e98f-4b0e-adfd-d0e7d8f94612" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10b1dfa1-157b-4a93-4cd3-8ec8bb66fc89" executionId="5050f8ce-d700-479c-be29-6955f6b5030e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5d22e55-b799-4250-6a09-a71c225f9b63" executionId="85b3cae9-7c67-4382-b364-fbab46f706eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="39dde640-b3c5-6f3b-1f5a-34cfe2467b30" executionId="1d93ce43-1ae7-42fb-8511-9e6d851151b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d04b71c7-04f5-3d43-6908-baee4f77ea2d" executionId="4c7b0d9c-5ad0-4f4b-b0d7-68b2a6c465b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="348f9148-d6b9-1afc-31ea-28569e892153" executionId="02745206-16fa-4f2c-a402-93d246432c79" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0782e79c-db97-75c7-5d07-07893e41e60d" executionId="1cc85a65-63d9-42a8-870a-8043ec565257" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ec9c0ce-c2a0-e3de-ea4f-44d43901099d" executionId="250c71d2-8355-4a0b-8676-974da1c69b78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="8" executed="8" passed="2" failed="6" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 9.0.7)&#xD;
+[xUnit.net 00:00:00.07]   Discovering: Velora.IntegrationTests&#xD;
+[xUnit.net 00:00:00.11]   Discovered:  Velora.IntegrationTests&#xD;
+[xUnit.net 00:00:00.13]   Starting:    Velora.IntegrationTests&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] User profile is available. Using 'C:\Users\ASUS\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:09 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:10 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/register - application/json; charset=utf-8 118&#xD;
+[12:55:10 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Register (Velora.Host)'&#xD;
+[12:55:10 INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(Velora.Application.Shared.Dtos.RegisterDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.UserDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Register (Velora.Host) in 596.0158ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Register (Velora.Host)'&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/register - 200 null application/json; charset=utf-8 631.478ms&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/auth/login - application/json; charset=utf-8 37&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Velora.Application.Shared.Dtos.LoginDto) on controller Velora.Host.Controllers.AuthController (Velora.Host).&#xD;
+     Warning:&#xD;
+     The component "Fluent Assertions" is governed by the rules defined in the Xceed License Agreement and&#xD;
+     the Xceed Fluent Assertions Community License. You may use Fluent Assertions free of charge for&#xD;
+     non-commercial use only. An active subscription is required to use Fluent Assertions for commercial use.&#xD;
+     Please contact Xceed Sales mailto:sales@xceed.com to acquire a subscription at a very low cost.&#xD;
+     A paid commercial license supports the development and continued increasing support of&#xD;
+     Fluent Assertions users under both commercial and community licenses. Help us&#xD;
+     keep Fluent Assertions at the forefront of unit testing.&#xD;
+     For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/&#xD;
+[xUnit.net 00:00:02.72]       Expected registeredUser!.Success to be True, but found False.&#xD;
+[xUnit.net 00:00:02.73]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.AssertionScope.AddPreFormattedFailure(String formattedFailureMessage)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.AssertionChain.FailWith(Func`1 getFailureReason)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.AssertionChain.FailWith(Func`1 getFailureReason)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Execution.AssertionChain.FailWith(String message, Object[] args)&#xD;
+[xUnit.net 00:00:02.73]            at FluentAssertions.Primitives.BooleanAssertions`1.BeTrue(String because, Object[] becauseArgs)&#xD;
+[xUnit.net 00:00:02.73]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\AuthControllerTests.cs(38,0): at Velora.IntegrationTests.AuthControllerTests.RegisterAndLogin_Should_Succeed()&#xD;
+[xUnit.net 00:00:02.73]         --- End of stack trace from previous location ---&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResultDto`1[[Velora.Application.Shared.Dtos.LoginResultDto, Velora.Application.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1811.8694ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1811.9073ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1811.8707ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1811.8634ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1812.3578ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 1812.5845ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.AuthController.Login (Velora.Host) in 521.5725ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.AuthController.Login (Velora.Host)'&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.6843ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.7298ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.7299ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.7211ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.7298ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 537.4184ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/auth/login - 200 null application/json; charset=utf-8 1932.7141ms&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/resourcetype - application/json; charset=utf-8 153&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/role - application/json; charset=utf-8 83&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/permission - application/json; charset=utf-8 195&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/userrole - application/json; charset=utf-8 141&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/user - application/json; charset=utf-8 174&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/userprofile - application/json; charset=utf-8 224&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 POST http://localhost/api/resource - application/json; charset=utf-8 246&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.ResourceTypeController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'RoleController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "ResourceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.ResourceTypeDto) on controller Velora.Host.Controllers.ResourceTypeController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.RoleDto) on controller RoleController (Velora.Host).&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.PermissionController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.UserController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.UserProfileController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.UserRoleController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.ResourceController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "Permission"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.PermissionDto) on controller Velora.Host.Controllers.PermissionController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "UserRole"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.UserRoleDto) on controller Velora.Host.Controllers.UserRoleController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "UserProfile"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.UserProfileDto) on controller Velora.Host.Controllers.UserProfileController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.UserDto) on controller Velora.Host.Controllers.UserController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "Create", controller = "Resource"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(Velora.Application.Shared.Dtos.ResourceDto) on controller Velora.Host.Controllers.ResourceController (Velora.Host).&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.ResourceController.Create (Velora.Host) in 92.5431ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.PermissionController.Create (Velora.Host) in 94.929ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.ResourceController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.PermissionController.Create (Velora.Host)'&#xD;
+[12:55:11 ERR] An unhandled exception occurred.&#xD;
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.&#xD;
+Mapping types:&#xD;
+PermissionDto -&gt; Permission&#xD;
+Velora.Application.Shared.Dtos.PermissionDto -&gt; Velora.EntityFrameworkCore.EntityFramework.PostgreSQL.Permission&#xD;
+   at lambda_method3101(Closure, Object, Permission, ResolutionContext)&#xD;
+   at Velora.Application.Services.GenericService`3.CreateAsync(TDto dto)&#xD;
+   at Velora.Host.Controllers.PermissionController.Create(PermissionDto permission) in E:\Afe\Projects\Velora\Velora.Host\Controllers\PermissionController.cs:line 48&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()&#xD;
+--- End of stack trace from previous location ---&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)&#xD;
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#xD;
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)&#xD;
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)&#xD;
+   at Velora.Host.Middlewares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in E:\Afe\Projects\Velora\Velora.Host\Middlewares\ErrorHandlingMiddleware.cs:line 25&#xD;
+[12:55:11 ERR] An unhandled exception occurred.&#xD;
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.&#xD;
+Mapping types:&#xD;
+ResourceDto -&gt; Resource&#xD;
+Velora.Application.Shared.Dtos.ResourceDto -&gt; Velora.EntityFrameworkCore.EntityFramework.PostgreSQL.Resource&#xD;
+   at lambda_method3100(Closure, Object, Resource, ResolutionContext)&#xD;
+   at Velora.Application.Services.GenericService`3.CreateAsync(TDto dto)&#xD;
+   at Velora.Host.Controllers.ResourceController.Create(ResourceDto dto) in E:\Afe\Projects\Velora\Velora.Host\Controllers\ResourceController.cs:line 42&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()&#xD;
+--- End of stack trace from previous location ---&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)&#xD;
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#xD;
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)&#xD;
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)&#xD;
+   at Velora.Host.Middlewares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in E:\Afe\Projects\Velora\Velora.Host\Middlewares\ErrorHandlingMiddleware.cs:line 25&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/resource - 500 null application/json 154.4712ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/permission - 500 null application/json 157.5086ms&#xD;
+[xUnit.net 00:00:03.16]       System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).&#xD;
+[xUnit.net 00:00:03.16]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.16]            at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+[xUnit.net 00:00:03.16]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\PermissionControllerTests.cs(53,0): at Velora.IntegrationTests.Controllers.PermissionControllerTests.Permission_CRUD_Should_Succeed()&#xD;
+[xUnit.net 00:00:03.16]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.16]       System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).&#xD;
+[xUnit.net 00:00:03.16]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.16]            at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+[xUnit.net 00:00:03.16]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\ResourceControllerTests.cs(57,0): at Velora.IntegrationTests.Controllers.ResourceControllerTests.Resource_CRUD_Should_Succeed()&#xD;
+[xUnit.net 00:00:03.16]         --- End of stack trace from previous location ---&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.UserRoleController.Create (Velora.Host) in 228.4554ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.UserProfileController.Create (Velora.Host) in 228.5621ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.UserRoleController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.UserProfileController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executing CreatedAtActionResult, writing value of type 'Velora.Application.Shared.Dtos.UserDto'.&#xD;
+[12:55:11 INF] Executing CreatedAtActionResult, writing value of type 'Velora.Application.Shared.Dtos.RoleDto'.&#xD;
+[12:55:11 INF] Executing CreatedAtActionResult, writing value of type 'Velora.Application.Shared.Dtos.ResourceTypeDto'.&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.UserController.Create (Velora.Host) in 246.2562ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.UserController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Executed action RoleController.Create (Velora.Host) in 252.6088ms&#xD;
+[12:55:11 INF] Executed endpoint 'RoleController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/role - 201 null application/json; charset=utf-8 290.9347ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/user - 201 null application/json; charset=utf-8 290.8835ms&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.ResourceTypeController.Create (Velora.Host) in 253.0169ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.ResourceTypeController.Create (Velora.Host)'&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 POST http://localhost/api/resourcetype - 201 null application/json; charset=utf-8 291.3198ms&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 GET http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - null null&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 GET http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - null null&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 GET http://localhost/api/user/631c9237-615c-424c-9f0f-56023a63e589 - null null&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'RoleController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.UserController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Route matched with {action = "GetById", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller RoleController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "GetById", controller = "ResourceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller Velora.Host.Controllers.ResourceTypeController (Velora.Host).&#xD;
+[12:55:11 INF] Route matched with {action = "GetById", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller Velora.Host.Controllers.UserController (Velora.Host).&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResourceTypeDto'.&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.UserDto'.&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host) in 51.6069ms&#xD;
+[12:55:11 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.RoleDto'.&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Executed action Velora.Host.Controllers.UserController.GetById (Velora.Host) in 51.6748ms&#xD;
+[12:55:11 INF] Executed action RoleController.GetById (Velora.Host) in 51.8461ms&#xD;
+[12:55:11 INF] Executed endpoint 'Velora.Host.Controllers.UserController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Executed endpoint 'RoleController.GetById (Velora.Host)'&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 GET http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - 200 null application/json; charset=utf-8 58.44ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 GET http://localhost/api/user/631c9237-615c-424c-9f0f-56023a63e589 - 200 null application/json; charset=utf-8 58.4401ms&#xD;
+[12:55:11 INF] Request finished HTTP/1.1 GET http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - 200 null application/json; charset=utf-8 58.4401ms&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 PUT http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - application/json; charset=utf-8 89&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 PUT http://localhost/api/user/631c9237-615c-424c-9f0f-56023a63e589 - application/json; charset=utf-8 184&#xD;
+[12:55:11 INF] Executing endpoint 'RoleController.Update (Velora.Host)'&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.UserController.Update (Velora.Host)'&#xD;
+[12:55:11 INF] Request starting HTTP/1.1 PUT http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - application/json; charset=utf-8 165&#xD;
+[12:55:11 INF] Executing endpoint 'Velora.Host.Controllers.ResourceTypeController.Update (Velora.Host)'&#xD;
+[12:55:12 INF] Route matched with {action = "Update", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.Guid, Velora.Application.Shared.Dtos.UserDto) on controller Velora.Host.Controllers.UserController (Velora.Host).&#xD;
+[12:55:12 INF] Route matched with {action = "Update", controller = "ResourceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.Guid, Velora.Application.Shared.Dtos.ResourceTypeDto) on controller Velora.Host.Controllers.ResourceTypeController (Velora.Host).&#xD;
+[12:55:12 INF] Route matched with {action = "Update", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Update(System.Guid, Velora.Application.Shared.Dtos.RoleDto) on controller RoleController (Velora.Host).&#xD;
+[12:55:12 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.RoleDto'.&#xD;
+[12:55:12 INF] Executed action RoleController.Update (Velora.Host) in 63.3503ms&#xD;
+[12:55:12 INF] Executed endpoint 'RoleController.Update (Velora.Host)'&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 PUT http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - 200 null application/json; charset=utf-8 77.2586ms&#xD;
+[12:55:12 INF] Executing OkObjectResult, writing value of type 'Velora.Application.Shared.Dtos.ResourceTypeDto'.&#xD;
+[12:55:12 INF] Request starting HTTP/1.1 DELETE http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - null null&#xD;
+[12:55:12 INF] Executed action Velora.Host.Controllers.ResourceTypeController.Update (Velora.Host) in 64.4139ms&#xD;
+[12:55:12 INF] Executed endpoint 'Velora.Host.Controllers.ResourceTypeController.Update (Velora.Host)'&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 PUT http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - 200 null application/json; charset=utf-8 80.5339ms&#xD;
+[12:55:12 INF] Executing endpoint 'RoleController.Delete (Velora.Host)'&#xD;
+[12:55:12 INF] Request starting HTTP/1.1 DELETE http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - null null&#xD;
+[12:55:12 INF] Executing endpoint 'Velora.Host.Controllers.ResourceTypeController.Delete (Velora.Host)'&#xD;
+[12:55:12 INF] Executing StatusCodeResult, setting HTTP status code 204&#xD;
+[12:55:12 INF] Executed action Velora.Host.Controllers.UserController.Update (Velora.Host) in 70.378ms&#xD;
+[12:55:12 INF] Executed endpoint 'Velora.Host.Controllers.UserController.Update (Velora.Host)'&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 PUT http://localhost/api/user/631c9237-615c-424c-9f0f-56023a63e589 - 204 null null 83.9498ms&#xD;
+[12:55:12 INF] Route matched with {action = "Delete", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.Guid) on controller RoleController (Velora.Host).&#xD;
+[12:55:12 INF] Route matched with {action = "Delete", controller = "ResourceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.Guid) on controller Velora.Host.Controllers.ResourceTypeController (Velora.Host).&#xD;
+[xUnit.net 00:00:03.47]       System.Text.Json.JsonException : The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.&#xD;
+[xUnit.net 00:00:03.47]       ---- System.Text.Json.JsonReaderException : The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. LineNumber: 0 | BytePositionInLine: 0.&#xD;
+[xUnit.net 00:00:03.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.ThrowHelper.ReThrowWithPath(ReadStack&amp; state, JsonReaderException ex)&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.ContinueDeserialize(ReadBufferState&amp; bufferState, JsonReaderState&amp; jsonReaderState, ReadStack&amp; readStack, T&amp; value)&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.Serialization.Metadata.JsonTypeInfo`1.DeserializeAsync(Stream utf8Json, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:03.47]            at System.Net.Http.Json.HttpContentJsonExtensions.ReadFromJsonAsyncCore[T](HttpContent content, JsonSerializerOptions options, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:03.47]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserControllerTests.cs(87,0): at Velora.IntegrationTests.Controllers.UserControllerTests.User_CRUD_Should_Succeed()&#xD;
+[xUnit.net 00:00:03.47]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.47]         ----- Inner Stack Trace -----&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.ThrowHelper.ThrowJsonReaderException(Utf8JsonReader&amp; json, ExceptionResource resource, Byte nextByte, ReadOnlySpan`1 bytes)&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.Utf8JsonReader.Read()&#xD;
+[xUnit.net 00:00:03.47]            at System.Text.Json.Serialization.JsonConverter`1.ReadCore(Utf8JsonReader&amp; reader, T&amp; value, JsonSerializerOptions options, ReadStack&amp; state)&#xD;
+[12:55:12 INF] Executing OkObjectResult, writing value of type 'System.Boolean'.&#xD;
+[12:55:12 INF] Executing OkObjectResult, writing value of type 'System.Boolean'.&#xD;
+[12:55:12 INF] Executed action RoleController.Delete (Velora.Host) in 66.7848ms&#xD;
+[12:55:12 INF] Executed action Velora.Host.Controllers.ResourceTypeController.Delete (Velora.Host) in 66.7371ms&#xD;
+[12:55:12 INF] Executed endpoint 'RoleController.Delete (Velora.Host)'&#xD;
+[12:55:12 INF] Executed endpoint 'Velora.Host.Controllers.ResourceTypeController.Delete (Velora.Host)'&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 DELETE http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - 200 null application/json; charset=utf-8 71.0226ms&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 DELETE http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - 200 null application/json; charset=utf-8 74.8705ms&#xD;
+[12:55:12 INF] Request starting HTTP/1.1 GET http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - null null&#xD;
+[12:55:12 INF] Request starting HTTP/1.1 GET http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - null null&#xD;
+[12:55:12 INF] Executing endpoint 'Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host)'&#xD;
+[12:55:12 INF] Executing endpoint 'RoleController.GetById (Velora.Host)'&#xD;
+[12:55:12 INF] Route matched with {action = "GetById", controller = "Role"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller RoleController (Velora.Host).&#xD;
+[12:55:12 INF] Route matched with {action = "GetById", controller = "ResourceType"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller Velora.Host.Controllers.ResourceTypeController (Velora.Host).&#xD;
+[12:55:12 INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.&#xD;
+[12:55:12 INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.&#xD;
+[12:55:12 INF] Executed action Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host) in 28.7898ms&#xD;
+[12:55:12 INF] Executed action RoleController.GetById (Velora.Host) in 28.9058ms&#xD;
+[12:55:12 INF] Executed endpoint 'RoleController.GetById (Velora.Host)'&#xD;
+[12:55:12 INF] Executed endpoint 'Velora.Host.Controllers.ResourceTypeController.GetById (Velora.Host)'&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 GET http://localhost/api/role/d952694f-5572-440e-9592-59a2431304e4 - 404 null application/problem+json; charset=utf-8 30.916ms&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 GET http://localhost/api/resourcetype/8ef2cef7-90be-45fa-ba8a-bab31e3a6709 - 404 null application/problem+json; charset=utf-8 31.0769ms&#xD;
+[12:55:11 ERR] An unhandled exception occurred.&#xD;
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.&#xD;
+ ---&gt; Npgsql.PostgresException (0x80004005): 23503: insert or update on table "UserRoles" violates foreign key constraint "userroles_userid_fkey"&#xD;
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult()&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)&#xD;
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)&#xD;
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)&#xD;
+  Exception data:&#xD;
+    Severity: ERROR&#xD;
+    SqlState: 23503&#xD;
+    MessageText: insert or update on table "UserRoles" violates foreign key constraint "userroles_userid_fkey"&#xD;
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+    SchemaName: auth&#xD;
+    TableName: UserRoles&#xD;
+    ConstraintName: userroles_userid_fkey&#xD;
+    File: ri_triggers.c&#xD;
+    Line: 2619&#xD;
+    Routine: ri_ReportViolation&#xD;
+   --- End of inner exception stack trace ---&#xD;
+   at MyApp.Orm.EfCore.EfUnitOfWork`1.CommitAsync() in E:\Afe\Projects\Velora\Velora.Infrastructure.ORM\Repositories\EfCore\UnitOfWork.cs:line 46&#xD;
+   at Velora.Application.Services.TransactionService.CommitAsync() in E:\Afe\Projects\Velora\Velora.Application\Services\TransactionService.cs:line 22&#xD;
+   at Velora.Host.Controllers.UserRoleController.Create(UserRoleDto dto) in E:\Afe\Projects\Velora\Velora.Host\Controllers\UserRoleController.cs:line 43&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeInnerFilterAsync&gt;g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)&#xD;
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#xD;
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)&#xD;
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)&#xD;
+   at Velora.Host.Middlewares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in E:\Afe\Projects\Velora\Velora.Host\Middlewares\ErrorHandlingMiddleware.cs:line 25&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 POST http://localhost/api/userrole - 500 null application/json 619.3135ms&#xD;
+[xUnit.net 00:00:03.62]       System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).&#xD;
+[xUnit.net 00:00:03.62]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.62]            at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+[xUnit.net 00:00:03.62]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserRoleControllerTests.cs(51,0): at Velora.IntegrationTests.Controllers.UserRoleControllerTests.UserRole_CRUD_Should_Succeed()&#xD;
+[xUnit.net 00:00:03.62]         --- End of stack trace from previous location ---&#xD;
+[12:55:11 ERR] An unhandled exception occurred.&#xD;
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.&#xD;
+ ---&gt; Npgsql.PostgresException (0x80004005): 23503: insert or update on table "UserProfiles" violates foreign key constraint "userprofiles_userid_fkey"&#xD;
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult()&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)&#xD;
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)&#xD;
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)&#xD;
+  Exception data:&#xD;
+    Severity: ERROR&#xD;
+    SqlState: 23503&#xD;
+    MessageText: insert or update on table "UserProfiles" violates foreign key constraint "userprofiles_userid_fkey"&#xD;
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+    SchemaName: auth&#xD;
+    TableName: UserProfiles&#xD;
+    ConstraintName: userprofiles_userid_fkey&#xD;
+    File: ri_triggers.c&#xD;
+    Line: 2619&#xD;
+    Routine: ri_ReportViolation&#xD;
+   --- End of inner exception stack trace ---&#xD;
+   at MyApp.Orm.EfCore.EfUnitOfWork`1.CommitAsync() in E:\Afe\Projects\Velora\Velora.Infrastructure.ORM\Repositories\EfCore\UnitOfWork.cs:line 46&#xD;
+   at Velora.Application.Services.TransactionService.CommitAsync() in E:\Afe\Projects\Velora\Velora.Application\Services\TransactionService.cs:line 22&#xD;
+   at Velora.Host.Controllers.UserProfileController.Create(UserProfileDto dto) in E:\Afe\Projects\Velora\Velora.Host\Controllers\UserProfileController.cs:line 43&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeActionMethodAsync&gt;g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeNextActionFilterAsync&gt;g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State&amp; next, Scope&amp; scope, Object&amp; state, Boolean&amp; isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.&lt;InvokeInnerFilterAsync&gt;g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeFilterPipelineAsync&gt;g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.&lt;InvokeAsync&gt;g__Logged|17_1(ResourceInvoker invoker)&#xD;
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.&lt;Invoke&gt;g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)&#xD;
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)&#xD;
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)&#xD;
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)&#xD;
+   at Velora.Host.Middlewares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in E:\Afe\Projects\Velora\Velora.Host\Middlewares\ErrorHandlingMiddleware.cs:line 25&#xD;
+[12:55:12 INF] Request finished HTTP/1.1 POST http://localhost/api/userprofile - 500 null application/json 747.3925ms&#xD;
+[xUnit.net 00:00:03.75]       System.Net.Http.HttpRequestException : Response status code does not indicate success: 500 (Internal Server Error).&#xD;
+[xUnit.net 00:00:03.75]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.75]            at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()&#xD;
+[xUnit.net 00:00:03.75]         E:\Afe\Projects\Velora\Velora.IntegrationTests\ApiTests\UserProfileControllerTests.cs(57,0): at Velora.IntegrationTests.Controllers.UserProfileControllerTests.UserProfile_CRUD_Should_Succeed()&#xD;
+[xUnit.net 00:00:03.75]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:03.76]   Finished:    Velora.IntegrationTests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:11.3617085+03:30">
+        <Text>[xUnit.net 00:00:02.72]     Register and Login should succeed [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:11.7988835+03:30">
+        <Text>[xUnit.net 00:00:03.16]     Permission CRUD should succeed (Create, Get, Update, Delete) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:11.7991520+03:30">
+        <Text>[xUnit.net 00:00:03.16]     Resource CRUD should succeed (Create, Get, Update, Delete) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:12.1043900+03:30">
+        <Text>[xUnit.net 00:00:03.47]     User CRUD should succeed (Create, Get, Update, Delete) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:12.2591734+03:30">
+        <Text>[xUnit.net 00:00:03.62]     UserRole CRUD should succeed (Create, Get, Update, Delete) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="DESKTOP-JLBIAKI" outcome="Error" timestamp="2025-08-24T12:55:12.3897643+03:30">
+        <Text>[xUnit.net 00:00:03.75]     UserProfile CRUD should succeed (Create, Get, Update, Delete) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

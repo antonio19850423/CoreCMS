@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="HotChocolate" Version="15.1.11" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.9" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.9" />
+    <PackageReference Include="HotChocolate.Authorization" Version="15.1.11" />
+    <PackageReference Include="HotChocolate.Data" Version="15.1.9" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Velora.Application.Shared\Velora.Application.Shared.csproj" />
+    <ProjectReference Include="..\Velora.EntityFrameworkCore\Velora.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Velora.Infrastructure.ORM\Velora.Infrastructure.ORM.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\RoleDtoValidator.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RoleDtoValidator.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\RoleDtoValidator.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RoleDtoValidator.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ClosedXML" Version="0.105.0" />
+		<PackageReference Include="HotChocolate" Version="15.1.11" />
+		<PackageReference Include="HotChocolate.AspNetCore" Version="15.1.9" />
+		<PackageReference Include="HotChocolate.Authorization" Version="15.1.11" />
+		<PackageReference Include="HotChocolate.Types" Version="15.1.11" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="9.3.2" />
+		<None Include="Resources\*.resx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="Resources\FormResources\Resource.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Resource.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\User.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\User.fa.resx" />
+	  <EmbeddedResource Remove="Resources\Languages.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\SeedData.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\SeedData.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Velora.EntityFrameworkCore\Velora.EntityFrameworkCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Languages.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Languages.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Resources\Languages.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Resources\FormResources\Resource.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Resource.en.resx" />
+	  <None Include="Resources\FormResources\ResourceType.fa.resx" />
+	  <None Include="Resources\FormResources\ResourceType.en.resx" />
+	  <None Include="Resources\FormResources\User.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\User.en.resx" />
+	  <None Include="Resources\FormResources\Role.en.resx" />
+	  <None Include="Resources\FormResources\Role.fa.resx" />
+	</ItemGroup>
+
+</Project>

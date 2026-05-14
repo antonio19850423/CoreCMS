@@ -1,0 +1,181 @@
+﻿{
+  "Roles": [
+    {
+      "Name": "Admin",
+      "Code": "ADMIN"
+    },
+    {
+      "Name": "User",
+      "Code": "USER"
+    },
+    {
+      "Name": "Developer",
+      "Code": "DEV"
+    }
+  ],
+  "Users": [
+    {
+      "UserName": "Admin",
+      "Password": "123456",
+      "Roles": [ "ADMIN" ]
+    },
+    {
+      "UserName": "Developer",
+      "Password": "123456",
+      "Roles": [ "DEV" ]
+    }
+  ],
+  "Resources": [
+    {
+      "Type": "MENU",
+      "Code": "DASHBOARD",
+      "Name": "Dashboard",
+      "DisplayName": {
+        "en": "Dashboard",
+        "fa": "داشبورد"
+      },
+      "Order": 1
+    },
+    {
+      "Type": "MENU",
+      "Code": "BASIC_INFO",
+      "Name": "Basic Info",
+      "DisplayName": {
+        "en": "Basic Info",
+        "fa": "اطلاعات پایه"
+      },
+      "Order": 2,
+      "Roles": [ "DEV" ],
+      "Children": [
+        {
+          "Type": "MENU",
+          "Code": "ROLE_MANAGEMENT",
+          "Name": "Role Management",
+          "DisplayName": {
+            "en": "Role Management",
+            "fa": "مدیریت نقش‌ها"
+          },
+          "Order": 1,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "ROLE_MANAGEMENT_PAGE",
+              "Name": "Role Management Page",
+              "DisplayName": {
+                "en": "Role Management Page",
+                "fa": "صفحه مدیریت نقش‌ها"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "RESOURCETYPE_MANAGEMENT",
+          "Name": "ResourceType Management",
+          "DisplayName": {
+            "en": "ResourceType Management",
+            "fa": "مدیریت نوع منابع"
+          },
+          "Order": 2,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "RESOURCETYPE_MANAGEMENT_PAGE",
+              "Name": "ResourceType Management Page",
+              "DisplayName": {
+                "en": "ResourceType Management Page",
+                "fa": "صفحه مدیریت نوع منابع"
+              },
+              "Order": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Type": "MENU",
+      "Code": "ADMINISTRATION",
+      "Name": "Administration",
+      "DisplayName": {
+        "en": "Administration",
+        "fa": "مدیریت"
+      },
+      "Order": 3,
+      "Roles": [ "DEV" ],
+      "Children": [
+        {
+          "Type": "MENU",
+          "Code": "USER_MANAGEMENT_MENU",
+          "Name": "User Management",
+          "DisplayName": {
+            "en": "User Management",
+            "fa": "مدیریت کاربران"
+          },
+          "Order": 1,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "USER_MANAGEMENT_PAGE",
+              "Name": "User Management Page",
+              "DisplayName": {
+                "en": "User Management Page",
+                "fa": "صفحه مدیریت کاربران"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "RESOURCE_MANAGEMENT_MENU",
+          "Name": "Resource Management",
+          "DisplayName": {
+            "en": "Resource Management",
+            "fa": "مدیریت منابع"
+          },
+          "Order": 2,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "RESOURCE_MANAGEMENT_PAGE",
+              "Name": "Resource Management Page",
+              "DisplayName": {
+                "en": "Resource Management Page",
+                "fa": "صفحه منابع"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PERMISSION_MANAGEMENT_MENU",
+          "Name": "Permission Management",
+          "DisplayName": {
+            "en": "Permission Management",
+            "fa": "مدیریت دسترسی‌ها"
+          },
+          "Order": 3,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PERMISSION_MANAGEMENT_PAGE",
+              "Name": "Permission Management Page",
+              "DisplayName": {
+                "en": "Permission Management Page",
+                "fa": "صفحه مدیریت دسترسی‌ها"
+              },
+              "Order": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

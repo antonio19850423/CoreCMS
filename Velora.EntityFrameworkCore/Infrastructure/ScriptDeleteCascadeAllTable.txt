@@ -1,0 +1,64 @@
+﻿
+SQL =>
+-- ScriptDeleteCascadeAllTable.sql
+-- 🔹 Automatically adds ON DELETE CASCADE to all foreign keys in VeloraDB (SQL Server)
+
+USE VeloraDB;
+GO
+
+DECLARE @sql NVARCHAR(MAX) = '';
+
+SELECT @sql = @sql + '
+ALTER TABLE [' + OBJECT_SCHEMA_NAME(fk.parent_object_id) + '].[' + OBJECT_NAME(fk.parent_object_id) + ']
+DROP CONSTRAINT [' + fk.name + '];
+
+ALTER TABLE [' + OBJECT_SCHEMA_NAME(fk.parent_object_id) + '].[' + OBJECT_NAME(fk.parent_object_id) + ']
+ADD CONSTRAINT [' + fk.name + '] FOREIGN KEY(' + c1.name + ')
+REFERENCES [' + OBJECT_SCHEMA_NAME(fk.referenced_object_id) + '].[' + OBJECT_NAME(fk.referenced_object_id) + '](' + c2.name + ')
+ON DELETE CASCADE;
+'
+FROM sys.foreign_keys fk
+INNER JOIN sys.foreign_key_columns fkc ON fk.object_id = fkc.constraint_object_id
+INNER JOIN sys.columns c1 ON fkc.parent_column_id = c1.column_id AND fkc.parent_object_id = c1.object_id
+INNER JOIN sys.columns c2 ON fkc.referenced_column_id = c2.column_id AND fkc.referenced_object_id = c2.object_id;
+
+EXEC sp_executesql @sql;
+
+=> SQL 
+
+
+POSTGRESQL =>
+
+-- ScriptDeleteCascadeAllTable.sql
+-- 🔹 Automatically adds ON DELETE CASCADE to all foreign keys in VeloraDB (PostgreSQL)
+
+DO
+$$
+DECLARE
+    rec RECORD;
+BEGIN
+    FOR rec IN
+        SELECT con.oid AS con_id,
+               con.conname AS fk_name,
+               con.conrelid::regclass AS table_name
+        FROM pg_constraint con
+        WHERE con.contype = 'f'
+    LOOP
+        EXECUTE format('ALTER TABLE %s DROP CONSTRAINT %s;',
+                       rec.table_name,
+                       rec.fk_name);
+
+        EXECUTE format('ALTER TABLE %s ADD CONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s) ON DELETE CASCADE;',
+                       rec.table_name,
+                       rec.fk_name,
+                       (SELECT string_agg(att.attname, ', ')
+                        FROM unnest(con.conkey) AS col
+                        JOIN pg_attribute att ON att.attnum = col AND att.attrelid = con.conrelid),
+                       (SELECT string_agg(att.attname, ', ')
+                        FROM unnest(con.confkey) AS col
+                        JOIN pg_attribute att ON att.attnum = col AND att.attrelid = con.confrelid),
+                       rec.table_name);
+    END LOOP;
+END
+$$;
+<= POSTGRESQL
