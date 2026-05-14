@@ -4,4 +4,4 @@ PostgreSQL =>
 Scaffold-DbContext "Host=localhost;Port=5432;Database=VeloraDB;Username=postgres;Password=Elham#09123507322#" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir EntityFramework/PostgreSQL -Context VeloraPgContext -Force
 
 For JetBrain SQL SERVER =>
-dotnet ef dbcontext scaffold "Server=DESKTOP-JLBIAKI\AFE;Database=VeloraDB;User Id=sa;Password=77723588;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir SqlServer --project Velora.EntityFrameworkCore --startup-project Velora.Host --force --data-annotations
+dotnet ef dbcontext scaffold "Server=DESKTOP-JLBIAKI\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir SqlServer --project Velora.EntityFrameworkCore --startup-project Velora.Host --force --data-annotations
