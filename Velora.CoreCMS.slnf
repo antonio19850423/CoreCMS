@@ -1,0 +1,15 @@
+﻿{
+  "solution": {
+    "path": "Velora.sln",
+    "projects": [
+      "Velora.Application.Shared\\Velora.Application.Shared.csproj",
+      "Velora.Application\\Velora.Application.csproj",
+      "Velora.EntityFrameworkCore\\Velora.EntityFrameworkCore.csproj",
+      "Velora.Host\\Velora.Host.csproj",
+      "Velora.Identity\\Velora.Identity.csproj",
+      "Velora.Infrastructure.Config\\Velora.Infrastructure.Config.csproj",
+      "Velora.Infrastructure.ORM\\Velora.Infrastructure.ORM.csproj",
+      "Velora.IntegrationTests\\Velora.IntegrationTests.csproj"
+    ]
+  }
+}
