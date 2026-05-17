@@ -4,18 +4,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
-public partial class VeloraDbContext : DbContext
+public partial class CoreCmsContext : DbContext
 {
-    public VeloraDbContext()
+    public CoreCmsContext()
     {
     }
 
-    public VeloraDbContext(DbContextOptions<VeloraDbContext> options)
+    public CoreCmsContext(DbContextOptions<CoreCmsContext> options)
         : base(options)
     {
     }
 
     public virtual DbSet<City> Cities { get; set; }
+
+    public virtual DbSet<ComponentType> ComponentTypes { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
 
@@ -24,6 +26,12 @@ public partial class VeloraDbContext : DbContext
     public virtual DbSet<LocalizationKey> LocalizationKeys { get; set; }
 
     public virtual DbSet<LocalizationTranslation> LocalizationTranslations { get; set; }
+
+    public virtual DbSet<Page> Pages { get; set; }
+
+    public virtual DbSet<PageTemplate> PageTemplates { get; set; }
+
+    public virtual DbSet<PageTemplateComponent> PageTemplateComponents { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
 
@@ -37,7 +45,13 @@ public partial class VeloraDbContext : DbContext
 
     public virtual DbSet<RolePermission> RolePermissions { get; set; }
 
+    public virtual DbSet<Section> Sections { get; set; }
+
+    public virtual DbSet<SectionItem> SectionItems { get; set; }
+
     public virtual DbSet<SeedHistory> SeedHistories { get; set; }
+
+    public virtual DbSet<SiteSetting> SiteSettings { get; set; }
 
     public virtual DbSet<State> States { get; set; }
 
@@ -47,7 +61,15 @@ public partial class VeloraDbContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
+
     public virtual DbSet<VwLocalization> VwLocalizations { get; set; }
+
+    public virtual DbSet<VwPageForm> VwPageForms { get; set; }
+
+    public virtual DbSet<VwPageTemplateComponentForm> VwPageTemplateComponentForms { get; set; }
+
+    public virtual DbSet<VwPageTemplateForm> VwPageTemplateForms { get; set; }
 
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
 
@@ -77,6 +99,15 @@ public partial class VeloraDbContext : DbContext
             entity.HasOne(d => d.State).WithMany(p => p.Cities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Cities__StateId__52593CB8");
+        });
+
+        modelBuilder.Entity<ComponentType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Componen__3214EC07378005F4");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<Country>(entity =>
@@ -111,6 +142,45 @@ public partial class VeloraDbContext : DbContext
             entity.HasOne(d => d.LocalizationKeyCodeNavigation).WithMany(p => p.LocalizationTranslations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Localizat__Local__2AD55B43");
+        });
+
+        modelBuilder.Entity<Page>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Pages__3214EC07C5495B28");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsPublished).HasDefaultValue(true);
+
+            entity.HasOne(d => d.PageTemplate).WithMany(p => p.Pages).HasConstraintName("FK_Pages_Template");
+        });
+
+        modelBuilder.Entity<PageTemplate>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PageTemp__3214EC078446304C");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<PageTemplateComponent>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PageTemp__3214EC07851A59F8");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsEditable).HasDefaultValue(true);
+
+            entity.HasOne(d => d.ComponentType).WithMany(p => p.PageTemplateComponents)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TemplateComponents_Type");
+
+            entity.HasOne(d => d.PageTemplate).WithMany(p => p.PageTemplateComponents)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TemplateComponents_Template");
         });
 
         modelBuilder.Entity<Permission>(entity =>
@@ -185,9 +255,52 @@ public partial class VeloraDbContext : DbContext
                 .HasConstraintName("FK_RolePermissions_Roles");
         });
 
+        modelBuilder.Entity<Section>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Sections__3214EC07EC1B5639");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.ComponentType).WithMany(p => p.Sections)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sections_Type");
+
+            entity.HasOne(d => d.Page).WithMany(p => p.Sections)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sections_Page");
+        });
+
+        modelBuilder.Entity<SectionItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SectionI__3214EC071187D84D");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.ComponentType).WithMany(p => p.SectionItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SectionItems_Type");
+
+            entity.HasOne(d => d.Section).WithMany(p => p.SectionItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SectionItems_Section");
+        });
+
         modelBuilder.Entity<SeedHistory>(entity =>
         {
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+        });
+
+        modelBuilder.Entity<SiteSetting>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SiteSett__3214EC077C378509");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<State>(entity =>
@@ -237,9 +350,29 @@ public partial class VeloraDbContext : DbContext
                 .HasConstraintName("FK__UserRoles__UserI__440B1D61");
         });
 
+        modelBuilder.Entity<VwComponentTypeForm>(entity =>
+        {
+            entity.ToView("VwComponentTypeForm", "cms");
+        });
+
         modelBuilder.Entity<VwLocalization>(entity =>
         {
             entity.ToView("VwLocalization", "gen");
+        });
+
+        modelBuilder.Entity<VwPageForm>(entity =>
+        {
+            entity.ToView("VwPageForm", "cms");
+        });
+
+        modelBuilder.Entity<VwPageTemplateComponentForm>(entity =>
+        {
+            entity.ToView("VwPageTemplateComponentForm", "cms");
+        });
+
+        modelBuilder.Entity<VwPageTemplateForm>(entity =>
+        {
+            entity.ToView("VwPageTemplateForm", "cms");
         });
 
         modelBuilder.Entity<VwPermissionForm>(entity =>

@@ -92,6 +92,29 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "COMPONENTTYPE_MANAGEMENT",
+          "Name": "ComponentType Management",
+          "DisplayName": {
+            "en": "ComponentType Management",
+            "fa": "مدیریت نوع کامپوننت"
+          },
+          "Order": 3,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "COMPONENTTYPE_MANAGEMENT_PAGE",
+              "Name": "ComponentType Management Page",
+              "DisplayName": {
+                "en": "ComponentType Management Page",
+                "fa": "صفحه مدیریت نوع کامپوننت"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

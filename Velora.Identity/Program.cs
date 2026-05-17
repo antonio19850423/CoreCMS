@@ -97,7 +97,7 @@ else if (databaseSettings.Provider == "SqlServer")
 {
     builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        containerBuilder.RegisterType<EfUnitOfWork<VeloraDbContext>>()
+        containerBuilder.RegisterType<EfUnitOfWork<CoreCmsContext>>()
     .As<IUnitOfWork>()
     .InstancePerLifetimeScope();
 

@@ -64,6 +64,9 @@ namespace Velora.Application.MappingProfiles
             CreateMap<PermissionDto, PermissionCrud>().ReverseMap();
             CreateMap<PgSeedHistory, SeedHistoryDto>().ReverseMap();
             CreateMap<SqlSeedHistory, SeedHistoryDto>().ReverseMap();
+            CreateMap<SqlComponentType, ComponentTypeCrud>().ReverseMap();
+            CreateMap<SqlComponentTypeView, ComponentTypeCrud>().ReverseMap();
+            CreateMap<SqlComponentType, ComponentTypeDto>().ReverseMap();
 
 
         }

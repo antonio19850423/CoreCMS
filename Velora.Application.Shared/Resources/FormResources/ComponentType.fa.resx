@@ -12,9 +12,30 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="ComponentType.Name" xml:space="preserve">
-        <value />
+        <value>عنوان</value>
     </data>
     <data name="ComponentType.Code" xml:space="preserve">
-        <value />
+        <value>کد</value>
+    </data>
+    <data name="ComponentType.CreatedAtPersian" xml:space="preserve">
+        <value>تاریخ ایجاد</value>
+    </data>
+    <data name="ComponentType.CreatedByName" xml:space="preserve">
+        <value>ایجادکننده</value>
+    </data>
+    <data name="ComponentType.Description" xml:space="preserve">
+        <value>توضیحات</value>
+    </data>
+    <data name="ComponentType.IsActive" xml:space="preserve">
+        <value>فعال</value>
+    </data>
+    <data name="ComponentType.Type" xml:space="preserve">
+        <value>نوع</value>
+    </data>
+    <data name="ComponentType.UpdatedAtPersian" xml:space="preserve">
+        <value>تاریخ بروزرسانی</value>
+    </data>
+    <data name="ComponentType.UpdatedByName" xml:space="preserve">
+        <value>ویرایشگر</value>
     </data>
 </root>

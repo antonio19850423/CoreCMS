@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Enums;
+using Velora.Application.Shared.Repositories;
 
 namespace Velora.Application.Shared.Services
     {
@@ -18,6 +20,13 @@ namespace Velora.Application.Shared.Services
             where PgView : class
             where SqlView : class
             where TResult : class;
+        Task<IQueryable<TResult>> GetAllViewQueryable<SqlView, TResult>()
+    where SqlView : class
+    where TResult : class;
+        Task<List<TResult>> GetAllViewListAsync<PgView, SqlView, TResult>()
+    where PgView : class
+    where SqlView : class
+    where TResult : class;
         Task<ResultDto<TDto?>> GetByIdAsync(params object[] idies);
         Task<ResultDto<TDto>> CreateAsync(TDto dto);
         Task<ResultDto<TDto?>> UpdateAsync<TDtoParam>(TDtoParam updatedDto,params object[] idies) where TDtoParam : class;

@@ -80,10 +80,6 @@ namespace Velora.Application.Services
             return query.ProjectTo<TDto>(_mapper.ConfigurationProvider);
         }
 
-
-
-
-
         // 🔹 GetAllViewQueryable
         public async Task<IQueryable<TResult>> GetAllViewQueryable<PgView, SqlView, TResult>()
             where PgView : class
@@ -103,6 +99,36 @@ namespace Velora.Application.Services
                 var errorMessage = await _messageService.Value.GetMessageAsync(LocalizationKeys.ActionFailed, "Unknown error");
                 throw new Exception(errorMessage, ex);
             }
+        }
+        public async Task<IQueryable<TResult>> GetAllViewQueryable<SqlView, TResult>()
+    where SqlView : class
+    where TResult : class
+        {
+            try
+            {
+                IQueryable query = _sqlRepository.GetViewQueryable<SqlView>();
+
+
+                return query.ProjectTo<TResult>(_mapper.ConfigurationProvider).Cast<TResult>();
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = await _messageService.Value.GetMessageAsync(LocalizationKeys.ActionFailed, "Unknown error");
+                throw new Exception(errorMessage, ex);
+            }
+        }
+
+        public async Task<List<TResult>> GetAllViewListAsync<PgView, SqlView, TResult>()
+    where PgView : class
+    where SqlView : class
+    where TResult : class
+        {
+            IQueryable query = _dbType == DatabaseType.SqlServer
+                ? _sqlRepository.GetViewQueryable<SqlView>()
+                : _pgRepository.GetViewQueryable<PgView>();
+
+            // materialize
+            return await query.ProjectTo<TResult>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         // 🔹 GetByIdAsync
@@ -147,15 +173,28 @@ namespace Velora.Application.Services
 
                 var idProp = entity.GetType().GetProperty("Id");
                 if (idProp != null && idProp.PropertyType == typeof(Guid)) idProp.SetValue(entity, Guid.NewGuid());
-
-                var createdAtProp = entity.GetType().GetProperty("CreatedAt");
-                if (createdAtProp != null && createdAtProp.PropertyType == typeof(DateTime)) createdAtProp.SetValue(entity, DateTime.UtcNow);
-
                 var userId = _currentUserService.GetUserId();
+                var CreatedAtProp = entity.GetType().GetProperty("CreatedAt");
+                if (CreatedAtProp != null)
+                {
+                    // بررسی اینکه آیا نوع property دقیقا DateTime یا Nullable<DateTime> است
+                    var type = Nullable.GetUnderlyingType(CreatedAtProp.PropertyType) ?? CreatedAtProp.PropertyType;
+                    if (type == typeof(DateTime))
+                    {
+                        CreatedAtProp.SetValue(entity, DateTime.Now);
+                    }
+                }
 
-                var createdByProp = entity.GetType().GetProperty("CreatedBy");
-                if (createdByProp != null && createdByProp.PropertyType == typeof(Guid?))
-                    createdByProp.SetValue(entity, userId);
+                var CreatedByProp = entity.GetType().GetProperty("CreatedBy");
+                if (CreatedByProp != null)
+                {
+                    var type = Nullable.GetUnderlyingType(CreatedByProp.PropertyType) ?? CreatedByProp.PropertyType;
+                    if (type == typeof(Guid))
+                    {
+                        CreatedByProp.SetValue(entity, userId);
+                    }
+                }
+ 
 
                 if (_dbType == DatabaseType.SqlServer)
                     await ((ISqlRepository<TEntitySql>)GetRepository()).InsertAsync(entity);
@@ -177,31 +216,108 @@ namespace Velora.Application.Services
         }
 
         // 🔹 UpdateAsync
-        public async Task<ResultDto<TDto?>> UpdateAsync<TDtoParam>(TDtoParam updatedDto, params object[] idies)
+        public async Task<ResultDto<TDto?>> UpdateAsync<TDtoParam>(
+            TDtoParam updatedDto,
+            params object[] idies)
             where TDtoParam : class
         {
             var result = new ResultDto<TDto?>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetUpdateMessagesAsync();
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetUpdateMessagesAsync();
 
             try
             {
                 var repo = GetRepository();
+
                 var existing = await repo.GetByIdAsync(idies);
+
                 if (existing == null)
                 {
                     result.Success = false;
-                    result.Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.NotFound, "Not found");
+                    result.Message = await _messageService.Value
+                        .GetMessageAsync(LocalizationKeys.NotFound, "Not found");
+
                     return result;
                 }
+
                 var userId = _currentUserService.GetUserId();
+
+                // -----------------------------
+                // نگهداری مقادیر اصلی
+                // -----------------------------
+                var createdAtProp = existing.GetType().GetProperty("CreatedAt");
+                var createdByProp = existing.GetType().GetProperty("CreatedBy");
+
+                object? createdAtValue = createdAtProp?.GetValue(existing);
+                object? createdByValue = createdByProp?.GetValue(existing);
+
+                // -----------------------------
+                // map dto -> entity
+                // -----------------------------
                 _mapper.Map(updatedDto, existing);
+
+                // -----------------------------
+                // برگرداندن CreatedAt
+                // -----------------------------
+                if (createdAtProp != null)
+                {
+                    var type = Nullable.GetUnderlyingType(createdAtProp.PropertyType)
+                               ?? createdAtProp.PropertyType;
+
+                    if (type == typeof(DateTime))
+                    {
+                        createdAtProp.SetValue(existing, createdAtValue);
+                    }
+                }
+
+                // -----------------------------
+                // برگرداندن CreatedBy
+                // -----------------------------
+                if (createdByProp != null)
+                {
+                    var type = Nullable.GetUnderlyingType(createdByProp.PropertyType)
+                               ?? createdByProp.PropertyType;
+
+                    if (type == typeof(Guid))
+                    {
+                        createdByProp.SetValue(existing, createdByValue);
+                    }
+                }
+
+                // -----------------------------
+                // UpdatedAt
+                // -----------------------------
                 var updatedAtProp = existing.GetType().GetProperty("UpdatedAt");
-                if (updatedAtProp != null && updatedAtProp.PropertyType == typeof(DateTime))
-                    updatedAtProp.SetValue(existing, DateTime.UtcNow);
+
+                if (updatedAtProp != null)
+                {
+                    var type = Nullable.GetUnderlyingType(updatedAtProp.PropertyType)
+                               ?? updatedAtProp.PropertyType;
+
+                    if (type == typeof(DateTime))
+                    {
+                        updatedAtProp.SetValue(existing, DateTime.UtcNow);
+                    }
+                }
+
+                // -----------------------------
+                // UpdatedBy
+                // -----------------------------
                 var updatedByProp = existing.GetType().GetProperty("UpdatedBy");
-                if (updatedByProp != null && updatedByProp.PropertyType == typeof(Guid?))
-                    updatedByProp.SetValue(existing, userId);
+
+                if (updatedByProp != null)
+                {
+                    var type = Nullable.GetUnderlyingType(updatedByProp.PropertyType)
+                               ?? updatedByProp.PropertyType;
+
+                    if (type == typeof(Guid))
+                    {
+                        updatedByProp.SetValue(existing, userId);
+                    }
+                }
+
                 await repo.UpdateAsync(existing);
+
                 result.Data = _mapper.Map<TDto>(existing);
                 result.Success = true;
                 result.Message = successMessage;

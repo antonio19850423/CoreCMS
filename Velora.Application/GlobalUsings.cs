@@ -64,3 +64,7 @@ global using SqlPermissionView = Velora.EntityFrameworkCore.EntityFramework.SqlS
 
 global using PgSeedHistory = Velora.EntityFrameworkCore.EntityFramework.PostgreSQL.SeedHistory;
 global using SqlSeedHistory = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SeedHistory;
+
+global using SqlComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;
+global using PgComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;
+global using SqlComponentTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwComponentTypeForm;

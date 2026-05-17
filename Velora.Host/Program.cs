@@ -64,7 +64,7 @@ var provider = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCa
     : DatabaseType.PostgreSql;
 if (provider == DatabaseType.SqlServer)
 {
-    builder.Services.AddDbContext<VeloraDbContext>(options =>
+    builder.Services.AddDbContext<CoreCmsContext>(options =>
         options.UseSqlServer(databaseSettings.ConnectionString), ServiceLifetime.Scoped);
 }
 else
@@ -148,6 +148,7 @@ var gqlBuilder = builder.Services
     .AddGraphQLServer()
     .AddAuthorization()
     .AddQueryType()
+    //.AddTypeExtension<ComponentTypeGraphQLResolver>()
     .AddFiltering()
     .AddSorting()
     ;
@@ -162,7 +163,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     if (provider == DatabaseType.SqlServer)
     {
-        containerBuilder.RegisterType<EfUnitOfWork<VeloraDbContext>>()
+        containerBuilder.RegisterType<EfUnitOfWork<CoreCmsContext>>()
             .As<IUnitOfWork>()
             .InstancePerLifetimeScope();
     }
@@ -244,7 +245,6 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 50_000_000; // 50 MB
 });
 var app = builder.Build();
-
 // و در pipeline
 app.UseCors(builder =>
 {

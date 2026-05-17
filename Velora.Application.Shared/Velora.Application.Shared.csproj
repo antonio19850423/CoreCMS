@@ -59,6 +59,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Resources\FormResources\ComponentType.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
 	  <None Include="Resources\FormResources\Resource.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>

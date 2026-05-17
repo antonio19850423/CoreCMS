@@ -42,3 +42,7 @@ global using SqlLocalizationtranslation = Velora.EntityFrameworkCore.EntityFrame
 
 global using PgSeedHistory = Velora.EntityFrameworkCore.EntityFramework.PostgreSQL.SeedHistory;
 global using SqlSeedHistory = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SeedHistory;
+
+global using SqlComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;
+global using SqlComponentTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwComponentTypeForm;
+global using PgComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;

@@ -62,6 +62,7 @@ namespace Velora.Application.Shared.Constants
         public const string User = "User";
         public const string Role = "Role";
         public const string Permission = "Permission";
+        public const string ComponentType = "ComponentType";
         // سایر entityها...
     }
     public static class AppRoles

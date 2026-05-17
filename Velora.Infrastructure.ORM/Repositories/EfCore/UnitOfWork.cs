@@ -24,6 +24,15 @@ namespace MyApp.Orm.EfCore
             if(_useTransaction)
                 _transaction = _context.Database.BeginTransaction();
             }
+        public EfUnitOfWork(TContext context, bool useTransaction = true)
+        {
+            _contextKey = Guid.NewGuid();
+            _context = context;
+            _useTransaction = useTransaction;
+
+            if (_useTransaction)
+                _transaction = _context.Database.BeginTransaction();
+        }
 
         public Guid ContextKey => _contextKey;
         public DbContext Context => _context;
