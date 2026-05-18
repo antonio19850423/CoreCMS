@@ -132,21 +132,21 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdComponentTypes = new List<ComponentTypeDto>();
+            var createdComponentTypes= new List<ComponentTypeDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var ComponentTypes = dt.ToModelList<ComponentTypeCrud>();
+                var componentTypes = dt.ToModelList<ComponentTypeCrud>();
 
-                for (int i = 0; i < ComponentTypes.Count; i++)
+                for (int i = 0; i < componentTypes.Count; i++)
                 {
-                    var ComponentType = ComponentTypes[i];
+                    var componentType = componentTypes[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(ComponentType);
+                    var createResult = await CreateAsync(componentType);
 
                     if (createResult.Success && createResult.Data != null)
                     {

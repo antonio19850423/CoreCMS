@@ -466,6 +466,9 @@ namespace Velora.Application.Seeds
                 // ---------------- مرحله 2: ایجاد Resource ----------------
                 foreach (var prop in properties)
                 {
+                    string entityName = !string.IsNullOrWhiteSpace(prop.Attribute.EntityName)
+    ? prop.Attribute.EntityName
+    : dto.Name.Replace("Dto", "").Replace("Crud", "");
                     string resourceCode = $"{dto.Name.Replace("Dto", "").Replace("Crud", "")}.{prop.Property.Name}";
 
                     ResourceDto resourceDto;
@@ -494,7 +497,7 @@ namespace Velora.Application.Seeds
                         existing.Data.Route = prop.Attribute.Route;
                         existing.Data.ShowInSelectBox = prop.Attribute.ShowInSelectBox;
                         existing.Data.SelectBoxOrder = prop.Attribute.SelectBoxOrder;
-                        existing.Data.EntityName = prop.Attribute.EntityName;
+                        existing.Data.EntityName = entityName;
                         existing.Data.ServiceName = prop.Attribute.ServiceName;
                         existing.Data.SelectDisplayFields = prop.Attribute.SelectDisplayFields;
 
@@ -526,6 +529,7 @@ namespace Velora.Application.Seeds
                             ShowInSelectBox = prop.Attribute.ShowInSelectBox,
                             SelectBoxOrder = prop.Attribute.SelectBoxOrder,
                             SelectDisplayFields = prop.Attribute.SelectDisplayFields,
+                            EntityName = entityName,
                         });
 
                         resourceDto = created.Data;
@@ -867,7 +871,7 @@ namespace Velora.Application.Seeds
  ? await _resourceTypeService.FirstOrDefaultAsync<SqlResourceType>(x => x.Code.ToUpper() == "Action".ToUpper())
  : await _resourceTypeService.FirstOrDefaultAsync<PgResourcetype>(x => x.Code.ToUpper() == "Action".ToUpper());
             var resourceCode = $"API.{controller}.{action}";
-
+            string entityName = controller.Replace("Controller", "");
             // ---------- Resource ----------
             var resource = await _resourceService.GetByCodeAsync(resourceCode);
             if (resource == null)
@@ -878,10 +882,21 @@ namespace Velora.Application.Seeds
                     Name = action,
                     ResourceTypeId = resourceTypeExisting.Data.Id,
                     DisplayName = $"{controller} {action}",
-                    IsActive = true
+                    IsActive = true,
+                    EntityName = entityName,
                 });
 
                 resource = created.Data;
+            }
+            else
+            {
+                resource.Name = action;
+                resource.ResourceTypeId = resourceTypeExisting.Data.Id;
+                resource.DisplayName = $"{controller} {action}";
+                resource.EntityName = entityName;
+                resource.IsActive = true;
+
+                await _resourceService.UpdateAsync(resource, resource.Id);
             }
 
             // ---------- Permission ----------

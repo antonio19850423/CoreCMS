@@ -1,14 +1,36 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
-
+/// <summary>
+/// /// <summary>
+/// کنترلرهایی که در فرم‌های داینامیک استفاده می‌شوند،
+/// حتماً باید دو متد BulkInsert و Export را پیاده‌سازی کنند.
+///
+/// BulkInsert:
+/// برای ثبت گروهی اطلاعات از طریق فایل Excel یا فایل ورودی استفاده می‌شود.
+///
+/// Export:
+/// برای تولید و دانلود فایل Excel اطلاعات Grid استفاده می‌شود.
+///
+/// وجود این متدها برای موارد زیر الزامی است:
+/// - ثبت صحیح Resource و Permission ها
+/// - شناسایی صحیح سرویس‌ها در فرانت‌اند
+/// - جلوگیری از خطای Service not found
+/// - فعال شدن قابلیت Import و Export اکسل
+///
+/// بعد از اضافه کردن این متدها:
+/// - جدول SeedHistory پاک شود
+/// - پروژه مجدداً اجرا شود
+/// - EntityName داخل ModelMapping ثبت شود
+/// </summary>
 namespace Velora.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserProfileController : ControllerBase
+    public class UserProfileController : ControllerBase, IDynamicFormController<UserProfileDto>
     {
         private readonly IUserProfileService _userProfileService;
         private readonly ITransactionService _transactionService;
@@ -90,6 +112,21 @@ namespace Velora.Host.Controllers
 
             await _transactionService.CommitAsync();
             return Ok(result);
+        }
+
+        Task<IActionResult> IDynamicFormController<UserProfileDto>.Update(UserProfileDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IActionResult> IDynamicFormController<UserProfileDto>.BulkInsert()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IActionResult> IDynamicFormController<UserProfileDto>.Export(ExportRequestDto request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

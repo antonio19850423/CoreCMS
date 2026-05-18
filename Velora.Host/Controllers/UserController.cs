@@ -2,12 +2,34 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.Design;
 using Velora.Application.Services;
+using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
-
+/// <summary>
+/// /// <summary>
+/// کنترلرهایی که در فرم‌های داینامیک استفاده می‌شوند،
+/// حتماً باید دو متد BulkInsert و Export را پیاده‌سازی کنند.
+///
+/// BulkInsert:
+/// برای ثبت گروهی اطلاعات از طریق فایل Excel یا فایل ورودی استفاده می‌شود.
+///
+/// Export:
+/// برای تولید و دانلود فایل Excel اطلاعات Grid استفاده می‌شود.
+///
+/// وجود این متدها برای موارد زیر الزامی است:
+/// - ثبت صحیح Resource و Permission ها
+/// - شناسایی صحیح سرویس‌ها در فرانت‌اند
+/// - جلوگیری از خطای Service not found
+/// - فعال شدن قابلیت Import و Export اکسل
+///
+/// بعد از اضافه کردن این متدها:
+/// - جدول SeedHistory پاک شود
+/// - پروژه مجدداً اجرا شود
+/// - EntityName داخل ModelMapping ثبت شود
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController : ControllerBase, IDynamicFormController<UserCrud>
 {
     private readonly IUserService _userService;
     private readonly ITransactionService _transactionService;
