@@ -117,31 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ComponentType.Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="ComponentType.Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="ComponentType.CreatedAtPersian" xml:space="preserve">
+  <data name="PageTemplateComponent.CreatedAtPersian" xml:space="preserve">
     <value>CreatedAt</value>
   </data>
-  <data name="ComponentType.CreatedByName" xml:space="preserve">
+  <data name="PageTemplateComponent.CreatedByName" xml:space="preserve">
     <value>CreatedByName</value>
   </data>
-  <data name="ComponentType.Description" xml:space="preserve">
+  <data name="PageTemplateComponent.Description" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="ComponentType.IsActive" xml:space="preserve">
+  <data name="PageTemplateComponent.IsActive" xml:space="preserve">
     <value>IsActive</value>
   </data>
-  <data name="ComponentType.Type" xml:space="preserve">
-    <value>Type</value>
+  <data name="PageTemplateComponent.SortOrder" xml:space="preserve">
+    <value>SortOrder</value>
   </data>
-  <data name="ComponentType.UpdatedAtPersian" xml:space="preserve">
+  <data name="PageTemplateComponent.UpdatedAtPersian" xml:space="preserve">
     <value>UpdatedAtPersian</value>
   </data>
-  <data name="ComponentType.UpdatedByName" xml:space="preserve">
+  <data name="PageTemplateComponent.UpdatedByName" xml:space="preserve">
     <value>UpdatedByName</value>
+  </data>
+  <data name="PageTemplateComponent.PageTemplateId" xml:space="preserve">
+    <value>Page Template</value>
+  </data>
+  <data name="PageTemplateComponent.PageTemplateName" xml:space="preserve">
+    <value>Page Template</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentTypeId" xml:space="preserve">
+    <value>Component Type</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentTypeName" xml:space="preserve">
+    <value>Component Type</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentVariant" xml:space="preserve">
+    <value>Component Variant</value>
+  </data>
+  <data name="PageTemplateComponent.IsEditable" xml:space="preserve">
+    <value>IsEditable</value>
   </data>
 </root>

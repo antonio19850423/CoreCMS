@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +23,16 @@ namespace Velora.Application.Services
         private readonly IGenericService<TEntitySql, TEntityPg, TDto> _genericService;
         private readonly IMemoryCache _cache;
         private readonly string _cacheKey;
+        private readonly IWebHostEnvironment _env;
 
         public MemoryCacheService(
             IGenericService<TEntitySql, TEntityPg, TDto> genericService,
-            IMemoryCache cache)
+            IMemoryCache cache, IWebHostEnvironment env)
         {
             _genericService = genericService;
             _cache = cache;
             _cacheKey = typeof(TDto).FullName!;
+            _env = env;
         }
 
         /// <summary>
@@ -50,13 +54,14 @@ namespace Velora.Application.Services
         /// </summary>
         public async Task<List<TView>> GetAllViewAsync<TView>() where TView : class
         {
-            if (!_cache.TryGetValue($"{_cacheKey}_{typeof(TView).Name}", out List<TView> data))
+            if (!_cache.TryGetValue($"{_cacheKey}_{typeof(TView).Name}", out List<TView> data) ||
+               _env.IsDevelopment())
             {
-                // گرفتن query به صورت generic
                 var query = await _genericService.GetAllViewQueryable<TEntityPg, TEntitySql, TView>();
-
                 data = query.ToList();
-                _cache.Set($"{_cacheKey}_{typeof(TView).Name}", data, TimeSpan.FromHours(2));
+
+                if (!_env.IsDevelopment())
+                    _cache.Set($"{_cacheKey}_{typeof(TView).Name}", data, TimeSpan.FromMinutes(10));
             }
             return data;
         }
@@ -66,14 +71,14 @@ namespace Velora.Application.Services
             // کلید کش بر اساس نوع ویو
             var cacheKey = $"{_cacheKey}_{typeof(TView).Name}";
 
-            if (!_cache.TryGetValue(cacheKey, out List<TView> data))
+            if (!_cache.TryGetValue(cacheKey, out List<TView> data) ||
+               _env.IsDevelopment())
             {
                 // گرفتن query جنریک
                 var query = await _genericService.GetAllViewQueryable<TEntityPg, TEntitySql, TView>();
                 data = query.ToList();
-
-                // کش کردن لیست برای دفعات بعد
-                _cache.Set(cacheKey, data, TimeSpan.FromHours(2));
+                if (!_env.IsDevelopment())
+                    _cache.Set(cacheKey, data, TimeSpan.FromMinutes(2));
             }
 
             // اعمال شرط و گرفتن اولین نتیجه

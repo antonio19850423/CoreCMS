@@ -117,31 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ComponentType.Name" xml:space="preserve">
+  <data name="PageTemplate.Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="ComponentType.Code" xml:space="preserve">
+  <data name="PageTemplate.Code" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="ComponentType.CreatedAtPersian" xml:space="preserve">
+  <data name="PageTemplate.CreatedAtPersian" xml:space="preserve">
     <value>CreatedAt</value>
   </data>
-  <data name="ComponentType.CreatedByName" xml:space="preserve">
+  <data name="PageTemplate.CreatedByName" xml:space="preserve">
     <value>CreatedByName</value>
   </data>
-  <data name="ComponentType.Description" xml:space="preserve">
+  <data name="PageTemplate.Description" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="ComponentType.IsActive" xml:space="preserve">
+  <data name="PageTemplate.IsActive" xml:space="preserve">
     <value>IsActive</value>
   </data>
-  <data name="ComponentType.Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="ComponentType.UpdatedAtPersian" xml:space="preserve">
+  <data name="PageTemplate.UpdatedAtPersian" xml:space="preserve">
     <value>UpdatedAtPersian</value>
   </data>
-  <data name="ComponentType.UpdatedByName" xml:space="preserve">
+  <data name="PageTemplate.UpdatedByName" xml:space="preserve">
     <value>UpdatedByName</value>
   </data>
 </root>

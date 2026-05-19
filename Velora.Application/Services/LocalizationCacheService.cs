@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,9 @@ namespace Velora.Application.Services
     {
         public LocalizationCacheService(
             IGenericService<SqlLocalizationView, PgLocalizationView, LocalizationViewDto> genericService,
-            IMemoryCache cache
-        ) : base(genericService, cache)
+            IMemoryCache cache,
+            IWebHostEnvironment env
+        ) : base(genericService, cache,env)
         {
         }
     }

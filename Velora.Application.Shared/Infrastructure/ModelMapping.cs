@@ -17,7 +17,9 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.User, typeof(UserCrud) },
             { LookupEntities.ResourceType, typeof(ResourceTypeCrud) },
             { LookupEntities.Role, typeof(RoleCrud) },
-            { LookupEntities.ComponentType, typeof(ComponentTypeCrud) }
+            { LookupEntities.ComponentType, typeof(ComponentTypeCrud) },
+            { LookupEntities.PageTemplate, typeof(PageTemplateCrud) },
+            { LookupEntities.PageTemplateComponent, typeof(PageTemplateComponentCrud) }
         };
 
         public static Type? GetModelType(string entityName)

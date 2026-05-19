@@ -46,3 +46,9 @@ global using SqlSeedHistory = Velora.EntityFrameworkCore.EntityFramework.SqlServ
 global using SqlComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;
 global using SqlComponentTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwComponentTypeForm;
 global using PgComponentType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ComponentType;
+
+global using SqlPageTemplate = Velora.EntityFrameworkCore.EntityFramework.SqlServer.PageTemplate;
+global using SqlPageTemplateView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPageTemplateForm;
+
+global using SqlPageTemplateComponent = Velora.EntityFrameworkCore.EntityFramework.SqlServer.PageTemplateComponent;
+global using SqlPageTemplateComponentView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPageTemplateComponentForm;

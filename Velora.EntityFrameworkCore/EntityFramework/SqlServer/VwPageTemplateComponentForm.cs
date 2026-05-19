@@ -13,9 +13,15 @@ public partial class VwPageTemplateComponentForm
 
     public Guid PageTemplateId { get; set; }
 
+    [StringLength(150)]
+    public string? PageTemplateName { get; set; }
+
     public int SortOrder { get; set; }
 
     public Guid ComponentTypeId { get; set; }
+
+    [StringLength(100)]
+    public string? ComponentTypeName { get; set; }
 
     [StringLength(100)]
     public string ComponentVariant { get; set; } = null!;
@@ -24,9 +30,11 @@ public partial class VwPageTemplateComponentForm
 
     public bool IsActive { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    [StringLength(19)]
+    public string? CreatedAtPersian { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    [StringLength(19)]
+    public string? UpdatedAtPersian { get; set; }
 
     [StringLength(201)]
     public string? CreatedByName { get; set; }

@@ -117,31 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ComponentType.Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="PageTemplateComponent.CreatedAtPersian" xml:space="preserve">
+    <value>تاریخ ایجاد</value>
   </data>
-  <data name="ComponentType.Code" xml:space="preserve">
-    <value>Code</value>
+  <data name="PageTemplateComponent.CreatedByName" xml:space="preserve">
+    <value>ایجاد کننده</value>
   </data>
-  <data name="ComponentType.CreatedAtPersian" xml:space="preserve">
-    <value>CreatedAt</value>
+  <data name="PageTemplateComponent.Description" xml:space="preserve">
+    <value>توضیحات</value>
   </data>
-  <data name="ComponentType.CreatedByName" xml:space="preserve">
-    <value>CreatedByName</value>
+  <data name="PageTemplateComponent.IsActive" xml:space="preserve">
+    <value>فعال</value>
   </data>
-  <data name="ComponentType.Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="PageTemplateComponent.SortOrder" xml:space="preserve">
+    <value>ترتیب نمایش</value>
   </data>
-  <data name="ComponentType.IsActive" xml:space="preserve">
-    <value>IsActive</value>
+  <data name="PageTemplateComponent.UpdatedAtPersian" xml:space="preserve">
+    <value>تاریخ ویرایش</value>
   </data>
-  <data name="ComponentType.Type" xml:space="preserve">
-    <value>Type</value>
+  <data name="PageTemplateComponent.UpdatedByName" xml:space="preserve">
+    <value>ویرایشگر</value>
   </data>
-  <data name="ComponentType.UpdatedAtPersian" xml:space="preserve">
-    <value>UpdatedAtPersian</value>
+  <data name="PageTemplateComponent.PageTemplateId" xml:space="preserve">
+    <value>الگوی صفحه</value>
   </data>
-  <data name="ComponentType.UpdatedByName" xml:space="preserve">
-    <value>UpdatedByName</value>
+  <data name="PageTemplateComponent.PageTemplateName" xml:space="preserve">
+    <value>الگوی صفحه</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentTypeId" xml:space="preserve">
+    <value>نوع کامپوننت</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentTypeName" xml:space="preserve">
+    <value>نوع کامپوننت</value>
+  </data>
+  <data name="PageTemplateComponent.ComponentVariant" xml:space="preserve">
+    <value>ظاهر کامپوننت</value>
+  </data>
+  <data name="PageTemplateComponent.IsEditable" xml:space="preserve">
+    <value>قابل ویرایش</value>
   </data>
 </root>

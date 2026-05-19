@@ -11,20 +11,22 @@ public partial class VwPageTemplateForm
 {
     public Guid Id { get; set; }
 
-    [StringLength(100)]
-    public string Code { get; set; } = null!;
-
     [StringLength(150)]
     public string Name { get; set; } = null!;
+
+    [StringLength(100)]
+    public string Code { get; set; } = null!;
 
     [StringLength(300)]
     public string? Description { get; set; }
 
     public bool IsActive { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    [StringLength(19)]
+    public string? CreatedAtPersian { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    [StringLength(19)]
+    public string? UpdatedAtPersian { get; set; }
 
     [StringLength(201)]
     public string? CreatedByName { get; set; }

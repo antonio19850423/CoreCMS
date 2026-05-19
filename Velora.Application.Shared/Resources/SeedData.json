@@ -115,6 +115,29 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAGETEMPLATE_MANAGEMENT",
+          "Name": "PageTemplate Management",
+          "DisplayName": {
+            "en": "Page Template Management",
+            "fa": "مدیریت الگو"
+          },
+          "Order": 4,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAGETEMPLATE_MANAGEMENT_PAGE",
+              "Name": "PageTemplate Management Page",
+              "DisplayName": {
+                "en": "Page Template Management Page",
+                "fa": "صفحه مدیریت الگو"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },
@@ -193,6 +216,29 @@
               "DisplayName": {
                 "en": "Permission Management Page",
                 "fa": "صفحه مدیریت دسترسی‌ها"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAGETEMPLATECOMPONENT_MANAGEMENT_MENU",
+          "Name": "PageTemplateComponent Management",
+          "DisplayName": {
+            "en": "Page Template Component Management",
+            "fa": "مدیریت الگو صفحه"
+          },
+          "Order": 4,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAGETEMPLATECOMPONENT_MANAGEMENT_PAGE",
+              "Name": "PAGETEMPLATECOMPONENT Management Page",
+              "DisplayName": {
+                "en": "Page Template Component Management Page",
+                "fa": "صفحه مدیریت  الگو صفحه"
               },
               "Order": 1
             }

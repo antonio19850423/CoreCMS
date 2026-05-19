@@ -103,6 +103,95 @@ public Guid UpdatedBy { get; set; }
 Attribute ها (ResourceColumn) باید دقیقاً تنظیم شوند تا فرم و Grid و ComboBox ها درست کار کنند.
 مدل DTO فقط برای انتقال داده استفاده می‌شود و Attribute ندارد.
 
+استفاده از SelectBox در فرم‌ها با View های دیگر
+1️⃣ مقدمه
+برای استفاده از SelectBox در فرم‌ها که داده‌های آن از یک View دیگر گرفته می‌شوند، لازم است رعایت چند نکته کلیدی در مدل‌های Crud و فرم داشته باشید تا داده‌ها صحیح نمایش داده شوند و قابلیت انتخاب و نمایش در DataGrid فراهم باشد.
+
+---
+
+2️⃣ تنظیمات مدل View اصلی
+فرض کنید مدل اصلی که داده‌ها را تأمین می‌کند PageTemplateCrud است. برای اینکه فیلدها قابل استفاده در SelectBox باشند:
+• ستون‌هایی که می‌خواهید در DataGrid نمایش داده شوند باید ShowInSelectBox = true داشته باشند.
+• سایر ستون‌ها می‌توانند مانند قبل باشند.
+مثال:
+public class PageTemplateCrud : BulkInsert
+{
+public Guid Id { get; set; }
+
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 150, ShowInSelectBox = true)]
+    public string Name { get; set; } = null!;
+
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 100, ShowInSelectBox = true)]
+    public string Code { get; set; } = null!;
+
+    [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true)]
+    public bool IsActive { get; set; }
+
+    // فیلدهای تاریخ و کاربر برای نمایش در DataGrid
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = false)]
+    public string CreatedAtPersian { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false)]
+    public string UpdatedAtPersian { get; set; }
+
+}
+
+---
+
+3️⃣ تنظیمات مدل فرم مصرف‌کننده SelectBox
+وقتی در فرم دیگری می‌خواهید SelectBox داشته باشید که داده‌های آن از PageTemplateCrud پر شود:
+
+1.  ServiceName باید دقیقاً همان نام GraphQL View مدل منبع باشد.
+2.  SelectDisplayFields باید فیلدهایی که در SelectBox نمایش داده می‌شوند، مشخص کند.
+3.  فیلدهای مرتبط باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true مشخص شده باشند.
+    مثال مدل مصرف‌کننده:
+    public class PageTemplateComponentCrud : BulkInsert
+    {
+    public Guid Id { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 2, GridOrder = 2,
+            ShowInGrid = false, ShowInForm = true,
+            EntityName = LookupEntities.PageTemplate,
+            ServiceName = "pageTemplateView",          // ⚡️ باید نام GraphQL دقیق باشد
+            LinkedFieldCode = "PageTemplateName",
+            SelectDisplayFields = "[\"name\",\"code\"]")] // ⚡️ فیلدهایی که نمایش داده می‌شوند
+        public Guid PageTemplateId { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 3, GridOrder = 3,
+            ShowInGrid = false, ShowInForm = false,
+            EntityName = LookupEntities.PageTemplate,
+            ServiceName = "pageTemplateView",
+            LinkedFieldCode = "PageTemplateId",
+            SelectDisplayFields = "[\"name\",\"code\"]")]
+        public string? PageTemplateName { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Number, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true)]
+        public int SortOrder { get; set; }
+
+    }
+
+---
+
+4️⃣ نکات مهم
+• همخوانی ServiceName و GraphQL View:
+حتماً ServiceName در فیلد SelectBox باید همان نام GraphQL View مدل منبع باشد.
+• فیلدهای نمایش داده شده در SelectBox:
+فیلدهایی که داخل SelectDisplayFields مشخص شده‌اند، باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true تعریف شوند.
+• LinkedFieldCode:
+این فیلد برای نگهداری مقدار انتخاب شده (ID یا عنوان) استفاده می‌شود و باید دقیقاً با فیلد مقصد هماهنگ باشد.
+• فرم مصرف‌کننده:
+هر SelectBox حداقل دو فیلد نیاز دارد: 0. فیلد ID (PageTemplateId)
+
+1. فیلد نام/عنوان (PageTemplateName)
+
+---
+
+5️⃣ جمع‌بندی
+• اگر می‌خواهید یک View را داخل SelectBox فرم دیگری استفاده کنید: 0. مدل منبع: ShowInSelectBox = true برای فیلدهای نمایش
+
+1. مدل فرم: ServiceName صحیح + SelectDisplayFields مطابق با مدل منبع
+2. LinkedFieldCode برای نگهداری مقدار انتخاب
+   با رعایت این نکات، SelectBox به درستی مقداردهی شده و داده‌ها در DataGrid فرم مصرف‌کننده نمایش داده می‌شوند.
+
 مرحله ۴: ایجاد فایل‌های Resource برای ترجمه (فارسی و انگلیسی)
 
 برای هر فرم جدید، باید فایل‌های Resource مربوط به نام فیلدها و عنوان‌ها ایجاد شود تا سیستم بتواند در حالت توسعه (Development) به‌صورت خودکار از آن‌ها استفاده کند.

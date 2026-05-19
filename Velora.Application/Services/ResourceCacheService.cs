@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,9 @@ namespace Velora.Application.Services
     {
         public ResourceCacheService(
             IGenericService<SqlResourcesView, PgResourcesView, ResourcesViewDto> genericService,
-            IMemoryCache cache
-        ) : base(genericService, cache)
+            IMemoryCache cache,
+            IWebHostEnvironment env
+        ) : base(genericService, cache, env)
         {
         }
         public async Task<ResultDto<List<ResourcesViewDto>>> GetResourcesAsync(
