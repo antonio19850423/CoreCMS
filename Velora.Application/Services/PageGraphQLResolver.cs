@@ -5,12 +5,12 @@ using Velora.Application.Services;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
 [ExtendObjectType("Query")]
-public class PageTemplateComponentGqlResolver : IPageTemplateComponentGqlResolver
+public class PageGqlResolver : IPageGqlResolver
 {
-    IPageTemplateComponentService _PageTemplateComponentService;
-    public PageTemplateComponentGqlResolver(IPageTemplateComponentService PageTemplateComponentService)
+    IPageService _PageService;
+    public PageGqlResolver(IPageService PageService)
     {
-        _PageTemplateComponentService = PageTemplateComponentService;
+        _PageService = PageService;
     }
     /// <summary>
     /// قوانین کلی GraphQL Resolver:
@@ -25,30 +25,33 @@ public class PageTemplateComponentGqlResolver : IPageTemplateComponentGqlResolve
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [GraphQLName("pageTemplateComponentView")]
+    [GraphQLName("pageView")]
     [UsePaging(IncludeTotalCount = true)]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<PageTemplateComponentCrud>> pageTemplateComponentView()
+    public async Task<IQueryable<PageCrud>> pageView()
     {
-        var query = await _PageTemplateComponentService
-            .GetAllViewQueryable<SqlPageTemplateComponentView, SqlPageTemplateComponentView, PageTemplateComponentCrud>();
-        return query.Select(x => new PageTemplateComponentCrud
+        var query = await _PageService
+            .GetAllViewQueryable<SqlPageView, SqlPageView, PageCrud>();
+        return query.Select(x => new PageCrud
         {
             Id = x.Id,
-            ComponentTypeId = x.ComponentTypeId,
-            ComponentTypeName = x.ComponentTypeName??"",
-            ComponentVariant = x.ComponentVariant??"",
+            CanonicalUrl = x.CanonicalUrl??"",
+            IsHome = x.IsHome,
+            IsPublished = x.IsPublished,
+            MetaDescription = x.MetaDescription??"",
+            MetaKeywords = x.MetaKeywords ?? "",
+            MetaTitle = x.MetaTitle ?? "",
+            Name = x.Name ?? "",
+            OgImageUrl=x.OgImageUrl ?? "",
             PageTemplateId = x.PageTemplateId,
             PageTemplateName = x.PageTemplateName ?? "",
-            IsEditable = x.IsEditable,
-            SortOrder=x.SortOrder,
+            Slug=x.Slug ?? "",
             CreatedAtPersian = x.CreatedAtPersian??"",
             UpdatedAtPersian= x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
-            ShouldInsert = x.ShouldInsert,
-            IsActive = x.IsActive
+            IsActive=x.IsActive
         });
     }
 

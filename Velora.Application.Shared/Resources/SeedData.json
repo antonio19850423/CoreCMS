@@ -243,6 +243,29 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAGE_MANAGEMENT_MENU",
+          "Name": "Page Management",
+          "DisplayName": {
+            "en": "Page Management",
+            "fa": "مدیریت صفحه"
+          },
+          "Order": 4,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAGE_MANAGEMENT_PAGE",
+              "Name": "PAGE Management",
+              "DisplayName": {
+                "en": "Page Management",
+                "fa": "مدیریت صفحه"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

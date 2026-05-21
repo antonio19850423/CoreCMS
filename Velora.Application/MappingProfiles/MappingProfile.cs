@@ -76,7 +76,9 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlPageTemplateComponentView, PageTemplateComponentCrud>().ReverseMap();
             CreateMap<SqlPageTemplateComponent, PageTemplateComponentDto>().ReverseMap();
 
-
+            CreateMap<SqlPage, PageCrud>().ReverseMap();
+            CreateMap<SqlPageView, PageCrud>().ReverseMap();
+            CreateMap<SqlPage, PageDto>().ReverseMap();
         }
     }
 }

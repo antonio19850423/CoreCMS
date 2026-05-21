@@ -20,6 +20,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Remove="Resources\FormResources\Page.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Page.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplateComponent.en.resx" />
@@ -63,6 +65,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Resources\FormResources\Page.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Page.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
 	  <None Include="Resources\FormResources\PageTemplateComponent.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>

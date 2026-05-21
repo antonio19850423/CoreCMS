@@ -470,7 +470,8 @@ namespace Velora.Application.Seeds
     ? prop.Attribute.EntityName
     : dto.Name.Replace("Dto", "").Replace("Crud", "");
                     string resourceCode = $"{dto.Name.Replace("Dto", "").Replace("Crud", "")}.{prop.Property.Name}";
-
+                    string serviceName =
+    char.ToLowerInvariant(entityName[0]) + entityName.Substring(1) + "View";
                     ResourceDto resourceDto;
 
                     var existing = _dbType == DatabaseType.SqlServer
@@ -498,7 +499,7 @@ namespace Velora.Application.Seeds
                         existing.Data.ShowInSelectBox = prop.Attribute.ShowInSelectBox;
                         existing.Data.SelectBoxOrder = prop.Attribute.SelectBoxOrder;
                         existing.Data.EntityName = entityName;
-                        existing.Data.ServiceName = prop.Attribute.ServiceName;
+                        existing.Data.ServiceName = serviceName;
                         existing.Data.SelectDisplayFields = prop.Attribute.SelectDisplayFields;
 
                         await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
@@ -530,6 +531,7 @@ namespace Velora.Application.Seeds
                             SelectBoxOrder = prop.Attribute.SelectBoxOrder,
                             SelectDisplayFields = prop.Attribute.SelectDisplayFields,
                             EntityName = entityName,
+                            ServiceName= serviceName,
                         });
 
                         resourceDto = created.Data;

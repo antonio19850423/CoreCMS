@@ -65,7 +65,8 @@ namespace Velora.Application.Shared.Constants
         public const string ComponentType = "ComponentType";
         public const string PageTemplate = "PageTemplate";
         public const string PageTemplateComponent = "PageTemplateComponent";
-        
+        public const string Page = "Page";
+
 
         // سایر entityها...
     }
