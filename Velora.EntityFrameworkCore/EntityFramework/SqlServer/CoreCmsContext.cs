@@ -77,6 +77,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwResourceForm> VwResourceForms { get; set; }
 
+    public virtual DbSet<VwSectionForm> VwSectionForms { get; set; }
+
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
 
     public virtual DbSet<VwUserRole> VwUserRoles { get; set; }
@@ -388,6 +390,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwResourceForm>(entity =>
         {
             entity.ToView("VwResourceForm", "auth");
+        });
+
+        modelBuilder.Entity<VwSectionForm>(entity =>
+        {
+            entity.ToView("VwSectionForm", "cms");
         });
 
         modelBuilder.Entity<VwUserForm>(entity =>

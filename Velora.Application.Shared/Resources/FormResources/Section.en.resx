@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="Section.Id" xml:space="preserve"><value>Id</value></data>
+	<data name="Section.ButtonText" xml:space="preserve"><value>Button Text</value></data>
+	<data name="Section.ButtonUrl" xml:space="preserve"><value>Button URL</value></data>
+	<data name="Section.ColumnsCount" xml:space="preserve"><value>Columns Count</value></data>
+	<data name="Section.ComponentTypeId" xml:space="preserve"><value>Component Type Id</value></data>
+	<data name="Section.ComponentTypeName" xml:space="preserve"><value>Component Type Name</value></data>
+	<data name="Section.Description" xml:space="preserve"><value>Description</value></data>
+	<data name="Section.ImageUrl" xml:space="preserve"><value>Image URL</value></data>
+	<data name="Section.IsActive" xml:space="preserve"><value>Is Active</value></data>
+	<data name="Section.SortOrder" xml:space="preserve"><value>Sort Order</value></data>
+	<data name="Section.PageId" xml:space="preserve"><value>Parent Id</value></data>
+	<data name="Section.Subtitle" xml:space="preserve"><value>Subtitle</value></data>
+	<data name="Section.Title" xml:space="preserve"><value>Title</value></data>
+	<data name="Section.CreatedAtPersian" xml:space="preserve"><value>Created At</value></data>
+	<data name="Section.UpdatedAtPersian" xml:space="preserve"><value>Updated At</value></data>
+	<data name="Section.CreatedByName" xml:space="preserve"><value>Created By</value></data>
+	<data name="Section.UpdatedByName" xml:space="preserve"><value>Updated By</value></data>
+</root>

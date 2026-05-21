@@ -263,6 +263,51 @@
                 "en": "Page Management",
                 "fa": "مدیریت صفحه"
               },
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "PAGE_TAB_SECTION",
+                  "Name": "SECTION Management",
+                  "DisplayName": {
+                    "en": "SECTION Management",
+                    "fa": "مدیریت بخش‌ها"
+                  },
+                  "Order": 1
+                },
+                {
+                  "Type": "TAB",
+                  "Code": "PAGE_TAB_Test",
+                  "Name": "Test Management",
+                  "DisplayName": {
+                    "en": "،Test Management",
+                    "fa": "مدیریت تست"
+                  },
+                  "Order": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAGESECTION_MANAGEMENT_MENU",
+          "Name": "PageSECTION Management",
+          "DisplayName": {
+            "en": "Section Management",
+            "fa": "مدیریت بخش ها"
+          },
+          "Order": 5,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAGESECTION_MANAGEMENT_PAGE",
+              "Name": "SECTION Management Page",
+              "DisplayName": {
+                "en": "SECTION Management Page",
+                "fa": "صفحه مدیریت بخش ها"
+              },
               "Order": 1
             }
           ]

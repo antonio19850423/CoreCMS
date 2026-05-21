@@ -23,7 +23,7 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid ComponentTypeId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.PageTemplate, ServiceName = "componentTypeView", LinkedFieldCode = "ComponentTypeId", SelectDisplayFields = "[\"name\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ComponentType, ServiceName = "componentTypeView", LinkedFieldCode = "ComponentTypeId", SelectDisplayFields = "[\"name\",\"code\"]")]
 
         public string? ComponentTypeName { get; set; }
 

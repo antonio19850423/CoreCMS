@@ -20,7 +20,8 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.ComponentType, typeof(ComponentTypeCrud) },
             { LookupEntities.PageTemplate, typeof(PageTemplateCrud) },
             { LookupEntities.PageTemplateComponent, typeof(PageTemplateComponentCrud) },
-            { LookupEntities.Page, typeof(PageCrud) }
+            { LookupEntities.Page, typeof(PageCrud) },
+            { LookupEntities.Section, typeof(SectionCrud) }
         };
 
         public static Type? GetModelType(string entityName)

@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Dtos
 {
     public class ComponentTypeCrud : BulkInsert {
         public Guid? Id { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,MaxLength =100)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,MaxLength =100,ShowInSelectBox =true)]
         public string Name { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 100,ShowInSelectBox =true)]
         public string Code { get; set; } = null!;

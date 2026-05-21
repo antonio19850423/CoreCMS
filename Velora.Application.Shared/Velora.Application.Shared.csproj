@@ -30,6 +30,8 @@
 	  <EmbeddedResource Remove="Resources\FormResources\Resource.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Section.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Section.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.fa.resx" />
 	  <EmbeddedResource Remove="Resources\Languages.resx" />
@@ -65,6 +67,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Resources\FormResources\Section.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Section.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
 	  <None Include="Resources\FormResources\Page.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>

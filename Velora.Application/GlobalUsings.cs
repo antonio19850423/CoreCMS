@@ -78,3 +78,6 @@ global using SqlPageTemplateComponentView = Velora.EntityFrameworkCore.EntityFra
 
 global using SqlPage = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Page;
 global using SqlPageView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPageForm;
+
+global using SqlSection = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Section;
+global using SqlSectionView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSectionForm;
