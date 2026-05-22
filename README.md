@@ -1004,3 +1004,113 @@ Basic Info
 ✔ فولدرها در admin/app ساخته می‌شوند
 ✔ رکورد منو و صفحه در جدول Resources باید بررسی و Route نباید null باشد
 ✔ Next.js App Router مسئول routing نهایی است
+
+مستند پیاده‌سازی فرم‌های Master-Detail در پروژه
+1️⃣ تعریف فرم Master-Detail
+فرم Master-Detail شامل یک فرم اصلی (Master) و چند زیر فرم (Detail / Tab) است.
+مراحل ایجاد آن مشابه فرم‌های دیگر است، با دو نکته مهم:
+
+1. در View باید کلید خارجی ParentId به رکورد والد وصل شود.
+2. در فایل seederData.json نام Tab باید مطابق با نام فرم اصلی + \_Tab باشد تا فرانت بتواند تب‌ها را تشخیص دهد.
+
+---
+
+2️⃣ ساختار منو در seederData.json
+مثال استاندارد:
+{
+"Type": "MENU",
+"Code": "PAGE_MANAGEMENT_MENU",
+"Name": "Page Management",
+"DisplayName": { "en": "Page Management", "fa": "مدیریت صفحه" },
+"Order": 4,
+"Roles": ["DEV"],
+"Children": [
+{
+"Type": "PAGE",
+"Code": "PAGE_MANAGEMENT_PAGE",
+"Name": "PAGE Management",
+"DisplayName": { "en": "Page Management", "fa": "مدیریت صفحه" },
+"Order": 1,
+"Children": [
+{
+"Type": "TAB",
+"Code": "PAGE_TAB_SECTION",
+"Name": "SECTION Management",
+"DisplayName": { "en": "SECTION Management", "fa": "مدیریت بخش‌ها" },
+"Order": 1
+},
+{
+"Type": "TAB",
+"Code": "PAGE_TAB_TEST",
+"Name": "Test Management",
+"DisplayName": { "en": "Test Management", "fa": "مدیریت تست" },
+"Order": 2
+}
+]
+}
+]
+}
+نکته مهم:
+• نام Tab باید با نام فرم اصلی + \_Tab شروع شود (مثلاً PAGE_TAB_XXX) تا فرانت بتواند تب‌ها را شناسایی کند.
+
+---
+
+3️⃣ استفاده در فرم Frontend
+در فرم اصلی (Edit) دو چیز باید اضافه شود:
+
+1. ParentId برای رکوردهای Detail
+2. MasterDetailTabs برای نمایش تب‌ها
+   مثال ساده در React:
+   "use client";
+
+import React from "react";
+import { ResourceProvider } from "@/contexts/ResourceProvider";
+import { DynamicForm } from "@/components/forms/DynamicForm";
+import { entityNames } from "@/app/constants/entityNames";
+import { PageCrud } from "@/types/models/PageCrud";
+import MasterDetailTabs from "@/components/forms/MasterDetailTabs";
+
+const handleSave = (model: PageCrud) => {
+console.log("Model submitted:", model);
+};
+
+interface PageFormPageProps {
+initialValues?: PageCrud;
+}
+
+const PageFormPage: React.FC<PageFormPageProps> = ({ initialValues }) => {
+const parentId = initialValues?.id ?? "temp-parent-id"; // ParentId برای Master-Detail
+
+return (
+<ResourceProvider resourceCodes={[entityNames.Page, entityNames.PageTemplate]}>
+<DynamicForm<PageCrud>
+pageKey={entityNames.Page}
+isDynamic={true}
+initialValues={initialValues}
+autoCrud={true}
+onSave={handleSave} >
+
+<h1>Manual Form</h1>
+</DynamicForm>
+
+      {/* تب‌های Master-Detail */}
+      <MasterDetailTabs parentId={parentId} resourceCode={entityNames.Page} />
+    </ResourceProvider>
+
+);
+};
+
+export default PageFormPage;
+
+---
+
+✅ خلاصه نکات کلیدی
+
+1. نام تب‌ها باید مطابق FormName + \_Tab باشد.
+2. در View حتماً کلید خارجی ParentId را به رکورد والد وصل کنید.
+3. در فرم Frontend:
+   o parentId پاس داده شود
+   o MasterDetailTabs اضافه شود
+4. بعد از ایجاد فرم، منو را چک کنید که:
+   o عناوین ستون‌ها درست نمایش داده شوند
+   o تب‌ها و ریسورس‌ها شناسایی شده باشند

@@ -17,16 +17,16 @@ UpdatedByName → نام کامل کاربری که رکورد را آخرین �
 ALTER VIEW [cms].[VwComponentTypeForm]
 AS
 SELECT  
-      ct.[Id]
-      ,ct.[Name]
-      ,ct.[Code]
-      ,ct.[Type]
-      ,ct.[Description]
-      ,ct.[IsActive]
-      ,dbo.GregorianToPersianDateTime([CreatedAt]) AS CreatedAtPersian
-      ,dbo.GregorianToPersianDateTime([UpdatedAt]) AS UpdatedAtPersian
-      ,cu.FullName AS CreatedByName
-      ,uu.FullName AS UpdatedByName
+ ct.[Id]
+,ct.[Name]
+,ct.[Code]
+,ct.[Type]
+,ct.[Description]
+,ct.[IsActive]
+,dbo.GregorianToPersianDateTime([CreatedAt]) AS CreatedAtPersian
+,dbo.GregorianToPersianDateTime([UpdatedAt]) AS UpdatedAtPersian
+,cu.FullName AS CreatedByName
+,uu.FullName AS UpdatedByName
 FROM [CoreCms].[cms].[ComponentTypes] ct
 LEFT JOIN [auth].[VwUsersLite] cu ON cu.Id = ct.CreatedBy
 LEFT JOIN [auth].[VwUsersLite] uu ON uu.Id = ct.UpdatedBy
@@ -35,7 +35,6 @@ LEFT JOIN [auth].[VwUsersLite] uu ON uu.Id = ct.UpdatedBy
 
 این چهار فیلد (CreatedAtPersian, UpdatedAtPersian, CreatedByName, UpdatedByName) همیشه باید وجود داشته باشند تا فرم در پنل ادمین و رابط کاربری به درستی نمایش داده شود.
 نام View حتماً با Vw شروع و با Form خاتمه یابد.
-
 
 مرحله ۲: ساخت مدل‌ها با Scaffolding
 
@@ -65,8 +64,8 @@ LEFT JOIN [auth].[VwUsersLite] uu ON uu.Id = ct.UpdatedBy
 فیلدهای انتخابی (SelectBox / MultiSelectBox / ComboBox) دو پراپرتی داشته باشند: Id و Name.
 Attribute ها باید دقیقاً تنظیم شوند تا فرم، Grid و ComboBox ها درست کار کنند.
 مثال:
-public class ComponentTypeCrud : BulkInsert {  // حتما از BulkInsert مشتق شده باشد
-    public Guid? Id { get; set; }
+public class ComponentTypeCrud : BulkInsert { // حتما از BulkInsert مشتق شده باشد
+public Guid? Id { get; set; }
 
     [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
     public string Name { get; set; } = null!;
@@ -75,6 +74,7 @@ public class ComponentTypeCrud : BulkInsert {  // حتما از BulkInsert مش�
     public string Code { get; set; } = null!;
 
     // سایر فیلدها با Attribute مشابه...
+
 }
 ۳-۲: مدل DTO (<EntityName>Dto)
 این مدل دقیقا از Scaffolding تولید می‌شود.
@@ -84,16 +84,16 @@ public class ComponentTypeCrud : BulkInsert {  // حتما از BulkInsert مش�
 مثال ساده:
 public class ComponentTypeDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Code { get; set; } = null!;
-    public string Type { get; set; } = null!;
-    public string? Description { get; set; }
-    public bool? IsActive { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public Guid CreatedBy { get; set; }
-    public Guid UpdatedBy { get; set; }
+public Guid Id { get; set; }
+public string Name { get; set; } = null!;
+public string Code { get; set; } = null!;
+public string Type { get; set; } = null!;
+public string? Description { get; set; }
+public bool? IsActive { get; set; }
+public DateTime CreatedAt { get; set; }
+public DateTime UpdatedAt { get; set; }
+public Guid CreatedBy { get; set; }
+public Guid UpdatedBy { get; set; }
 }
 ✅ نکات کلیدی مرحله ۳:
 مدل CRUD حتماً از BulkInsert مشتق شود.
@@ -106,15 +106,17 @@ Attribute ها (ResourceColumn) باید دقیقاً تنظیم شوند تا �
 استفاده از SelectBox در فرم‌ها با View های دیگر
 1️⃣ مقدمه
 برای استفاده از SelectBox در فرم‌ها که داده‌های آن از یک View دیگر گرفته می‌شوند، لازم است رعایت چند نکته کلیدی در مدل‌های Crud و فرم داشته باشید تا داده‌ها صحیح نمایش داده شوند و قابلیت انتخاب و نمایش در DataGrid فراهم باشد.
-________________________________________
+
+---
+
 2️⃣ تنظیمات مدل View اصلی
 فرض کنید مدل اصلی که داده‌ها را تأمین می‌کند PageTemplateCrud است. برای اینکه فیلدها قابل استفاده در SelectBox باشند:
-•	ستون‌هایی که می‌خواهید در DataGrid نمایش داده شوند باید ShowInSelectBox = true داشته باشند. 
-•	سایر ستون‌ها می‌توانند مانند قبل باشند. 
+• ستون‌هایی که می‌خواهید در DataGrid نمایش داده شوند باید ShowInSelectBox = true داشته باشند.
+• سایر ستون‌ها می‌توانند مانند قبل باشند.
 مثال:
 public class PageTemplateCrud : BulkInsert
 {
-    public Guid Id { get; set; }
+public Guid Id { get; set; }
 
     [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 150, ShowInSelectBox = true)]
     public string Name { get; set; } = null!;
@@ -130,56 +132,65 @@ public class PageTemplateCrud : BulkInsert
     public string CreatedAtPersian { get; set; }
     [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false)]
     public string UpdatedAtPersian { get; set; }
+
 }
-________________________________________
+
+---
+
 3️⃣ تنظیمات مدل فرم مصرف‌کننده SelectBox
 وقتی در فرم دیگری می‌خواهید SelectBox داشته باشید که داده‌های آن از PageTemplateCrud پر شود:
-1.	ServiceName باید دقیقاً همان نام GraphQL View مدل منبع باشد. 
-2.	SelectDisplayFields باید فیلدهایی که در SelectBox نمایش داده می‌شوند، مشخص کند. 
-3.	فیلدهای مرتبط باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true مشخص شده باشند. 
-مثال مدل مصرف‌کننده:
-public class PageTemplateComponentCrud : BulkInsert
-{
+
+1.  ServiceName باید دقیقاً همان نام GraphQL View مدل منبع باشد.
+2.  SelectDisplayFields باید فیلدهایی که در SelectBox نمایش داده می‌شوند، مشخص کند.
+3.  فیلدهای مرتبط باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true مشخص شده باشند.
+    مثال مدل مصرف‌کننده:
+    public class PageTemplateComponentCrud : BulkInsert
+    {
     public Guid Id { get; set; }
 
-    [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 2, GridOrder = 2,
-        ShowInGrid = false, ShowInForm = true,
-        EntityName = LookupEntities.PageTemplate,
-        ServiceName = "pageTemplateView",          // ⚡️ باید نام GraphQL دقیق باشد
-        LinkedFieldCode = "PageTemplateName",
-        SelectDisplayFields = "[\"name\",\"code\"]")] // ⚡️ فیلدهایی که نمایش داده می‌شوند
-    public Guid PageTemplateId { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 2, GridOrder = 2,
+            ShowInGrid = false, ShowInForm = true,
+            EntityName = LookupEntities.PageTemplate,
+            ServiceName = "pageTemplateView",          // ⚡️ باید نام GraphQL دقیق باشد
+            LinkedFieldCode = "PageTemplateName",
+            SelectDisplayFields = "[\"name\",\"code\"]")] // ⚡️ فیلدهایی که نمایش داده می‌شوند
+        public Guid PageTemplateId { get; set; }
 
-    [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 3, GridOrder = 3,
-        ShowInGrid = false, ShowInForm = false,
-        EntityName = LookupEntities.PageTemplate,
-        ServiceName = "pageTemplateView",
-        LinkedFieldCode = "PageTemplateId",
-        SelectDisplayFields = "[\"name\",\"code\"]")]
-    public string? PageTemplateName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 3, GridOrder = 3,
+            ShowInGrid = false, ShowInForm = false,
+            EntityName = LookupEntities.PageTemplate,
+            ServiceName = "pageTemplateView",
+            LinkedFieldCode = "PageTemplateId",
+            SelectDisplayFields = "[\"name\",\"code\"]")]
+        public string? PageTemplateName { get; set; }
 
-    [ResourceColumn(FieldType = FieldTypes.Number, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true)]
-    public int SortOrder { get; set; }
-}
-________________________________________
+        [ResourceColumn(FieldType = FieldTypes.Number, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true)]
+        public int SortOrder { get; set; }
+
+    }
+
+---
+
 4️⃣ نکات مهم
-•	همخوانی ServiceName و GraphQL View:
-حتماً ServiceName در فیلد SelectBox باید همان نام GraphQL View مدل منبع باشد. 
-•	فیلدهای نمایش داده شده در SelectBox:
-فیلدهایی که داخل SelectDisplayFields مشخص شده‌اند، باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true تعریف شوند. 
-•	LinkedFieldCode:
-این فیلد برای نگهداری مقدار انتخاب شده (ID یا عنوان) استفاده می‌شود و باید دقیقاً با فیلد مقصد هماهنگ باشد. 
-•	فرم مصرف‌کننده:
-هر SelectBox حداقل دو فیلد نیاز دارد: 
-0.	فیلد ID (PageTemplateId) 
-1.	فیلد نام/عنوان (PageTemplateName) 
-________________________________________
+• همخوانی ServiceName و GraphQL View:
+حتماً ServiceName در فیلد SelectBox باید همان نام GraphQL View مدل منبع باشد.
+• فیلدهای نمایش داده شده در SelectBox:
+فیلدهایی که داخل SelectDisplayFields مشخص شده‌اند، باید در مدل منبع (PageTemplateCrud) با ShowInSelectBox = true تعریف شوند.
+• LinkedFieldCode:
+این فیلد برای نگهداری مقدار انتخاب شده (ID یا عنوان) استفاده می‌شود و باید دقیقاً با فیلد مقصد هماهنگ باشد.
+• فرم مصرف‌کننده:
+هر SelectBox حداقل دو فیلد نیاز دارد: 0. فیلد ID (PageTemplateId)
+
+1. فیلد نام/عنوان (PageTemplateName)
+
+---
+
 5️⃣ جمع‌بندی
-•	اگر می‌خواهید یک View را داخل SelectBox فرم دیگری استفاده کنید: 
-0.	مدل منبع: ShowInSelectBox = true برای فیلدهای نمایش 
-1.	مدل فرم: ServiceName صحیح + SelectDisplayFields مطابق با مدل منبع 
-2.	LinkedFieldCode برای نگهداری مقدار انتخاب 
-با رعایت این نکات، SelectBox به درستی مقداردهی شده و داده‌ها در DataGrid فرم مصرف‌کننده نمایش داده می‌شوند.
+• اگر می‌خواهید یک View را داخل SelectBox فرم دیگری استفاده کنید: 0. مدل منبع: ShowInSelectBox = true برای فیلدهای نمایش
+
+1. مدل فرم: ServiceName صحیح + SelectDisplayFields مطابق با مدل منبع
+2. LinkedFieldCode برای نگهداری مقدار انتخاب
+   با رعایت این نکات، SelectBox به درستی مقداردهی شده و داده‌ها در DataGrid فرم مصرف‌کننده نمایش داده می‌شوند.
 
 مرحله ۴: ایجاد فایل‌های Resource برای ترجمه (فارسی و انگلیسی)
 
@@ -237,39 +248,39 @@ E:\Afe\Projects\CoreCMS\Velora.Application.Shared\SeedData.json
 "Type": "MENU" → منو
 "Type": "PAGE" → صفحه مرتبط با فرم
 فیلدهای کلیدی:
-فیلد	توضیح
-Code	کد یکتا برای منو یا صفحه
-Name	نام انگلیسی
-DisplayName	نمایش متن در UI، شامل en و fa
-Order	ترتیب نمایش منو یا صفحه
-Roles	نقش‌هایی که دسترسی دارند (اختیاری، معمولاً ["DEV"])
-Children	آیتم‌های فرزند (زیرمنو یا صفحه)
+فیلد توضیح
+Code کد یکتا برای منو یا صفحه
+Name نام انگلیسی
+DisplayName نمایش متن در UI، شامل en و fa
+Order ترتیب نمایش منو یا صفحه
+Roles نقش‌هایی که دسترسی دارند (اختیاری، معمولاً ["DEV"])
+Children آیتم‌های فرزند (زیرمنو یا صفحه)
 📌 مثال اضافه کردن فرم جدید (ComponentType)
 
 این مثال مشابه فرم ComponentType است که به منوی اطلاعات پایه اضافه شده است:
 
 {
-  "Type": "MENU",
-  "Code": "COMPONENTTYPE_MANAGEMENT",
-  "Name": "ComponentType Management",
-  "DisplayName": {
-    "en": "ComponentType Management",
-    "fa": "مدیریت نوع کامپوننت"
-  },
-  "Order": 3,
-  "Roles": [ "DEV" ],
-  "Children": [
-    {
-      "Type": "PAGE",
-      "Code": "COMPONENTTYPE_MANAGEMENT_PAGE",
-      "Name": "ComponentType Management Page",
-      "DisplayName": {
-        "en": "ComponentType Management Page",
-        "fa": "صفحه مدیریت نوع کامپوننت"
-      },
-      "Order": 1
-    }
-  ]
+"Type": "MENU",
+"Code": "COMPONENTTYPE_MANAGEMENT",
+"Name": "ComponentType Management",
+"DisplayName": {
+"en": "ComponentType Management",
+"fa": "مدیریت نوع کامپوننت"
+},
+"Order": 3,
+"Roles": [ "DEV" ],
+"Children": [
+{
+"Type": "PAGE",
+"Code": "COMPONENTTYPE_MANAGEMENT_PAGE",
+"Name": "ComponentType Management Page",
+"DisplayName": {
+"en": "ComponentType Management Page",
+"fa": "صفحه مدیریت نوع کامپوننت"
+},
+"Order": 1
+}
+]
 }
 📌 نکات کلیدی
 کدها یکتا باشند:
@@ -284,7 +295,6 @@ Order مشخص می‌کند ترتیب نمایش منو و صفحه در UI ا
 Code منو و صفحه باید با نام Entity و فایل Resource هماهنگ باشد تا نمایش عناوین فارسی و انگلیسی به درستی انجام شود.
 
 ✅ با اضافه کردن این بخش، فرم جدید به سیستم معرفی می‌شود و در محیط توسعه در منوهای UI و صفحه مرتبط قابل دسترسی خواهد بود.
-
 
 مرحله ۶: تعریف Service و Interface فرم
 
@@ -302,8 +312,8 @@ IComponentTypeService
 
 برای هر فرم یک Service مطابق الگوی زیر ایجاد می‌شود:
 
-public class ComponentTypeService 
-    : GenericService<SqlComponentType, SqlComponentType, ComponentTypeDto>, IComponentTypeService
+public class ComponentTypeService
+: GenericService<SqlComponentType, SqlComponentType, ComponentTypeDto>, IComponentTypeService
 📌 نکات مهم معماری Service
 1️⃣ ارث‌بری (Inheritance)
 همه سرویس‌ها باید از GenericService ارث ببرند.
@@ -360,7 +370,7 @@ Fill کردن داده‌ها داخل Template
 📌 ۶-۵: متد GetAllViews
 public async Task<IQueryable<ComponentTypeCrud>> GetAllViews()
 {
-    return await GetAllViewQueryable<SqlComponentTypeView, SqlComponentTypeView, ComponentTypeCrud>();
+return await GetAllViewQueryable<SqlComponentTypeView, SqlComponentTypeView, ComponentTypeCrud>();
 }
 این متد فقط برای Export و عملیات داخلی استفاده می‌شود
 جایگزین GraphQL نیست
@@ -412,7 +422,7 @@ IComponentTypeGqlResolver
 [ExtendObjectType("Query")]
 public class ComponentTypeGqlResolver : IComponentTypeGqlResolver
 {
-    private readonly IComponentTypeService _componentTypeService;
+private readonly IComponentTypeService \_componentTypeService;
 
     public ComponentTypeGqlResolver(IComponentTypeService componentTypeService)
     {
@@ -447,6 +457,7 @@ public class ComponentTypeGqlResolver : IComponentTypeGqlResolver
             ShouldInsert = x.ShouldInsert
         });
     }
+
 }
 📌 ۷-۲: نکات بسیار مهم (Critical Rules)
 1️⃣ جلوگیری از Null (اجباری)
@@ -488,11 +499,11 @@ global using SqlComponentTypeView = Velora.EntityFrameworkCore.EntityFramework.S
 در تنظیمات GraphQL باید Resolver اضافه شود:
 
 var gqlBuilder = builder.Services
-    .AddGraphQLServer()
-    .AddAuthorization()
-    .AddQueryType()
-    .AddFiltering()
-    .AddSorting();
+.AddGraphQLServer()
+.AddAuthorization()
+.AddQueryType()
+.AddFiltering()
+.AddSorting();
 ⚠️ نکته مهم (مشکل Context Conflict)
 
 اگر از .AddTypeExtension() استفاده شد:
@@ -593,42 +604,42 @@ CreateMap<SqlComponentType, ComponentTypeDto>().ReverseMap();
 ✔ ReverseMap اجباری است
 ✔ بدون این مرحله سیستم GraphQL + Service + Form خراب می‌شود
 
-9. ثبت Entity در ModelMapping
-برای اینکه Export Excel بتواند مدل را Resolve و Cast کند، حتماً باید Entity داخل ModelMapping ثبت شود.
-نمونه:
-public static class ModelMapping
-{
-    private static readonly Dictionary<string, Type> _map =
-        new(StringComparer.OrdinalIgnoreCase)
+9.  ثبت Entity در ModelMapping
+    برای اینکه Export Excel بتواند مدل را Resolve و Cast کند، حتماً باید Entity داخل ModelMapping ثبت شود.
+    نمونه:
+    public static class ModelMapping
     {
-        { LookupEntities.Resource, typeof(ResourceCrud) },
-        { LookupEntities.User, typeof(UserCrud) },
-        { LookupEntities.ResourceType, typeof(ResourceTypeCrud) },
-        { LookupEntities.Role, typeof(RoleCrud) },
-        { LookupEntities.ComponentType, typeof(ComponentTypeCrud) }
+    private static readonly Dictionary<string, Type> \_map =
+    new(StringComparer.OrdinalIgnoreCase)
+    {
+    { LookupEntities.Resource, typeof(ResourceCrud) },
+    { LookupEntities.User, typeof(UserCrud) },
+    { LookupEntities.ResourceType, typeof(ResourceTypeCrud) },
+    { LookupEntities.Role, typeof(RoleCrud) },
+    { LookupEntities.ComponentType, typeof(ComponentTypeCrud) }
     };
 
-    public static Type? GetModelType(string entityName)
-    {
-        return _map.TryGetValue(entityName, out var type)
-            ? type
-            : null;
+        public static Type? GetModelType(string entityName)
+        {
+            return _map.TryGetValue(entityName, out var type)
+                ? type
+                : null;
+        }
+
     }
-}
-در صورتی که Entity داخل ModelMapping ثبت نشود:
-•	مدل هنگام Export پیدا نمی‌شود 
-•	عملیات Cast انجام نمی‌شود 
-•	تولید فایل Excel با خطا مواجه می‌شود 
-•	Dynamic Export در فرانت یا بک‌اند fail خواهد شد 
- 
-منظورم کلش بود شماره موردش بشه 9
-9. الزامات فرم‌های Dynamic برای Export و BulkInsert
+    در صورتی که Entity داخل ModelMapping ثبت نشود:
+    • مدل هنگام Export پیدا نمی‌شود
+    • عملیات Cast انجام نمی‌شود
+    • تولید فایل Excel با خطا مواجه می‌شود
+    • Dynamic Export در فرانت یا بک‌اند fail خواهد شد
+
+منظورم کلش بود شماره موردش بشه 9 9. الزامات فرم‌های Dynamic برای Export و BulkInsert
 هر Controller که برای فرم‌های Dynamic در سیستم ایجاد می‌شود، الزاماً باید متدهای BulkInsert و Export را پیاده‌سازی کند.
 در غیر این صورت:
-•	Resource های مربوط به عملیات Export و BulkInsert ایجاد نمی‌شوند 
-•	Permission ها برای نقش Developer ثبت نمی‌شوند 
-•	فرانت‌اند هنگام فراخوانی سرویس‌ها با خطای Service not found مواجه خواهد شد 
-•	دانلود فایل Excel یا ثبت دسته‌ای اطلاعات کار نخواهد کرد 
+• Resource های مربوط به عملیات Export و BulkInsert ایجاد نمی‌شوند
+• Permission ها برای نقش Developer ثبت نمی‌شوند
+• فرانت‌اند هنگام فراخوانی سرویس‌ها با خطای Service not found مواجه خواهد شد
+• دانلود فایل Excel یا ثبت دسته‌ای اطلاعات کار نخواهد کرد
 9.1 متد BulkInsert
 تمام Controller ها باید متد زیر را داشته باشند:
 [HttpPost("BulkInsert")]
@@ -636,8 +647,8 @@ public static class ModelMapping
 [RequestFormLimits(MultipartBodyLengthLimit = 50_000_000)] // 50 MB
 public async Task<IActionResult> BulkInsert()
 {
-    if (!Request.HasFormContentType)
-        return BadRequest(new { Message = "Invalid content type, expected multipart/form-data." });
+if (!Request.HasFormContentType)
+return BadRequest(new { Message = "Invalid content type, expected multipart/form-data." });
 
     var form = await Request.ReadFormAsync();
     var file = form.Files.FirstOrDefault();
@@ -665,16 +676,19 @@ public async Task<IActionResult> BulkInsert()
         Data = bulkResult,
         Errors = result.Errors
     });
+
 }
-________________________________________
+
+---
+
 9.2 متد Export
 تمام Controller ها باید متد زیر را داشته باشند:
 [HttpPost("Export")]
 [AllowAnonymous]
 public async Task<IActionResult> Export([FromBody] ExportRequestDto request)
 {
-    if (request == null)
-        return BadRequest(new { Success = false, Message = "Invalid request" });
+if (request == null)
+return BadRequest(new { Success = false, Message = "Invalid request" });
 
     byte[] fileBytes;
 
@@ -703,40 +717,47 @@ public async Task<IActionResult> Export([FromBody] ExportRequestDto request)
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         fileName
     );
+
 }
-________________________________________
+
+---
+
 9.3 پاک کردن SeedHistory
 بعد از اضافه شدن Controller جدید یا متدهای Export/BulkInsert:
 باید اطلاعات جدول SeedHistory پاک شود.
 نمونه:
 DELETE FROM SeedHistory
 سپس پروژه مجدداً اجرا شود.
-________________________________________
+
+---
+
 9.4 دلیل پاک کردن SeedHistory
 با اجرای مجدد Seeder:
-•	Resource های مربوط به: 
-o	Export 
-o	BulkInsert 
+• Resource های مربوط به:
+o Export
+o BulkInsert
 ثبت می‌شوند.
 همچنین:
-•	Permission ها ایجاد می‌شوند 
-•	RolePermission برای نقش Developer ثبت می‌شود 
-•	فرانت‌اند می‌تواند سرویس‌ها را Dynamic Resolve کند 
-________________________________________
+• Permission ها ایجاد می‌شوند
+• RolePermission برای نقش Developer ثبت می‌شود
+• فرانت‌اند می‌تواند سرویس‌ها را Dynamic Resolve کند
+
+---
+
 9.5 ثبت Entity در ModelMapping
 برای اینکه Export Excel بتواند مدل را Resolve و Cast کند، حتماً باید Entity داخل ModelMapping ثبت شود.
 نمونه:
 public static class ModelMapping
 {
-    private static readonly Dictionary<string, Type> _map =
-        new(StringComparer.OrdinalIgnoreCase)
-    {
-        { LookupEntities.Resource, typeof(ResourceCrud) },
-        { LookupEntities.User, typeof(UserCrud) },
-        { LookupEntities.ResourceType, typeof(ResourceTypeCrud) },
-        { LookupEntities.Role, typeof(RoleCrud) },
-        { LookupEntities.ComponentType, typeof(ComponentTypeCrud) }
-    };
+private static readonly Dictionary<string, Type> \_map =
+new(StringComparer.OrdinalIgnoreCase)
+{
+{ LookupEntities.Resource, typeof(ResourceCrud) },
+{ LookupEntities.User, typeof(UserCrud) },
+{ LookupEntities.ResourceType, typeof(ResourceTypeCrud) },
+{ LookupEntities.Role, typeof(RoleCrud) },
+{ LookupEntities.ComponentType, typeof(ComponentTypeCrud) }
+};
 
     public static Type? GetModelType(string entityName)
     {
@@ -744,14 +765,13 @@ public static class ModelMapping
             ? type
             : null;
     }
+
 }
 در صورتی که Entity داخل ModelMapping ثبت نشود:
-•	مدل هنگام Export پیدا نمی‌شود 
-•	عملیات Cast انجام نمی‌شود 
-•	تولید فایل Excel با خطا مواجه می‌شود 
-•	Dynamic Export در فرانت یا بک‌اند fail خواهد شد
-
-
+• مدل هنگام Export پیدا نمی‌شود
+• عملیات Cast انجام نمی‌شود
+• تولید فایل Excel با خطا مواجه می‌شود
+• Dynamic Export در فرانت یا بک‌اند fail خواهد شد
 
 مرحله 10: تعریف مدل TypeScript و Entity Name در Frontend
 
@@ -766,19 +786,19 @@ E:\Afe\Projects\Velora-Ui\apps\admin\src\types\models
 <EntityName>Crud
 مثال:
 export interface ComponentTypeCrud {
-  id?: string;
+id?: string;
 
-  Name?: string;
-  Code?: string;
-  Type?: string;
-  Description?: string;
+Name?: string;
+Code?: string;
+Type?: string;
+Description?: string;
 
-  CreatedAtPersian?: string;
-  UpdatedAtPersian?: string;
-  CreatedByName?: string;
-  UpdatedByName?: string;
+CreatedAtPersian?: string;
+UpdatedAtPersian?: string;
+CreatedByName?: string;
+UpdatedByName?: string;
 
-  shouldInsert?: boolean;
+shouldInsert?: boolean;
 }
 📌 نکات مهم
 نام فیلدها باید دقیقاً مطابق خروجی GraphQL باشد
@@ -791,11 +811,11 @@ export interface ComponentTypeCrud {
 src/constants/entityNames.ts
 📌 مثال:
 export const entityNames = {
-  Role: "Role",
-  User: "User",
-  Resource: "Resource",
-  ResourceType: "ResourceType",
-  Permission: "Permission",
+Role: "Role",
+User: "User",
+Resource: "Resource",
+ResourceType: "ResourceType",
+Permission: "Permission",
 };
 📌 نکات مهم Entity Names
 هر Entity جدید باید اینجا اضافه شود
@@ -837,47 +857,47 @@ import { handleApiError } from "@/utils/handleApiError";
 import { ComponentTypeCrud } from "@/types/models/ComponentTypeCrud";
 📌 ۱۰-۱: Create
 export const createComponentType = async (
-  data: ComponentTypeCrud,
+data: ComponentTypeCrud,
 ): Promise<ResultDto<ComponentTypeCrud | null>> => {
-  try {
-    const res = await api.post<ResultDto<ComponentTypeCrud>>(
-      "/api/ComponentType/Create",
-      data,
-      { withCredentials: true }
-    );
-    return res.data;
-  } catch (error: unknown) {
-    return handleApiError<ComponentTypeCrud>(error);
-  }
+try {
+const res = await api.post<ResultDto<ComponentTypeCrud>>(
+"/api/ComponentType/Create",
+data,
+{ withCredentials: true }
+);
+return res.data;
+} catch (error: unknown) {
+return handleApiError<ComponentTypeCrud>(error);
+}
 };
 📌 ۱۰-۲: Update
 export const updateComponentType = async (
-  data: ComponentTypeCrud,
+data: ComponentTypeCrud,
 ): Promise<ResultDto<ComponentTypeCrud | null>> => {
-  try {
-    const res = await api.put<ResultDto<ComponentTypeCrud>>(
-      "/api/ComponentType/Update",
-      data,
-      { withCredentials: true }
-    );
-    return res.data;
-  } catch (error: unknown) {
-    return handleApiError<ComponentTypeCrud>(error);
-  }
+try {
+const res = await api.put<ResultDto<ComponentTypeCrud>>(
+"/api/ComponentType/Update",
+data,
+{ withCredentials: true }
+);
+return res.data;
+} catch (error: unknown) {
+return handleApiError<ComponentTypeCrud>(error);
+}
 };
 📌 ۱۰-۳: Delete
 export const deleteComponentType = async (
-  id: string | number,
+id: string | number,
 ): Promise<ResultDto<ComponentTypeCrud | null>> => {
-  try {
-    const res = await api.delete<ResultDto<ComponentTypeCrud>>(
-      `/api/ComponentType/${id}`,
-      { withCredentials: true }
-    );
-    return res.data;
-  } catch (error: unknown) {
-    return handleApiError<ComponentTypeCrud>(error);
-  }
+try {
+const res = await api.delete<ResultDto<ComponentTypeCrud>>(
+`/api/ComponentType/${id}`,
+{ withCredentials: true }
+);
+return res.data;
+} catch (error: unknown) {
+return handleApiError<ComponentTypeCrud>(error);
+}
 };
 📌 نکات مهم (Important Rules)
 1️⃣ نام API باید استاندارد باشد
@@ -927,11 +947,11 @@ E:\Afe\Projects\Velora-Ui\apps\admin\src\app\admin
 
 مثال ساختار:
 admin/
- ├── basic-info/
- │    ├── componenttype-management/
- │    │     ├── page.tsx
- │    │     ├── ComponentTypeFormPage.tsx
- │    │     ├── ComponentTypeReadOnlyPage.tsx
+├── basic-info/
+│ ├── componenttype-management/
+│ │ ├── page.tsx
+│ │ ├── ComponentTypeFormPage.tsx
+│ │ ├── ComponentTypeReadOnlyPage.tsx
 📌 ۱2-۱: فایل‌های مورد نیاز هر فرم
 
 برای هر Entity باید این ۳ فایل ایجاد شود:
@@ -975,8 +995,8 @@ basic-info/componenttype-management
 
 مثال:
 Basic Info
-  └── ComponentType Management
-        └── componenttype-management
+└── ComponentType Management
+└── componenttype-management
 🎯 جمع‌بندی مرحله ۱2
 
 ✔ هر فرم = 3 صفحه (page / form / readonly)
@@ -984,3 +1004,113 @@ Basic Info
 ✔ فولدرها در admin/app ساخته می‌شوند
 ✔ رکورد منو و صفحه در جدول Resources باید بررسی و Route نباید null باشد
 ✔ Next.js App Router مسئول routing نهایی است
+
+مستند پیاده‌سازی فرم‌های Master-Detail در پروژه
+1️⃣ تعریف فرم Master-Detail
+فرم Master-Detail شامل یک فرم اصلی (Master) و چند زیر فرم (Detail / Tab) است.
+مراحل ایجاد آن مشابه فرم‌های دیگر است، با دو نکته مهم:
+
+1. در View باید کلید خارجی ParentId به رکورد والد وصل شود.
+2. در فایل seederData.json نام Tab باید مطابق با نام فرم اصلی + \_Tab باشد تا فرانت بتواند تب‌ها را تشخیص دهد.
+
+---
+
+2️⃣ ساختار منو در seederData.json
+مثال استاندارد:
+{
+"Type": "MENU",
+"Code": "PAGE_MANAGEMENT_MENU",
+"Name": "Page Management",
+"DisplayName": { "en": "Page Management", "fa": "مدیریت صفحه" },
+"Order": 4,
+"Roles": ["DEV"],
+"Children": [
+{
+"Type": "PAGE",
+"Code": "PAGE_MANAGEMENT_PAGE",
+"Name": "PAGE Management",
+"DisplayName": { "en": "Page Management", "fa": "مدیریت صفحه" },
+"Order": 1,
+"Children": [
+{
+"Type": "TAB",
+"Code": "PAGE_TAB_SECTION",
+"Name": "SECTION Management",
+"DisplayName": { "en": "SECTION Management", "fa": "مدیریت بخش‌ها" },
+"Order": 1
+},
+{
+"Type": "TAB",
+"Code": "PAGE_TAB_TEST",
+"Name": "Test Management",
+"DisplayName": { "en": "Test Management", "fa": "مدیریت تست" },
+"Order": 2
+}
+]
+}
+]
+}
+نکته مهم:
+• نام Tab باید با نام فرم اصلی + \_Tab شروع شود (مثلاً PAGE_TAB_XXX) تا فرانت بتواند تب‌ها را شناسایی کند.
+
+---
+
+3️⃣ استفاده در فرم Frontend
+در فرم اصلی (Edit) دو چیز باید اضافه شود:
+
+1. ParentId برای رکوردهای Detail
+2. MasterDetailTabs برای نمایش تب‌ها
+   مثال ساده در React:
+   "use client";
+
+import React from "react";
+import { ResourceProvider } from "@/contexts/ResourceProvider";
+import { DynamicForm } from "@/components/forms/DynamicForm";
+import { entityNames } from "@/app/constants/entityNames";
+import { PageCrud } from "@/types/models/PageCrud";
+import MasterDetailTabs from "@/components/forms/MasterDetailTabs";
+
+const handleSave = (model: PageCrud) => {
+console.log("Model submitted:", model);
+};
+
+interface PageFormPageProps {
+initialValues?: PageCrud;
+}
+
+const PageFormPage: React.FC<PageFormPageProps> = ({ initialValues }) => {
+const parentId = initialValues?.id ?? "temp-parent-id"; // ParentId برای Master-Detail
+
+return (
+<ResourceProvider resourceCodes={[entityNames.Page, entityNames.PageTemplate]}>
+<DynamicForm<PageCrud>
+pageKey={entityNames.Page}
+isDynamic={true}
+initialValues={initialValues}
+autoCrud={true}
+onSave={handleSave} >
+
+<h1>Manual Form</h1>
+</DynamicForm>
+
+      {/* تب‌های Master-Detail */}
+      <MasterDetailTabs parentId={parentId} resourceCode={entityNames.Page} />
+    </ResourceProvider>
+
+);
+};
+
+export default PageFormPage;
+
+---
+
+✅ خلاصه نکات کلیدی
+
+1. نام تب‌ها باید مطابق FormName + \_Tab باشد.
+2. در View حتماً کلید خارجی ParentId را به رکورد والد وصل کنید.
+3. در فرم Frontend:
+   o parentId پاس داده شود
+   o MasterDetailTabs اضافه شود
+4. بعد از ایجاد فرم، منو را چک کنید که:
+   o عناوین ستون‌ها درست نمایش داده شوند
+   o تب‌ها و ریسورس‌ها شناسایی شده باشند
