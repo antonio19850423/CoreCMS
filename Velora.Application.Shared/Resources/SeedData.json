@@ -311,6 +311,29 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAGECMSCONFIGURATION_MANAGEMENT_MENU",
+          "Name": "Page CMS Configuration  Management",
+          "DisplayName": {
+            "en": "Page CMS Configuration  Management",
+            "fa": "تنظیمات سیستم مدیریت محتوا"
+          },
+          "Order": 6,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAGECMSCONFIGURATION_MANAGEMENT_PAGE",
+              "Name": "CMS Configuration Management Page",
+              "DisplayName": {
+                "en": "Page CMS Configuration  Management",
+                "fa": "تنظیمات سیستم مدیریت محتوا"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

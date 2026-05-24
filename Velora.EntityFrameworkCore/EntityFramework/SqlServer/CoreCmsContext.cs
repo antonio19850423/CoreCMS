@@ -17,6 +17,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<City> Cities { get; set; }
 
+    public virtual DbSet<CmsConfiguration> CmsConfigurations { get; set; }
+
     public virtual DbSet<ComponentType> ComponentTypes { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
@@ -61,6 +63,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<VwCmsConfigurationForm> VwCmsConfigurationForms { get; set; }
+
     public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
 
     public virtual DbSet<VwLocalization> VwLocalizations { get; set; }
@@ -101,6 +105,17 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.State).WithMany(p => p.Cities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Cities__StateId__52593CB8");
+        });
+
+        modelBuilder.Entity<CmsConfiguration>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CmsConfi__3214EC07CF0C7FBA");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.EnableCache).HasDefaultValue(true);
+            entity.Property(e => e.EnableSeo).HasDefaultValue(true);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<ComponentType>(entity =>
@@ -350,6 +365,11 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserRoles__UserI__440B1D61");
+        });
+
+        modelBuilder.Entity<VwCmsConfigurationForm>(entity =>
+        {
+            entity.ToView("VwCmsConfigurationForm", "cms");
         });
 
         modelBuilder.Entity<VwComponentTypeForm>(entity =>

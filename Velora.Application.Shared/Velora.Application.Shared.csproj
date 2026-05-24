@@ -20,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Remove="Resources\FormResources\CmsConfiguration.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.en.resx" />
@@ -67,6 +68,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
 	  <None Include="Resources\FormResources\Section.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>

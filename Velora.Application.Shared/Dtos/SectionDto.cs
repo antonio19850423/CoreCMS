@@ -26,7 +26,7 @@ namespace Velora.Application.Shared.Dtos
 
         public string? Description { get; set; }
 
-        [StringLength(300)]
+        [StringLength(512)]
         public string? ImageUrl { get; set; }
 
         [StringLength(100)]

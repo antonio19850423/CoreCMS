@@ -83,6 +83,11 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlSection, SectionCrud>().ReverseMap();
             CreateMap<SqlSectionView, SectionCrud>().ReverseMap();
             CreateMap<SqlSection, SectionDto>().ReverseMap();
+
+
+            CreateMap<SqlCmsConfiguration, CmsConfigurationCrud>().ReverseMap();
+            CreateMap<SqlCmsConfigurationView, CmsConfigurationCrud>().ReverseMap();
+            CreateMap<SqlCmsConfiguration, CmsConfigurationDto>().ReverseMap();
         }
     }
 }

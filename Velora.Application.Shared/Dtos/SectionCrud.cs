@@ -33,7 +33,7 @@ namespace Velora.Application.Shared.Dtos
 
         public string? ComponentTypeName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 512)]
         public string? ImageUrl { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 500)]
         public string? Description { get; set; }

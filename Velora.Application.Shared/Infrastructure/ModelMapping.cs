@@ -21,7 +21,8 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.PageTemplate, typeof(PageTemplateCrud) },
             { LookupEntities.PageTemplateComponent, typeof(PageTemplateComponentCrud) },
             { LookupEntities.Page, typeof(PageCrud) },
-            { LookupEntities.Section, typeof(SectionCrud) }
+            { LookupEntities.Section, typeof(SectionCrud) },
+            { LookupEntities.CmsConfiguration, typeof(CmsConfigurationCrud) }
         };
 
         public static Type? GetModelType(string entityName)
