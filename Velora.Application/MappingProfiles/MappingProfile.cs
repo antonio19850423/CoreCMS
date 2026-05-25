@@ -88,6 +88,10 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlCmsConfiguration, CmsConfigurationCrud>().ReverseMap();
             CreateMap<SqlCmsConfigurationView, CmsConfigurationCrud>().ReverseMap();
             CreateMap<SqlCmsConfiguration, CmsConfigurationDto>().ReverseMap();
+
+            CreateMap<SqlSiteSetting, SiteSettingCrud>().ReverseMap();
+            CreateMap<SqlSiteSettingView, SiteSettingCrud>().ReverseMap();
+            CreateMap<SqlSiteSetting, SiteSettingDto>().ReverseMap();
         }
     }
 }

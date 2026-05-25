@@ -33,6 +33,7 @@
 	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Section.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Section.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteSetting.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.fa.resx" />
 	  <EmbeddedResource Remove="Resources\Languages.resx" />
@@ -69,6 +70,9 @@
 
 	<ItemGroup>
 	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteSetting.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\Section.fa.resx">

@@ -55,6 +55,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<SiteSetting> SiteSettings { get; set; }
 
+    public virtual DbSet<SiteSetting1> SiteSettings1 { get; set; }
+
     public virtual DbSet<State> States { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -82,6 +84,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwResourceForm> VwResourceForms { get; set; }
 
     public virtual DbSet<VwSectionForm> VwSectionForms { get; set; }
+
+    public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
 
@@ -313,6 +317,15 @@ public partial class CoreCmsContext : DbContext
 
         modelBuilder.Entity<SiteSetting>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__SiteSett__3214EC07FD9B15D6");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<SiteSetting1>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PK__SiteSett__3214EC077C378509");
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -415,6 +428,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSectionForm>(entity =>
         {
             entity.ToView("VwSectionForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSiteSettingForm>(entity =>
+        {
+            entity.ToView("VwSiteSettingForm", "cms");
         });
 
         modelBuilder.Entity<VwUserForm>(entity =>

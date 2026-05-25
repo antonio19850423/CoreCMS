@@ -334,6 +334,29 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SITESETTING_MANAGEMENT_MENU",
+          "Name": "Page Site Setting",
+          "DisplayName": {
+            "en": "Site Setting",
+            "fa": "تنظیمات سایت"
+          },
+          "Order": 7,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SITESETTING_MANAGEMENT_PAGE",
+              "Name": "Page Site Setting",
+              "DisplayName": {
+                "en": "Site Setting",
+                "fa": "تنظیمات سایت"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

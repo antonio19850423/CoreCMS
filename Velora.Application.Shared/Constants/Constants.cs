@@ -68,7 +68,9 @@ namespace Velora.Application.Shared.Constants
         public const string Page = "Page";
         public const string Section = "Section";
         public const string CmsConfiguration = "CmsConfiguration";
+        public const string SiteSetting = "SiteSetting";
         
+
 
         // سایر entityها...
     }
