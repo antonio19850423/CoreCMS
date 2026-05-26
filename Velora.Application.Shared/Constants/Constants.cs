@@ -89,6 +89,10 @@ namespace Velora.Application.Shared.Constants
         public const string Permissions = "Seed_Permissions";
         public const string Settings = "Seed_Settings";
     }
+    public static class SiteTypes
+    {
+        public const string COMPANY = "COMPANY";
+    }
 
 
 

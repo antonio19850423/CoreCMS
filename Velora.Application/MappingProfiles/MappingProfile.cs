@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Velora.Application.Shared.Dtos;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.MappingProfiles
 {
@@ -92,6 +93,8 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlSiteSetting, SiteSettingCrud>().ReverseMap();
             CreateMap<SqlSiteSettingView, SiteSettingCrud>().ReverseMap();
             CreateMap<SqlSiteSetting, SiteSettingDto>().ReverseMap();
+
+            CreateMap<SqlSiteGlobalSetting,VwSiteGlobalSetting>().ReverseMap();
         }
     }
 }

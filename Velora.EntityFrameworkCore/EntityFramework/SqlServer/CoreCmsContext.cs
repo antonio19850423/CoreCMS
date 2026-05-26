@@ -85,6 +85,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSectionForm> VwSectionForms { get; set; }
 
+    public virtual DbSet<VwSiteGlobalSetting> VwSiteGlobalSettings { get; set; }
+
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
@@ -428,6 +430,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSectionForm>(entity =>
         {
             entity.ToView("VwSectionForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSiteGlobalSetting>(entity =>
+        {
+            entity.ToView("VwSiteGlobalSettings", "cms");
         });
 
         modelBuilder.Entity<VwSiteSettingForm>(entity =>

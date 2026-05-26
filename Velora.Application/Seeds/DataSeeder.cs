@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Velora.Application.Services;
 using Velora.Application.Shared.Attributes;
+using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Services;
@@ -22,6 +23,10 @@ namespace Velora.Application.Seeds
         public const string Resources = "Seed_Resources";
         public const string Permissions = "Seed_Permissions";
         public const string Settings = "Seed_Settings";
+
+
+        public const string Core_SiteSettings = "Seed_Core_SiteSettings";
+        public const string Core_CmsConfiguration = "Seed_Core_CmsConfiguration";
     }
 
     public class DataSeeder
@@ -42,6 +47,8 @@ namespace Velora.Application.Seeds
         private readonly IGeneralSettingService _generalSettingService;
         private readonly ISeedHistoryService _seedHistoryService;
         private readonly IMapper _mapper;
+        private readonly ISiteSettingService _siteSettingService;
+        ICmsConfigurationService _cmsConfigurationService;
 
         public DataSeeder(
             IConfiguration configuration,
@@ -59,6 +66,8 @@ namespace Velora.Application.Seeds
             IGeneralSettingService generalSettingService,
             IResourceLanguageService resourceLanguageService,
             ISeedHistoryService seedHistoryService,
+            ISiteSettingService siteSettingService,
+            ICmsConfigurationService cmsConfigurationService,
             IMapper mapper)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
@@ -81,6 +90,8 @@ namespace Velora.Application.Seeds
             _resourceLanguageService = resourceLanguageService;
             _seedHistoryService = seedHistoryService;
             _mapper = mapper;
+            _siteSettingService= siteSettingService;
+            _cmsConfigurationService= cmsConfigurationService;
         }
 
         public async Task SeedAllAsync()
@@ -113,6 +124,27 @@ namespace Velora.Application.Seeds
             {
                 await SeedSettingsAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Settings, CreatedAt = DateTime.Now });
+            }
+
+
+            if (await ShouldRunSeederAsync(SeederNames.Core_SiteSettings))
+            {
+                await SeedCoreSiteSettingsAsync();
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Core_SiteSettings,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
+            if (await ShouldRunSeederAsync(SeederNames.Core_CmsConfiguration))
+            {
+                await SeedCoreCmsConfigurationAsync();
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Core_CmsConfiguration,
+                    CreatedAt = DateTime.Now
+                });
             }
 
             await _transactionService.CommitAsync();
@@ -941,6 +973,153 @@ namespace Velora.Application.Seeds
                     });
                 }
             }
+        }
+
+
+        public async Task SeedCoreSiteSettingsAsync()
+        {
+            const string seederName = SeederNames.Core_SiteSettings;
+
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            var existing = await _siteSettingService
+                .FirstOrDefaultAsync<SqlSiteSetting>(x => x.IsActive);
+
+            if (existing.Data == null)
+            {
+                await _siteSettingService.CreateAsync(new SiteSettingDto
+                {
+                    SiteName = "CMS پیش‌فرض",
+                    DomainName = "localhost",
+
+                    LogoUrl = "http://localhost:5274/logo/xing.png",
+                    LogoAlt = "لوگوی سایت",
+                    DarkLogoUrl = "http://localhost:5274/logo/xing.png",
+                    DarkLogoAlt = "لوگوی حالت تاریک",
+                    FaviconUrl = "/assets/favicon.ico",
+
+                    PhoneTitle = "شماره تماس",
+                    Phone = "021-00000000",
+
+                    Phone2Title = "شماره تماس دوم",
+                    Phone2 = "021-11111111",
+
+                    MobileTitle = "موبایل",
+                    Mobile = "09120000000",
+
+                    FaxTitle = "فکس",
+                    Fax = "021-22222222",
+
+                    Email = "info@example.com",
+
+                    AddressTitle = "آدرس",
+                    Address = "تهران، ایران",
+
+                    Address2Title = "آدرس دوم",
+                    Address2 = "دفتر دوم",
+
+                    DefaultMetaTitle = "CMS پیش‌فرض",
+                    DefaultMetaDescription = "سیستم مدیریت محتوای پیش‌فرض",
+                    DefaultMetaKeywords = "cms, website, management",
+
+                    IsActive = true
+                });
+            }
+            else
+            {
+                // 🔥 UPDATE
+                existing.Data.SiteName = "CMS پیش‌فرض";
+                existing.Data.DomainName = "localhost";
+
+                existing.Data.LogoUrl = "http://localhost:5274/logo/xing.png";
+                existing.Data.LogoAlt = "لوگوی سایت";
+                existing.Data.DarkLogoUrl = "http://localhost:5274/logo/xing.png";
+                existing.Data.DarkLogoAlt = "لوگوی حالت تاریک";
+                existing.Data.FaviconUrl = "/assets/favicon.ico";
+
+                existing.Data.PhoneTitle = "شماره تماس";
+                existing.Data.Phone = "021-00000000";
+
+                existing.Data.Phone2Title = "شماره تماس دوم";
+                existing.Data.Phone2 = "021-11111111";
+
+                existing.Data.MobileTitle = "موبایل";
+                existing.Data.Mobile = "09120000000";
+
+                existing.Data.FaxTitle = "فکس";
+                existing.Data.Fax = "021-22222222";
+
+                existing.Data.Email = "info@example.com";
+
+                existing.Data.AddressTitle = "آدرس";
+                existing.Data.Address = "تهران، ایران";
+
+                existing.Data.Address2Title = "آدرس دوم";
+                existing.Data.Address2 = "دفتر دوم";
+
+                existing.Data.DefaultMetaTitle = "CMS پیش‌فرض";
+                existing.Data.DefaultMetaDescription = "سیستم مدیریت محتوای پیش‌فرض";
+                existing.Data.DefaultMetaKeywords = "cms, website, management";
+
+                await _siteSettingService.UpdateAsync(existing.Data);
+            }
+
+            await _transactionService.CommitAsync();
+        }
+
+        public async Task SeedCoreCmsConfigurationAsync()
+        {
+            const string seederName = SeederNames.Core_CmsConfiguration;
+
+            // جلوگیری از اجرای دوباره seeder
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            var existing = await _cmsConfigurationService
+                .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+
+            if (existing.Data == null)
+            {
+                // ✅ CREATE
+                await _cmsConfigurationService.CreateAsync(new CmsConfigurationDto
+                {
+                    DefaultTheme = "default",
+
+                    EnableBlog = true,
+                    EnableShop = true,
+                    EnableNews = true,
+
+                    EnableSeo = true,
+                    EnableCache = true,
+                    EnableComments = false,
+                    EnableMultiLanguage = false,
+
+                    SiteType = SiteTypes.COMPANY,
+                    IsActive = true
+                });
+            }
+            else
+            {
+                // 🔥 UPDATE
+                existing.Data.DefaultTheme = "default";
+
+                existing.Data.EnableBlog = true;
+                existing.Data.EnableShop = true;
+                existing.Data.EnableNews = true;
+
+                existing.Data.EnableSeo = true;
+                existing.Data.EnableCache = true;
+                existing.Data.EnableComments = false;
+                existing.Data.EnableMultiLanguage = false;
+
+                existing.Data.SiteType = SiteTypes.COMPANY;
+                existing.Data.IsActive = true;
+
+                await _cmsConfigurationService.UpdateAsync(existing.Data);
+            }
+
+            await _transactionService.CommitAsync();
         }
     }
 }

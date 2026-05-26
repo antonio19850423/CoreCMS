@@ -7,10 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 [Keyless]
-public partial class VwSiteSettingForm
+public partial class VwSiteGlobalSetting
 {
-    public Guid Id { get; set; }
-
     [StringLength(200)]
     public string SiteName { get; set; } = null!;
 
@@ -32,26 +30,14 @@ public partial class VwSiteSettingForm
     [StringLength(500)]
     public string? FaviconUrl { get; set; }
 
-    [StringLength(100)]
-    public string? PhoneTitle { get; set; }
-
     [StringLength(50)]
     public string? Phone { get; set; }
-
-    [StringLength(100)]
-    public string? Phone2Title { get; set; }
 
     [StringLength(50)]
     public string? Phone2 { get; set; }
 
-    [StringLength(100)]
-    public string? MobileTitle { get; set; }
-
     [StringLength(50)]
     public string? Mobile { get; set; }
-
-    [StringLength(100)]
-    public string? FaxTitle { get; set; }
 
     [StringLength(50)]
     public string? Fax { get; set; }
@@ -59,14 +45,8 @@ public partial class VwSiteSettingForm
     [StringLength(200)]
     public string? Email { get; set; }
 
-    [StringLength(100)]
-    public string? AddressTitle { get; set; }
-
     [StringLength(1000)]
     public string? Address { get; set; }
-
-    [StringLength(100)]
-    public string? Address2Title { get; set; }
 
     [StringLength(1000)]
     public string? Address2 { get; set; }
@@ -80,17 +60,23 @@ public partial class VwSiteSettingForm
     [StringLength(1000)]
     public string? DefaultMetaKeywords { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool EnableBlog { get; set; }
 
-    [StringLength(19)]
-    public string? CreatedAtPersian { get; set; }
+    public bool EnableShop { get; set; }
 
-    [StringLength(19)]
-    public string? UpdatedAtPersian { get; set; }
+    public bool EnableSeo { get; set; }
 
-    [StringLength(201)]
-    public string? CreatedByName { get; set; }
+    public bool EnableCache { get; set; }
 
-    [StringLength(201)]
-    public string? UpdatedByName { get; set; }
+    public bool EnableComments { get; set; }
+
+    public bool EnableMultiLanguage { get; set; }
+
+    public bool EnableNews { get; set; }
+
+    [StringLength(50)]
+    public string SiteType { get; set; } = null!;
+
+    [StringLength(100)]
+    public string? DefaultTheme { get; set; }
 }
