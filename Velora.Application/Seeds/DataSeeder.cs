@@ -1032,11 +1032,11 @@ namespace Velora.Application.Seeds
                 existing.Data.SiteName = "CMS پیش‌فرض";
                 existing.Data.DomainName = "localhost";
 
-                existing.Data.LogoUrl = "http://localhost:5274/logo/xing.png";
+                existing.Data.LogoUrl = "http://localhost:5274/uploads/logo/xing.png";
                 existing.Data.LogoAlt = "لوگوی سایت";
-                existing.Data.DarkLogoUrl = "http://localhost:5274/logo/xing.png";
+                existing.Data.DarkLogoUrl = "http://localhost:5274/uploads/logo/xing.png";
                 existing.Data.DarkLogoAlt = "لوگوی حالت تاریک";
-                existing.Data.FaviconUrl = "/assets/favicon.ico";
+                existing.Data.FaviconUrl = "http://localhost:5274/uploads/logo/favicon.ico";
 
                 existing.Data.PhoneTitle = "شماره تماس";
                 existing.Data.Phone = "021-00000000";
@@ -1062,7 +1062,7 @@ namespace Velora.Application.Seeds
                 existing.Data.DefaultMetaDescription = "سیستم مدیریت محتوای پیش‌فرض";
                 existing.Data.DefaultMetaKeywords = "cms, website, management";
 
-                await _siteSettingService.UpdateAsync(existing.Data);
+                await _siteSettingService.UpdateAsync(existing.Data, existing.Data.Id);
             }
 
             await _transactionService.CommitAsync();
