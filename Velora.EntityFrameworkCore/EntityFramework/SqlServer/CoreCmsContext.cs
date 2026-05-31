@@ -55,8 +55,6 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<SiteSetting> SiteSettings { get; set; }
 
-    public virtual DbSet<SiteSetting1> SiteSettings1 { get; set; }
-
     public virtual DbSet<State> States { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -323,15 +321,6 @@ public partial class CoreCmsContext : DbContext
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<SiteSetting1>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__SiteSett__3214EC077C378509");
-
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 

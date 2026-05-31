@@ -60,8 +60,6 @@ namespace Velora.Application.Services
 
                 var Section = new SectionDto
                 {
-                    ButtonText = input.ButtonText,
-                    ButtonUrl=input.ButtonUrl,
                     ColumnsCount = input.ColumnsCount,
                     ComponentTypeId = input.ComponentTypeId,
                     Description = input.Description,
@@ -71,6 +69,17 @@ namespace Velora.Application.Services
                     SortOrder = input.SortOrder,
                     Subtitle = input.Subtitle,
                     Title = input.Title,
+                    Link4Url = input.Link4Url,
+                    Link3Url = input.Link3Url,
+                    Link2Url = input.Link2Url,
+                    Link1Url = input.Link1Url,
+                    ImageAlt = input.ImageAlt,
+                    IconAlt = input.IconAlt,
+                    Icon=input.Icon,
+                    Link1Text = input.Link1Text,
+                    Link2Text = input.Link2Text,
+                    Link3Text = input.Link3Text,
+                    Link4Text = input.Link4Text,
                     
                 };
 
@@ -112,17 +121,25 @@ namespace Velora.Application.Services
                 var userUpdateDto = new SectionDto
                 {
                     Id = input.Id.Value,
-                    ButtonText = input.ButtonText,
                     Title = input.Title,
                     Subtitle= input.Subtitle,
                     SortOrder= input.SortOrder,
-                    ButtonUrl = input.ButtonUrl,
                     ColumnsCount = input.ColumnsCount,
                     ComponentTypeId = input.ComponentTypeId,
                     Description = input.Description,
                     ImageUrl = input.ImageUrl,
                     IsActive = input.IsActive,
                     PageId=input.ParentId,
+                    Link4Text = input.Link4Text,
+                    Link3Text = input.Link3Text,
+                    Link2Text = input.Link2Text,
+                    Link1Text = input.Link1Text,
+                    IconAlt = input.IconAlt ,
+                    ImageAlt = input.ImageAlt , 
+                    Link1Url = input.Link1Url ,
+                    Link2Url = input.Link2Url ,
+                    Link3Url = input.Link3Url,
+                    Link4Url = input.Link4Url ,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

@@ -36,12 +36,6 @@ public partial class SectionItem
     [StringLength(150)]
     public string? Role { get; set; }
 
-    [StringLength(100)]
-    public string? LinkText { get; set; }
-
-    [StringLength(300)]
-    public string? LinkUrl { get; set; }
-
     public int SortOrder { get; set; }
 
     public bool IsActive { get; set; }
@@ -57,6 +51,66 @@ public partial class SectionItem
     public Guid? CreatedBy { get; set; }
 
     public Guid? UpdatedBy { get; set; }
+
+    [StringLength(50)]
+    public string? BackgroundColor { get; set; }
+
+    [StringLength(50)]
+    public string? HeaderColor { get; set; }
+
+    [StringLength(50)]
+    public string? SubtitleColor { get; set; }
+
+    [StringLength(50)]
+    public string? DescriptionColor { get; set; }
+
+    [StringLength(100)]
+    public string? Link1Text { get; set; }
+
+    [StringLength(300)]
+    public string? Link1Url { get; set; }
+
+    [StringLength(50)]
+    public string? Link1Color { get; set; }
+
+    [StringLength(100)]
+    public string? Link2Text { get; set; }
+
+    [StringLength(300)]
+    public string? Link2Url { get; set; }
+
+    [StringLength(50)]
+    public string? Link2Color { get; set; }
+
+    [StringLength(100)]
+    public string? Link3Text { get; set; }
+
+    [StringLength(300)]
+    public string? Link3Url { get; set; }
+
+    [StringLength(50)]
+    public string? Link3Color { get; set; }
+
+    [StringLength(100)]
+    public string? Link4Text { get; set; }
+
+    [StringLength(300)]
+    public string? Link4Url { get; set; }
+
+    [StringLength(50)]
+    public string? Link4Color { get; set; }
+
+    [StringLength(150)]
+    public string? Icon { get; set; }
+
+    [StringLength(50)]
+    public string? IconColor { get; set; }
+
+    [StringLength(150)]
+    public string? IconAlt { get; set; }
+
+    [StringLength(250)]
+    public string? ImageAlt { get; set; }
 
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("SectionItems")]

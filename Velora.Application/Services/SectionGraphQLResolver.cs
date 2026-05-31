@@ -42,9 +42,7 @@ public class SectionGqlResolver : ISectionGqlResolver
             Description = x.Description??"",
             ComponentTypeId = x.ComponentTypeId,
             ColumnsCount = x.ColumnsCount??0,
-            ButtonUrl = x.ButtonUrl ?? "",
             SortOrder = x.SortOrder,
-            ButtonText = x.ButtonText ?? "",
             ComponentTypeName = x.ComponentTypeName ?? "",
             CreatedAtPersian = x.CreatedAtPersian ?? "",
             Subtitle = x.Subtitle ?? "",
@@ -52,6 +50,12 @@ public class SectionGqlResolver : ISectionGqlResolver
             UpdatedAtPersian= x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
+            IconAlt = x.IconAlt ??"",
+            ImageAlt = x.ImageAlt ??"",
+            Link1Text = x.Link1Text ??"",
+            Link2Text = x.Link2Text ??"",
+            Link3Text = x.Link3Text ??"",
+            Link4Text = x.Link4Text ??"",
             ShouldInsert = x.ShouldInsert
         });
     }

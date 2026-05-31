@@ -120,11 +120,11 @@
   <data name="Section.Id" xml:space="preserve">
     <value>شناسه</value>
   </data>
-  <data name="Section.ButtonText" xml:space="preserve">
-    <value>متن دکمه</value>
+  <data name="Section.Link1Text" xml:space="preserve">
+    <value>متن لینک ۱</value>
   </data>
-  <data name="Section.ButtonUrl" xml:space="preserve">
-    <value>آدرس دکمه</value>
+  <data name="Section.Link1Url" xml:space="preserve">
+    <value>آدرس لینک ۱</value>
   </data>
   <data name="Section.ColumnsCount" xml:space="preserve">
     <value>تعداد ستون‌ها</value>
@@ -167,5 +167,32 @@
   </data>
   <data name="Section.UpdatedByName" xml:space="preserve">
     <value>ویرایشگر</value>
+  </data>
+  <data name="Section.Link2Text" xml:space="preserve">
+    <value>متن لینک 2</value>
+  </data>
+  <data name="Section.Link3Text" xml:space="preserve">
+    <value>متن لینک ۳</value>
+  </data>
+  <data name="Section.Link4Text" xml:space="preserve">
+    <value>متن لینک 4</value>
+  </data>
+  <data name="Section.ImageAlt" xml:space="preserve">
+    <value>توضیح تصویر</value>
+  </data>
+  <data name="Section.IconAlt" xml:space="preserve">
+    <value>توضیح آیکن</value>
+  </data>
+  <data name="Section.Icon" xml:space="preserve">
+    <value>آیکن</value>
+  </data>
+  <data name="Section.Link2Url" xml:space="preserve">
+    <value>آدرس لینک ۲</value>
+  </data>
+  <data name="Section.Link3Url" xml:space="preserve">
+    <value>آدرس لینک ۳</value>
+  </data>
+  <data name="Section.Link4Url" xml:space="preserve">
+    <value>آدرس لینک ۴</value>
   </data>
 </root>
