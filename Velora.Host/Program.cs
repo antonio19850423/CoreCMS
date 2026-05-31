@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -29,6 +30,8 @@ using Velora.Host.Middlewares;
 using Velora.Host.Settings;
 using Velora.Host.swagger;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
 
 
 // Configure Serilog logger
@@ -250,6 +253,7 @@ app.UseCors(builder =>
 {
     builder
         .WithOrigins("http://localhost:3000")
+        .WithOrigins("http://localhost:3001")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials(); // حتما این را داشته باش
@@ -285,6 +289,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<LanguageMiddleware>();
 app.UseRouting();           // حتما قبل از authentication/authorization
+var contentTypeProvider = new FileExtensionContentTypeProvider();
+contentTypeProvider.Mappings[".avif"] = "image/avif";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = contentTypeProvider
+});
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();

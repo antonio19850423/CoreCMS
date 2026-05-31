@@ -1,0 +1,236 @@
+﻿//{
+//    "defaultHero": {
+//        "rules": {
+//            "title": true,
+//            "subtitle": true,
+//            "description": true,
+//            "image": true,
+//            "linkText": true,
+//            "linkUrl": true
+//        },
+//        "defaultData": {
+//            "rtl": {
+//                "title": "ساخت سریع وب‌سایت‌های مدرن",
+//                "subtitle": "راهکار ساده برای توسعه",
+//                "description": "بدون پیچیدگی، سریع و حرفه‌ای بسازید",
+//                "image": "http://localhost:5274/uploads/sections/defaultHero.avif",
+//                "linkText": "شروع کنید",
+//                "linkUrl": "#"
+//            },
+//            "ltr": {
+//                "title": "Build Modern Websites",
+//                "subtitle": "Simple Development Workflow",
+//                "description": "Fast and scalable website builder",
+//                "image": "http://localhost:5274/uploads/sections/defaultHero.avif",
+//                "linkText": "Get Started",
+//                "linkUrl": "#"
+//            }
+//        }
+//    },
+
+//    "feature": {
+//        "rules": {
+//            "title": true,
+//            "subtitle": true,
+//            "description": true,
+//            "items": {
+//                "title": true,
+//                "description": true,
+//                "icon": true
+//            }
+//        },
+//        "defaultData": {
+//            "rtl": {
+//                "title": "سرعت توسعه",
+//                "subtitle": "سیستم مدرن",
+//                "description": "توسعه سریع‌تر با معماری استاندارد",
+//                "items": [
+//                    {
+//                        "title": "استقرار سریع",
+//                        "description": "انتشار در چند ثانیه",
+//                        "icon": "CloudArrowUpIcon"
+//                    },
+//                    {
+//                        "title": "امنیت بالا",
+//                        "description": "محافظت چندلایه",
+//                        "icon": "ShieldCheckIcon"
+//                    }
+//                ]
+//            },
+//            "ltr": {
+//                "title": "Fast Development",
+//                "subtitle": "Modern System",
+//                "description": "Build scalable apps faster",
+//                "items": [
+//                    {
+//                        "title": "Fast Deploy",
+//                        "description": "Deploy in seconds",
+//                        "icon": "CloudArrowUpIcon"
+//                    },
+//                    {
+//                        "title": "Security",
+//                        "description": "Multi-layer protection",
+//                        "icon": "ShieldCheckIcon"
+//                    }
+//                ]
+//            }
+//        }
+//    },
+
+//    "stats": {
+//        "rules": {
+//            "title": true,
+//            "subtitle": true,
+//            "description": true,
+//            "items": {
+//                "title": true,
+//                "value": true,
+//                "icon": true
+//            }
+//        },
+//        "defaultData": {
+//            "rtl": {
+//                "title": "آمار واقعی",
+//                "subtitle": "اعتماد کاربران",
+//                "description": "نتایج قابل اندازه‌گیری",
+//                "items": [
+//                    {
+//                        "title": "کاربر فعال",
+//                        "value": "+12K",
+//                        "icon": "RocketLaunchIcon"
+//                    },
+//                    {
+//                        "title": "نرخ رشد",
+//                        "value": "32%",
+//                        "icon": "ChartBarSquareIcon"
+//                    }
+//                ]
+//            },
+//            "ltr": {
+//                "title": "Real Stats",
+//                "subtitle": "User Trust",
+//                "description": "Measurable results",
+//                "items": [
+//                    {
+//                        "title": "Active Users",
+//                        "value": "+12K",
+//                        "icon": "RocketLaunchIcon"
+//                    },
+//                    {
+//                        "title": "Growth",
+//                        "value": "32%",
+//                        "icon": "ChartBarSquareIcon"
+//                    }
+//                ]
+//            }
+//        }
+//    },
+
+//    "howItWorks": {
+//        "rules": {
+//            "title": true,
+//            "subtitle": true,
+//            "description": true,
+//            "image": true,
+//            "items": {
+//                "title": true,
+//                "description": true,
+//                "icon": true
+//            }
+//        },
+//        "defaultData": {
+//            "rtl": {
+//                "title": "شروع در ۳ مرحله",
+//                "subtitle": "ساده و سریع",
+//                "description": "بدون پیچیدگی",
+//                "image": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+//                "items": [
+//                    {
+//                        "title": "انتخاب",
+//                        "description": "انتخاب قالب",
+//                        "icon": "CursorArrowRaysIcon"
+//                    },
+//                    {
+//                        "title": "ویرایش",
+//                        "description": "شخصی‌سازی",
+//                        "icon": "PencilSquareIcon"
+//                    }
+//                ]
+//            },
+//            "ltr": {
+//                "title": "3 Steps",
+//                "subtitle": "Simple Process",
+//                "description": "Fast setup",
+//                "image": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+//                "items": [
+//                    {
+//                        "title": "Choose",
+//                        "description": "Pick template",
+//                        "icon": "CursorArrowRaysIcon"
+//                    },
+//                    {
+//                        "title": "Edit",
+//                        "description": "Customize",
+//                        "icon": "PencilSquareIcon"
+//                    }
+//                ]
+//            }
+//        }
+//    },
+
+//    "pricing": {
+//        "rules": {
+//            "title": true,
+//            "subtitle": true,
+//            "description": true,
+//            "items": {
+//                "title": true,
+//                "subtitle": true,
+//                "description": true,
+//                "value": true,
+//                "linkText": true,
+//                "linkUrl": true,
+//                "icon": true,
+//                "featured": true,
+//                "items": {
+//                    "title": true
+//                }
+//            }
+//        },
+//        "defaultData": {
+//            "rtl": {
+//                "title": "پلن‌های قیمت‌گذاری",
+//                "subtitle": "انتخاب مناسب",
+//                "description": "پلن مورد نظر خود را انتخاب کنید",
+//                "items": [
+//                    {
+//                        "title": "پایه",
+//                        "subtitle": "شروع ساده",
+//                        "description": "مناسب شروع",
+//                        "value": "رایگان",
+//                        "linkText": "انتخاب",
+//                        "linkUrl": "#",
+//                        "featured": false,
+//                        "items": [
+//                            { "title": "پشتیبانی استاندارد" },
+//                            { "title": "دسترسی محدود" }
+//                        ]
+//                    },
+//                    {
+//                        "title": "حرفه‌ای",
+//                        "subtitle": "پیشنهادی",
+//                        "description": "برای رشد",
+//                        "value": "9.99$",
+//                        "linkText": "شروع",
+//                        "linkUrl": "#",
+//                        "featured": true,
+//                        "items": [
+//                            { "title": "تمام امکانات" },
+//                            { "title": "پشتیبانی ویژه" }
+//                        ]
+//                    }
+//                ]
+//            }
+//        }
+//    }
+//}
