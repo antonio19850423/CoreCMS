@@ -1,0 +1,20 @@
+﻿{
+  "templates": [
+    {
+      "templateName": "Corp_Template",
+      "pages": [
+        {
+          "pageName": "خانه",
+          "slug": "home",
+          "isPublished": false,
+          "metaTitle": "خانه - وب‌سایت شرکتی",
+          "metaDescription": "صفحه اصلی وب‌سایت شرکت شامل معرفی خدمات و دستاوردها",
+          "metaKeywords": "خانه، شرکت، خدمات، معرفی",
+          "components": [
+            "defaultHero"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using System.Text.Json;
 using System.Xml.Linq;
 using Velora.Application.Services;
 using Velora.Application.Shared.Attributes;
@@ -12,6 +13,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Path = System.IO.Path;
 
 namespace Velora.Application.Seeds
@@ -27,6 +29,8 @@ namespace Velora.Application.Seeds
 
         public const string Core_SiteSettings = "Seed_Core_SiteSettings";
         public const string Core_CmsConfiguration = "Seed_Core_CmsConfiguration";
+        public const string Seed_Core_Template = "Seed_Core_Template";
+
     }
 
     public class DataSeeder
@@ -48,6 +52,10 @@ namespace Velora.Application.Seeds
         private readonly ISeedHistoryService _seedHistoryService;
         private readonly IMapper _mapper;
         private readonly ISiteSettingService _siteSettingService;
+        private readonly IPageService _pageService;
+        private readonly ISectionService _sectionService;
+        private readonly IConfiguration _configuration;
+        private readonly IComponentTypeService _componentTypeService;
         ICmsConfigurationService _cmsConfigurationService;
 
         public DataSeeder(
@@ -68,7 +76,7 @@ namespace Velora.Application.Seeds
             ISeedHistoryService seedHistoryService,
             ISiteSettingService siteSettingService,
             ICmsConfigurationService cmsConfigurationService,
-            IMapper mapper)
+            IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
             _dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -90,8 +98,12 @@ namespace Velora.Application.Seeds
             _resourceLanguageService = resourceLanguageService;
             _seedHistoryService = seedHistoryService;
             _mapper = mapper;
-            _siteSettingService= siteSettingService;
-            _cmsConfigurationService= cmsConfigurationService;
+            _siteSettingService = siteSettingService;
+            _cmsConfigurationService = cmsConfigurationService;
+            _pageService = pageService;
+            _sectionService = sectionService;
+            _configuration = configuration;
+            _componentTypeService = componentTypeService;
         }
 
         public async Task SeedAllAsync()
@@ -146,7 +158,15 @@ namespace Velora.Application.Seeds
                     CreatedAt = DateTime.Now
                 });
             }
-
+            if (await ShouldRunSeederAsync(SeederNames.Seed_Core_Template))
+            {
+                await SeedCmsTemplateAsync();
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Core_Template,
+                    CreatedAt = DateTime.Now
+                });
+            }
             await _transactionService.CommitAsync();
         }
 
@@ -375,7 +395,7 @@ namespace Velora.Application.Seeds
                         var createdPerm = await _permissionService.CreateAsync(new PermissionDto
                         {
                             ResourceId = resourceDto.Id,
-                            Actions = (int)Permission.All,
+                            Actions = (int)Shared.Enums.Permission.All,
                             IsActive = true
                         });
                         permission = createdPerm.Data;
@@ -566,7 +586,7 @@ namespace Velora.Application.Seeds
                             SelectBoxOrder = prop.Attribute.SelectBoxOrder,
                             SelectDisplayFields = prop.Attribute.SelectDisplayFields,
                             EntityName = entityName,
-                            ServiceName= serviceName,
+                            ServiceName = serviceName,
                         });
 
                         resourceDto = created.Data;
@@ -942,7 +962,7 @@ namespace Velora.Application.Seeds
             {
                 var created = await _permissionService.CreateAsync(new PermissionDto
                 {
-                    Actions = (int)Permission.All,
+                    Actions = (int)Shared.Enums.Permission.All,
                     ResourceId = resource.Id,
                     IsActive = true
                 });
@@ -1123,6 +1143,184 @@ namespace Velora.Application.Seeds
 
             await _transactionService.CommitAsync();
         }
+
+        public async Task SeedCmsTemplateAsync()
+        {
+            var seederName = SeederNames.Seed_Core_Template;
+
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            var templateName = _configuration["Cms:DefaultTemplate"];
+
+            if (string.IsNullOrWhiteSpace(templateName))
+                throw new Exception("DefaultTemplate is not configured in appsettings");
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+            // =====================================================
+            // LOAD TEMPLATE
+            // =====================================================
+            using var templateStream = assembly.GetManifestResourceStream(
+                "Velora.Application.Shared.Resources.Templates.json");
+
+            if (templateStream == null)
+                throw new FileNotFoundException("Templates.json not found");
+
+            var templateModel = await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
+                templateStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (templateModel == null)
+                throw new Exception("Invalid Template JSON");
+
+            var template = templateModel.Templates
+                .FirstOrDefault(x => x.TemplateName == templateName);
+
+            if (template == null)
+                throw new Exception($"Template {templateName} not found");
+
+            // =====================================================
+            // LOAD COMPONENT RULES
+            // =====================================================
+            using var componentStream = assembly.GetManifestResourceStream(
+                "Velora.Application.Shared.Resources.ComponentRules.json");
+
+            if (componentStream == null)
+                throw new FileNotFoundException("ComponentRules.json not found");
+
+            var componentRules = await JsonSerializer.DeserializeAsync<
+                Dictionary<string, ComponentRuleModel>>(
+                componentStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (componentRules == null)
+                throw new Exception("Invalid ComponentRules JSON");
+
+            int sortOrder = 1;
+            var componentTypeCache = new Dictionary<string, ComponentTypeDto>();
+
+            // =====================================================
+            // PAGES LOOP (UPSERT)
+            // =====================================================
+            foreach (var page in template.Pages)
+            {
+                // ================= PAGE UPSERT =================
+                var existingPage = _dbType == DatabaseType.SqlServer
+                     ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
+                     : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
+
+                var pageEntity = new PageDto
+                {
+                    Name = page.PageName,
+                    Slug = page.Slug,
+                    IsPublished = false,
+                    MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
+                    MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
+                    MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت"
+                };
+
+                if (existingPage.Data == null)
+                {
+                    var created = await _pageService.CreateAsync(pageEntity);
+                    pageEntity.Id = created.Data.Id;
+                }
+                else
+                {
+                    pageEntity.Id = existingPage.Data.Id;
+                }
+
+                // =================================================
+                // COMPONENT LOOP
+                // =================================================
+                foreach (var componentCode in page.Components)
+                {
+                    if (!componentRules.TryGetValue(componentCode, out var rule))
+                        continue;
+
+                    // ================= COMPONENT TYPE UPSERT =================
+                    var existingComponentType = _dbType == DatabaseType.SqlServer
+                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == componentCode)
+                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == componentCode);
+
+                    var componentTypeEntity = new ComponentTypeDto
+                    {
+                        Name = componentCode,
+                        Code = componentCode,
+                        Type = "Hero",
+                        Description = componentCode,
+                        IsActive = true
+                    };
+
+                    if (existingComponentType.Data == null)
+                    {
+                        var created = await _componentTypeService.CreateAsync(componentTypeEntity);
+                        componentTypeEntity.Id = created.Data.Id;
+                    }
+                    else
+                    {
+                        componentTypeEntity.Id = existingComponentType.Data.Id;
+                    }
+
+                    componentTypeCache[componentCode] = componentTypeEntity;
+
+                    // ================= SECTION UPSERT =================
+                    var existingSection = _dbType == DatabaseType.SqlServer
+                         ? await _sectionService.FirstOrDefaultAsync<SqlSection>(
+                             x => x.PageId == pageEntity.Id &&
+                                  x.ComponentTypeId == componentTypeEntity.Id)
+                         : await _sectionService.FirstOrDefaultAsync<SqlSection>(
+                             x => x.PageId == pageEntity.Id &&
+                                  x.ComponentTypeId == componentTypeEntity.Id);
+
+                    var sectionEntity = new SectionDto
+                    {
+                        PageId = pageEntity.Id,
+                        ComponentTypeId = componentTypeEntity.Id,
+                        IsActive = true,
+                        IsTest = false,
+                        SortOrder = sortOrder++,
+                        BackgroundColor = "#ffffff",
+                        HeaderColor = "#000000",
+                        SubtitleColor = "#333333",
+                        DescriptionColor = "#555555",
+                        IconColor = "#000000",
+                        Icon = null,
+                        IconAlt = null,
+                        ImageAlt = "Default Image"
+                    };
+
+                    // اگر Section وجود ندارد، ایجاد کن
+                    if (existingSection.Data == null)
+                    {
+                        var created = await _sectionService.CreateAsync(sectionEntity);
+                        sectionEntity.Id = created.Data.Id;
+
+                        // ⚡ Apply defaultData به محض ایجاد Section
+                        var rtl = rule.DefaultData?.Rtl;
+                        if (rtl != null)
+                        {
+                            sectionEntity.Title = rtl.Title;
+                            sectionEntity.Subtitle = rtl.Subtitle;
+                            sectionEntity.Description = rtl.Description;
+                            sectionEntity.ImageUrl = rtl.ImageUrl;
+                            sectionEntity.Link1Text = rtl.Link1Text;
+                            sectionEntity.Link1Url = rtl.Link1Url;
+                            sectionEntity.ColumnsCount = 1;
+
+                            await _sectionService.UpdateAsync(sectionEntity);
+                        }
+                    }
+                    else
+                    {
+                        sectionEntity.Id = existingSection.Data.Id;
+                    }
+                }
+            }
+
+            await _transactionService.CommitAsync();
+        }
+
     }
 }
 

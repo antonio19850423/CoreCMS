@@ -46,9 +46,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\ComponentRules.json" />
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Templates.json" />
 	</ItemGroup>
 
 	<ItemGroup>
