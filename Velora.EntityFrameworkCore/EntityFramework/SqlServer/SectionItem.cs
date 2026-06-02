@@ -14,8 +14,6 @@ public partial class SectionItem
 
     public Guid SectionId { get; set; }
 
-    public Guid ComponentTypeId { get; set; }
-
     [StringLength(250)]
     public string? Title { get; set; }
 
@@ -24,17 +22,14 @@ public partial class SectionItem
 
     public string? Description { get; set; }
 
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal? Price { get; set; }
+    [StringLength(150)]
+    public string? Price { get; set; }
 
     [StringLength(300)]
     public string? ImageUrl { get; set; }
 
     [StringLength(300)]
     public string? AvatarUrl { get; set; }
-
-    [StringLength(150)]
-    public string? Role { get; set; }
 
     public int SortOrder { get; set; }
 
@@ -54,9 +49,6 @@ public partial class SectionItem
 
     [StringLength(50)]
     public string? BackgroundColor { get; set; }
-
-    [StringLength(50)]
-    public string? HeaderColor { get; set; }
 
     [StringLength(50)]
     public string? SubtitleColor { get; set; }
@@ -112,9 +104,11 @@ public partial class SectionItem
     [StringLength(250)]
     public string? ImageAlt { get; set; }
 
-    [ForeignKey("ComponentTypeId")]
-    [InverseProperty("SectionItems")]
-    public virtual ComponentType ComponentType { get; set; } = null!;
+    [StringLength(50)]
+    public string? TitleColor { get; set; }
+
+    [StringLength(150)]
+    public string? AvatarAlt { get; set; }
 
     [ForeignKey("SectionId")]
     [InverseProperty("SectionItems")]

@@ -11,6 +11,7 @@ namespace Velora.Application.Shared.Dtos
         public string Type { get; set; } = "MENU"; // MENU / PAGE / ACTION / FIELD
         public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public string Route { get; set; } = string.Empty;
 
         // DisplayName per language
         public Dictionary<string, string> DisplayName { get; set; } = new();

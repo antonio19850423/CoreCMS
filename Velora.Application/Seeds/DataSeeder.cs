@@ -319,7 +319,8 @@ namespace Velora.Application.Seeds
                         DisplayName = res.Name,
                         IsActive = true,
                         Order = res.Order,
-                        ParentId = parentId
+                        ParentId = parentId,
+                        Route = res.Route,
                     });
                     resourceDto = created.Data;
                 }
@@ -328,6 +329,7 @@ namespace Velora.Application.Seeds
                     existing.Data.DisplayName = res.Name;
                     existing.Data.Order = res.Order;
                     existing.Data.ParentId = parentId;
+                    existing.Data.Route = res.Route;
                     await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
                     resourceDto = existing.Data;
                 }

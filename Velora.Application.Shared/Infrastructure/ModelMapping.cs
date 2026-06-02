@@ -22,6 +22,7 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.PageTemplateComponent, typeof(PageTemplateComponentCrud) },
             { LookupEntities.Page, typeof(PageCrud) },
             { LookupEntities.Section, typeof(SectionCrud) },
+            { LookupEntities.SectionItem, typeof(SectionItemCrud) },
             { LookupEntities.CmsConfiguration, typeof(CmsConfigurationCrud) },
             { LookupEntities.SiteSetting, typeof(SiteSettingCrud) }
         };

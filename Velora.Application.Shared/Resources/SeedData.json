@@ -51,6 +51,7 @@
           "Type": "MENU",
           "Code": "ROLE_MANAGEMENT",
           "Name": "Role Management",
+          "Route": "basic-info/role-management",
           "DisplayName": {
             "en": "Role Management",
             "fa": "مدیریت نقش‌ها"
@@ -64,7 +65,7 @@
               "Name": "Role Management Page",
               "DisplayName": {
                 "en": "Role Management Page",
-                "fa": "صفحه مدیریت نقش‌ها"
+                "fa": "مدیریت نقش‌ها"
               },
               "Order": 1
             }
@@ -74,6 +75,7 @@
           "Type": "MENU",
           "Code": "RESOURCETYPE_MANAGEMENT",
           "Name": "ResourceType Management",
+          "Route": "basic-info/resourcetype-management",
           "DisplayName": {
             "en": "ResourceType Management",
             "fa": "مدیریت نوع منابع"
@@ -87,7 +89,7 @@
               "Name": "ResourceType Management Page",
               "DisplayName": {
                 "en": "ResourceType Management Page",
-                "fa": "صفحه مدیریت نوع منابع"
+                "fa": "مدیریت نوع منابع"
               },
               "Order": 1
             }
@@ -97,6 +99,7 @@
           "Type": "MENU",
           "Code": "COMPONENTTYPE_MANAGEMENT",
           "Name": "ComponentType Management",
+          "Route": "basic-info/component-type-management",
           "DisplayName": {
             "en": "ComponentType Management",
             "fa": "مدیریت نوع کامپوننت"
@@ -110,7 +113,7 @@
               "Name": "ComponentType Management Page",
               "DisplayName": {
                 "en": "ComponentType Management Page",
-                "fa": "صفحه مدیریت نوع کامپوننت"
+                "fa": "مدیریت نوع کامپوننت"
               },
               "Order": 1
             }
@@ -118,10 +121,11 @@
         },
         {
           "Type": "MENU",
-          "Code": "PAGETEMPLATE_MANAGEMENT",
-          "Name": "PageTemplate Management",
+          "Code": "TEMPLATE_MANAGEMENT",
+          "Name": "Template Management",
+          "Route": "basic-info/template-management",
           "DisplayName": {
-            "en": "Page Template Management",
+            "en": "Template Management",
             "fa": "مدیریت الگو"
           },
           "Order": 4,
@@ -129,11 +133,11 @@
           "Children": [
             {
               "Type": "PAGE",
-              "Code": "PAGETEMPLATE_MANAGEMENT_PAGE",
-              "Name": "PageTemplate Management Page",
+              "Code": "TEMPLATE_MANAGEMENT_PAGE",
+              "Name": "Template Management Page",
               "DisplayName": {
                 "en": "Page Template Management Page",
-                "fa": "صفحه مدیریت الگو"
+                "fa": "مدیریت الگو"
               },
               "Order": 1
             }
@@ -156,6 +160,7 @@
           "Type": "MENU",
           "Code": "USER_MANAGEMENT_MENU",
           "Name": "User Management",
+          "Route": "administration/user-management",
           "DisplayName": {
             "en": "User Management",
             "fa": "مدیریت کاربران"
@@ -169,7 +174,7 @@
               "Name": "User Management Page",
               "DisplayName": {
                 "en": "User Management Page",
-                "fa": "صفحه مدیریت کاربران"
+                "fa": "مدیریت کاربران"
               },
               "Order": 1
             }
@@ -179,6 +184,7 @@
           "Type": "MENU",
           "Code": "RESOURCE_MANAGEMENT_MENU",
           "Name": "Resource Management",
+          "Route": "administration/resource-management",
           "DisplayName": {
             "en": "Resource Management",
             "fa": "مدیریت منابع"
@@ -192,7 +198,7 @@
               "Name": "Resource Management Page",
               "DisplayName": {
                 "en": "Resource Management Page",
-                "fa": "صفحه منابع"
+                "fa": "منابع"
               },
               "Order": 1
             }
@@ -202,6 +208,7 @@
           "Type": "MENU",
           "Code": "PERMISSION_MANAGEMENT_MENU",
           "Name": "Permission Management",
+          "Route": "administration/permission-management",
           "DisplayName": {
             "en": "Permission Management",
             "fa": "مدیریت دسترسی‌ها"
@@ -215,7 +222,7 @@
               "Name": "Permission Management Page",
               "DisplayName": {
                 "en": "Permission Management Page",
-                "fa": "صفحه مدیریت دسترسی‌ها"
+                "fa": "مدیریت دسترسی‌ها"
               },
               "Order": 1
             }
@@ -223,8 +230,9 @@
         },
         {
           "Type": "MENU",
-          "Code": "PAGETEMPLATECOMPONENT_MANAGEMENT_MENU",
-          "Name": "PageTemplateComponent Management",
+          "Code": "TEMPLATECOMPONENT_MANAGEMENT_MENU",
+          "Name": "TemplateComponent Management",
+          "Route": "administration/template-component-management",
           "DisplayName": {
             "en": "Page Template Component Management",
             "fa": "مدیریت الگو صفحه"
@@ -234,11 +242,11 @@
           "Children": [
             {
               "Type": "PAGE",
-              "Code": "PAGETEMPLATECOMPONENT_MANAGEMENT_PAGE",
-              "Name": "PAGETEMPLATECOMPONENT Management Page",
+              "Code": "TEMPLATECOMPONENT_MANAGEMENT_PAGE",
+              "Name": "TEMPLATECOMPONENT Management Page",
               "DisplayName": {
                 "en": "Page Template Component Management Page",
-                "fa": "صفحه مدیریت  الگو صفحه"
+                "fa": "مدیریت  الگو صفحه"
               },
               "Order": 1
             }
@@ -248,6 +256,7 @@
           "Type": "MENU",
           "Code": "PAGE_MANAGEMENT_MENU",
           "Name": "Page Management",
+          "Route": "administration/page-management",
           "DisplayName": {
             "en": "Page Management",
             "fa": "مدیریت صفحه"
@@ -274,16 +283,6 @@
                     "fa": "مدیریت بخش‌ها"
                   },
                   "Order": 1
-                },
-                {
-                  "Type": "TAB",
-                  "Code": "PAGE_TAB_Test",
-                  "Name": "Test Management",
-                  "DisplayName": {
-                    "en": "،Test Management",
-                    "fa": "مدیریت تست"
-                  },
-                  "Order": 2
                 }
               ]
             }
@@ -291,8 +290,9 @@
         },
         {
           "Type": "MENU",
-          "Code": "PAGESECTION_MANAGEMENT_MENU",
-          "Name": "PageSECTION Management",
+          "Code": "SECTION_MANAGEMENT_MENU",
+          "Name": "SECTION Management",
+          "Route": "administration/section-management",
           "DisplayName": {
             "en": "Section Management",
             "fa": "مدیریت بخش ها"
@@ -302,11 +302,47 @@
           "Children": [
             {
               "Type": "PAGE",
-              "Code": "PAGESECTION_MANAGEMENT_PAGE",
+              "Code": "SECTION_MANAGEMENT_PAGE",
               "Name": "SECTION Management Page",
               "DisplayName": {
                 "en": "SECTION Management Page",
-                "fa": "صفحه مدیریت بخش ها"
+                "fa": "مدیریت بخش ها"
+              },
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "SECTION_TAB_SECTIONITEM",
+                  "Name": "SECTION ITEM Management",
+                  "DisplayName": {
+                    "en": "Section Item Management",
+                    "fa": "مدیریت آیتم‌های بخش"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SECTIONITEM_MANAGEMENT_MENU",
+          "Name": "SECTIONITEM Management",
+          "Route": "administration/section-item-management",
+          "DisplayName": {
+            "en": "Section Item Management",
+            "fa": "مدیریت آیتم های بخش"
+          },
+          "Order": 5,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SECTIONITEM_MANAGEMENT_PAGE",
+              "Name": "SECTIONITEM Management Page",
+              "DisplayName": {
+                "en": "SECTION Item Management Page",
+                "fa": "مدیریت آیتم های بخش"
               },
               "Order": 1
             }
@@ -314,10 +350,11 @@
         },
         {
           "Type": "MENU",
-          "Code": "PAGECMSCONFIGURATION_MANAGEMENT_MENU",
-          "Name": "Page CMS Configuration  Management",
+          "Code": "CMSCONFIGURATION_MANAGEMENT_MENU",
+          "Name": "CMS Configuration  Management",
+          "Route": "administration/cms-configuration-management",
           "DisplayName": {
-            "en": "Page CMS Configuration  Management",
+            "en": "CMS Configuration  Management",
             "fa": "تنظیمات سیستم مدیریت محتوا"
           },
           "Order": 6,
@@ -325,7 +362,7 @@
           "Children": [
             {
               "Type": "PAGE",
-              "Code": "PAGECMSCONFIGURATION_MANAGEMENT_PAGE",
+              "Code": "CMSCONFIGURATION_MANAGEMENT_PAGE",
               "Name": "CMS Configuration Management Page",
               "DisplayName": {
                 "en": "Page CMS Configuration  Management",
@@ -339,6 +376,7 @@
           "Type": "MENU",
           "Code": "SITESETTING_MANAGEMENT_MENU",
           "Name": "Page Site Setting",
+          "Route": "administration/site-setting-management",
           "DisplayName": {
             "en": "Site Setting",
             "fa": "تنظیمات سایت"

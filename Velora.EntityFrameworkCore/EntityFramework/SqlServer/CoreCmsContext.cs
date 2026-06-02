@@ -83,6 +83,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSectionForm> VwSectionForms { get; set; }
 
+    public virtual DbSet<VwSectionItemForm> VwSectionItemForms { get; set; }
+
     public virtual DbSet<VwSiteGlobalSetting> VwSiteGlobalSettings { get; set; }
 
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
@@ -301,10 +303,6 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
 
-            entity.HasOne(d => d.ComponentType).WithMany(p => p.SectionItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_SectionItems_Type");
-
             entity.HasOne(d => d.Section).WithMany(p => p.SectionItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SectionItems_Section");
@@ -419,6 +417,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSectionForm>(entity =>
         {
             entity.ToView("VwSectionForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSectionItemForm>(entity =>
+        {
+            entity.ToView("VwSectionItemForm", "cms");
         });
 
         modelBuilder.Entity<VwSiteGlobalSetting>(entity =>

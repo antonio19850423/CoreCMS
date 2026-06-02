@@ -41,8 +41,5 @@ public partial class ComponentType
     public virtual ICollection<PageTemplateComponent> PageTemplateComponents { get; set; } = new List<PageTemplateComponent>();
 
     [InverseProperty("ComponentType")]
-    public virtual ICollection<SectionItem> SectionItems { get; set; } = new List<SectionItem>();
-
-    [InverseProperty("ComponentType")]
     public virtual ICollection<Section> Sections { get; set; } = new List<Section>();
 }
