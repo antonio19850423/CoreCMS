@@ -15,11 +15,13 @@ namespace Velora.Host.Controllers
     {
         private readonly IContentService _contentService;
         private readonly ITransactionService _transactionService;
+        private readonly IPageService _pageService;
 
-        public ContentController(IContentService ContentService)
+        public ContentController(IContentService ContentService, IPageService pageService)
         {
 
             _contentService = ContentService;
+            _pageService = pageService;
         }
 
 
@@ -28,6 +30,13 @@ namespace Velora.Host.Controllers
         public async Task<IActionResult> GetSiteInfo()
         {
             var result = await _contentService.GetSiteInfoAsync();
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("GetPageAsync")]
+        public async Task<IActionResult> GetPageAsync(string slug)
+        {
+            var result = await _pageService.GetPageAsync(slug);
             return Ok(result);
         }
 

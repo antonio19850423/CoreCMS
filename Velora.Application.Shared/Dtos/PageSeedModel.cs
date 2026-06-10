@@ -14,6 +14,6 @@ namespace Velora.Application.Shared.Dtos
         public string MetaTitle { get; set; }
         public string MetaDescription { get; set; }
         public string MetaKeywords { get; set; }
-        public List<string> Components { get; set; }
+        public List<PageComponentSeedDto> Components { get; set; }
     }
 }

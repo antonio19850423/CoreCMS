@@ -16,6 +16,7 @@ namespace Velora.Application.Shared.Services
         {
         Task<ResultDto<IEnumerable<TDto>>> GetAllAsync();
         Task<IQueryable<TDto>> GetAllQuery();
+        public IQueryable<TEntitySql> Query();
         Task<IQueryable<TResult>> GetAllViewQueryable<PgView, SqlView, TResult>()
             where PgView : class
             where SqlView : class

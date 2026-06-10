@@ -54,6 +54,7 @@ namespace Velora.Application.Seeds
         private readonly ISiteSettingService _siteSettingService;
         private readonly IPageService _pageService;
         private readonly ISectionService _sectionService;
+        private readonly ISectionItemService _sectionItemService;
         private readonly IConfiguration _configuration;
         private readonly IComponentTypeService _componentTypeService;
         ICmsConfigurationService _cmsConfigurationService;
@@ -76,7 +77,7 @@ namespace Velora.Application.Seeds
             ISeedHistoryService seedHistoryService,
             ISiteSettingService siteSettingService,
             ICmsConfigurationService cmsConfigurationService,
-            IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService)
+            IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
             _dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -104,6 +105,7 @@ namespace Velora.Application.Seeds
             _sectionService = sectionService;
             _configuration = configuration;
             _componentTypeService = componentTypeService;
+            _sectionItemService = sectionItemService;
         }
 
         public async Task SeedAllAsync()
@@ -1233,22 +1235,23 @@ namespace Velora.Application.Seeds
                 // =================================================
                 // COMPONENT LOOP
                 // =================================================
-                foreach (var componentCode in page.Components)
+                int sectionIndex = 1;
+
+                foreach (var component in page.Components)
                 {
-                    if (!componentRules.TryGetValue(componentCode, out var rule))
+                    if (!componentRules.TryGetValue(component.Code, out var rule))
                         continue;
 
                     // ================= COMPONENT TYPE UPSERT =================
                     var existingComponentType = _dbType == DatabaseType.SqlServer
-                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == componentCode)
-                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == componentCode);
+                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
+                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
 
                     var componentTypeEntity = new ComponentTypeDto
                     {
-                        Name = componentCode,
-                        Code = componentCode,
-                        Type = "Hero",
-                        Description = componentCode,
+                        Name = component.Code,
+                        Code = component.Code,
+                        Type = component.Type,
                         IsActive = true
                     };
 
@@ -1262,58 +1265,159 @@ namespace Velora.Application.Seeds
                         componentTypeEntity.Id = existingComponentType.Data.Id;
                     }
 
-                    componentTypeCache[componentCode] = componentTypeEntity;
+                    componentTypeCache[component.Code] = componentTypeEntity;
 
                     // ================= SECTION UPSERT =================
                     var existingSection = _dbType == DatabaseType.SqlServer
-                         ? await _sectionService.FirstOrDefaultAsync<SqlSection>(
-                             x => x.PageId == pageEntity.Id &&
-                                  x.ComponentTypeId == componentTypeEntity.Id)
-                         : await _sectionService.FirstOrDefaultAsync<SqlSection>(
-                             x => x.PageId == pageEntity.Id &&
-                                  x.ComponentTypeId == componentTypeEntity.Id);
+                        ? await _sectionService.FirstOrDefaultAsync<SqlSection>(
+                            x => x.PageId == pageEntity.Id &&
+                                 x.ComponentTypeId == componentTypeEntity.Id)
+                        : await _sectionService.FirstOrDefaultAsync<SqlSection>(
+                            x => x.PageId == pageEntity.Id &&
+                                 x.ComponentTypeId == componentTypeEntity.Id);
 
-                    var sectionEntity = new SectionDto
-                    {
-                        PageId = pageEntity.Id,
-                        ComponentTypeId = componentTypeEntity.Id,
-                        IsActive = true,
-                        IsTest = false,
-                        SortOrder = sortOrder++,
-                        BackgroundColor = "#ffffff",
-                        HeaderColor = "#000000",
-                        SubtitleColor = "#333333",
-                        DescriptionColor = "#555555",
-                        IconColor = "#000000",
-                        Icon = null,
-                        IconAlt = null,
-                        ImageAlt = "Default Image"
-                    };
+                    SectionDto sectionEntity;
+                    var rtl = rule.DefaultData?.Rtl;
 
-                    // اگر Section وجود ندارد، ایجاد کن
+                    // 🔥 FIXED: deterministic SortOrder instead of sortOrder++
+                    var currentSectionSortOrder = sectionIndex++;
+
                     if (existingSection.Data == null)
                     {
+                        sectionEntity = new SectionDto
+                        {
+                            PageId = pageEntity.Id,
+                            ComponentTypeId = componentTypeEntity.Id,
+
+                            IsActive = true,
+                            IsTest = false,
+
+                            SortOrder = currentSectionSortOrder,
+
+                            BackgroundColor = "#ffffff",
+                            HeaderColor = "#000000",
+                            SubtitleColor = "#333333",
+                            DescriptionColor = "#555555",
+
+                            Title = rtl?.Title,
+                            Subtitle = rtl?.Subtitle,
+                            Description = rtl?.Description,
+                            ImageUrl = rtl?.ImageUrl,
+                            Link1Text = rtl?.Link1Text,
+                            Link1Url = rtl?.Link1Url,
+
+                            ColumnsCount = 1
+                        };
+
                         var created = await _sectionService.CreateAsync(sectionEntity);
                         sectionEntity.Id = created.Data.Id;
 
-                        // ⚡ Apply defaultData به محض ایجاد Section
-                        var rtl = rule.DefaultData?.Rtl;
-                        if (rtl != null)
+                        // =========================================
+                        // SECTION ITEMS SEED
+                        // =========================================
+                        if (rtl?.Items != null)
                         {
-                            sectionEntity.Title = rtl.Title;
-                            sectionEntity.Subtitle = rtl.Subtitle;
-                            sectionEntity.Description = rtl.Description;
-                            sectionEntity.ImageUrl = rtl.ImageUrl;
-                            sectionEntity.Link1Text = rtl.Link1Text;
-                            sectionEntity.Link1Url = rtl.Link1Url;
-                            sectionEntity.ColumnsCount = 1;
+                            int itemSortOrder = 1;
 
-                            await _sectionService.UpdateAsync(sectionEntity);
+                            foreach (var item in rtl.Items)
+                            {
+                                var sectionItem = new SectionItemDto
+                                {
+                                    SectionId = sectionEntity.Id,
+
+                                    Title = item.Title,
+                                    Subtitle = item.Subtitle,
+                                    Description = item.Description,
+
+                                    Icon = item.Icon,
+                                    ImageUrl = item.ImageUrl,
+                                    AvatarUrl = item.AvatarUrl,
+
+                                    Link1Text = item.Link1Text,
+                                    Link1Url = item.Link1Url,
+
+                                    Link2Text = item.Link2Text,
+                                    Link2Url = item.Link2Url,
+
+                                    Link3Text = item.Link3Text,
+                                    Link3Url = item.Link3Url,
+
+                                    Link4Text = item.Link4Text,
+                                    Link4Url = item.Link4Url,
+
+                                    IsActive = true,
+
+                                    // 🔥 SortOrder بر اساس loop
+                                    SortOrder = itemSortOrder++
+                                };
+
+                                await _sectionItemService.CreateAsync(sectionItem);
+                            }
                         }
                     }
                     else
                     {
-                        sectionEntity.Id = existingSection.Data.Id;
+                        sectionEntity = existingSection.Data;
+
+                        // 🔥 FIXED: still controlled by loop index (not random ++ state)
+                        sectionEntity.SortOrder = currentSectionSortOrder++;
+                        await _sectionService.UpdateAsync(sectionEntity, sectionEntity.Id);
+                        // =========================================
+                        // SECTION ITEMS SEED IF NOT EXISTS
+                        // =========================================
+                        if (rtl?.Items != null)
+                        {
+                            int itemSortOrder = 1;
+
+                            foreach (var item in rtl.Items)
+                            {
+                                var existingItem = await _sectionItemService
+                                    .FirstOrDefaultAsync<SqlSectionItem>(
+                                        x => x.SectionId == sectionEntity.Id &&
+                                             x.Title == item.Title);
+
+                                var sectionItem = new SectionItemDto
+                                {
+                                    SectionId = sectionEntity.Id,
+
+                                    Title = item.Title,
+                                    Subtitle = item.Subtitle,
+                                    Description = item.Description,
+
+                                    Icon = item.Icon,
+                                    ImageUrl = item.ImageUrl,
+                                    AvatarUrl = item.AvatarUrl,
+
+                                    Link1Text = item.Link1Text,
+                                    Link1Url = item.Link1Url,
+
+                                    Link2Text = item.Link2Text,
+                                    Link2Url = item.Link2Url,
+
+                                    Link3Text = item.Link3Text,
+                                    Link3Url = item.Link3Url,
+
+                                    Link4Text = item.Link4Text,
+                                    Link4Url = item.Link4Url,
+
+                                    IsActive = true,
+
+                                    // 🔥 SortOrder بر اساس loop
+                                    SortOrder = itemSortOrder++
+                                };
+
+                                if (existingItem.Data == null)
+                                {
+                                    await _sectionItemService.CreateAsync(sectionItem);
+                                }
+                                else
+                                {
+                                    sectionItem.Id = existingItem.Data.Id;
+                                    await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
+                                }
+                            }
+                        }
+
                     }
                 }
             }

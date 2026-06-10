@@ -27,5 +27,212 @@
         "link1Url": "#"
       }
     }
+  },
+  "feature": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "features": true
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "سرعت بیشتر در توسعه",
+        "subtitle": "جریان کاری مدرن و بهینه",
+        "description": "با استفاده از معماری کامپوننتی، سریع‌تر و مقیاس‌پذیرتر توسعه دهید.",
+        "imageUrl": "http://localhost:5274/uploads/sections/feature.avif",
+        "items": [
+          {
+            "name": "استقرار سریع",
+            "description": "پروژه خود را در چند ثانیه منتشر کنید.",
+            "icon": "CloudArrowUpIcon"
+          },
+          {
+            "name": "گواهی SSL",
+            "description": "ارتباط امن و رمزنگاری شده.",
+            "icon": "LockClosedIcon"
+          },
+          {
+            "name": "پشتیبان‌گیری",
+            "description": "بکاپ خودکار دیتابیس.",
+            "icon": "ServerIcon"
+          },
+          {
+            "name": "امنیت پیشرفته",
+            "description": "محافظت چند لایه.",
+            "icon": "ShieldCheckIcon"
+          },
+          {
+            "name": "عملکرد بالا",
+            "description": "بهینه‌سازی برای سرعت.",
+            "icon": "BoltIcon"
+          },
+          {
+            "name": "مدیریت هوشمند",
+            "description": "کنترل کامل سیستم.",
+            "icon": "Cog6ToothIcon"
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Deploy faster",
+        "subtitle": "Modern optimized workflow",
+        "description": "Build scalable applications faster with modular architecture.",
+        "imageUrl": "http://localhost:5274/uploads/sections/feature.avif",
+        "items": [
+          {
+            "name": "Fast Deployment",
+            "description": "Deploy in seconds.",
+            "icon": "CloudArrowUpIcon"
+          },
+          {
+            "name": "SSL Certificates",
+            "description": "Secure encryption.",
+            "icon": "LockClosedIcon"
+          },
+          {
+            "name": "Database Backups",
+            "description": "Automatic backups.",
+            "icon": "ServerIcon"
+          },
+          {
+            "name": "Advanced Security",
+            "description": "Multi-layer protection.",
+            "icon": "ShieldCheckIcon"
+          },
+          {
+            "name": "High Performance",
+            "description": "Optimized speed.",
+            "icon": "BoltIcon"
+          },
+          {
+            "name": "Smart Control",
+            "description": "Full system control.",
+            "icon": "Cog6ToothIcon"
+          }
+        ]
+      }
+    }
+  },
+  "howItWorks": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "items": true
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "شروع در ۳ مرحله ساده",
+        "subtitle": "نحوه کار",
+        "description": "بدون پیچیدگی فنی، در چند مرحله کوتاه وب‌سایت خود را راه‌اندازی و مدیریت کنید.",
+        "imageUrl": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+        "items": [
+          {
+            "title": "انتخاب قالب",
+            "description": "از بین قالب‌های حرفه‌ای، ساختار مناسب کسب‌وکار خود را انتخاب کنید.",
+            "icon": "CursorArrowRaysIcon"
+          },
+          {
+            "title": "شخصی‌سازی محتوا",
+            "description": "متن‌ها، تصاویر و بخش‌های مختلف را به سادگی ویرایش و مدیریت کنید.",
+            "icon": "PencilSquareIcon"
+          },
+          {
+            "title": "انتشار وب‌سایت",
+            "description": "وب‌سایت خود را تنها با یک کلیک منتشر و در دسترس کاربران قرار دهید.",
+            "icon": "RocketLaunchIcon"
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Get Started in 3 Simple Steps",
+        "subtitle": "How It Works",
+        "description": "Launch and manage your website effortlessly using a modern and optimized workflow.",
+        "imageUrl": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+        "items": [
+          {
+            "title": "Choose a Template",
+            "description": "Pick a modern layout that perfectly fits your business needs.",
+            "icon": "CursorArrowRaysIcon"
+          },
+          {
+            "title": "Customize Content",
+            "description": "Edit texts, images, and sections easily with a flexible editor.",
+            "icon": "PencilSquareIcon"
+          },
+          {
+            "title": "Launch Your Website",
+            "description": "Publish your website instantly and make it accessible worldwide.",
+            "icon": "RocketLaunchIcon"
+          }
+        ]
+      }
+    }
+  },
+  "slider": {
+    "rules": {
+      "direction": true,
+      "items": true
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "items": [
+          {
+            "title": "ساخت تجربه‌های مدرن",
+            "subtitle": "سریع، حرفه‌ای و مقیاس‌پذیر",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider1.jpg",
+            "linkText": "شروع کنید",
+            "linkUrl": "#"
+          },
+          {
+            "title": "مدیریت هوشمند",
+            "subtitle": "همه چیز در یک داشبورد",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider2.jpg",
+            "linkText": "مشاهده",
+            "linkUrl": "#"
+          },
+          {
+            "title": "تحلیل پیشرفته",
+            "subtitle": "تصمیم‌گیری بهتر با داده",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider3.jpg",
+            "linkText": "شروع تحلیل",
+            "linkUrl": "#"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "items": [
+          {
+            "title": "Build Modern Experiences",
+            "subtitle": "Fast, scalable and professional",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider1.jpg",
+            "linkText": "Get Started",
+            "linkUrl": "#"
+          },
+          {
+            "title": "Smart Management",
+            "subtitle": "Everything in one dashboard",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider2.jpg",
+            "linkText": "View",
+            "linkUrl": "#"
+          },
+          {
+            "title": "Advanced Analytics",
+            "subtitle": "Better decisions with data",
+            "imageUrl": "http://localhost:5274/uploads/sections/slider3.jpg",
+            "linkText": "Start Analysis",
+            "linkUrl": "#"
+          }
+        ]
+      }
+    }
   }
+
 }

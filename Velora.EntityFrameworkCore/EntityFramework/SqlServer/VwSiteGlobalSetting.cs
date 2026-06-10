@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 [Keyless]
-public partial class VwSiteGlobalSetting
+public partial class SiteGlobalSettingView
 {
     [StringLength(200)]
     public string SiteName { get; set; } = null!;

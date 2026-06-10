@@ -8,6 +8,10 @@ namespace Velora.Application.Shared.Dtos
 {
     public class ComponentLanguageData
     {
+        public ComponentLanguageData()
+        {
+            Items = new List<ComponentItemData>();
+        }
         public string Title { get; set; } = string.Empty;
         public string Subtitle { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -24,5 +28,6 @@ namespace Velora.Application.Shared.Dtos
 
         public string Link4Text { get; set; } = string.Empty;
         public string Link4Url { get; set; } = string.Empty;
+        public List<ComponentItemData>? Items { get; set; }
     }
 }

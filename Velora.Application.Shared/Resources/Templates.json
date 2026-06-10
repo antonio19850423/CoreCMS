@@ -11,7 +11,23 @@
           "metaDescription": "صفحه اصلی وب‌سایت شرکت شامل معرفی خدمات و دستاوردها",
           "metaKeywords": "خانه، شرکت، خدمات، معرفی",
           "components": [
-            "defaultHero"
+            {
+              "code": "slider",
+              "type": "slider"
+            },
+            {
+              "code": "defaultHero",
+              "type": "hero"
+            },
+            {
+              "code": "feature",
+              "type": "feature"
+            },
+            {
+              "code": "howItWorks",
+              "type": "howItWorks"
+            }
+
           ]
         }
       ]

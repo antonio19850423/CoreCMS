@@ -74,10 +74,16 @@ namespace Velora.Application.Services
         {
             var repo = GetRepository();
             IQueryable<dynamic> query = _dbType == DatabaseType.SqlServer
-                ? ((ISqlRepository<TEntitySql>)repo).GetAllQueryable()
-                : ((IPosgreSqlRepository<TEntityPosgreSql>)repo).GetAllQueryable();
+                ? ((ISqlRepository<TEntitySql>)repo).GetAllQueryable().AsNoTracking()
+                : ((IPosgreSqlRepository<TEntityPosgreSql>)repo).GetAllQueryable().AsNoTracking();
 
             return query.ProjectTo<TDto>(_mapper.ConfigurationProvider);
+        }
+        public IQueryable<TEntitySql> Query()
+        {
+            return ((ISqlRepository<TEntitySql>)GetRepository())
+                .GetAllQueryable()
+                .AsNoTracking();
         }
 
         // 🔹 GetAllViewQueryable

@@ -14,12 +14,12 @@ using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
     public class PageService : GenericService<SqlPage, SqlPage, PageDto>, IPageService
     {
-        private readonly ISqlRepository<SqlPage> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -247,6 +247,126 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ResultDto<PageViewDto>> GetPageAsync(string slug)
+        {
+            var result = new ResultDto<PageViewDto>();
+            try
+            {
+                // واکشی صفحه + Sections + SectionItems
+                var pageEntity = await Query()
+     .Include(p => p.Sections)
+         .ThenInclude(s => s.ComponentType)
+     .Include(p => p.Sections)
+         .ThenInclude(s => s.SectionItems)
+     .FirstOrDefaultAsync(p => p.Slug == slug);
+
+                if (pageEntity == null)
+                {
+                    result.Success = false;
+                    result.Message = $"Page with slug '{slug}' not found.";
+                    return result;
+                }
+
+                // map مستقیم به PageViewDto
+                var pageViewDto = new PageViewDto
+                {
+                    Id = pageEntity.Id,
+                    Name = pageEntity.Name,
+                    Slug = pageEntity.Slug,
+                    PageTemplateId = pageEntity.PageTemplateId,
+                    IsHome = pageEntity.IsHome,
+                    IsPublished = pageEntity.IsPublished,
+                    MetaTitle = pageEntity.MetaTitle,
+                    MetaDescription = pageEntity.MetaDescription,
+                    MetaKeywords = pageEntity.MetaKeywords,
+                    CanonicalUrl = pageEntity.CanonicalUrl,
+                    OgImageUrl = pageEntity.OgImageUrl,
+                    IsActive = pageEntity.IsActive,
+
+                    Sections = pageEntity.Sections.OrderBy(c=>c.SortOrder).Select(s => new SectionViewDto
+                    {
+                        Id = s.Id,
+                        ParentId = pageEntity.Id,
+                        ComponentTypeId = s.ComponentTypeId,
+                        ComponentTypeName=s.ComponentType.Name,
+                        Title = s.Title,
+                        Subtitle = s.Subtitle,
+                        Description = s.Description,
+                        ImageUrl = s.ImageUrl,
+                        ColumnsCount = s.ColumnsCount,
+                        SortOrder = s.SortOrder,
+                        IsActive = s.IsActive,
+                        BackgroundColor = s.BackgroundColor,
+                        HeaderColor = s.HeaderColor,
+                        SubtitleColor = s.SubtitleColor,
+                        DescriptionColor = s.DescriptionColor,
+                        Icon = s.Icon,
+                        IconColor = s.IconColor,
+                        IconAlt = s.IconAlt,
+                        ImageAlt = s.ImageAlt,
+                        Link1Text = s.Link1Text,
+                        Link1Url = s.Link1Url,
+                        Link1Color = s.Link1Color,
+                        Link2Text = s.Link2Text,
+                        Link2Url = s.Link2Url,
+                        Link2Color = s.Link2Color,
+                        Link3Text = s.Link3Text,
+                        Link3Url = s.Link3Url,
+                        Link3Color = s.Link3Color,
+                        Link4Text = s.Link4Text,
+                        Link4Url = s.Link4Url,
+                        Link4Color = s.Link4Color,
+
+                        Items = s.SectionItems.OrderBy(c => c.SortOrder).Select(si => new SectionItemCrud
+                        {
+                            Id = si.Id,
+                            ParentId = si.SectionId,
+                            Title = si.Title,
+                            Subtitle = si.Subtitle,
+                            Description = si.Description,
+                            Price = si.Price,
+                            ImageUrl = si.ImageUrl,
+                            AvatarUrl = si.AvatarUrl,
+                            SortOrder = si.SortOrder,
+                            IsActive = si.IsActive,
+                            BackgroundColor = si.BackgroundColor,
+                            SubtitleColor = si.SubtitleColor,
+                            DescriptionColor = si.DescriptionColor,
+                            Link1Text = si.Link1Text,
+                            Link1Url = si.Link1Url,
+                            Link1Color = si.Link1Color,
+                            Link2Text = si.Link2Text,
+                            Link2Url = si.Link2Url,
+                            Link2Color = si.Link2Color,
+                            Link3Text = si.Link3Text,
+                            Link3Url = si.Link3Url,
+                            Link3Color = si.Link3Color,
+                            Link4Text = si.Link4Text,
+                            Link4Url = si.Link4Url,
+                            Link4Color = si.Link4Color,
+                            Icon = si.Icon,
+                            IconColor = si.IconColor,
+                            IconAlt = si.IconAlt,
+                            ImageAlt = si.ImageAlt,
+                            TitleColor = si.TitleColor,
+                            AvatarAlt = si.AvatarAlt
+                        }).ToList()
+                    }).ToList()
+                };
+
+                result.Data = pageViewDto;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Failed to load page.";
+                result.Errors.Add(ex.Message);
+            }
+
+            return result;
         }
 
 
