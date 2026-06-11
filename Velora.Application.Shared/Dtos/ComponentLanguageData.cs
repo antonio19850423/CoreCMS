@@ -28,6 +28,7 @@ namespace Velora.Application.Shared.Dtos
 
         public string Link4Text { get; set; } = string.Empty;
         public string Link4Url { get; set; } = string.Empty;
+        public string? Features { get; set; } = string.Empty;
         public List<ComponentItemData>? Items { get; set; }
     }
 }

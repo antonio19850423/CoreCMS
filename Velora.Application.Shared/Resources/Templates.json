@@ -26,8 +26,11 @@
             {
               "code": "howItWorks",
               "type": "howItWorks"
+            },
+            {
+              "code": "pricing",
+              "type": "pricing"
             }
-
           ]
         }
       ]

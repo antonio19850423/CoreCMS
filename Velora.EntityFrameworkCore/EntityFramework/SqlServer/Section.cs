@@ -105,6 +105,8 @@ public partial class Section
     [StringLength(150)]
     public string? Icon { get; set; }
 
+    public string? Features { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

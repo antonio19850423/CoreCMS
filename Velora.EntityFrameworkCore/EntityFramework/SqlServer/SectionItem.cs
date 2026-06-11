@@ -110,6 +110,8 @@ public partial class SectionItem
     [StringLength(150)]
     public string? AvatarAlt { get; set; }
 
+    public string? Features { get; set; }
+
     [ForeignKey("SectionId")]
     [InverseProperty("SectionItems")]
     public virtual Section Section { get; set; } = null!;

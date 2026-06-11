@@ -195,4 +195,7 @@
   <data name="Section.Link4Url" xml:space="preserve">
     <value>آدرس لینک ۴</value>
   </data>
+  <data name="Section.Features" xml:space="preserve">
+    <value>ویژگی ها</value>
+  </data>
 </root>

@@ -80,6 +80,7 @@ namespace Velora.Application.Services
                     Link2Text = input.Link2Text,
                     Link3Text = input.Link3Text,
                     Link4Text = input.Link4Text,
+                    Features = input.Features,
                     
                     
                 };
@@ -141,6 +142,7 @@ namespace Velora.Application.Services
                     Link2Url = input.Link2Url ,
                     Link3Url = input.Link3Url,
                     Link4Url = input.Link4Url ,
+                    Features = input.Features,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

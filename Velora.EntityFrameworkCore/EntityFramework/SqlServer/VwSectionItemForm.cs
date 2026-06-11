@@ -97,6 +97,8 @@ public partial class VwSectionItemForm
     [StringLength(150)]
     public string? AvatarAlt { get; set; }
 
+    public string? Features { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 
@@ -108,4 +110,7 @@ public partial class VwSectionItemForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    [StringLength(100)]
+    public string? ComponentTypeName { get; set; }
 }

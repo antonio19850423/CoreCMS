@@ -1344,6 +1344,7 @@ namespace Velora.Application.Seeds
 
                                     Link4Text = item.Link4Text,
                                     Link4Url = item.Link4Url,
+                                    Features=item.Features,
 
                                     IsActive = true,
 
@@ -1399,6 +1400,7 @@ namespace Velora.Application.Seeds
 
                                     Link4Text = item.Link4Text,
                                     Link4Url = item.Link4Url,
+                                    Features=item.Features,
 
                                     IsActive = true,
 

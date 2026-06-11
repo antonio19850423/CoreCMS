@@ -222,4 +222,10 @@
   <data name="SectionItem.Id" xml:space="preserve">
     <value>شناسه</value>
   </data>
+  <data name="SectionItem.Features" xml:space="preserve">
+    <value>ویژگی ها</value>
+  </data>
+  <data name="SectionItem.ComponentTypeName" xml:space="preserve">
+    <value>نام کامپوننت</value>
+  </data>
 </root>

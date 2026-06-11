@@ -123,7 +123,11 @@
       "description": true,
       "imageUrl": true,
       "imageAlt": true,
-      "items": true
+      "items": {
+        "title": true,
+        "description": true,
+        "icon": true
+      }
     },
     "defaultData": {
       "rtl": {
@@ -177,7 +181,13 @@
   "slider": {
     "rules": {
       "direction": true,
-      "items": true
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "linkText": true,
+        "linkUrl": true
+      }
     },
     "defaultData": {
       "rtl": {
@@ -229,6 +239,101 @@
             "imageUrl": "http://localhost:5274/uploads/sections/slider3.jpg",
             "linkText": "Start Analysis",
             "linkUrl": "#"
+          }
+        ]
+      }
+    }
+  },
+  "pricing": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "link1Text": true,
+        "link1Url": true,
+        "features": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "پلن‌های قیمت‌گذاری",
+        "subtitle": "انتخاب پلن مناسب",
+        "description": "با توجه به نیاز خود، یکی از پلن‌های زیر را انتخاب کنید و در هر زمان ارتقا دهید.",
+        "items": [
+          {
+            "title": "پایه",
+            "subtitle": "رایگان",
+            "description": "مناسب برای شروع و تست اولیه پروژه",
+            "link1Text": "شروع کنید",
+            "link1Url": "#",
+            "features": "دسترسی محدود به امکانات|پشتیبانی استاندارد|مناسب پروژه‌های کوچک"
+          },
+          {
+            "title": "حرفه‌ای",
+            "subtitle": "۹.۹۹$",
+            "description": "مناسب برای کسب‌وکارهای در حال رشد",
+            "link1Text": "شروع کنید",
+            "link1Url": "#",
+            "features": "تمام امکانات پلن پایه|پشتیبانی سریع‌تر|دسترسی کامل API|امنیت پیشرفته"
+          },
+          {
+            "title": "تجاری",
+            "subtitle": "۱۹.۹۹$",
+            "description": "مناسب برای تیم‌ها و شرکت‌ها",
+            "link1Text": "شروع کنید",
+            "link1Url": "#",
+            "features": "همه امکانات پرو|مدیریت تیم|گزارش‌گیری پیشرفته|اولویت پشتیبانی"
+          },
+          {
+            "title": "سازمانی",
+            "subtitle": "تماس بگیرید",
+            "description": "برای سازمان‌های بزرگ و سفارشی",
+            "link1Text": "تماس با ما",
+            "link1Url": "#",
+            "features": "راهکار اختصاصی|پشتیبانی ۲۴/۷|قرارداد سازمانی|امنیت سطح بالا"
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Pricing Plans",
+        "subtitle": "Choose Your Plan",
+        "description": "Select the best plan for your needs and upgrade anytime as you grow.",
+        "items": [
+          {
+            "title": "Basic",
+            "subtitle": "Free",
+            "description": "Perfect for getting started and testing ideas",
+            "link1Text": "Get Started",
+            "link1Url": "#",
+            "features": "Limited features access|Standard support|Best for small projects"
+          },
+          {
+            "title": "Pro",
+            "subtitle": "$9.99",
+            "description": "Ideal for growing businesses",
+            "link1Text": "Get Started",
+            "link1Url": "#",
+            "features": "Everything in Basic|Faster support|Full API access|Advanced security"
+          },
+          {
+            "title": "Business",
+            "subtitle": "$19.99",
+            "description": "For teams and companies",
+            "link1Text": "Get Started",
+            "link1Url": "#",
+            "features": "Everything in Pro|Team management|Advanced analytics|Priority support"
+          },
+          {
+            "title": "Enterprise",
+            "subtitle": "Contact Us",
+            "description": "Custom solutions for large organizations",
+            "link1Text": "Contact Us",
+            "link1Url": "#",
+            "features": "Custom architecture|24/7 support|Enterprise SLA|Maximum security"
           }
         ]
       }

@@ -120,5 +120,9 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 33, GridOrder = 33, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 34, GridOrder = 34, ShowInGrid = false, ShowInForm = true,MaxLength =2000)]
+        public string? Features { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 35, GridOrder = 35, ShowInGrid = true, ShowInForm = false, MaxLength = 100)]
+        public string? ComponentTypeName { get; set; }
     }
 }

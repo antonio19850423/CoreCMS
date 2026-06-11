@@ -49,5 +49,6 @@ namespace Velora.Application.Shared.Dtos
 
         public string? IconColor { get; set; }
         public string? AvatarUrl { get; set; }
+        public string? Features { get; set; }
     }
 }

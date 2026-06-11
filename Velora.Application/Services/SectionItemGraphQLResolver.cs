@@ -70,6 +70,8 @@ public class SectionItemGqlResolver : ISectionItemGqlResolver
             Link4Url = x.Link4Url ??"",
             SubtitleColor = x.SubtitleColor ??"",
             TitleColor= x.TitleColor ??"",
+            ComponentTypeName = x.ComponentTypeName ??"",
+            Features= x.Features ??"",
             ShouldInsert = x.ShouldInsert
         });
     }

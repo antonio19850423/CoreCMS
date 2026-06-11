@@ -318,7 +318,7 @@ int pageSize)
                         Link4Text = s.Link4Text,
                         Link4Url = s.Link4Url,
                         Link4Color = s.Link4Color,
-
+                        Features = s.Features,
                         Items = s.SectionItems.OrderBy(c => c.SortOrder).Select(si => new SectionItemCrud
                         {
                             Id = si.Id,
@@ -351,7 +351,8 @@ int pageSize)
                             IconAlt = si.IconAlt,
                             ImageAlt = si.ImageAlt,
                             TitleColor = si.TitleColor,
-                            AvatarAlt = si.AvatarAlt
+                            AvatarAlt = si.AvatarAlt,
+                            Features=si.Features
                         }).ToList()
                     }).ToList()
                 };

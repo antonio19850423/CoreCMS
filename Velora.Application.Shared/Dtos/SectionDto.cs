@@ -105,6 +105,7 @@ namespace Velora.Application.Shared.Dtos
         public string? ImageAlt { get; set; }
         [StringLength(150)]
         public string? Icon { get; set; }
+        public string? Features { get; set; }
 
     }
 }

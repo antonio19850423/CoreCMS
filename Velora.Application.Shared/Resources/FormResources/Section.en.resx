@@ -195,4 +195,7 @@
   <data name="Section.Link4Url" xml:space="preserve">
     <value>Link 4 URL</value>
   </data>
+  <data name="Section.Features" xml:space="preserve">
+    <value>Features</value>
+  </data>
 </root>

@@ -90,6 +90,7 @@ namespace Velora.Application.Services
                     Subtitle=input.Subtitle,
                     SubtitleColor=input.SubtitleColor,
                     TitleColor=input.TitleColor,
+                    Features = input.Features,
                     
                     
                 };
@@ -162,6 +163,7 @@ namespace Velora.Application.Services
                     IconColor = input.IconColor,
                     Link4Color = input.Link4Color,
                     Price=input.Price,
+                    Features=input.Features,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

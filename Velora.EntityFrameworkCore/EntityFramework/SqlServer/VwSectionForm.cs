@@ -97,6 +97,8 @@ public partial class VwSectionForm
     [StringLength(500)]
     public string? Subtitle { get; set; }
 
+    public string? Features { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

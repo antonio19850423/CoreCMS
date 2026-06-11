@@ -110,5 +110,6 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(150)]
         public string? AvatarAlt { get; set; }
+        public string? Features { get; set; }
     }
 }

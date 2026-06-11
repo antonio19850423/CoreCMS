@@ -222,4 +222,10 @@
   <data name="SectionItem.Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="SectionItem.Features" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="SectionItem.ComponentTypeName" xml:space="preserve">
+    <value>ComponentTypeName</value>
+  </data>
 </root>

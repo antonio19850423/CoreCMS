@@ -17,6 +17,7 @@ namespace Velora.Host.Controllers
         private readonly ITransactionService _transactionService;
         private readonly IPageService _pageService;
 
+
         public ContentController(IContentService ContentService, IPageService pageService)
         {
 

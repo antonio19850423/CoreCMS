@@ -38,14 +38,15 @@ namespace Velora.Host.Controllers
         private readonly ITransactionService _transactionService;
         private readonly IResourceCacheService _resourceCacheService;
         private readonly IGeneralContextService _generalContextService;
+        private readonly IComponentRuleCacheService _componentRuleCacheService;
 
-
-        public ResourceController(IResourceService resourceService, ITransactionService transactionService, IResourceCacheService resourceCacheService, IGeneralContextService generalContextService)
+        public ResourceController(IResourceService resourceService, ITransactionService transactionService, IResourceCacheService resourceCacheService, IGeneralContextService generalContextService, IComponentRuleCacheService componentRuleCacheService)
         {
             _resourceService = resourceService;
             _transactionService = transactionService;
             _resourceCacheService = resourceCacheService;
             _generalContextService = generalContextService;
+            _componentRuleCacheService = componentRuleCacheService;
         }
 
         [HttpGet]
@@ -65,6 +66,14 @@ namespace Velora.Host.Controllers
         {
             var data = await _resourceCacheService.GetResourcesAsync(_generalContextService.CurrentLanguage, resourceCodes);
             return StatusCode(data.StatusCode, data);
+        }
+
+        [HttpGet]
+        [Route("GetComponentRules")]
+        public async Task<IActionResult> GetComponentRules()
+        {
+            var result = await _componentRuleCacheService.GetComponentRulesAsync();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
