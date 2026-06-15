@@ -99,6 +99,12 @@ public partial class VwSectionItemForm
 
     public string? Features { get; set; }
 
+    [StringLength(150)]
+    public string? Name { get; set; }
+
+    [StringLength(150)]
+    public string? Role { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 
@@ -113,4 +119,15 @@ public partial class VwSectionItemForm
 
     [StringLength(100)]
     public string? ComponentTypeName { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string? SectionGroupItemName { get; set; }
+
+    public Guid? SectionGroupItemId { get; set; }
+
+    [StringLength(500)]
+    public string? Question { get; set; }
+
+    public string? Answer { get; set; }
 }

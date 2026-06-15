@@ -228,4 +228,22 @@
   <data name="SectionItem.ComponentTypeName" xml:space="preserve">
     <value>نام کامپوننت</value>
   </data>
+  <data name="SectionItem.Answer" xml:space="preserve">
+    <value>پاسخ</value>
+  </data>
+  <data name="SectionItem.Question" xml:space="preserve">
+    <value>سوال</value>
+  </data>
+  <data name="SectionItem.Name" xml:space="preserve">
+    <value>عنوان (نام شخص / شرکت / آیتم)</value>
+  </data>
+  <data name="SectionItem.SectionGroupItemName" xml:space="preserve">
+    <value>نام گروه آیتم</value>
+  </data>
+  <data name="SectionItem.SectionGroupItemId" xml:space="preserve">
+    <value>شناسه گروه آیتم</value>
+  </data>
+  <data name="SectionItem.Role" xml:space="preserve">
+    <value>سمت / نقش</value>
+  </data>
 </root>

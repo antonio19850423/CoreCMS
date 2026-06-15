@@ -107,6 +107,45 @@ public partial class Section
 
     public string? Features { get; set; }
 
+    [StringLength(350)]
+    public string? CopyrightText { get; set; }
+
+    [StringLength(150)]
+    public string? ContactFirstNameLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactLastNameLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactEmailLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactMessageLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactSubmitButtonText { get; set; }
+
+    [StringLength(512)]
+    public string? ImageUrl2 { get; set; }
+
+    [StringLength(150)]
+    public string? ImageAlt2 { get; set; }
+
+    [StringLength(512)]
+    public string? ImageUrl3 { get; set; }
+
+    [StringLength(150)]
+    public string? ImageAlt3 { get; set; }
+
+    [StringLength(512)]
+    public string? ImageUrl4 { get; set; }
+
+    [StringLength(150)]
+    public string? ImageAlt4 { get; set; }
+
+    [StringLength(500)]
+    public string? MapEmbedUrl { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

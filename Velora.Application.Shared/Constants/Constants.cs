@@ -63,6 +63,7 @@ namespace Velora.Application.Shared.Constants
         public const string Role = "Role";
         public const string Permission = "Permission";
         public const string ComponentType = "ComponentType";
+        public const string Category = "Category";
         public const string PageTemplate = "PageTemplate";
         public const string PageTemplateComponent = "PageTemplateComponent";
         public const string Page = "Page";
@@ -70,6 +71,9 @@ namespace Velora.Application.Shared.Constants
         public const string CmsConfiguration = "CmsConfiguration";
         public const string SiteSetting = "SiteSetting";
         public const string SectionItem = "SectionItem";
+        public const string SectionGroupItem = "SectionGroupItem";
+        public const string ContentItem = "ContentItem";
+        
 
 
 

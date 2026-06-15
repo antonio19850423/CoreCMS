@@ -99,6 +99,16 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlSectionItem, SectionItemCrud>().ReverseMap();
             CreateMap<SqlSectionItemView, SectionItemCrud>().ReverseMap();
             CreateMap<SqlSectionItem, SectionItemDto>().ReverseMap();
+
+
+            CreateMap<SqlContentItem, ContentItemCrud>().ReverseMap();
+            CreateMap<SqlContentItemView, ContentItemCrud>().ReverseMap();
+            CreateMap<SqlContentItem, ContentItemDto>().ReverseMap();
+
+
+            CreateMap<SqlSectionGroupItem, SectionGroupItemCrud>().ReverseMap();
+            CreateMap<VwSectionGroupItemForm, SectionGroupItemCrud>().ReverseMap();
+            CreateMap<SqlSectionGroupItem, SectionGroupItemDto>().ReverseMap();
         }
     }
 }

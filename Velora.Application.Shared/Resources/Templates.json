@@ -32,7 +32,22 @@
               "type": "pricing"
             }
           ]
+        },
+        {
+          "pageName": "درباره ما",
+          "slug": "about-us",
+          "isPublished": false,
+          "metaTitle": "درباره ما - وب‌سایت شرکتی",
+          "metaDescription": "آشنایی با شرکت، تیم متخصص، ماموریت و ارزش‌های سازمان",
+          "metaKeywords": "درباره ما، تیم ما، شرکت، ماموریت، ارزش‌ها",
+          "components": [
+            {
+              "code": "about",
+              "type": "about"
+            }
+          ]
         }
+
       ]
     }
   ]

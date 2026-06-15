@@ -15,11 +15,15 @@ public partial class CoreCmsContext : DbContext
     {
     }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<CmsConfiguration> CmsConfigurations { get; set; }
 
     public virtual DbSet<ComponentType> ComponentTypes { get; set; }
+
+    public virtual DbSet<ContentItem> ContentItems { get; set; }
 
     public virtual DbSet<Country> Countries { get; set; }
 
@@ -49,6 +53,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<Section> Sections { get; set; }
 
+    public virtual DbSet<SectionGroupItem> SectionGroupItems { get; set; }
+
     public virtual DbSet<SectionItem> SectionItems { get; set; }
 
     public virtual DbSet<SeedHistory> SeedHistories { get; set; }
@@ -67,6 +73,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
 
+    public virtual DbSet<VwContentItemForm> VwContentItemForms { get; set; }
+
     public virtual DbSet<VwLocalization> VwLocalizations { get; set; }
 
     public virtual DbSet<VwPageForm> VwPageForms { get; set; }
@@ -82,6 +90,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwResourceForm> VwResourceForms { get; set; }
 
     public virtual DbSet<VwSectionForm> VwSectionForms { get; set; }
+
+    public virtual DbSet<VwSectionGroupItemForm> VwSectionGroupItemForms { get; set; }
 
     public virtual DbSet<VwSectionItemForm> VwSectionItemForms { get; set; }
 
@@ -101,6 +111,14 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07AE6AB5D9");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Cities__3214EC07B13C2BFF");
@@ -131,6 +149,22 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<ContentItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ContentI__3214EC0700B10CEE");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.ContentItems)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ContentItem_Category");
+
+            entity.HasOne(d => d.Page).WithMany(p => p.ContentItems)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ContentItem_Page");
         });
 
         modelBuilder.Entity<Country>(entity =>
@@ -295,6 +329,14 @@ public partial class CoreCmsContext : DbContext
                 .HasConstraintName("FK_Sections_Page");
         });
 
+        modelBuilder.Entity<SectionGroupItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SectionG__3214EC074F261DAF");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
         modelBuilder.Entity<SectionItem>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__SectionI__3214EC071187D84D");
@@ -302,6 +344,8 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.SectionGroupItem).WithMany(p => p.SectionItems).HasConstraintName("FK_SectionItem_SectionGroupItem");
 
             entity.HasOne(d => d.Section).WithMany(p => p.SectionItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -379,6 +423,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwComponentTypeForm", "cms");
         });
 
+        modelBuilder.Entity<VwContentItemForm>(entity =>
+        {
+            entity.ToView("VwContentItemForm", "cms");
+        });
+
         modelBuilder.Entity<VwLocalization>(entity =>
         {
             entity.ToView("VwLocalization", "gen");
@@ -417,6 +466,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSectionForm>(entity =>
         {
             entity.ToView("VwSectionForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSectionGroupItemForm>(entity =>
+        {
+            entity.ToView("VwSectionGroupItemForm", "cms");
         });
 
         modelBuilder.Entity<VwSectionItemForm>(entity =>

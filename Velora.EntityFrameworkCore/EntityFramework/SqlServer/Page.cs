@@ -54,6 +54,9 @@ public partial class Page
 
     public Guid? UpdatedBy { get; set; }
 
+    [InverseProperty("Page")]
+    public virtual ICollection<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
+
     [ForeignKey("PageTemplateId")]
     [InverseProperty("Pages")]
     public virtual PageTemplate? PageTemplate { get; set; }

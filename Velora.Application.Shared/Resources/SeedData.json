@@ -142,6 +142,30 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SECTIONGROUPITEM_MANAGEMENT",
+          "Name": "Section Group Item Management",
+          "Route": "basic-info/sectiongroupitem-management",
+          "DisplayName": {
+            "en": "Template Management",
+            "fa": "مدیریت گروه‌بندی بخش‌ها"
+          },
+          "Order": 5,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SECTIONGROUPITEM_MANAGEMENT_PAGE",
+              "Name": "Section Group Item Management Page",
+              "DisplayName": {
+                "en": "Section Group Item Page",
+                "fa": "مدیریت گروه‌بندی بخش‌ها"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },
@@ -283,6 +307,16 @@
                     "fa": "مدیریت بخش‌ها"
                   },
                   "Order": 1
+                },
+                {
+                  "Type": "TAB",
+                  "Code": "PAGE_TAB_CONTENT_ITEM",
+                  "Name": "Content Item Management",
+                  "DisplayName": {
+                    "en": "Content Item Management",
+                    "fa": "مدیریت اخبار"
+                  },
+                  "Order": 1
                 }
               ]
             }
@@ -350,6 +384,30 @@
         },
         {
           "Type": "MENU",
+          "Code": "CONTENTITEM_MANAGEMENT_MENU",
+          "Name": "Content Item Management",
+          "Route": "administration/content-item-management",
+          "DisplayName": {
+            "en": "Content Item Management",
+            "fa": "مدیریت اخبار"
+          },
+          "Order": 6,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "CONTENTITEM_MANAGEMENT_PAGE",
+              "Name": "Content Item Management Page",
+              "DisplayName": {
+                "en": "Content Item Management Page",
+                "fa": "مدیریت اخبار"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
           "Code": "CMSCONFIGURATION_MANAGEMENT_MENU",
           "Name": "CMS Configuration  Management",
           "Route": "administration/cms-configuration-management",
@@ -357,7 +415,7 @@
             "en": "CMS Configuration  Management",
             "fa": "تنظیمات سیستم مدیریت محتوا"
           },
-          "Order": 6,
+          "Order": 7,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -381,7 +439,7 @@
             "en": "Site Setting",
             "fa": "تنظیمات سایت"
           },
-          "Order": 7,
+          "Order": 8,
           "Roles": [ "DEV" ],
           "Children": [
             {

@@ -124,5 +124,23 @@ namespace Velora.Application.Shared.Dtos
         public string? Features { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 35, GridOrder = 35, ShowInGrid = true, ShowInForm = false, MaxLength = 100)]
         public string? ComponentTypeName { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemName", SelectDisplayFields = "[\"name\",\"code\"]")]
+        public Guid? SectionGroupItemId { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemId", SelectDisplayFields = "[\"name\",\"code\"]")]
+        public string? SectionGroupItemName { get; set; }
+
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 38, GridOrder = 38, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        public string? Name { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 39, GridOrder = 39, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        public string? Role { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 40, GridOrder = 40, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? Question { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 41, GridOrder = 41, ShowInGrid = false, ShowInForm = true, MaxLength = 600)]
+        public string? Answer { get; set; }
     }
 }

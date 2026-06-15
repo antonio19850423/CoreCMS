@@ -198,4 +198,70 @@
   <data name="Section.Features" xml:space="preserve">
     <value>Features</value>
   </data>
+  <data name="Section.contactEmailLabel" xml:space="preserve">
+    <value>Contact Email Label</value>
+  </data>
+  <data name="Section.ContactFirstNameLabel" xml:space="preserve">
+    <value>Contact FirstName Label</value>
+  </data>
+  <data name="Section.ContactLastNameLabel" xml:space="preserve">
+    <value>Contact Last Name Label</value>
+  </data>
+  <data name="Section.ContactMessageLabel" xml:space="preserve">
+    <value>Contact Message Label</value>
+  </data>
+  <data name="Section.ContactSubmitButtonText" xml:space="preserve">
+    <value>Contact Submit Button Text</value>
+  </data>
+  <data name="Section.CopyrightText" xml:space="preserve">
+    <value>Copyright Text</value>
+  </data>
+  <data name="Section.MapEmbedUrl" xml:space="preserve">
+    <value>Map Embed Url</value>
+  </data>
+  <data name="Section.BackgroundColor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="Section.DescriptionColor" xml:space="preserve">
+    <value>Description Color</value>
+  </data>
+  <data name="Section.HeaderColor" xml:space="preserve">
+    <value>Header Color</value>
+  </data>
+  <data name="Section.SubtitleColor" xml:space="preserve">
+    <value>Subtitle Color</value>
+  </data>
+  <data name="Section.IconColor" xml:space="preserve">
+    <value>Icon Color</value>
+  </data>
+  <data name="Section.ImageAlt2" xml:space="preserve">
+    <value>ImageAlt2</value>
+  </data>
+  <data name="Section.ImageAlt3" xml:space="preserve">
+    <value>ImageAlt3</value>
+  </data>
+  <data name="Section.ImageAlt4" xml:space="preserve">
+    <value>ImageAlt4</value>
+  </data>
+  <data name="Section.ImageUrl2" xml:space="preserve">
+    <value>ImageUrl2</value>
+  </data>
+  <data name="Section.ImageUrl3" xml:space="preserve">
+    <value>ImageUrl3</value>
+  </data>
+  <data name="Section.ImageUrl4" xml:space="preserve">
+    <value>ImageUrl4</value>
+  </data>
+  <data name="Section.Link1Color" xml:space="preserve">
+    <value>Link1Color</value>
+  </data>
+  <data name="Section.Link2Color" xml:space="preserve">
+    <value>Link2Color</value>
+  </data>
+  <data name="Section.Link3Color" xml:space="preserve">
+    <value>Link3Color</value>
+  </data>
+  <data name="Section.Link4Color" xml:space="preserve">
+    <value>Link4Color</value>
+  </data>
 </root>

@@ -112,7 +112,24 @@ public partial class SectionItem
 
     public string? Features { get; set; }
 
+    public Guid? SectionGroupItemId { get; set; }
+
+    [StringLength(150)]
+    public string? Name { get; set; }
+
+    [StringLength(150)]
+    public string? Role { get; set; }
+
+    [StringLength(500)]
+    public string? Question { get; set; }
+
+    public string? Answer { get; set; }
+
     [ForeignKey("SectionId")]
     [InverseProperty("SectionItems")]
     public virtual Section Section { get; set; } = null!;
+
+    [ForeignKey("SectionGroupItemId")]
+    [InverseProperty("SectionItems")]
+    public virtual SectionGroupItem? SectionGroupItem { get; set; }
 }

@@ -111,5 +111,17 @@ namespace Velora.Application.Shared.Dtos
         [StringLength(150)]
         public string? AvatarAlt { get; set; }
         public string? Features { get; set; }
+        public Guid? SectionGroupItemId { get; set; }
+
+        [StringLength(150)]
+        public string? Name { get; set; }
+
+        [StringLength(150)]
+        public string? Role { get; set; }
+
+        [StringLength(500)]
+        public string? Question { get; set; }
+
+        public string? Answer { get; set; }
     }
 }

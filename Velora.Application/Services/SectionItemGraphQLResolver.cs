@@ -72,6 +72,12 @@ public class SectionItemGqlResolver : ISectionItemGqlResolver
             TitleColor= x.TitleColor ??"",
             ComponentTypeName = x.ComponentTypeName ??"",
             Features= x.Features ??"",
+            Answer  =x.Answer ??"",
+            Name = x.Name ??"",
+            Question = x.Question ??"",
+            Role = x.Role ??"",
+            SectionGroupItemName = x.SectionGroupItemName ??"",
+            SectionGroupItemId  =x.SectionGroupItemId,
             ShouldInsert = x.ShouldInsert
         });
     }

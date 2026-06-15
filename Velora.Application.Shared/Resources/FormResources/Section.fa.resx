@@ -198,4 +198,70 @@
   <data name="Section.Features" xml:space="preserve">
     <value>ویژگی ها</value>
   </data>
+  <data name="Section.contactEmailLabel" xml:space="preserve">
+    <value>برچسب ایمیل تماس</value>
+  </data>
+  <data name="Section.ContactFirstNameLabel" xml:space="preserve">
+    <value>برچسب نام (فرم تماس)</value>
+  </data>
+  <data name="Section.ContactLastNameLabel" xml:space="preserve">
+    <value>برچسب نام خانوادگی (فرم تماس)</value>
+  </data>
+  <data name="Section.ContactMessageLabel" xml:space="preserve">
+    <value>برچسب پیام کاربر</value>
+  </data>
+  <data name="Section.ContactSubmitButtonText" xml:space="preserve">
+    <value>متن دکمه ارسال فرم تماس</value>
+  </data>
+  <data name="Section.CopyrightText" xml:space="preserve">
+    <value>Copyright Text</value>
+  </data>
+  <data name="Section.MapEmbedUrl" xml:space="preserve">
+    <value>لینک نمایش نقشه </value>
+  </data>
+  <data name="Section.BackgroundColor" xml:space="preserve">
+    <value>رنگ پس‌زمینه</value>
+  </data>
+  <data name="Section.DescriptionColor" xml:space="preserve">
+    <value>رنگ توضیحات</value>
+  </data>
+  <data name="Section.HeaderColor" xml:space="preserve">
+    <value>رنگ عنوان اصلی</value>
+  </data>
+  <data name="Section.SubtitleColor" xml:space="preserve">
+    <value>رنگ زیرعنوان</value>
+  </data>
+  <data name="Section.IconColor" xml:space="preserve">
+    <value>رنگ آیکن</value>
+  </data>
+  <data name="Section.ImageAlt2" xml:space="preserve">
+    <value>متن جایگزین تصویر دوم</value>
+  </data>
+  <data name="Section.ImageAlt3" xml:space="preserve">
+    <value>متن جایگزین تصویر سوم</value>
+  </data>
+  <data name="Section.ImageAlt4" xml:space="preserve">
+    <value>متن جایگزین تصویر چهارم</value>
+  </data>
+  <data name="Section.ImageUrl2" xml:space="preserve">
+    <value>آدرس تصویر دوم</value>
+  </data>
+  <data name="Section.ImageUrl3" xml:space="preserve">
+    <value>آدرس تصویر سوم</value>
+  </data>
+  <data name="Section.ImageUrl4" xml:space="preserve">
+    <value>آدرس تصویر چهارم</value>
+  </data>
+  <data name="Section.Link1Color" xml:space="preserve">
+    <value>رنگ لینک اول</value>
+  </data>
+  <data name="Section.Link2Color" xml:space="preserve">
+    <value>رنگ لینک دوم</value>
+  </data>
+  <data name="Section.Link3Color" xml:space="preserve">
+    <value>رنگ لینک سوم</value>
+  </data>
+  <data name="Section.Link4Color" xml:space="preserve">
+    <value>رنگ لینک چهارم</value>
+  </data>
 </root>

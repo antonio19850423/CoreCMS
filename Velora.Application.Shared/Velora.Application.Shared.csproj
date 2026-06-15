@@ -21,6 +21,8 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Remove="Resources\FormResources\CmsConfiguration.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.en.resx" />
@@ -33,6 +35,8 @@
 	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Section.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Section.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionGroupItem.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionGroupItem.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SiteSetting.en.resx" />
@@ -74,6 +78,18 @@
 
 	<ItemGroup>
 	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentItem.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionGroupItem.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionGroupItem.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\SectionItem.fa.resx">

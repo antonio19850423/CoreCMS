@@ -117,133 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SectionItem.Title" xml:space="preserve">
-    <value>Title</value>
+  <data name="SectionGroupItem.Id" xml:space="preserve">
+    <value>شناسه</value>
   </data>
-  <data name="SectionItem.Subtitle" xml:space="preserve">
-    <value>Subtitle</value>
+  <data name="SectionGroupItem.Code" xml:space="preserve">
+    <value>کد</value>
   </data>
-  <data name="SectionItem.Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="SectionGroupItem.Name" xml:space="preserve">
+    <value>نام</value>
   </data>
-  <data name="SectionItem.Price" xml:space="preserve">
-    <value>Price</value>
+  <data name="SectionGroupItem.Description" xml:space="preserve">
+    <value>توضیحات</value>
   </data>
-  <data name="SectionItem.ImageUrl" xml:space="preserve">
-    <value>Image URL</value>
+  <data name="SectionGroupItem.Icon" xml:space="preserve">
+    <value>آیکن</value>
   </data>
-  <data name="SectionItem.ImageAlt" xml:space="preserve">
-    <value>Image Alternative Text</value>
+  <data name="SectionGroupItem.Color" xml:space="preserve">
+    <value>رنگ</value>
   </data>
-  <data name="SectionItem.AvatarUrl" xml:space="preserve">
-    <value>Avatar Image URL</value>
+  <data name="SectionGroupItem.GroupId" xml:space="preserve">
+    <value>گروه والد</value>
   </data>
-  <data name="SectionItem.AvatarAlt" xml:space="preserve">
-    <value>Avatar Alternative Text</value>
+  <data name="SectionGroupItem.GroupName" xml:space="preserve">
+    <value>نام گروه والد</value>
   </data>
-  <data name="SectionItem.Icon" xml:space="preserve">
-    <value>Icon</value>
+  <data name="SectionGroupItem.SortOrder" xml:space="preserve">
+    <value>ترتیب نمایش</value>
   </data>
-  <data name="SectionItem.IconAlt" xml:space="preserve">
-    <value>Icon Alternative Text</value>
-  </data>
-  <data name="SectionItem.Link1Text" xml:space="preserve">
-    <value>Primary Link Text</value>
-  </data>
-  <data name="SectionItem.Link1Url" xml:space="preserve">
-    <value>Primary Link URL</value>
-  </data>
-  <data name="SectionItem.Link2Text" xml:space="preserve">
-    <value>Secondary Link Text</value>
-  </data>
-  <data name="SectionItem.Link2Url" xml:space="preserve">
-    <value>Secondary Link URL</value>
-  </data>
-  <data name="SectionItem.Link3Text" xml:space="preserve">
-    <value>Third Link Text</value>
-  </data>
-  <data name="SectionItem.Link3Url" xml:space="preserve">
-    <value>Third Link URL</value>
-  </data>
-  <data name="SectionItem.Link4Text" xml:space="preserve">
-    <value>Fourth Link Text</value>
-  </data>
-  <data name="SectionItem.Link4Url" xml:space="preserve">
-    <value>Fourth Link URL</value>
-  </data>
-  <data name="SectionItem.BackgroundColor" xml:space="preserve">
-    <value>Background Color</value>
-  </data>
-  <data name="SectionItem.TitleColor" xml:space="preserve">
-    <value>Title Color</value>
-  </data>
-  <data name="SectionItem.SubtitleColor" xml:space="preserve">
-    <value>Subtitle Color</value>
-  </data>
-  <data name="SectionItem.DescriptionColor" xml:space="preserve">
-    <value>Description Color</value>
-  </data>
-  <data name="SectionItem.IconColor" xml:space="preserve">
-    <value>Icon Color</value>
-  </data>
-  <data name="SectionItem.Link1Color" xml:space="preserve">
-    <value>Primary Link Color</value>
-  </data>
-  <data name="SectionItem.Link2Color" xml:space="preserve">
-    <value>Secondary Link Color</value>
-  </data>
-  <data name="SectionItem.Link3Color" xml:space="preserve">
-    <value>Third Link Color</value>
-  </data>
-  <data name="SectionItem.Link4Color" xml:space="preserve">
-    <value>Fourth Link Color</value>
-  </data>
-  <data name="SectionItem.SortOrder" xml:space="preserve">
-    <value>Sort Order</value>
-  </data>
-  <data name="SectionItem.IsActive" xml:space="preserve">
-    <value>Is Active</value>
-  </data>
-  <data name="SectionItem.ParentId" xml:space="preserve">
-    <value>Parent Section</value>
-  </data>
-  <data name="SectionItem.CreatedAtPersian" xml:space="preserve">
-    <value>Created At</value>
-  </data>
-  <data name="SectionItem.UpdatedAtPersian" xml:space="preserve">
-    <value>Updated At</value>
-  </data>
-  <data name="SectionItem.CreatedByName" xml:space="preserve">
-    <value>Created By</value>
-  </data>
-  <data name="SectionItem.UpdatedByName" xml:space="preserve">
-    <value>Updated By</value>
-  </data>
-  <data name="SectionItem.Id" xml:space="preserve">
-    <value>Id</value>
-  </data>
-  <data name="SectionItem.Features" xml:space="preserve">
-    <value>Features</value>
-  </data>
-  <data name="SectionItem.ComponentTypeName" xml:space="preserve">
-    <value>ComponentTypeName</value>
-  </data>
-  <data name="SectionItem.Answer" xml:space="preserve">
-    <value>Answer</value>
-  </data>
-  <data name="SectionItem.Question" xml:space="preserve">
-    <value>Question</value>
-  </data>
-  <data name="SectionItem.Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="SectionItem.SectionGroupItemName" xml:space="preserve">
-    <value>Section Group Item Name</value>
-  </data>
-  <data name="SectionItem.SectionGroupItemId" xml:space="preserve">
-    <value>Section Group Item Id</value>
-  </data>
-  <data name="SectionItem.Role" xml:space="preserve">
-    <value>Role</value>
+  <data name="SectionGroupItem.IsActive" xml:space="preserve">
+    <value>فعال</value>
   </data>
 </root>

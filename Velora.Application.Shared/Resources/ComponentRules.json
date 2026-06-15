@@ -338,6 +338,79 @@
         ]
       }
     }
-  }
+  },
+    "about": {
+      "rules": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "teamTitle": true,
+        "items": {
+          "name": true,
+          "role": true,
+          "imageUrl": true
+        }
+      },
+      "defaultData": {
+        "rtl": {
+          "title": "درباره ما",
+          "subtitle": "ما یک تیم متخصص در توسعه نرم‌افزارهای مدرن هستیم که با تمرکز بر کیفیت، سرعت و تجربه کاربری، راهکارهای مقیاس‌پذیر ارائه می‌دهیم.",
+          "description": "هدف ما ساخت محصولاتی است که فقط کار نکنند، بلکه تجربه‌ای متفاوت برای کاربران ایجاد کنند. از طراحی تا توسعه، همه چیز با دقت و استانداردهای روز انجام می‌شود.",
+          "teamTitle": "تیم ما",
+          "items": [
+            {
+              "name": "علی رضایی",
+              "role": "مدیر فنی",
+              "imageUrl": "http://localhost:5274/uploads/sections/men (1).jpg"
+            },
+            {
+              "name": "سارا محمدی",
+              "role": "طراح UI",
+              "imageUrl": "http://localhost:5274/uploads/sections/woman.jpg"
+            },
+            {
+              "name": "رضا کریمی",
+              "role": "توسعه‌دهنده بک‌اند",
+              "imageUrl": "http://localhost:5274/uploads/sections/men (2).jpg"
+            },
+            {
+              "name": "مهدی حسینی",
+              "role": "توسعه‌دهنده فرانت‌اند",
+              "imageUrl": "http://localhost:5274/uploads/sections/men (3).jpg"
+            }
+          ]
+        },
+        "ltr": {
+          "title": "About Us",
+          "subtitle": "We are a professional software development team focused on building scalable, modern, and high-performance digital products.",
+          "description": "Our mission is to create products that don’t just work — they deliver exceptional user experiences. From design to development, everything is built with precision and modern standards.",
+          "teamTitle": "Our Team",
+          "items": [
+            {
+              "name": "John Smith",
+              "role": "Tech Lead",
+              "imageUrl": "/team/1.jpg"
+            },
+            {
+              "name": "Emily Brown",
+              "role": "UI Designer",
+              "imageUrl": "/team/2.jpg"
+            },
+            {
+              "name": "David Wilson",
+              "role": "Backend Developer",
+              "imageUrl": "/team/3.jpg"
+            },
+            {
+              "name": "Michael Lee",
+              "role": "Frontend Developer",
+              "imageUrl": "/team/4.jpg"
+            }
+          ]
+        }
+      }
+    }
+
+
 
 }

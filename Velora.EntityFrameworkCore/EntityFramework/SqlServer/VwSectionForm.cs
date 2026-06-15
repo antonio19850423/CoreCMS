@@ -99,6 +99,24 @@ public partial class VwSectionForm
 
     public string? Features { get; set; }
 
+    [StringLength(350)]
+    public string? CopyrightText { get; set; }
+
+    [StringLength(150)]
+    public string? ContactEmailLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactFirstNameLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactLastNameLabel { get; set; }
+
+    [StringLength(150)]
+    public string? ContactMessageLabel { get; set; }
+
+    [StringLength(500)]
+    public string? MapEmbedUrl { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

@@ -30,6 +30,7 @@ namespace Velora.Application.Seeds
         public const string Core_SiteSettings = "Seed_Core_SiteSettings";
         public const string Core_CmsConfiguration = "Seed_Core_CmsConfiguration";
         public const string Seed_Core_Template = "Seed_Core_Template";
+        public const string Seed_Core_SectionGroupItem = "Seed_Core_SectionGroupItem";
 
     }
 
@@ -57,6 +58,7 @@ namespace Velora.Application.Seeds
         private readonly ISectionItemService _sectionItemService;
         private readonly IConfiguration _configuration;
         private readonly IComponentTypeService _componentTypeService;
+        private readonly ISectionGroupItemService _sectionGroupItemService;
         ICmsConfigurationService _cmsConfigurationService;
 
         public DataSeeder(
@@ -77,6 +79,7 @@ namespace Velora.Application.Seeds
             ISeedHistoryService seedHistoryService,
             ISiteSettingService siteSettingService,
             ICmsConfigurationService cmsConfigurationService,
+            ISectionGroupItemService sectionGroupItemService,
             IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
@@ -106,6 +109,7 @@ namespace Velora.Application.Seeds
             _configuration = configuration;
             _componentTypeService = componentTypeService;
             _sectionItemService = sectionItemService;
+            _sectionGroupItemService= sectionGroupItemService;
         }
 
         public async Task SeedAllAsync()
@@ -166,6 +170,15 @@ namespace Velora.Application.Seeds
                 await _seedHistoryService.CreateAsync(new()
                 {
                     Name = SeederNames.Seed_Core_Template,
+                    CreatedAt = DateTime.Now
+                });
+            }
+            if (await ShouldRunSeederAsync(SeederNames.Seed_Core_SectionGroupItem))
+            {
+                await SeedCoreSectionGroupItemAsync();
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Core_SectionGroupItem,
                     CreatedAt = DateTime.Now
                 });
             }
@@ -1427,6 +1440,41 @@ namespace Velora.Application.Seeds
             await _transactionService.CommitAsync();
         }
 
+        public async Task SeedCoreSectionGroupItemAsync()
+        {
+            const string seederName = SeederNames.Seed_Core_SectionGroupItem;
+
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            var existing = await _sectionGroupItemService
+                .FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code== "FOOTER");
+
+            if (existing.Data == null)
+            {
+                await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
+                {
+                    Code = "FOOTER",
+                    Name = "فوتر",
+                    Description = "فوتر",
+                    SortOrder = 1,
+                    IsActive = true
+                });
+            }
+            else
+            {
+                // 🔥 UPDATE
+                existing.Data.Code = "FOOTER";
+                existing.Data.Name = "فوتر";
+                existing.Data.Description = "فوتر";
+                existing.Data.SortOrder =1;
+                existing.Data.IsActive = true;
+
+                await _sectionGroupItemService.UpdateAsync(existing.Data, existing.Data.Id);
+            }
+
+            await _transactionService.CommitAsync();
+        }
     }
 }
 
