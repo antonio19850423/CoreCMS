@@ -264,4 +264,13 @@
   <data name="Section.Link4Color" xml:space="preserve">
     <value>Link4Color</value>
   </data>
+  <data name="Section.Link1TargetId" xml:space="preserve">
+    <value>Link1 Target Id</value>
+  </data>
+  <data name="Section.Link1TypeId" xml:space="preserve">
+    <value>Link 1 Type</value>
+  </data>
+  <data name="Section.Link1OpenInNewTab" xml:space="preserve">
+    <value>Link1OpenInNewTab</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,14 +33,20 @@ namespace Velora.Application.Shared.Dtos
         public string? ImageAlt { get; set; }
 
         // Links
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 100,GroupKey = "Link1",Route = "/api/ComboBox/Pages")]
         public string? Link1Text { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link1")]
         public string? Link1Url { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = false, MaxLength = 50)]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link1")]
         public string? Link1Color { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
+        public string? Link1TargetId { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
+        public string? Link1TypeId { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
+        public bool? Link1OpenInNewTab { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
         public string? Link2Text { get; set; }
@@ -161,5 +168,6 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 47, GridOrder = 47, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? MapEmbedUrl { get; set; }
+
     }
 }

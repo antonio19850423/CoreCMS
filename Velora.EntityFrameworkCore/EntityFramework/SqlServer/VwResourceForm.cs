@@ -74,4 +74,7 @@ public partial class VwResourceForm
     public bool ShowInGrid { get; set; }
 
     public bool? ShowInSelectBox { get; set; }
+
+    [StringLength(200)]
+    public string? GroupKey { get; set; }
 }

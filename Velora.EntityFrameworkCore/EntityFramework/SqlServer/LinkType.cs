@@ -6,32 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
-[Table("SectionGroupItems", Schema = "cms")]
-public partial class SectionGroupItem
+[Table("LinkType", Schema = "cms")]
+public partial class LinkType
 {
     [Key]
     public Guid Id { get; set; }
 
-    [StringLength(150)]
+    [StringLength(50)]
     public string Code { get; set; } = null!;
 
-    [StringLength(150)]
+    [StringLength(100)]
     public string Name { get; set; } = null!;
 
-    [StringLength(300)]
-    public string? Description { get; set; }
-
-    [StringLength(150)]
-    public string? Icon { get; set; }
-
-    [StringLength(50)]
-    public string? Color { get; set; }
-
-    public Guid? GroupId { get; set; }
+    public bool IsActive { get; set; }
 
     public int SortOrder { get; set; }
-
-    public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -44,7 +33,4 @@ public partial class SectionGroupItem
     public Guid? UpdatedBy { get; set; }
 
     public bool IsTest { get; set; }
-
-    [InverseProperty("SectionGroupItem")]
-    public virtual ICollection<SectionItem> SectionItems { get; set; } = new List<SectionItem>();
 }

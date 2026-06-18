@@ -14,14 +14,13 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
-using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
 {
-    public class SectionGroupItemService : GenericService<SqlSectionGroupItem, SqlSectionGroupItem, SectionGroupItemDto>, ISectionGroupItemService
+    public class LinkTypeService : GenericService<SqlLinkType, SqlLinkType, LinkTypeDto>, ILinkTypeService
     {
-        private readonly ISqlRepository<SqlSectionGroupItem> _sqlrepository;
+        private readonly ISqlRepository<SqlLinkType> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -30,15 +29,16 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        private readonly ISectionGroupItemService _roleSectionGroupItemService;
+        private readonly ILinkTypeService _roleLinkTypeService;
         protected readonly ICurrentUserService _currentUserService;
-        public SectionGroupItemService(
-              ISqlRepository<SqlSectionGroupItem> sqlRepository,
-              IPosgreSqlRepository<SqlSectionGroupItem> pgRepository,
+        protected readonly ICmsConfigurationService _cmsConfigurationService;
+        public LinkTypeService(
+              ISqlRepository<SqlLinkType> sqlRepository,
+              IPosgreSqlRepository<SqlLinkType> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, ICmsConfigurationService cmsConfigurationService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -48,63 +48,46 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
+            _cmsConfigurationService = cmsConfigurationService;
         }
-        public async Task<IQueryable<SectionGroupItemCrud>> GetAllViews()
+
+        public async Task<IQueryable<LinkTypeCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<VwSectionGroupItemForm, VwSectionGroupItemForm, SectionGroupItemCrud>();
+            var configResult = await _cmsConfigurationService
+                .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+
+            var query = await GetAllViewQueryable<SqlLinkTypeView, SqlLinkTypeView, LinkTypeCrud>();
+
+            if (configResult.Data == null)
+                return query;
+
+            var config = configResult.Data;
+
+            query = query.Where(c =>
+                              (!config.EnableBlog || (c.Code != "ARTICLE"))
+                              &&
+                              (!config.EnableShop || c.Code != "PRODUCT")
+                              &&
+                              (!config.EnableNews || c.Code != "NEWS")
+                              );
+            return query;
         }
-        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetFooterSectionGroupItemsAsync()
-        {
-            var response = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>();
-
-            var existing = await FirstOrDefaultAsync<SqlSectionGroupItem>(
-                x => x.Code == "FOOTER");
-
-            if (!existing.Success || existing.Data == null)
-            {
-                response.Success = false;
-                response.Data = Enumerable.Empty<ComboBoxItemDto<Guid>>();
-                response.Message = "Footer group not found";
-                return response;
-            }
-
-            var result = await GetByPredicateAsync<SqlSectionGroupItem>(
-                x => x.Id == existing.Data.Id);
-
-            response.Success = result.Success;
-            response.Message = result.Message;
-            response.Errors = result.Errors;
-
-            response.Data = result.Data.Select(c => new ComboBoxItemDto<Guid>
-            {
-                Label = c.Name,
-                Value = c.Id
-            });
-
-            return response;
-        }
-
-        public async Task<ResultDto<SectionGroupItemDto>> CreateAsync(SectionGroupItemCrud input)
+        public async Task<ResultDto<LinkTypeDto>> CreateAsync(LinkTypeCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
 
-                var SectionGroupItem = new SectionGroupItemDto
+                var LinkType = new LinkTypeDto
                 {
                     Code = input.Code,
+                    IsActive = input.IsActive,
                     Name = input.Name,
-                    Color = input.Color,
-                    Description = input.Description,
-                    GroupId = input.GroupId,
-                    Icon = input.Icon,
-                    IsActive=input.IsActive,
-                    SortOrder = input.SortOrder
-
+                    SortOrder = input.SortOrder,
                 };
 
-                var result = await CreateAsync(SectionGroupItem);
+                var result = await CreateAsync(LinkType);
                 if (!result.Success)
                     return result;
 
@@ -114,7 +97,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SectionGroupItemDto>
+                var result = new ResultDto<LinkTypeDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -124,14 +107,14 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<SectionGroupItemDto>> UpdateAsync(SectionGroupItemCrud input)
+        public async Task<ResultDto<LinkTypeDto>> UpdateAsync(LinkTypeCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<SectionGroupItemDto>
+                    return new ResultDto<LinkTypeDto>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -139,17 +122,12 @@ namespace Velora.Application.Services
                 }
 
                 // 1️⃣ به‌روزرسانی کاربر
-                var userUpdateDto = new SectionGroupItemDto
+                var userUpdateDto = new LinkTypeDto
                 {
-                    Id = input.Id.Value,
+                    Id = input.Id,
                     Code = input.Code,
                     Name = input.Name,
-                    Color = input.Color,
-                    Description = input.Description,
-                    GroupId = input.GroupId,
-                    Icon = input.Icon,
-                    IsActive = input.IsActive,
-                    SortOrder = input.SortOrder
+                    SortOrder = input.SortOrder,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);
@@ -161,7 +139,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SectionGroupItemDto>
+                var result = new ResultDto<LinkTypeDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -172,25 +150,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdSectionGroupItems= new List<SectionGroupItemDto>();
+            var createdLinkTypes= new List<LinkTypeDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var SectionGroupItems = dt.ToModelList<SectionGroupItemCrud>();
+                var LinkTypes = dt.ToModelList<LinkTypeCrud>();
 
-                for (int i = 0; i < SectionGroupItems.Count; i++)
+                for (int i = 0; i < LinkTypes.Count; i++)
                 {
-                    var SectionGroupItem = SectionGroupItems[i];
+                    var LinkType = LinkTypes[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(SectionGroupItem);
+                    var createResult = await CreateAsync(LinkType);
 
                     if (createResult.Success && createResult.Data != null)
                     {
-                        createdSectionGroupItems.Add(createResult.Data);
+                        createdLinkTypes.Add(createResult.Data);
                     }
                     else
                     {
@@ -222,7 +200,7 @@ namespace Velora.Application.Services
                         : errorFileTitle,
                     Data = new BulkInsertResult
                     {
-                        InsertedCount = createdSectionGroupItems.Count,
+                        InsertedCount = createdLinkTypes.Count,
                         ErrorCount = errors.Count,
                         ErrorFileUrl = errorFileUrl
                     },
@@ -250,7 +228,7 @@ int pageSize)
             var query = await GetAllViews(); // IQueryable<Resource>
 
             // 2️⃣ Paging و Mapping به DTO
-            List<SectionGroupItemCrud> data;
+            List<LinkTypeCrud> data;
 
             if (exportCurrentPage)
             {
@@ -263,11 +241,11 @@ int pageSize)
             {
                 data = query.ToList();
             }
-            var resource = _mapper.Map<List<SectionGroupItemCrud>>(data);
+            var resource = _mapper.Map<List<LinkTypeCrud>>(data);
 
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
             var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.SectionGroupItem, // نام مدل DTO
+                LookupEntities.LinkType, // نام مدل DTO
                 data.Count + 5
             );
 
@@ -276,7 +254,54 @@ int pageSize)
 
             return resultBytes;
         }
+        public async Task<ResultDto<List<LinkTypeDto>>> AddRangeAsync(List<LinkTypeDto> inputs)
+        {
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var resultList = new List<LinkTypeDto>();
+
+                foreach (var input in inputs)
+                {
+                    var entity = new SqlLinkType
+                    {
+                        Id = Guid.NewGuid(),
+                        Code = input.Code,
+                        Name = input.Name,
+                        SortOrder = input.SortOrder,
+                        IsActive = input.IsActive,
+                        IsTest = input.IsTest,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    await _sqlrepository.InsertAsync(entity);
+
+                    resultList.Add(_mapper.Map<LinkTypeDto>(entity));
+                }
+
+                await _transactionService.CommitAsync();
+
+                return new ResultDto<List<LinkTypeDto>>
+                {
+                    Success = true,
+                    Data = resultList,
+                    Message = successMessage
+                };
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                return new ResultDto<List<LinkTypeDto>>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
 
     }
 

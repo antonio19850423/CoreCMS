@@ -117,6 +117,16 @@ public partial class VwSectionForm
     [StringLength(500)]
     public string? MapEmbedUrl { get; set; }
 
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TypeId { get; set; }
+
+    public bool? Link1OpenInNewTab { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

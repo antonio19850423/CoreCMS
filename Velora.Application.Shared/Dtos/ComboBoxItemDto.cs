@@ -10,6 +10,7 @@ namespace Velora.Application.Shared.Dtos
         {
         public T Value { get; set; }
         public string Label { get; set; }
-        }
+        public string Code { get; set; }
+    }
 
     }

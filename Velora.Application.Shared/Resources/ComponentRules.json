@@ -255,6 +255,8 @@
         "description": true,
         "link1Text": true,
         "link1Url": true,
+        "link1TypeId": true,
+        "link1TargetId": true,
         "features": true
       }
     },

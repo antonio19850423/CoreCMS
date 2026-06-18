@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,5 +64,7 @@ namespace Velora.Application.Shared.Dtos
         public string? ParentDisplayName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = false,MaxLength =300, FormOrder = 22, GridOrder = 22, ShowInGrid = false, ShowInForm = true)]
         public string? SelectDisplayFields { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = false, MaxLength = 200, FormOrder = 23, GridOrder = 23, ShowInGrid = false, ShowInForm = true)]
+        public string? GroupKey { get; set; }
     }
 }

@@ -50,7 +50,9 @@ namespace Velora.Application.Services
         }
         public async Task<IQueryable<PageCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<SqlPageView, SqlPageView, PageCrud>();
+            var Result= await GetAllViewQueryable<SqlPageView, SqlPageView, PageCrud>();
+            Result = Result.Where(c => c.IsActive == true);
+            return Result;
         }
         public async Task<ResultDto<PageDto>> CreateAsync(PageCrud input)
         {

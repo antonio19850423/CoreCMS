@@ -67,7 +67,7 @@ namespace Velora.Application.Shared.Attributes
         public string? ServiceName { get; set; }
         public string? SelectDisplayFields { get; set; }
 
-        
+        public string GroupKey { get; set; }
 
     }
 }

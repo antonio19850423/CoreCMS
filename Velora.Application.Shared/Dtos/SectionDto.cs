@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -144,6 +145,13 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(500)]
         public string? MapEmbedUrl { get; set; }
+        [StringLength(40)]
+        [Unicode(false)]
+        public string? Link1TargetId { get; set; }
 
+        [StringLength(40)]
+        [Unicode(false)]
+        public string? Link1TypeId { get; set; }
+        public bool? Link1OpenInNewTab { get; set; }
     }
 }

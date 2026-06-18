@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Velora.Application.Services;
 using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
@@ -15,11 +16,18 @@ namespace Velora.Host.Controllers
         private readonly IRoleService _roleService;
         private readonly IResourceService _resourceService;
         private readonly IResourceTypeService _resourceTypeService;
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService)
+        private readonly ISectionGroupItemService _sectionGroupItemService;
+        private readonly ILinkTypeService _linkTypeService;
+        private readonly IPageService _pageService;
+
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
             _resourceService = resourceService;
+            _sectionGroupItemService = sectionGroupItemService;
+            _linkTypeService = linkTypeService;
+            _pageService = pageService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -63,6 +71,11 @@ namespace Velora.Host.Controllers
             };
 
             return result;
+        }
+        [HttpGet("SectionGroupItems")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> SectionGroupItems()
+        {
+            return await _sectionGroupItemService.GetFooterSectionGroupItemsAsync();
         }
         [HttpGet("resources")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetResources()
@@ -109,7 +122,52 @@ namespace Velora.Host.Controllers
 
             return result;
         }
+        [HttpGet("LinkTypes")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> LinkTypes()
+        {
 
+            var linkTypes = await _linkTypeService.GetAllViews();
 
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name,
+                    Code=r.Code
+                })
+                .ToList(); 
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+
+        [HttpGet("Pages")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> Pages()
+        {
+
+            var linkTypes = await _pageService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name,
+                    Code = r.Slug
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
     }
 }

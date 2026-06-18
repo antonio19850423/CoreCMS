@@ -82,4 +82,7 @@ public partial class VwResource
 
     [StringLength(300)]
     public string? SelectDisplayFields { get; set; }
+
+    [StringLength(200)]
+    public string? GroupKey { get; set; }
 }

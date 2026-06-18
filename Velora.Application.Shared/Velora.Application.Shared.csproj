@@ -23,6 +23,7 @@
 	  <EmbeddedResource Remove="Resources\FormResources\CmsConfiguration.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\LinkType.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Page.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.en.resx" />
@@ -80,6 +81,9 @@
 	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
+	  <None Include="Resources\FormResources\LinkType.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
 	  <None Include="Resources\FormResources\ContentItem.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>
@@ -125,7 +129,7 @@
 	  <None Include="Resources\FormResources\PageTemplate.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
-	  <None Include="Resources\FormResources\ComponentType.en.resx">
+	  <None Include="Resources\FormResources\LinkType.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\Resource.fa.resx">

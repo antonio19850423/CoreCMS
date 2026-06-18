@@ -29,6 +29,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
 
+    public virtual DbSet<LinkType> LinkTypes { get; set; }
+
     public virtual DbSet<LocalizationKey> LocalizationKeys { get; set; }
 
     public virtual DbSet<LocalizationTranslation> LocalizationTranslations { get; set; }
@@ -74,6 +76,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
 
     public virtual DbSet<VwContentItemForm> VwContentItemForms { get; set; }
+
+    public virtual DbSet<VwLinkTypeForm> VwLinkTypeForms { get; set; }
 
     public virtual DbSet<VwLocalization> VwLocalizations { get; set; }
 
@@ -181,6 +185,14 @@ public partial class CoreCmsContext : DbContext
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+        });
+
+        modelBuilder.Entity<LinkType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__LinkType__3214EC0760657063");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<LocalizationKey>(entity =>
@@ -426,6 +438,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwContentItemForm>(entity =>
         {
             entity.ToView("VwContentItemForm", "cms");
+        });
+
+        modelBuilder.Entity<VwLinkTypeForm>(entity =>
+        {
+            entity.ToView("VwLinkTypeForm", "cms");
         });
 
         modelBuilder.Entity<VwLocalization>(entity =>

@@ -386,6 +386,54 @@ namespace Velora.Application.Services
             return result;
         }
 
+        public async Task<ResultDto<IEnumerable<TDto>>> GetByPredicateAsync<TPredicateEntity>(
+    Expression<Func<TPredicateEntity, bool>> predicate)
+    where TPredicateEntity : class
+        {
+            var result = new ResultDto<IEnumerable<TDto>>();
+
+            try
+            {
+                IQueryable<dynamic> query;
+
+                if (_dbType == DatabaseType.SqlServer &&
+                    typeof(TPredicateEntity) == typeof(TEntitySql))
+                {
+                    query = _sqlRepository
+                        .GetAllQueryable()
+                        .Where((Expression<Func<TEntitySql, bool>>)(object)predicate);
+                }
+                else if (_dbType == DatabaseType.PostgreSql &&
+                         typeof(TPredicateEntity) == typeof(TEntityPosgreSql))
+                {
+                    query = _pgRepository
+                        .GetAllQueryable()
+                        .Where((Expression<Func<TEntityPosgreSql, bool>>)(object)predicate);
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        "Invalid entity type for the current database.");
+                }
+
+                var entities = await query.ToListAsync();
+
+                result.Data = _mapper.Map<IEnumerable<TDto>>(entities);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = await _messageService.Value.GetMessageAsync(
+                    LocalizationKeys.ActionFailed,
+                    "Unknown error");
+
+                result.Errors.Add(ex.Message);
+            }
+
+            return result;
+        }
+
         // 🔹 FirstOrDefaultAsync
         public async Task<ResultDto<TDto?>> FirstOrDefaultAsync<TPredicateEntity>(Expression<Func<TPredicateEntity, bool>> predicate)
             where TPredicateEntity : class

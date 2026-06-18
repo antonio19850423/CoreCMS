@@ -85,6 +85,9 @@ public partial class Resource
     [StringLength(300)]
     public string? SelectDisplayFields { get; set; }
 
+    [StringLength(200)]
+    public string? GroupKey { get; set; }
+
     [InverseProperty("Resource")]
     public virtual ICollection<Permission> Permissions { get; set; } = new List<Permission>();
 

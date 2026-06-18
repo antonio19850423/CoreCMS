@@ -38,7 +38,7 @@ namespace Velora.Application.Shared.Constants
         public const string ComboBox = "ComboBox";
         public const string Image = "Image";
         public const string MultiSelectBox = "MultiSelectBox";
-
+        public const string Link = "Link";
 
 
         // هر نوع کنترل دیگری که نیاز دارید
@@ -73,7 +73,9 @@ namespace Velora.Application.Shared.Constants
         public const string SectionItem = "SectionItem";
         public const string SectionGroupItem = "SectionGroupItem";
         public const string ContentItem = "ContentItem";
+        public const string LinkType = "LinkType";
         
+
 
 
 

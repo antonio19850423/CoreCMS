@@ -117,76 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="Resource.Code" xml:space="preserve">
+  <data name="Resource.Code" xml:space="preserve">
     <value>کد</value>
   </data>
-	<data name="Resource.DisplayName" xml:space="preserve">
+  <data name="Resource.DisplayName" xml:space="preserve">
     <value>نام نمایشی</value>
   </data>
-	<data name="Resource.ResourceTypeId" xml:space="preserve">
+  <data name="Resource.ResourceTypeId" xml:space="preserve">
     <value>نوع منبع</value>
   </data>
-	<data name="Resource.ResourceTypeTitle" xml:space="preserve">
+  <data name="Resource.ResourceTypeTitle" xml:space="preserve">
     <value>عنوان نوع منبع</value>
   </data>
-	<data name="Resource.Description" xml:space="preserve">
+  <data name="Resource.Description" xml:space="preserve">
     <value>توضیحات</value>
   </data>
-	<data name="Resource.IsActive" xml:space="preserve">
+  <data name="Resource.IsActive" xml:space="preserve">
     <value>فعال</value>
   </data>
-	<data name="Resource.Order" xml:space="preserve">
+  <data name="Resource.Order" xml:space="preserve">
     <value>ترتیب</value>
   </data>
-	<data name="Resource.FieldType" xml:space="preserve">
+  <data name="Resource.FieldType" xml:space="preserve">
     <value>نوع فیلد</value>
   </data>
-	<data name="Resource.MaxLength" xml:space="preserve">
+  <data name="Resource.MaxLength" xml:space="preserve">
     <value>حداکثر طول</value>
   </data>
-	<data name="Resource.IsRequired" xml:space="preserve">
+  <data name="Resource.IsRequired" xml:space="preserve">
     <value>الزامی</value>
   </data>
-	<data name="Resource.ShowInForm" xml:space="preserve">
+  <data name="Resource.ShowInForm" xml:space="preserve">
     <value>نمایش در فرم</value>
   </data>
-	<data name="Resource.ShowInGrid" xml:space="preserve">
+  <data name="Resource.ShowInGrid" xml:space="preserve">
     <value>نمایش در جدول</value>
   </data>
-	<data name="Resource.ShowInSelectBox" xml:space="preserve">
+  <data name="Resource.ShowInSelectBox" xml:space="preserve">
     <value>نمایش در لیست انتخاب</value>
   </data>
-	<data name="Resource.FormOrder" xml:space="preserve">
+  <data name="Resource.FormOrder" xml:space="preserve">
     <value>ترتیب در فرم</value>
   </data>
-	<data name="Resource.GridOrder" xml:space="preserve">
+  <data name="Resource.GridOrder" xml:space="preserve">
     <value>ترتیب در جدول</value>
   </data>
-	<data name="Resource.SelectBoxOrder" xml:space="preserve">
+  <data name="Resource.SelectBoxOrder" xml:space="preserve">
     <value>ترتیب در لیست انتخاب</value>
   </data>
-	<data name="Resource.Route" xml:space="preserve">
+  <data name="Resource.Route" xml:space="preserve">
     <value>مسیر</value>
   </data>
-	<data name="Resource.InputMask" xml:space="preserve">
+  <data name="Resource.InputMask" xml:space="preserve">
     <value>الگوی ورودی</value>
   </data>
-	<data name="Resource.IsDynamicForm" xml:space="preserve">
+  <data name="Resource.IsDynamicForm" xml:space="preserve">
     <value>فرم داینامیک</value>
   </data>
-	<data name="Resource.LinkedFieldCode" xml:space="preserve">
+  <data name="Resource.LinkedFieldCode" xml:space="preserve">
     <value>کد فیلد مرتبط</value>
   </data>
-	<data name="Resource.EntityName" xml:space="preserve">
+  <data name="Resource.EntityName" xml:space="preserve">
     <value>نام موجودیت</value>
   </data>
-	<data name="Resource.ServiceName" xml:space="preserve">
+  <data name="Resource.ServiceName" xml:space="preserve">
     <value>نام سرویس</value>
   </data>
-	<data name="Resource.ParentId" xml:space="preserve">
+  <data name="Resource.ParentId" xml:space="preserve">
     <value>والد</value>
   </data>
-	<data name="Resource.ParentDisplayName" xml:space="preserve">
+  <data name="Resource.ParentDisplayName" xml:space="preserve">
     <value>نام والد</value>
+  </data>
+  <data name="Resource.GroupKey" xml:space="preserve">
+    <value>گروه لینک</value>
   </data>
 </root>

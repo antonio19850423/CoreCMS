@@ -1,42 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
+using Velora.Application.Shared.Attributes;
+using Velora.Application.Shared.Constants;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public  class SectionGroupItemDto
+    public class LinkTypeDto
     {
         [Key]
         public Guid Id { get; set; }
 
-        [StringLength(150)]
-        [Unicode(false)]
+        [StringLength(50)]
         public string Code { get; set; } = null!;
 
-        [StringLength(150)]
-        [Unicode(false)]
+        [StringLength(100)]
         public string Name { get; set; } = null!;
 
-        [StringLength(300)]
-        public string? Description { get; set; }
-
-        [StringLength(150)]
-        public string? Icon { get; set; }
-
-        [StringLength(50)]
-        public string? Color { get; set; }
-
-        public Guid? GroupId { get; set; }
+        public bool IsActive { get; set; }
 
         public int SortOrder { get; set; }
-
-        public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -49,6 +36,5 @@ namespace Velora.Application.Shared.Dtos
         public Guid? UpdatedBy { get; set; }
 
         public bool IsTest { get; set; }
-
     }
 }

@@ -103,5 +103,8 @@ global using SqlContentItemView = Velora.EntityFrameworkCore.EntityFramework.Sql
 global using SqlSectionGroupItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SectionGroupItem;
 global using SqlSectionGroupItemView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSectionGroupItemForm;
 
+global using SqlLinkType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.LinkType;
+global using SqlLinkTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwLinkTypeForm;
+
 
 

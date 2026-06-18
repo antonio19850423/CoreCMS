@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,7 @@ namespace Velora.Application.Shared.Dtos
 
         public string? ServiceName { get; set; }
         public string? SelectDisplayFields { get; set; }
+        public string? GroupKey { get; set; }
 
     }
 }

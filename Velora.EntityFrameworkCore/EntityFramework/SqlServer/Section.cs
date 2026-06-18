@@ -146,6 +146,16 @@ public partial class Section
     [StringLength(500)]
     public string? MapEmbedUrl { get; set; }
 
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TypeId { get; set; }
+
+    public bool? Link1OpenInNewTab { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

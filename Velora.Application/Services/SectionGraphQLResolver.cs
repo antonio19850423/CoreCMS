@@ -84,7 +84,10 @@ public class SectionGqlResolver : ISectionGqlResolver
             Link3Url = x.Link3Url ??"",
             Link4Url = x.Link4Url ??"",
             SubtitleColor= x.SubtitleColor ??"",
-            ShouldInsert = x.ShouldInsert
+            ShouldInsert = x.ShouldInsert,
+            Link1TargetId=x.Link1TargetId ??"",
+            Link1TypeId=x.Link1TypeId ??"",
+            Link1OpenInNewTab=x.Link1OpenInNewTab 
         });
     }
 

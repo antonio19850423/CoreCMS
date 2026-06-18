@@ -61,7 +61,7 @@ namespace Velora.Application.Services
                 data = query.ToList();
 
                 if (!_env.IsDevelopment())
-                    _cache.Set($"{_cacheKey}_{typeof(TView).Name}", data, TimeSpan.FromMinutes(10));
+                    _cache.Set($"{_cacheKey}_{typeof(TView).Name}", data, TimeSpan.FromMinutes(0));
             }
             return data;
         }

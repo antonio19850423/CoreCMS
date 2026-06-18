@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using Azure;
+using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Velora.Application.Services;
@@ -34,7 +35,11 @@ public class SectionGroupItemGqlResolver : ISectionGroupItemGqlResolver
     {
         var query = await _SectionGroupItemService
             .GetAllViewQueryable<VwSectionGroupItemForm, VwSectionGroupItemForm, SectionGroupItemCrud>();
-        return query.Select(x => new SectionGroupItemCrud
+        var footerGroup =await _SectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
+            x => x.Code == "FOOTER");
+        if (!footerGroup.Success || footerGroup.Data == null)
+            return Enumerable.Empty<SectionGroupItemCrud>().AsQueryable();
+        return query.Where(c=>c.GroupId== footerGroup.Data.Id).Select(x => new SectionGroupItemCrud
         {
             Id = x.Id,
             Name = x.Name??"",

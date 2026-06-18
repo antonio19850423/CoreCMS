@@ -117,79 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Resource.Code" xml:space="preserve">
+  <data name="LinkType.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="LinkType.Code" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="Resource.DisplayName" xml:space="preserve">
-    <value>Display Name</value>
+  <data name="LinkType.CreatedAtPersian" xml:space="preserve">
+    <value>CreatedAt</value>
   </data>
-  <data name="Resource.ResourceTypeId" xml:space="preserve">
-    <value>Resource Type</value>
+  <data name="LinkType.CreatedByName" xml:space="preserve">
+    <value>CreatedByName</value>
   </data>
-  <data name="Resource.ResourceTypeTitle" xml:space="preserve">
-    <value>Resource Type Title</value>
+  <data name="LinkType.IsActive" xml:space="preserve">
+    <value>IsActive</value>
   </data>
-  <data name="Resource.Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="LinkType.UpdatedAtPersian" xml:space="preserve">
+    <value>UpdatedAtPersian</value>
   </data>
-  <data name="Resource.IsActive" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="Resource.Order" xml:space="preserve">
-    <value>Order</value>
-  </data>
-  <data name="Resource.FieldType" xml:space="preserve">
-    <value>Field Type</value>
-  </data>
-  <data name="Resource.MaxLength" xml:space="preserve">
-    <value>Max Length</value>
-  </data>
-  <data name="Resource.IsRequired" xml:space="preserve">
-    <value>Required</value>
-  </data>
-  <data name="Resource.ShowInForm" xml:space="preserve">
-    <value>Show In Form</value>
-  </data>
-  <data name="Resource.ShowInGrid" xml:space="preserve">
-    <value>Show In Grid</value>
-  </data>
-  <data name="Resource.ShowInSelectBox" xml:space="preserve">
-    <value>Show In Select Box</value>
-  </data>
-  <data name="Resource.FormOrder" xml:space="preserve">
-    <value>Form Order</value>
-  </data>
-  <data name="Resource.GridOrder" xml:space="preserve">
-    <value>Grid Order</value>
-  </data>
-  <data name="Resource.SelectBoxOrder" xml:space="preserve">
-    <value>Select Box Order</value>
-  </data>
-  <data name="Resource.Route" xml:space="preserve">
-    <value>Route</value>
-  </data>
-  <data name="Resource.InputMask" xml:space="preserve">
-    <value>Input Mask</value>
-  </data>
-  <data name="Resource.IsDynamicForm" xml:space="preserve">
-    <value>Dynamic Form</value>
-  </data>
-  <data name="Resource.LinkedFieldCode" xml:space="preserve">
-    <value>Linked Field Code</value>
-  </data>
-  <data name="Resource.EntityName" xml:space="preserve">
-    <value>Entity Name</value>
-  </data>
-  <data name="Resource.ServiceName" xml:space="preserve">
-    <value>Service Name</value>
-  </data>
-  <data name="Resource.ParentId" xml:space="preserve">
-    <value>Parent</value>
-  </data>
-  <data name="Resource.ParentDisplayName" xml:space="preserve">
-    <value>Parent Display Name</value>
-  </data>
-  <data name="Resource.GroupKey" xml:space="preserve">
-    <value>Group Key</value>
+  <data name="LinkType.UpdatedByName" xml:space="preserve">
+    <value>UpdatedByName</value>
   </data>
 </root>
