@@ -120,8 +120,7 @@ public partial class VwSectionItemForm
     [StringLength(100)]
     public string? ComponentTypeName { get; set; }
 
-    [StringLength(50)]
-    [Unicode(false)]
+    [StringLength(150)]
     public string? SectionGroupItemName { get; set; }
 
     public Guid? SectionGroupItemId { get; set; }
@@ -130,4 +129,44 @@ public partial class VwSectionItemForm
     public string? Question { get; set; }
 
     public string? Answer { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link1TypeId { get; set; }
+
+    public bool? Link1OpenInNewTab { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link2TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link2TypeId { get; set; }
+
+    public bool? Link2OpenInNewTab { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link3TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link3TypeId { get; set; }
+
+    public bool? Link3OpenInNewTab { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link4TargetId { get; set; }
+
+    [StringLength(40)]
+    [Unicode(false)]
+    public string? Link4TypeId { get; set; }
+
+    public bool? Link4OpenInNewTab { get; set; }
 }

@@ -273,4 +273,31 @@
   <data name="Section.Link1OpenInNewTab" xml:space="preserve">
     <value>Link1OpenInNewTab</value>
   </data>
+  <data name="Section.Link2TargetId" xml:space="preserve">
+    <value>Link2 Target Id</value>
+  </data>
+  <data name="Section.Link2TypeId" xml:space="preserve">
+    <value>Link2 Type</value>
+  </data>
+  <data name="Section.Link2OpenInNewTab" xml:space="preserve">
+    <value>Link2 Open In New Tab</value>
+  </data>
+  <data name="Section.Link3TargetId" xml:space="preserve">
+    <value>Link3 Target Id</value>
+  </data>
+  <data name="Section.Link3TypeId" xml:space="preserve">
+    <value>Link3 Type Id</value>
+  </data>
+  <data name="Section.Link3OpenInNewTab" xml:space="preserve">
+    <value>Link3 Open In New Tab</value>
+  </data>
+  <data name="Section.Link4TargetId" xml:space="preserve">
+    <value>Link4 Target Id</value>
+  </data>
+  <data name="Section.Link4TypeId" xml:space="preserve">
+    <value>Link4 Type Id</value>
+  </data>
+  <data name="Section.Link4OpenInNewTab" xml:space="preserve">
+    <value>Link4 Open In New Tab</value>
+  </data>
 </root>

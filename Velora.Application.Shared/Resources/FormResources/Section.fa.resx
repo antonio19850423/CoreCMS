@@ -214,7 +214,7 @@
     <value>متن دکمه ارسال فرم تماس</value>
   </data>
   <data name="Section.CopyrightText" xml:space="preserve">
-    <value>Copyright Text</value>
+    <value>کپی‌رایت</value>
   </data>
   <data name="Section.MapEmbedUrl" xml:space="preserve">
     <value>لینک نمایش نقشه </value>
@@ -271,6 +271,33 @@
     <value>نوع لینک</value>
   </data>
   <data name="Section.Link1OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="Section.Link2TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="Section.Link2TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="Section.Link2OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="Section.Link3TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="Section.Link3TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="Section.Link3OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="Section.Link4TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="Section.Link4TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="Section.Link4OpenInNewTab" xml:space="preserve">
     <value>باز شدن در صفحه جدید</value>
   </data>
 </root>

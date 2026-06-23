@@ -1387,8 +1387,47 @@ namespace Velora.Application.Seeds
 							ImageUrl = rtl?.ImageUrl,
 							Link1Text = rtl?.Link1Text,
 							Link1Url = rtl?.Link1Url,
-
-							ColumnsCount = 1
+							ContactEmailLabel = rtl?.ContactEmailLabel,
+							Link4TypeId = rtl?.Link4TypeId,
+							ContactFirstNameLabel = rtl?.ContactFirstNameLabel,
+							ContactLastNameLabel = rtl?.ContactLastNameLabel,
+							ContactMessageLabel= rtl?.ContactMessageLabel,
+							ContactSubmitButtonText = rtl?.ContactSubmitButtonText,
+							CopyrightText = rtl?.CopyrightText,
+							Features = rtl?.Features,
+							Icon = rtl?.Icon,
+							IconAlt = rtl?.IconAlt,
+							IconColor = rtl?.IconColor,
+							ImageAlt = rtl?.ImageAlt,
+							ImageAlt2 = rtl?.ImageAlt2,
+							ImageAlt3 = rtl?.ImageAlt3,
+							ImageAlt4 = rtl?.ImageAlt4,
+							ImageUrl2 = rtl?.ImageUrl2,
+							ImageUrl3 = rtl?.ImageUrl3,
+							ImageUrl4 = rtl?.ImageUrl4,
+							Link1Color = rtl?.Link1Color,
+							Link1OpenInNewTab = rtl?.Link1OpenInNewTab,
+							Link1TargetId = rtl?.Link1TargetId,
+							Link1TypeId = rtl?.Link1TypeId,
+							Link2Color = rtl?.Link2Color,
+							Link2OpenInNewTab= rtl?.Link2OpenInNewTab,
+							Link2TargetId = rtl?.Link2TargetId,
+							Link2Text = rtl?.Link2Text,
+							Link2TypeId= rtl?.Link2TypeId,
+							Link2Url = rtl?.Link2Url,
+							Link3Color = rtl?.Link3Color,
+							Link3OpenInNewTab=rtl?.Link3OpenInNewTab,
+							Link3TargetId=rtl?.Link3TargetId,
+							Link3Text=rtl?.Link3Text,
+							Link3TypeId=rtl?.Link3TypeId,
+							Link3Url=rtl?.Link3Url,
+							Link4Color = rtl?.Link4Color,
+							Link4OpenInNewTab=rtl?.Link4OpenInNewTab,
+							Link4TargetId=rtl?.Link4TargetId,
+							Link4Text=rtl?.Link4Text,
+							Link4Url=rtl?.Link4Url,
+							MapEmbedUrl = rtl?.MapEmbedUrl,
+                            ColumnsCount = 1
 						};
 
 						var created = await _sectionService.CreateAsync(sectionEntity);
@@ -1431,7 +1470,37 @@ namespace Velora.Application.Seeds
 									IsActive = true,
 
 									// 🔥 SortOrder بر اساس loop
-									SortOrder = itemSortOrder++
+									SortOrder = itemSortOrder++,
+									Link4TargetId = item.Link4TargetId,
+									Link4OpenInNewTab = item.Link4OpenInNewTab,
+									Link4Color = item.Link4Color,
+									Link3TypeId = item.Link3TypeId,
+									Answer = item.Answer,
+									AvatarAlt = item.AvatarAlt,
+									BackgroundColor = item.BackgroundColor,
+									DescriptionColor = item.DescriptionColor,
+									IconAlt = item.IconAlt,
+									IconColor = item.IconColor,
+									ImageAlt = item.ImageAlt,
+									Link1Color = item.Link1Color,
+									Link1OpenInNewTab= item.Link1OpenInNewTab,
+									Link2Color = item.Link2Color,
+									Link1TargetId = item.Link1TargetId,
+									Link1TypeId = item.Link1TypeId,
+									Link2OpenInNewTab =(item.Link2OpenInNewTab),
+									Link2TargetId =(item.Link2TargetId),
+									Link2TypeId =(item.Link2TypeId),	
+									Link3Color =(item.Link3Color),
+									Link3OpenInNewTab=(item.Link3OpenInNewTab),	
+									Link3TargetId =(item.Link3TargetId),
+									Link4TypeId =(item.Link4TypeId),
+									Name = item.Name,
+									Price = item.Price,
+									Question = item.Question,
+									Role = item.Role,
+									SectionGroupItemId = item.SectionGroupItemId,
+									SubtitleColor = item.SubtitleColor,
+									TitleColor = item.TitleColor,
 								};
 
 								await _sectionItemService.CreateAsync(sectionItem);
@@ -1441,9 +1510,82 @@ namespace Velora.Application.Seeds
 					else
 					{
 						sectionEntity = existingSection.Data;
+                        // ===============================
+                        // 🔥 FULL SECTION UPDATE FROM SEED
+                        // ===============================
+                        if (rtl != null)
+                        {
+                            sectionEntity.IsActive = true;
+                            sectionEntity.IsTest = false;
 
-						// 🔥 FIXED: still controlled by loop index (not random ++ state)
-						sectionEntity.SortOrder = currentSectionSortOrder++;
+                            sectionEntity.BackgroundColor = "#ffffff";
+                            sectionEntity.HeaderColor = "#000000";
+                            sectionEntity.SubtitleColor = "#333333";
+                            sectionEntity.DescriptionColor = "#555555";
+
+                            sectionEntity.Title = rtl.Title;
+                            sectionEntity.Subtitle = rtl.Subtitle;
+                            sectionEntity.Description = rtl.Description;
+
+                            sectionEntity.ImageUrl = rtl.ImageUrl;
+                            sectionEntity.ImageUrl2 = rtl.ImageUrl2;
+                            sectionEntity.ImageUrl3 = rtl.ImageUrl3;
+                            sectionEntity.ImageUrl4 = rtl.ImageUrl4;
+
+                            sectionEntity.ImageAlt = rtl.ImageAlt;
+                            sectionEntity.ImageAlt2 = rtl.ImageAlt2;
+                            sectionEntity.ImageAlt3 = rtl.ImageAlt3;
+                            sectionEntity.ImageAlt4 = rtl.ImageAlt4;
+
+                            sectionEntity.Icon = rtl.Icon;
+                            sectionEntity.IconAlt = rtl.IconAlt;
+                            sectionEntity.IconColor = rtl.IconColor;
+
+                            sectionEntity.Link1Text = rtl.Link1Text;
+                            sectionEntity.Link1Url = rtl.Link1Url;
+                            sectionEntity.Link1Color = rtl.Link1Color;
+                            sectionEntity.Link1TypeId = rtl.Link1TypeId;
+                            sectionEntity.Link1TargetId = rtl.Link1TargetId;
+                            sectionEntity.Link1OpenInNewTab = rtl.Link1OpenInNewTab;
+
+                            sectionEntity.Link2Text = rtl.Link2Text;
+                            sectionEntity.Link2Url = rtl.Link2Url;
+                            sectionEntity.Link2Color = rtl.Link2Color;
+                            sectionEntity.Link2TypeId = rtl.Link2TypeId;
+                            sectionEntity.Link2TargetId = rtl.Link2TargetId;
+                            sectionEntity.Link2OpenInNewTab = rtl.Link2OpenInNewTab;
+
+                            sectionEntity.Link3Text = rtl.Link3Text;
+                            sectionEntity.Link3Url = rtl.Link3Url;
+                            sectionEntity.Link3Color = rtl.Link3Color;
+                            sectionEntity.Link3TypeId = rtl.Link3TypeId;
+                            sectionEntity.Link3TargetId = rtl.Link3TargetId;
+                            sectionEntity.Link3OpenInNewTab = rtl.Link3OpenInNewTab;
+
+                            sectionEntity.Link4Text = rtl.Link4Text;
+                            sectionEntity.Link4Url = rtl.Link4Url;
+                            sectionEntity.Link4Color = rtl.Link4Color;
+                            sectionEntity.Link4TypeId = rtl.Link4TypeId;
+                            sectionEntity.Link4TargetId = rtl.Link4TargetId;
+                            sectionEntity.Link4OpenInNewTab = rtl.Link4OpenInNewTab;
+
+                            sectionEntity.Features = rtl.Features;
+                            sectionEntity.CopyrightText = rtl.CopyrightText;
+
+                            sectionEntity.ContactEmailLabel = rtl.ContactEmailLabel;
+                            sectionEntity.ContactFirstNameLabel = rtl.ContactFirstNameLabel;
+                            sectionEntity.ContactLastNameLabel = rtl.ContactLastNameLabel;
+                            sectionEntity.ContactMessageLabel = rtl.ContactMessageLabel;
+                            sectionEntity.ContactSubmitButtonText = rtl.ContactSubmitButtonText;
+
+                            sectionEntity.MapEmbedUrl = rtl.MapEmbedUrl;
+
+                            sectionEntity.ColumnsCount = 1;
+
+                            await _sectionService.UpdateAsync(sectionEntity, sectionEntity.Id);
+                        }
+                        // 🔥 FIXED: still controlled by loop index (not random ++ state)
+                        sectionEntity.SortOrder = currentSectionSortOrder++;
 						await _sectionService.UpdateAsync(sectionEntity, sectionEntity.Id);
 						// =========================================
 						// SECTION ITEMS SEED IF NOT EXISTS
@@ -1487,8 +1629,38 @@ namespace Velora.Application.Seeds
 									IsActive = true,
 
 									// 🔥 SortOrder بر اساس loop
-									SortOrder = itemSortOrder++
-								};
+									SortOrder = itemSortOrder++,
+                                    Link4TargetId = item.Link4TargetId,
+                                    Link4OpenInNewTab = item.Link4OpenInNewTab,
+                                    Link4Color = item.Link4Color,
+                                    Link3TypeId = item.Link3TypeId,
+                                    Answer = item.Answer,
+                                    AvatarAlt = item.AvatarAlt,
+                                    BackgroundColor = item.BackgroundColor,
+                                    DescriptionColor = item.DescriptionColor,
+                                    IconAlt = item.IconAlt,
+                                    IconColor = item.IconColor,
+                                    ImageAlt = item.ImageAlt,
+                                    Link1Color = item.Link1Color,
+                                    Link1OpenInNewTab = item.Link1OpenInNewTab,
+                                    Link2Color = item.Link2Color,
+                                    Link1TargetId = item.Link1TargetId,
+                                    Link1TypeId = item.Link1TypeId,
+                                    Link2OpenInNewTab = (item.Link2OpenInNewTab),
+                                    Link2TargetId = (item.Link2TargetId),
+                                    Link2TypeId = (item.Link2TypeId),
+                                    Link3Color = (item.Link3Color),
+                                    Link3OpenInNewTab = (item.Link3OpenInNewTab),
+                                    Link3TargetId = (item.Link3TargetId),
+                                    Link4TypeId = (item.Link4TypeId),
+                                    Name = item.Name,
+                                    Price = item.Price,
+                                    Question = item.Question,
+                                    Role = item.Role,
+                                    SectionGroupItemId = item.SectionGroupItemId,
+                                    SubtitleColor = item.SubtitleColor,
+                                    TitleColor = item.TitleColor,
+                                };
 
 								if (existingItem.Data == null)
 								{

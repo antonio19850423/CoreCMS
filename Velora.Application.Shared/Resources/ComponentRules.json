@@ -341,78 +341,210 @@
       }
     }
   },
-    "about": {
-      "rules": {
+  "about": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageUrl2": true,
+      "imageUrl3": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "features": true,
+      "items": {
         "title": true,
         "subtitle": true,
-        "description": true,
-        "teamTitle": true,
-        "items": {
-          "name": true,
-          "role": true,
-          "imageUrl": true
-        }
+        "imageUrl": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "درباره ما",
+        "subtitle": "ما یک تیم متخصص در توسعه نرم‌افزارهای مدرن هستیم که با تمرکز بر کیفیت، سرعت و تجربه کاربری، راهکارهای مقیاس‌پذیر ارائه می‌دهیم.",
+        "description": "هدف ما ساخت محصولاتی است که فقط کار نکنند، بلکه تجربه‌ای متفاوت برای کاربران ایجاد کنند.",
+        "features": "تیم ما",
+        "imageUrl": "http://localhost:5274/uploads/sections/about (1).jpg",
+        "imageAlt": "اعضای تیم در حال برگزاری جلسه برنامه‌ریزی پروژه",
+        "imageUrl2": "http://localhost:5274/uploads/sections/about (2).jpg",
+        "imageAlt2": "محیط کاری شرکت و همکاری اعضای تیم توسعه",
+        "imageUrl3": "http://localhost:5274/uploads/sections/about (3).jpg",
+        "imageAlt3": "تیم فنی در حال بررسی و طراحی محصول نرم‌افزاری",
+        "items": [
+          {
+            "title": "علی رضایی",
+            "subtitle": "مدیر فنی",
+            "imageUrl": "http://localhost:5274/uploads/sections/men (1).jpg",
+            "imageAlt": "تصویر پروفایل علی رضایی مدیر فنی شرکت",
+            "isActive": true
+          },
+          {
+            "title": "سارا محمدی",
+            "subtitle": "طراح UI",
+            "imageUrl": "http://localhost:5274/uploads/sections/woman.jpg",
+            "imageAlt": "تصویر پروفایل سارا محمدی طراح رابط کاربری",
+            "isActive": true
+          },
+          {
+            "title": "رضا کریمی",
+            "subtitle": "توسعه‌دهنده بک‌اند",
+            "imageUrl": "http://localhost:5274/uploads/sections/men (2).jpg",
+            "imageAlt": "تصویر پروفایل رضا کریمی توسعه‌دهنده بک‌اند",
+            "isActive": true
+          },
+          {
+            "title": "مهدی حسینی",
+            "subtitle": "توسعه‌دهنده فرانت‌اند",
+            "imageUrl": "http://localhost:5274/uploads/sections/men (3).jpg",
+            "imageAlt": "تصویر پروفایل مهدی حسینی توسعه‌دهنده فرانت‌اند",
+            "isActive": true
+          }
+        ]
       },
-      "defaultData": {
-        "rtl": {
-          "title": "درباره ما",
-          "subtitle": "ما یک تیم متخصص در توسعه نرم‌افزارهای مدرن هستیم که با تمرکز بر کیفیت، سرعت و تجربه کاربری، راهکارهای مقیاس‌پذیر ارائه می‌دهیم.",
-          "description": "هدف ما ساخت محصولاتی است که فقط کار نکنند، بلکه تجربه‌ای متفاوت برای کاربران ایجاد کنند. از طراحی تا توسعه، همه چیز با دقت و استانداردهای روز انجام می‌شود.",
-          "teamTitle": "تیم ما",
-          "items": [
-            {
-              "name": "علی رضایی",
-              "role": "مدیر فنی",
-              "imageUrl": "http://localhost:5274/uploads/sections/men (1).jpg"
-            },
-            {
-              "name": "سارا محمدی",
-              "role": "طراح UI",
-              "imageUrl": "http://localhost:5274/uploads/sections/woman.jpg"
-            },
-            {
-              "name": "رضا کریمی",
-              "role": "توسعه‌دهنده بک‌اند",
-              "imageUrl": "http://localhost:5274/uploads/sections/men (2).jpg"
-            },
-            {
-              "name": "مهدی حسینی",
-              "role": "توسعه‌دهنده فرانت‌اند",
-              "imageUrl": "http://localhost:5274/uploads/sections/men (3).jpg"
-            }
-          ]
-        },
-        "ltr": {
-          "title": "About Us",
-          "subtitle": "We are a professional software development team focused on building scalable, modern, and high-performance digital products.",
-          "description": "Our mission is to create products that don’t just work — they deliver exceptional user experiences. From design to development, everything is built with precision and modern standards.",
-          "teamTitle": "Our Team",
-          "items": [
-            {
-              "name": "John Smith",
-              "role": "Tech Lead",
-              "imageUrl": "/team/1.jpg"
-            },
-            {
-              "name": "Emily Brown",
-              "role": "UI Designer",
-              "imageUrl": "/team/2.jpg"
-            },
-            {
-              "name": "David Wilson",
-              "role": "Backend Developer",
-              "imageUrl": "/team/3.jpg"
-            },
-            {
-              "name": "Michael Lee",
-              "role": "Frontend Developer",
-              "imageUrl": "/team/4.jpg"
-            }
-          ]
-        }
+      "ltr": {
+        "title": "About Us",
+        "subtitle": "We are a professional software development team focused on building scalable digital products.",
+        "description": "Our mission is to create products that deliver exceptional user experiences.",
+        "features": "Our Team",
+        "imageUrl": "/team/about1.jpg",
+        "imageUrl2": "/team/about2.jpg",
+        "imageUrl3": "/team/about3.jpg",
+        "items": [
+          {
+            "title": "John Smith",
+            "subtitle": "Tech Lead",
+            "imageUrl": "/team/1.jpg",
+            "isActive": true
+          },
+          {
+            "title": "Emily Brown",
+            "subtitle": "UI Designer",
+            "imageUrl": "/team/2.jpg",
+            "isActive": true
+          },
+          {
+            "title": "David Wilson",
+            "subtitle": "Backend Developer",
+            "imageUrl": "/team/3.jpg",
+            "isActive": true
+          },
+          {
+            "title": "Michael Lee",
+            "subtitle": "Frontend Developer",
+            "imageUrl": "/team/4.jpg",
+            "isActive": true
+          }
+        ]
       }
     }
+  },
+  "contact": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
 
+      "backgroundColor": true,
 
+      "contactFirstNameLabel": true,
+      "contactLastNameLabel": true,
+      "contactEmailLabel": true,
+      "contactMessageLabel": true,
+      "contactSubmitButtonText": true,
 
+      "mapEmbedUrl": true,
+      "features": true,
+
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+
+    "defaultData": {
+      "rtl": {
+        "title": "تماس با ما",
+        "subtitle": "با ما در ارتباط باشید",
+        "description": "فرم زیر را پر کنید تا در سریع‌ترین زمان با شما تماس بگیریم.",
+
+        "features": "اطلاعات تماس",
+
+        "backgroundColor": "#ffffff",
+
+        "contactFirstNameLabel": "نام",
+        "contactLastNameLabel": "نام خانوادگی",
+        "contactEmailLabel": "ایمیل",
+        "contactMessageLabel": "پیام شما",
+        "contactSubmitButtonText": "ارسال پیام",
+
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!...",
+
+        "items": [
+          {
+            "title": "📍 آدرس: تهران، ایران",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "📞 تلفن: +98 21 000 000",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "📧 ایمیل: info@example.com",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      },
+
+      "ltr": {
+        "title": "Contact Us",
+        "subtitle": "Get in touch with us",
+        "description": "Fill out the form and we will contact you soon.",
+
+        "features": "Contact Info",
+
+        "backgroundColor": "#ffffff",
+
+        "contactFirstNameLabel": "First Name",
+        "contactLastNameLabel": "Last Name",
+        "contactEmailLabel": "Email",
+        "contactMessageLabel": "Message",
+        "contactSubmitButtonText": "Send Message",
+
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!...",
+
+        "items": [
+          {
+            "title": "📍 Address: Tehran, Iran",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "📞 Phone: +98 21 000 000",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "📧 Email: info@example.com",
+            "subtitle": null,
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
+  }
 }

@@ -156,9 +156,6 @@
   <data name="SectionItem.Link2Text" xml:space="preserve">
     <value>متن لینک دوم</value>
   </data>
-  <data name="SectionItem.Link2Url" xml:space="preserve">
-    <value>آدرس لینک دوم</value>
-  </data>
   <data name="SectionItem.Link3Text" xml:space="preserve">
     <value>متن لینک سوم</value>
   </data>
@@ -245,5 +242,41 @@
   </data>
   <data name="SectionItem.Role" xml:space="preserve">
     <value>سمت / نقش</value>
+  </data>
+  <data name="SectionItem.Link1TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="SectionItem.Link1TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="SectionItem.Link1OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="SectionItem.Link2TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="SectionItem.Link2TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="SectionItem.Link2OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="SectionItem.Link3TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="SectionItem.Link3TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
+  </data>
+  <data name="SectionItem.Link3OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="SectionItem.Link4TargetId" xml:space="preserve">
+    <value>کد صفحه داخلی</value>
+  </data>
+  <data name="SectionItem.Link4OpenInNewTab" xml:space="preserve">
+    <value>باز شدن در صفحه جدید</value>
+  </data>
+  <data name="SectionItem.Link4TypeId" xml:space="preserve">
+    <value>نوع لینک</value>
   </data>
 </root>

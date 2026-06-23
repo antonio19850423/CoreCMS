@@ -34,16 +34,17 @@
           ]
         },
         {
-          "pageName": "درباره ما",
-          "slug": "about",
+          "pageName": "تماس با ما",
+          "slug": "contact",
           "isPublished": false,
-          "metaTitle": "درباره ما - وب‌سایت شرکتی",
-          "metaDescription": "آشنایی با شرکت، تیم متخصص، ماموریت و ارزش‌های سازمان",
-          "metaKeywords": "درباره ما، تیم ما، شرکت، ماموریت، ارزش‌ها",
+          "metaTitle": "تماس با ما - وب‌سایت شرکتی",
+          "metaDescription": "ارتباط با تیم پشتیبانی و ارسال پیام، درخواست همکاری یا سوالات مشتریان",
+          "metaKeywords": "تماس با ما، پشتیبانی، ارتباط، فرم تماس، شرکت",
+
           "components": [
             {
-              "code": "about",
-              "type": "about"
+              "code": "contact",
+              "type": "contact"
             }
           ]
         }

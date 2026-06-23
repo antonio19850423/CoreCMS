@@ -156,9 +156,6 @@
   <data name="SectionItem.Link2Text" xml:space="preserve">
     <value>Secondary Link Text</value>
   </data>
-  <data name="SectionItem.Link2Url" xml:space="preserve">
-    <value>Secondary Link URL</value>
-  </data>
   <data name="SectionItem.Link3Text" xml:space="preserve">
     <value>Third Link Text</value>
   </data>
@@ -245,5 +242,41 @@
   </data>
   <data name="SectionItem.Role" xml:space="preserve">
     <value>Role</value>
+  </data>
+  <data name="SectionItem.Link1TargetId" xml:space="preserve">
+    <value>Link1TargetId</value>
+  </data>
+  <data name="SectionItem.Link1TypeId" xml:space="preserve">
+    <value>Link1TypeId</value>
+  </data>
+  <data name="SectionItem.Link1OpenInNewTab" xml:space="preserve">
+    <value>Link1OpenInNewTab</value>
+  </data>
+  <data name="SectionItem.Link2TargetId" xml:space="preserve">
+    <value>Link2TargetId</value>
+  </data>
+  <data name="SectionItem.Link2TypeId" xml:space="preserve">
+    <value>Link2TypeId</value>
+  </data>
+  <data name="SectionItem.Link2OpenInNewTab" xml:space="preserve">
+    <value>Link2OpenInNewTab</value>
+  </data>
+  <data name="SectionItem.Link3TargetId" xml:space="preserve">
+    <value>Link3TargetId</value>
+  </data>
+  <data name="SectionItem.Link3TypeId" xml:space="preserve">
+    <value>Link3TypeId</value>
+  </data>
+  <data name="SectionItem.Link3OpenInNewTab" xml:space="preserve">
+    <value>Link3OpenInNewTab</value>
+  </data>
+  <data name="SectionItem.Link4TargetId" xml:space="preserve">
+    <value>Link4TargetId</value>
+  </data>
+  <data name="SectionItem.Link4OpenInNewTab" xml:space="preserve">
+    <value>Link4OpenInNewTab</value>
+  </data>
+  <data name="SectionItem.Link4TypeId" xml:space="preserve">
+    <value>Link4TypeId</value>
   </data>
 </root>
