@@ -42,9 +42,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link1")]
         public string? Link1Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
-        public string? Link1TargetId { get; set; }
+        public Guid? Link1TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
-        public string? Link1TypeId { get; set; }
+        public Guid? Link1TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
         public bool? Link1OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link2", Route = "/api/ComboBox/Pages")]
@@ -56,9 +56,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link2")]
         public string? Link2Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
-        public string? Link2TargetId { get; set; }
+        public Guid? Link2TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
-        public string? Link2TypeId { get; set; }
+        public Guid? Link2TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
         public bool? Link2OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link3", Route = "/api/ComboBox/Pages")]
@@ -70,9 +70,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link3")]
         public string? Link3Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
-        public string? Link3TargetId { get; set; }
+        public Guid? Link3TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
-        public string? Link3TypeId { get; set; }
+        public Guid? Link3TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
         public bool? Link3OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link4", Route = "/api/ComboBox/Pages")]
@@ -84,9 +84,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link4")]
         public string? Link4Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
-        public string? Link4TargetId { get; set; }
+        public Guid? Link4TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
-        public string? Link4TypeId { get; set; }
+        public Guid? Link4TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
         public bool? Link4OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, MaxLength = 150)]

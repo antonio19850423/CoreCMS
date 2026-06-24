@@ -336,7 +336,23 @@ public partial class CoreCmsContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sections_Type");
 
-            entity.HasOne(d => d.Page).WithMany(p => p.Sections)
+            entity.HasOne(d => d.Link1Target).WithMany(p => p.SectionLink1Targets).HasConstraintName("FK_Section_Link1Target_Page");
+
+            entity.HasOne(d => d.Link1Type).WithMany(p => p.SectionLink1Types).HasConstraintName("FK_Sections_Link1Type_Page");
+
+            entity.HasOne(d => d.Link2Target).WithMany(p => p.SectionLink2Targets).HasConstraintName("FK_Sections_Link2Target_Page");
+
+            entity.HasOne(d => d.Link2Type).WithMany(p => p.SectionLink2Types).HasConstraintName("FK_Section_Link2Type_LinkType");
+
+            entity.HasOne(d => d.Link3Target).WithMany(p => p.SectionLink3Targets).HasConstraintName("FK_Section_Link3Target_Page");
+
+            entity.HasOne(d => d.Link3Type).WithMany(p => p.SectionLink3Types).HasConstraintName("FK_Sections_Link3Type_Page");
+
+            entity.HasOne(d => d.Link4Target).WithMany(p => p.SectionLink4Targets).HasConstraintName("FK_Sections_Link4Target_Page");
+
+            entity.HasOne(d => d.Link4Type).WithMany(p => p.SectionLink4Types).HasConstraintName("FK_Section_Link4Type_LinkType");
+
+            entity.HasOne(d => d.Page).WithMany(p => p.SectionPages)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Sections_Page");
         });
@@ -356,6 +372,22 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Link1Target).WithMany(p => p.SectionItemLink1Targets).HasConstraintName("FK_SectionItems_Link1Target_Page");
+
+            entity.HasOne(d => d.Link1Type).WithMany(p => p.SectionItemLink1Types).HasConstraintName("FK_SectionItems_Link1Type_Page");
+
+            entity.HasOne(d => d.Link2Target).WithMany(p => p.SectionItemLink2Targets).HasConstraintName("FK_SectionItems_Link2Target_Page");
+
+            entity.HasOne(d => d.Link2Type).WithMany(p => p.SectionItemLink2Types).HasConstraintName("FK_SectionItems_Link2Type_Page");
+
+            entity.HasOne(d => d.Link3Target).WithMany(p => p.SectionItemLink3Targets).HasConstraintName("FK_SectionItems_Link3Target_Page");
+
+            entity.HasOne(d => d.Link3Type).WithMany(p => p.SectionItemLink3Types).HasConstraintName("FK_SectionItems_Link3Type_Page");
+
+            entity.HasOne(d => d.Link4Target).WithMany(p => p.SectionItemLink4Targets).HasConstraintName("FK_SectionItems_Link4Target_Page");
+
+            entity.HasOne(d => d.Link4Type).WithMany(p => p.SectionItemLink4Types).HasConstraintName("FK_SectionItems_Link4Type_Page");
 
             entity.HasOne(d => d.SectionGroupItem).WithMany(p => p.SectionItems).HasConstraintName("FK_SectionItem_SectionGroupItem");
 

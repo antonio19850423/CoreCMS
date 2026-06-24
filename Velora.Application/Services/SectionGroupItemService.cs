@@ -70,7 +70,7 @@ namespace Velora.Application.Services
             }
 
             var result = await GetByPredicateAsync<SqlSectionGroupItem>(
-                x => x.Id == existing.Data.Id);
+                x => x.GroupId == existing.Data.Id);
 
             response.Success = result.Success;
             response.Message = result.Message;

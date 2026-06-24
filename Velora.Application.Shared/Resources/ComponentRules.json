@@ -14,7 +14,7 @@
         "title": "ساخت سریع وب‌سایت‌های مدرن و حرفه‌ای",
         "subtitle": "راهکار ساده برای طراحی و توسعه",
         "description": "بدون نیاز به پیچیدگی، تنها با چند کلیک سایت خود را راه‌اندازی کنید",
-        "imageUrl": "http://localhost:5274/uploads/sections/defaultHero.avif",
+        "imageUrl": "/uploads/sections/defaultHero.avif",
         "link1Text": "شروع کنید",
         "link1Url": "#"
       },
@@ -22,7 +22,7 @@
         "title": "Build Modern & Scalable Websites",
         "subtitle": "Simple Development Experience",
         "description": "Create fast, modern and scalable web applications easily",
-        "imageUrl": "http://localhost:5274/uploads/sections/defaultHero.avif",
+        "imageUrl": "/uploads/sections/defaultHero.avif",
         "link1Text": "Get Started",
         "link1Url": "#"
       }
@@ -42,7 +42,7 @@
         "title": "سرعت بیشتر در توسعه",
         "subtitle": "جریان کاری مدرن و بهینه",
         "description": "با استفاده از معماری کامپوننتی، سریع‌تر و مقیاس‌پذیرتر توسعه دهید.",
-        "imageUrl": "http://localhost:5274/uploads/sections/feature.avif",
+        "imageUrl": "/uploads/sections/feature.avif",
         "items": [
           {
             "name": "استقرار سریع",
@@ -80,7 +80,7 @@
         "title": "Deploy faster",
         "subtitle": "Modern optimized workflow",
         "description": "Build scalable applications faster with modular architecture.",
-        "imageUrl": "http://localhost:5274/uploads/sections/feature.avif",
+        "imageUrl": "/uploads/sections/feature.avif",
         "items": [
           {
             "name": "Fast Deployment",
@@ -134,7 +134,7 @@
         "title": "شروع در ۳ مرحله ساده",
         "subtitle": "نحوه کار",
         "description": "بدون پیچیدگی فنی، در چند مرحله کوتاه وب‌سایت خود را راه‌اندازی و مدیریت کنید.",
-        "imageUrl": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+        "imageUrl": "/uploads/sections/howitworkavif.avif",
         "items": [
           {
             "title": "انتخاب قالب",
@@ -157,7 +157,7 @@
         "title": "Get Started in 3 Simple Steps",
         "subtitle": "How It Works",
         "description": "Launch and manage your website effortlessly using a modern and optimized workflow.",
-        "imageUrl": "http://localhost:5274/uploads/sections/howitworkavif.avif",
+        "imageUrl": "/uploads/sections/howitworkavif.avif",
         "items": [
           {
             "title": "Choose a Template",
@@ -196,21 +196,21 @@
           {
             "title": "ساخت تجربه‌های مدرن",
             "subtitle": "سریع، حرفه‌ای و مقیاس‌پذیر",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider1.jpg",
+            "imageUrl": "/uploads/sections/slider1.jpg",
             "linkText": "شروع کنید",
             "linkUrl": "#"
           },
           {
             "title": "مدیریت هوشمند",
             "subtitle": "همه چیز در یک داشبورد",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider2.jpg",
+            "imageUrl": "/uploads/sections/slider2.jpg",
             "linkText": "مشاهده",
             "linkUrl": "#"
           },
           {
             "title": "تحلیل پیشرفته",
             "subtitle": "تصمیم‌گیری بهتر با داده",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider3.jpg",
+            "imageUrl": "/uploads/sections/slider3.jpg",
             "linkText": "شروع تحلیل",
             "linkUrl": "#"
           }
@@ -222,21 +222,21 @@
           {
             "title": "Build Modern Experiences",
             "subtitle": "Fast, scalable and professional",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider1.jpg",
+            "imageUrl": "/uploads/sections/slider1.jpg",
             "linkText": "Get Started",
             "linkUrl": "#"
           },
           {
             "title": "Smart Management",
             "subtitle": "Everything in one dashboard",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider2.jpg",
+            "imageUrl": "/uploads/sections/slider2.jpg",
             "linkText": "View",
             "linkUrl": "#"
           },
           {
             "title": "Advanced Analytics",
             "subtitle": "Better decisions with data",
-            "imageUrl": "http://localhost:5274/uploads/sections/slider3.jpg",
+            "imageUrl": "/uploads/sections/slider3.jpg",
             "linkText": "Start Analysis",
             "linkUrl": "#"
           }
@@ -368,38 +368,38 @@
         "subtitle": "ما یک تیم متخصص در توسعه نرم‌افزارهای مدرن هستیم که با تمرکز بر کیفیت، سرعت و تجربه کاربری، راهکارهای مقیاس‌پذیر ارائه می‌دهیم.",
         "description": "هدف ما ساخت محصولاتی است که فقط کار نکنند، بلکه تجربه‌ای متفاوت برای کاربران ایجاد کنند.",
         "features": "تیم ما",
-        "imageUrl": "http://localhost:5274/uploads/sections/about (1).jpg",
+        "imageUrl": "/uploads/sections/about (1).jpg",
         "imageAlt": "اعضای تیم در حال برگزاری جلسه برنامه‌ریزی پروژه",
-        "imageUrl2": "http://localhost:5274/uploads/sections/about (2).jpg",
+        "imageUrl2": "/uploads/sections/about (2).jpg",
         "imageAlt2": "محیط کاری شرکت و همکاری اعضای تیم توسعه",
-        "imageUrl3": "http://localhost:5274/uploads/sections/about (3).jpg",
+        "imageUrl3": "/uploads/sections/about (3).jpg",
         "imageAlt3": "تیم فنی در حال بررسی و طراحی محصول نرم‌افزاری",
         "items": [
           {
             "title": "علی رضایی",
             "subtitle": "مدیر فنی",
-            "imageUrl": "http://localhost:5274/uploads/sections/men (1).jpg",
+            "imageUrl": "/uploads/sections/men (1).jpg",
             "imageAlt": "تصویر پروفایل علی رضایی مدیر فنی شرکت",
             "isActive": true
           },
           {
             "title": "سارا محمدی",
             "subtitle": "طراح UI",
-            "imageUrl": "http://localhost:5274/uploads/sections/woman.jpg",
+            "imageUrl": "/uploads/sections/woman.jpg",
             "imageAlt": "تصویر پروفایل سارا محمدی طراح رابط کاربری",
             "isActive": true
           },
           {
             "title": "رضا کریمی",
             "subtitle": "توسعه‌دهنده بک‌اند",
-            "imageUrl": "http://localhost:5274/uploads/sections/men (2).jpg",
+            "imageUrl": "/uploads/sections/men (2).jpg",
             "imageAlt": "تصویر پروفایل رضا کریمی توسعه‌دهنده بک‌اند",
             "isActive": true
           },
           {
             "title": "مهدی حسینی",
             "subtitle": "توسعه‌دهنده فرانت‌اند",
-            "imageUrl": "http://localhost:5274/uploads/sections/men (3).jpg",
+            "imageUrl": "/uploads/sections/men (3).jpg",
             "imageAlt": "تصویر پروفایل مهدی حسینی توسعه‌دهنده فرانت‌اند",
             "isActive": true
           }
@@ -483,7 +483,7 @@
         "contactMessageLabel": "پیام شما",
         "contactSubmitButtonText": "ارسال پیام",
 
-        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!...",
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25897.79404833424!2d51.37081479478659!3d35.76986729372537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e06f8e6ad6b4b%3A0x4fde4f4d6ca30e47!2sVanak%2C%20District%203%2C%20Tehran%2C%20Tehran%20Province%2C%20Iran!5e0!3m2!1sen!2s!4v1782208730923!5m2!1sen!2s",
 
         "items": [
           {
@@ -542,6 +542,286 @@
             "subtitle": null,
             "isActive": true,
             "sortOrder": 3
+          }
+        ]
+      }
+    }
+  },
+  "faq": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "items": {
+        "question": true,
+        "answer": true,
+        "sortOrder": true,
+        "isActive": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "سوالات متداول",
+        "subtitle": "پاسخ سوالات رایج کاربران درباره خدمات، سفارش‌ها، پشتیبانی و نحوه همکاری را در این بخش مشاهده کنید.",
+        "items": [
+          {
+            "question": "چگونه می‌توانم سفارش یا درخواست خود را ثبت کنم؟",
+            "answer": "پس از انتخاب خدمت یا محصول موردنظر، فرم مربوطه را تکمیل کرده و مراحل ثبت را نهایی کنید.",
+            "isActive": true
+          },
+          {
+            "question": "چه مدت زمان برای بررسی درخواست لازم است؟",
+            "answer": "درخواست‌ها معمولاً در کوتاه‌ترین زمان ممکن بررسی شده و نتیجه از طریق راه‌های ارتباطی ثبت‌شده اطلاع‌رسانی می‌شود.",
+            "isActive": true
+          },
+          {
+            "question": "آیا امکان دریافت پشتیبانی وجود دارد؟",
+            "answer": "بله، تیم پشتیبانی آماده پاسخگویی به سوالات و مشکلات کاربران در ساعات کاری است.",
+            "isActive": true
+          },
+          {
+            "question": "چگونه می‌توانم با مجموعه تماس بگیرم؟",
+            "answer": "از طریق فرم تماس، شماره تلفن یا آدرس ایمیل درج‌شده در سایت می‌توانید با ما در ارتباط باشید.",
+            "isActive": true
+          },
+          {
+            "question": "آیا اطلاعات کاربران محفوظ می‌ماند؟",
+            "answer": "بله، تمامی اطلاعات کاربران مطابق سیاست‌های حفظ حریم خصوصی نگهداری و محافظت می‌شود.",
+            "isActive": true
+          },
+          {
+            "question": "آیا امکان ویرایش سفارش وجود دارد؟",
+            "answer": "در بسیاری از موارد امکان ویرایش اطلاعات قبل از نهایی شدن درخواست یا سفارش وجود دارد.",
+            "isActive": true
+          },
+          {
+            "question": "روش‌های پرداخت چگونه است؟",
+            "answer": "بسته به نوع خدمات یا محصولات، روش‌های مختلف پرداخت آنلاین و سایر روش‌های فعال در دسترس کاربران قرار دارد.",
+            "isActive": true
+          },
+          {
+            "question": "در صورت بروز مشکل چه کاری باید انجام دهم؟",
+            "answer": "در صورت بروز هرگونه مشکل، از طریق بخش تماس با ما یا پشتیبانی درخواست خود را ثبت کنید تا در سریع‌ترین زمان ممکن رسیدگی شود.",
+            "isActive": true
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to common questions about our services, orders, support and collaboration process.",
+        "items": [
+          {
+            "question": "How can I place an order or request?",
+            "answer": "Select your desired product or service and complete the required registration process.",
+            "isActive": true
+          },
+          {
+            "question": "How long does request processing take?",
+            "answer": "Requests are reviewed as quickly as possible and updates are provided through the registered contact information.",
+            "isActive": true
+          },
+          {
+            "question": "Do you provide customer support?",
+            "answer": "Yes, our support team is available to assist users during business hours.",
+            "isActive": true
+          },
+          {
+            "question": "How can I contact your company?",
+            "answer": "You can contact us through the contact form, phone number or email listed on the website.",
+            "isActive": true
+          }
+        ]
+      }
+    }
+  },
+  "footer": {
+    "rules": {
+      "backgroundColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "copyrightText" : true,
+      "items": {
+        "sectionGroupItemCode": true,
+        "SectionGroupItemId": true,
+        "SectionGroupItemName": true,
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "link1Text": true,
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+
+    "defaultData": {
+      "rtl": {
+        "backgroundColor": "#ffffff",
+        "copyrightText": "© تمامی حقوق این وب‌سایت محفوظ است",
+        "items": [
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "صفحه اصلی",
+            "link1Url": "/",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "درباره ما",
+            "link1Url": "/about",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "تماس با ما",
+            "link1Url": "/contact",
+            "isActive": true,
+            "sortOrder": 3
+          },
+
+          {
+            "sectionGroupItemCode": "FOOTER_SUPPORT",
+            "link1Text": "سوالات متداول",
+            "link1Url": "/faq",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SUPPORT",
+            "link1Text": "پشتیبانی",
+            "link1Url": "/contact",
+            "isActive": true,
+            "sortOrder": 2
+          },
+
+          {
+            "sectionGroupItemCode": "FOOTER_LEGAL",
+            "link1Text": "حریم خصوصی",
+            "link1Url": "/privacy-policy",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_LEGAL",
+            "link1Text": "قوانین و مقررات",
+            "link1Url": "/terms",
+            "isActive": true,
+            "sortOrder": 2
+          },
+
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "آدرس",
+            "subtitle": "تهران، ایران",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "تلفن",
+            "subtitle": "+98 21 000 000 00",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "موبایل",
+            "subtitle": "+98 912 000 0000",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "فکس",
+            "subtitle": "+98 21 111 111 11",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "ایمیل",
+            "subtitle": "info@example.com",
+            "isActive": true,
+            "sortOrder": 5
+          },
+
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Instagram",
+            "link1Text": "Instagram",
+            "link1Url": "https://instagram.com",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Telegram",
+            "link1Text": "Telegram",
+            "link1Url": "https://t.me",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "LinkedIn",
+            "link1Text": "LinkedIn",
+            "link1Url": "https://linkedin.com",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "YouTube",
+            "link1Text": "YouTube",
+            "link1Url": "https://youtube.com",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Facebook",
+            "link1Text": "Facebook",
+            "link1Url": "https://facebook.com",
+            "isActive": true,
+            "sortOrder": 5
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Twitter",
+            "link1Text": "Twitter",
+            "link1Url": "https://x.com",
+            "isActive": true,
+            "sortOrder": 6
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "GitHub",
+            "link1Text": "GitHub",
+            "link1Url": "https://github.com",
+            "isActive": true,
+            "sortOrder": 7
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_TRUST",
+            "title": "نماد اعتماد الکترونیکی",
+            "imageUrl": "https://Trustseal.eNamad.ir/logo.aspx?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
+            "link1Url": "https://trustseal.enamad.ir/?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
+            "link1OpenInNewTab": true,
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_TRUST",
+            "title": "نشان ساماندهی",
+            "imageUrl": "https://logo.samandehi.ir/logo.aspx?id=12345",
+            "link1Url": "https://logo.samandehi.ir/Verify.aspx?id=12345",
+            "link1OpenInNewTab": true,
+            "isActive": true,
+            "sortOrder": 2
           }
         ]
       }

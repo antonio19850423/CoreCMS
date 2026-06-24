@@ -52,9 +52,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link1")]
         public string? Link1Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
-        public string? Link1TargetId { get; set; }
+        public Guid? Link1TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
-        public string? Link1TypeId { get; set; }
+        public Guid? Link1TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
         public bool? Link1OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link2", Route = "/api/ComboBox/Pages")]
@@ -66,9 +66,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link2")]
         public string? Link2Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
-        public string? Link2TargetId { get; set; }
+        public Guid? Link2TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
-        public string? Link2TypeId { get; set; }
+        public Guid? Link2TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
         public bool? Link2OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link3", Route = "/api/ComboBox/Pages")]
@@ -80,9 +80,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link3")]
         public string? Link3Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
-        public string? Link3TargetId { get; set; }
+        public Guid? Link3TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
-        public string? Link3TypeId { get; set; }
+        public Guid? Link3TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
         public bool? Link3OpenInNewTab { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link4", Route = "/api/ComboBox/Pages")]
@@ -94,9 +94,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, MaxLength = 50, GroupKey = "Link4")]
         public string? Link4Color { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
-        public string? Link4TargetId { get; set; }
+        public Guid? Link4TargetId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
-        public string? Link4TypeId { get; set; }
+        public Guid? Link4TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
         public bool? Link4OpenInNewTab { get; set; }
 
@@ -146,10 +146,10 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 35, GridOrder = 35, ShowInGrid = true, ShowInForm = false, MaxLength = 100)]
         public string? ComponentTypeName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemName", SelectDisplayFields = "[\"name\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemName", Route = "/api/ComboBox/SectionGroupItems", SelectDisplayFields = "[\"label\",\"code\"]")]
         public Guid? SectionGroupItemId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemId", SelectDisplayFields = "[\"name\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "SectionGroupItemId", Route = "/api/ComboBox/SectionGroupItems", SelectDisplayFields = "[\"label\",\"code\"]")]
         public string? SectionGroupItemName { get; set; }
 
 

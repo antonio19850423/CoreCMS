@@ -34,6 +34,20 @@
           ]
         },
         {
+          "pageName": "درباره ما",
+          "slug": "about",
+          "isPublished": false,
+          "metaTitle": "درباره ما - وب‌سایت شرکتی",
+          "metaDescription": "آشنایی با شرکت، تیم متخصص، ماموریت و ارزش‌های سازمان",
+          "metaKeywords": "درباره ما، تیم ما، شرکت، ماموریت، ارزش‌ها",
+          "components": [
+            {
+              "code": "about",
+              "type": "about"
+            }
+          ]
+        },
+        {
           "pageName": "تماس با ما",
           "slug": "contact",
           "isPublished": false,
@@ -47,8 +61,32 @@
               "type": "contact"
             }
           ]
+        },
+        {
+          "pageName": "سوالات متداول",
+          "slug": "faq",
+          "isPublished": false,
+          "metaTitle": "سوالات متداول",
+          "metaDescription": "پاسخ سوالات متداول کاربران درباره خدمات، سفارشات، پشتیبانی و همکاری",
+          "metaKeywords": "FAQ, سوالات متداول, پشتیبانی, سفارش, خدمات",
+          "components": [
+            {
+              "code": "faq",
+              "type": "faq"
+            }
+          ]
+        },
+        {
+          "pageName": "طرح‌بندی",
+          "slug": "layout",
+          "isPublished": false,
+          "components": [
+            {
+              "code": "footer",
+              "type": "footer"
+            }
+          ]
         }
-
       ]
     }
   ]

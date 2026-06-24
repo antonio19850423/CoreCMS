@@ -61,6 +61,30 @@ public partial class Page
     [InverseProperty("Pages")]
     public virtual PageTemplate? PageTemplate { get; set; }
 
+    [InverseProperty("Link1Target")]
+    public virtual ICollection<SectionItem> SectionItemLink1Targets { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link2Target")]
+    public virtual ICollection<SectionItem> SectionItemLink2Targets { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link3Target")]
+    public virtual ICollection<SectionItem> SectionItemLink3Targets { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link4Target")]
+    public virtual ICollection<SectionItem> SectionItemLink4Targets { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link1Target")]
+    public virtual ICollection<Section> SectionLink1Targets { get; set; } = new List<Section>();
+
+    [InverseProperty("Link2Target")]
+    public virtual ICollection<Section> SectionLink2Targets { get; set; } = new List<Section>();
+
+    [InverseProperty("Link3Target")]
+    public virtual ICollection<Section> SectionLink3Targets { get; set; } = new List<Section>();
+
+    [InverseProperty("Link4Target")]
+    public virtual ICollection<Section> SectionLink4Targets { get; set; } = new List<Section>();
+
     [InverseProperty("Page")]
-    public virtual ICollection<Section> Sections { get; set; } = new List<Section>();
+    public virtual ICollection<Section> SectionPages { get; set; } = new List<Section>();
 }

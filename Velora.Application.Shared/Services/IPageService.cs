@@ -18,5 +18,6 @@ bool exportCurrentPage,
 int pageNumber,
 int pageSize);
         Task<ResultDto<PageViewDto>> GetPageAsync(string slug);
+        Task<ResultDto<FooterDto>> GetFooterAsync();
     }
 }

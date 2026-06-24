@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OData.Edm;
 using System.Reflection;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -1286,6 +1287,7 @@ namespace Velora.Application.Seeds
 			// =====================================================
 			foreach (var page in template.Pages)
 			{
+
 				// ================= PAGE UPSERT =================
 				var existingPage = _dbType == DatabaseType.SqlServer
 					 ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
@@ -1321,6 +1323,7 @@ namespace Velora.Application.Seeds
 
 				foreach (var component in page.Components)
 				{
+
 					if (!componentRules.TryGetValue(component.Code, out var rule))
 						continue;
 
@@ -1366,303 +1369,131 @@ namespace Velora.Application.Seeds
 
 					if (existingSection.Data == null)
 					{
-						sectionEntity = new SectionDto
-						{
-							PageId = pageEntity.Id,
-							ComponentTypeId = componentTypeEntity.Id,
-
-							IsActive = true,
-							IsTest = false,
-
-							SortOrder = currentSectionSortOrder,
-
-							BackgroundColor = "#ffffff",
-							HeaderColor = "#000000",
-							SubtitleColor = "#333333",
-							DescriptionColor = "#555555",
-
-							Title = rtl?.Title,
-							Subtitle = rtl?.Subtitle,
-							Description = rtl?.Description,
-							ImageUrl = rtl?.ImageUrl,
-							Link1Text = rtl?.Link1Text,
-							Link1Url = rtl?.Link1Url,
-							ContactEmailLabel = rtl?.ContactEmailLabel,
-							Link4TypeId = rtl?.Link4TypeId,
-							ContactFirstNameLabel = rtl?.ContactFirstNameLabel,
-							ContactLastNameLabel = rtl?.ContactLastNameLabel,
-							ContactMessageLabel= rtl?.ContactMessageLabel,
-							ContactSubmitButtonText = rtl?.ContactSubmitButtonText,
-							CopyrightText = rtl?.CopyrightText,
-							Features = rtl?.Features,
-							Icon = rtl?.Icon,
-							IconAlt = rtl?.IconAlt,
-							IconColor = rtl?.IconColor,
-							ImageAlt = rtl?.ImageAlt,
-							ImageAlt2 = rtl?.ImageAlt2,
-							ImageAlt3 = rtl?.ImageAlt3,
-							ImageAlt4 = rtl?.ImageAlt4,
-							ImageUrl2 = rtl?.ImageUrl2,
-							ImageUrl3 = rtl?.ImageUrl3,
-							ImageUrl4 = rtl?.ImageUrl4,
-							Link1Color = rtl?.Link1Color,
-							Link1OpenInNewTab = rtl?.Link1OpenInNewTab,
-							Link1TargetId = rtl?.Link1TargetId,
-							Link1TypeId = rtl?.Link1TypeId,
-							Link2Color = rtl?.Link2Color,
-							Link2OpenInNewTab= rtl?.Link2OpenInNewTab,
-							Link2TargetId = rtl?.Link2TargetId,
-							Link2Text = rtl?.Link2Text,
-							Link2TypeId= rtl?.Link2TypeId,
-							Link2Url = rtl?.Link2Url,
-							Link3Color = rtl?.Link3Color,
-							Link3OpenInNewTab=rtl?.Link3OpenInNewTab,
-							Link3TargetId=rtl?.Link3TargetId,
-							Link3Text=rtl?.Link3Text,
-							Link3TypeId=rtl?.Link3TypeId,
-							Link3Url=rtl?.Link3Url,
-							Link4Color = rtl?.Link4Color,
-							Link4OpenInNewTab=rtl?.Link4OpenInNewTab,
-							Link4TargetId=rtl?.Link4TargetId,
-							Link4Text=rtl?.Link4Text,
-							Link4Url=rtl?.Link4Url,
-							MapEmbedUrl = rtl?.MapEmbedUrl,
-                            ColumnsCount = 1
-						};
+                        sectionEntity = BuildSectionDto(
+    pageEntity.Id,
+    componentTypeEntity.Id,
+    rtl,
+    currentSectionSortOrder);
 
 						var created = await _sectionService.CreateAsync(sectionEntity);
 						sectionEntity.Id = created.Data.Id;
 
-						// =========================================
-						// SECTION ITEMS SEED
-						// =========================================
-						if (rtl?.Items != null)
-						{
-							int itemSortOrder = 1;
+                        // =========================================
+                        // SECTION ITEMS SEED
+                        // =========================================
+                        int itemSortOrder = 1;
+                        var sectionGroupCache = new Dictionary<string, Guid>();
+                        foreach (var item in rtl.Items)
+                        {
 
-							foreach (var item in rtl.Items)
-							{
-								var sectionItem = new SectionItemDto
-								{
-									SectionId = sectionEntity.Id,
+                            Guid? sectionGroupItemId = null;
 
-									Title = item.Title,
-									Subtitle = item.Subtitle,
-									Description = item.Description,
+                            if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
+                            {
+                                if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
+                                {
+                                    var groupResult =
+                                        await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
+                                            x => x.Code == item.SectionGroupItemCode);
 
-									Icon = item.Icon,
-									ImageUrl = item.ImageUrl,
-									AvatarUrl = item.AvatarUrl,
+                                    if (groupResult.Data != null)
+                                    {
+                                        cachedId = groupResult.Data.Id;
 
-									Link1Text = item.Link1Text,
-									Link1Url = item.Link1Url,
+                                        sectionGroupCache[item.SectionGroupItemCode] = cachedId;
+                                    }
+                                }
 
-									Link2Text = item.Link2Text,
-									Link2Url = item.Link2Url,
+                                if (cachedId != Guid.Empty)
+                                {
+                                    sectionGroupItemId = cachedId;
+                                }
+                            }
+                            var existingItem = await _sectionItemService
+                                .FirstOrDefaultAsync<SqlSectionItem>(
+                                    x => x.SectionId == sectionEntity.Id &&
+                                         x.Title == item.Title);
 
-									Link3Text = item.Link3Text,
-									Link3Url = item.Link3Url,
+                            var sectionItem = BuildSectionItemDto(
+                    sectionEntity.Id,
+                    item,
+                    sectionGroupItemId,
+                    itemSortOrder++);
 
-									Link4Text = item.Link4Text,
-									Link4Url = item.Link4Url,
-									Features = item.Features,
-
-									IsActive = true,
-
-									// 🔥 SortOrder بر اساس loop
-									SortOrder = itemSortOrder++,
-									Link4TargetId = item.Link4TargetId,
-									Link4OpenInNewTab = item.Link4OpenInNewTab,
-									Link4Color = item.Link4Color,
-									Link3TypeId = item.Link3TypeId,
-									Answer = item.Answer,
-									AvatarAlt = item.AvatarAlt,
-									BackgroundColor = item.BackgroundColor,
-									DescriptionColor = item.DescriptionColor,
-									IconAlt = item.IconAlt,
-									IconColor = item.IconColor,
-									ImageAlt = item.ImageAlt,
-									Link1Color = item.Link1Color,
-									Link1OpenInNewTab= item.Link1OpenInNewTab,
-									Link2Color = item.Link2Color,
-									Link1TargetId = item.Link1TargetId,
-									Link1TypeId = item.Link1TypeId,
-									Link2OpenInNewTab =(item.Link2OpenInNewTab),
-									Link2TargetId =(item.Link2TargetId),
-									Link2TypeId =(item.Link2TypeId),	
-									Link3Color =(item.Link3Color),
-									Link3OpenInNewTab=(item.Link3OpenInNewTab),	
-									Link3TargetId =(item.Link3TargetId),
-									Link4TypeId =(item.Link4TypeId),
-									Name = item.Name,
-									Price = item.Price,
-									Question = item.Question,
-									Role = item.Role,
-									SectionGroupItemId = item.SectionGroupItemId,
-									SubtitleColor = item.SubtitleColor,
-									TitleColor = item.TitleColor,
-								};
-
-								await _sectionItemService.CreateAsync(sectionItem);
-							}
-						}
-					}
+                            if (existingItem.Data == null)
+                            {
+                                await _sectionItemService.CreateAsync(sectionItem);
+                            }
+                            else
+                            {
+                                sectionItem.Id = existingItem.Data.Id;
+                                await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
+                            }
+                        }
+                    }
 					else
 					{
 						sectionEntity = existingSection.Data;
                         // ===============================
                         // 🔥 FULL SECTION UPDATE FROM SEED
                         // ===============================
-                        if (rtl != null)
-                        {
-                            sectionEntity.IsActive = true;
-                            sectionEntity.IsTest = false;
+                        var updatedSection = BuildSectionDto(
+                            pageEntity.Id,
+                            componentTypeEntity.Id,
+                            rtl,
+                            currentSectionSortOrder);
 
-                            sectionEntity.BackgroundColor = "#ffffff";
-                            sectionEntity.HeaderColor = "#000000";
-                            sectionEntity.SubtitleColor = "#333333";
-                            sectionEntity.DescriptionColor = "#555555";
+                        updatedSection.Id = sectionEntity.Id;
 
-                            sectionEntity.Title = rtl.Title;
-                            sectionEntity.Subtitle = rtl.Subtitle;
-                            sectionEntity.Description = rtl.Description;
-
-                            sectionEntity.ImageUrl = rtl.ImageUrl;
-                            sectionEntity.ImageUrl2 = rtl.ImageUrl2;
-                            sectionEntity.ImageUrl3 = rtl.ImageUrl3;
-                            sectionEntity.ImageUrl4 = rtl.ImageUrl4;
-
-                            sectionEntity.ImageAlt = rtl.ImageAlt;
-                            sectionEntity.ImageAlt2 = rtl.ImageAlt2;
-                            sectionEntity.ImageAlt3 = rtl.ImageAlt3;
-                            sectionEntity.ImageAlt4 = rtl.ImageAlt4;
-
-                            sectionEntity.Icon = rtl.Icon;
-                            sectionEntity.IconAlt = rtl.IconAlt;
-                            sectionEntity.IconColor = rtl.IconColor;
-
-                            sectionEntity.Link1Text = rtl.Link1Text;
-                            sectionEntity.Link1Url = rtl.Link1Url;
-                            sectionEntity.Link1Color = rtl.Link1Color;
-                            sectionEntity.Link1TypeId = rtl.Link1TypeId;
-                            sectionEntity.Link1TargetId = rtl.Link1TargetId;
-                            sectionEntity.Link1OpenInNewTab = rtl.Link1OpenInNewTab;
-
-                            sectionEntity.Link2Text = rtl.Link2Text;
-                            sectionEntity.Link2Url = rtl.Link2Url;
-                            sectionEntity.Link2Color = rtl.Link2Color;
-                            sectionEntity.Link2TypeId = rtl.Link2TypeId;
-                            sectionEntity.Link2TargetId = rtl.Link2TargetId;
-                            sectionEntity.Link2OpenInNewTab = rtl.Link2OpenInNewTab;
-
-                            sectionEntity.Link3Text = rtl.Link3Text;
-                            sectionEntity.Link3Url = rtl.Link3Url;
-                            sectionEntity.Link3Color = rtl.Link3Color;
-                            sectionEntity.Link3TypeId = rtl.Link3TypeId;
-                            sectionEntity.Link3TargetId = rtl.Link3TargetId;
-                            sectionEntity.Link3OpenInNewTab = rtl.Link3OpenInNewTab;
-
-                            sectionEntity.Link4Text = rtl.Link4Text;
-                            sectionEntity.Link4Url = rtl.Link4Url;
-                            sectionEntity.Link4Color = rtl.Link4Color;
-                            sectionEntity.Link4TypeId = rtl.Link4TypeId;
-                            sectionEntity.Link4TargetId = rtl.Link4TargetId;
-                            sectionEntity.Link4OpenInNewTab = rtl.Link4OpenInNewTab;
-
-                            sectionEntity.Features = rtl.Features;
-                            sectionEntity.CopyrightText = rtl.CopyrightText;
-
-                            sectionEntity.ContactEmailLabel = rtl.ContactEmailLabel;
-                            sectionEntity.ContactFirstNameLabel = rtl.ContactFirstNameLabel;
-                            sectionEntity.ContactLastNameLabel = rtl.ContactLastNameLabel;
-                            sectionEntity.ContactMessageLabel = rtl.ContactMessageLabel;
-                            sectionEntity.ContactSubmitButtonText = rtl.ContactSubmitButtonText;
-
-                            sectionEntity.MapEmbedUrl = rtl.MapEmbedUrl;
-
-                            sectionEntity.ColumnsCount = 1;
-
-                            await _sectionService.UpdateAsync(sectionEntity, sectionEntity.Id);
-                        }
-                        // 🔥 FIXED: still controlled by loop index (not random ++ state)
-                        sectionEntity.SortOrder = currentSectionSortOrder++;
-						await _sectionService.UpdateAsync(sectionEntity, sectionEntity.Id);
-						// =========================================
-						// SECTION ITEMS SEED IF NOT EXISTS
-						// =========================================
-						if (rtl?.Items != null)
+                        await _sectionService.UpdateAsync(
+                            updatedSection,
+                            updatedSection.Id);
+                        // =========================================
+                        // SECTION ITEMS SEED IF NOT EXISTS
+                        // =========================================
+                        int itemSortOrder = 1;
+                        var sectionGroupCache = new Dictionary<string, Guid>();
+                        if (rtl?.Items != null)
 						{
-							int itemSortOrder = 1;
 
-							foreach (var item in rtl.Items)
+
+
+                            foreach (var item in rtl.Items)
 							{
-								var existingItem = await _sectionItemService
+                                Guid? sectionGroupItemId = null;
+
+                                if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
+                                {
+                                    if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
+                                    {
+                                        var groupResult =
+                                            await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
+                                                x => x.Code == item.SectionGroupItemCode);
+
+                                        if (groupResult.Data != null)
+                                        {
+                                            cachedId = groupResult.Data.Id;
+
+                                            sectionGroupCache[item.SectionGroupItemCode] = cachedId;
+                                        }
+                                    }
+
+                                    if (cachedId != Guid.Empty)
+                                    {
+                                        sectionGroupItemId = cachedId;
+                                    }
+                                }
+                                var existingItem = await _sectionItemService
 									.FirstOrDefaultAsync<SqlSectionItem>(
 										x => x.SectionId == sectionEntity.Id &&
 											 x.Title == item.Title);
+                                var sectionItem = BuildSectionItemDto(
+                                    sectionEntity.Id,
+                                    item,
+                                    sectionGroupItemId,
+                                    itemSortOrder++);
 
-								var sectionItem = new SectionItemDto
-								{
-									SectionId = sectionEntity.Id,
-
-									Title = item.Title,
-									Subtitle = item.Subtitle,
-									Description = item.Description,
-
-									Icon = item.Icon,
-									ImageUrl = item.ImageUrl,
-									AvatarUrl = item.AvatarUrl,
-
-									Link1Text = item.Link1Text,
-									Link1Url = item.Link1Url,
-
-									Link2Text = item.Link2Text,
-									Link2Url = item.Link2Url,
-
-									Link3Text = item.Link3Text,
-									Link3Url = item.Link3Url,
-
-									Link4Text = item.Link4Text,
-									Link4Url = item.Link4Url,
-									Features = item.Features,
-
-									IsActive = true,
-
-									// 🔥 SortOrder بر اساس loop
-									SortOrder = itemSortOrder++,
-                                    Link4TargetId = item.Link4TargetId,
-                                    Link4OpenInNewTab = item.Link4OpenInNewTab,
-                                    Link4Color = item.Link4Color,
-                                    Link3TypeId = item.Link3TypeId,
-                                    Answer = item.Answer,
-                                    AvatarAlt = item.AvatarAlt,
-                                    BackgroundColor = item.BackgroundColor,
-                                    DescriptionColor = item.DescriptionColor,
-                                    IconAlt = item.IconAlt,
-                                    IconColor = item.IconColor,
-                                    ImageAlt = item.ImageAlt,
-                                    Link1Color = item.Link1Color,
-                                    Link1OpenInNewTab = item.Link1OpenInNewTab,
-                                    Link2Color = item.Link2Color,
-                                    Link1TargetId = item.Link1TargetId,
-                                    Link1TypeId = item.Link1TypeId,
-                                    Link2OpenInNewTab = (item.Link2OpenInNewTab),
-                                    Link2TargetId = (item.Link2TargetId),
-                                    Link2TypeId = (item.Link2TypeId),
-                                    Link3Color = (item.Link3Color),
-                                    Link3OpenInNewTab = (item.Link3OpenInNewTab),
-                                    Link3TargetId = (item.Link3TargetId),
-                                    Link4TypeId = (item.Link4TypeId),
-                                    Name = item.Name,
-                                    Price = item.Price,
-                                    Question = item.Question,
-                                    Role = item.Role,
-                                    SectionGroupItemId = item.SectionGroupItemId,
-                                    SubtitleColor = item.SubtitleColor,
-                                    TitleColor = item.TitleColor,
-                                };
-
-								if (existingItem.Data == null)
+                                if (existingItem.Data == null)
 								{
 									await _sectionItemService.CreateAsync(sectionItem);
 								}
@@ -1680,42 +1511,245 @@ namespace Velora.Application.Seeds
 
 			await _transactionService.CommitAsync();
 		}
+        private SectionDto BuildSectionDto(
+    Guid pageId,
+    Guid componentTypeId,
+    ComponentLanguageData rtl,
+    int sortOrder)
+        {
+            return new SectionDto
+            {
+                PageId = pageId,
+                ComponentTypeId = componentTypeId,
 
-		public async Task SeedCoreSectionGroupItemAsync()
-		{
-			const string seederName = SeederNames.Seed_Core_SectionGroupItem;
+                IsActive = true,
+                IsTest = false,
 
-			if (await _seedHistoryService.GetByNameAsync(seederName) != null)
-				return;
+                SortOrder = sortOrder,
 
-			var existing = await _sectionGroupItemService
-				.FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == "FOOTER");
+                BackgroundColor = "#ffffff",
+                HeaderColor = "#000000",
+                SubtitleColor = "#333333",
+                DescriptionColor = "#555555",
 
-			if (existing.Data == null)
-			{
-				await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
-				{
-					Code = "FOOTER",
-					Name = "فوتر",
-					Description = "فوتر",
-					SortOrder = 1,
-					IsActive = true
-				});
-			}
-			else
-			{
-				// 🔥 UPDATE
-				existing.Data.Code = "FOOTER";
-				existing.Data.Name = "فوتر";
-				existing.Data.Description = "فوتر";
-				existing.Data.SortOrder = 1;
-				existing.Data.IsActive = true;
+                Title = rtl?.Title,
+                Subtitle = rtl?.Subtitle,
+                Description = rtl?.Description,
 
-				await _sectionGroupItemService.UpdateAsync(existing.Data, existing.Data.Id);
-			}
+                ImageUrl = rtl?.ImageUrl,
+                ImageUrl2 = rtl?.ImageUrl2,
+                ImageUrl3 = rtl?.ImageUrl3,
+                ImageUrl4 = rtl?.ImageUrl4,
 
-			await _transactionService.CommitAsync();
-		}
-	}
+                ImageAlt = rtl?.ImageAlt,
+                ImageAlt2 = rtl?.ImageAlt2,
+                ImageAlt3 = rtl?.ImageAlt3,
+                ImageAlt4 = rtl?.ImageAlt4,
+
+                Icon = rtl?.Icon,
+                IconAlt = rtl?.IconAlt,
+                IconColor = rtl?.IconColor,
+
+                Features = rtl?.Features,
+                CopyrightText = rtl?.CopyrightText,
+
+                ContactEmailLabel = rtl?.ContactEmailLabel,
+                ContactFirstNameLabel = rtl?.ContactFirstNameLabel,
+                ContactLastNameLabel = rtl?.ContactLastNameLabel,
+                ContactMessageLabel = rtl?.ContactMessageLabel,
+                ContactSubmitButtonText = rtl?.ContactSubmitButtonText,
+
+                Link1Text = rtl?.Link1Text,
+                Link1Url = rtl?.Link1Url,
+                Link1Color = rtl?.Link1Color,
+                Link1TypeId = rtl?.Link1TypeId,
+                Link1TargetId = rtl?.Link1TargetId,
+                Link1OpenInNewTab = rtl?.Link1OpenInNewTab,
+
+                Link2Text = rtl?.Link2Text,
+                Link2Url = rtl?.Link2Url,
+                Link2Color = rtl?.Link2Color,
+                Link2TypeId = rtl?.Link2TypeId,
+                Link2TargetId = rtl?.Link2TargetId,
+                Link2OpenInNewTab = rtl?.Link2OpenInNewTab,
+
+                Link3Text = rtl?.Link3Text,
+                Link3Url = rtl?.Link3Url,
+                Link3Color = rtl?.Link3Color,
+                Link3TypeId = rtl?.Link3TypeId,
+                Link3TargetId = rtl?.Link3TargetId,
+                Link3OpenInNewTab = rtl?.Link3OpenInNewTab,
+
+                Link4Text = rtl?.Link4Text,
+                Link4Url = rtl?.Link4Url,
+                Link4Color = rtl?.Link4Color,
+                Link4TypeId = rtl?.Link4TypeId,
+                Link4TargetId = rtl?.Link4TargetId,
+                Link4OpenInNewTab = rtl?.Link4OpenInNewTab,
+
+                MapEmbedUrl = rtl?.MapEmbedUrl,
+
+                ColumnsCount = 1
+            };
+        }
+        private SectionItemDto BuildSectionItemDto(
+    Guid sectionId,
+    ComponentItemData item,
+    Guid? sectionGroupItemId,
+    int sortOrder)
+        {
+            return new SectionItemDto
+            {
+                SectionId = sectionId,
+
+                Title = item.Title,
+                Subtitle = item.Subtitle,
+                Description = item.Description,
+
+                Icon = item.Icon,
+                ImageUrl = item.ImageUrl,
+                ImageAlt = item.ImageAlt,
+
+                AvatarUrl = item.AvatarUrl,
+                AvatarAlt = item.AvatarAlt,
+
+                BackgroundColor = item.BackgroundColor,
+                DescriptionColor = item.DescriptionColor,
+                SubtitleColor = item.SubtitleColor,
+                TitleColor = item.TitleColor,
+
+                IconAlt = item.IconAlt,
+                IconColor = item.IconColor,
+
+                Features = item.Features,
+
+                Link1Text = item.Link1Text,
+                Link1Url = item.Link1Url,
+                Link1Color = item.Link1Color,
+                Link1TypeId = item.Link1TypeId,
+                Link1TargetId = item.Link1TargetId,
+                Link1OpenInNewTab = item.Link1OpenInNewTab,
+
+                Link2Text = item.Link2Text,
+                Link2Url = item.Link2Url,
+                Link2Color = item.Link2Color,
+                Link2TypeId = item.Link2TypeId,
+                Link2TargetId = item.Link2TargetId,
+                Link2OpenInNewTab = item.Link2OpenInNewTab,
+
+                Link3Text = item.Link3Text,
+                Link3Url = item.Link3Url,
+                Link3Color = item.Link3Color,
+                Link3TypeId = item.Link3TypeId,
+                Link3TargetId = item.Link3TargetId,
+                Link3OpenInNewTab = item.Link3OpenInNewTab,
+
+                Link4Text = item.Link4Text,
+                Link4Url = item.Link4Url,
+                Link4Color = item.Link4Color,
+                Link4TypeId = item.Link4TypeId,
+                Link4TargetId = item.Link4TargetId,
+                Link4OpenInNewTab = item.Link4OpenInNewTab,
+
+                Name = item.Name,
+                Price = item.Price,
+                Question = item.Question,
+                Answer = item.Answer,
+                Role = item.Role,
+
+                SectionGroupItemId = sectionGroupItemId,
+
+                IsActive = true,
+                SortOrder = sortOrder
+            };
+        }
+        public async Task SeedCoreSectionGroupItemAsync()
+        {
+            const string seederName = SeederNames.Seed_Core_SectionGroupItem;
+
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            async Task UpsertAsync(
+                string code,
+                string name,
+                string description,
+                int sortOrder,
+                Guid? groupId = null)
+            {
+                var existing = await _sectionGroupItemService
+                    .FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == code);
+
+                if (existing.Data == null)
+                {
+                    await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
+                    {
+                        Code = code,
+                        Name = name,
+                        Description = description,
+                        SortOrder = sortOrder,
+                        IsActive = true,
+                        GroupId = groupId
+                    });
+                }
+                else
+                {
+                    existing.Data.Code = code;
+                    existing.Data.Name = name;
+                    existing.Data.Description = description;
+                    existing.Data.SortOrder = sortOrder;
+                    existing.Data.IsActive = true;
+                    existing.Data.GroupId = groupId;
+
+                    await _sectionGroupItemService.UpdateAsync(existing.Data, existing.Data.Id);
+                }
+            }
+
+            // =========================
+            // FOOTER ROOT GROUP
+            // =========================
+            var footerGroup = await _sectionGroupItemService
+                .FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == "FOOTER");
+
+            Guid footerGroupId;
+
+            if (footerGroup.Data == null)
+            {
+                var created = await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
+                {
+                    Code = "FOOTER",
+                    Name = "فوتر",
+                    Description = "فوتر",
+                    SortOrder = 1,
+                    IsActive = true
+                });
+
+                footerGroupId = created.Data.Id;
+            }
+            else
+            {
+                footerGroupId = footerGroup.Data.Id;
+
+                footerGroup.Data.Name = "فوتر";
+                footerGroup.Data.Description = "فوتر";
+                footerGroup.Data.SortOrder = 1;
+                footerGroup.Data.IsActive = true;
+
+                await _sectionGroupItemService.UpdateAsync(footerGroup.Data, footerGroup.Data.Id);
+            }
+
+            // =========================
+            // FOOTER CHILD GROUPS
+            // =========================
+            await UpsertAsync("FOOTER_COMPANY", "شرکت", "بخش شرکت", 1, footerGroupId);
+            await UpsertAsync("FOOTER_SUPPORT", "پشتیبانی", "بخش پشتیبانی", 2, footerGroupId);
+            await UpsertAsync("FOOTER_SOCIAL", "شبکه‌های اجتماعی", "شبکه‌های اجتماعی", 3, footerGroupId);
+            await UpsertAsync("FOOTER_CONTACT", "تماس با ما", "بخش تماس", 4, footerGroupId);
+            await UpsertAsync("FOOTER_LEGAL", "قوانین", "بخش قوانین", 5, footerGroupId);
+            await UpsertAsync("FOOTER_TRUST", "نمادها", "نمادهای اعتماد", 6, footerGroupId);
+
+            await _transactionService.CommitAsync();
+        }
+    }
 }
 

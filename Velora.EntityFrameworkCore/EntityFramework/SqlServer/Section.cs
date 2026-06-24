@@ -146,43 +146,27 @@ public partial class Section
     [StringLength(500)]
     public string? MapEmbedUrl { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link1TargetId { get; set; }
+    public Guid? Link1TargetId { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link1TypeId { get; set; }
+    public Guid? Link1TypeId { get; set; }
 
     public bool? Link1OpenInNewTab { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link2TargetId { get; set; }
+    public Guid? Link2TargetId { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link2TypeId { get; set; }
+    public Guid? Link2TypeId { get; set; }
 
     public bool? Link2OpenInNewTab { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link3TargetId { get; set; }
+    public Guid? Link3TargetId { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link3TypeId { get; set; }
+    public Guid? Link3TypeId { get; set; }
 
     public bool? Link3OpenInNewTab { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link4TargetId { get; set; }
+    public Guid? Link4TargetId { get; set; }
 
-    [StringLength(40)]
-    [Unicode(false)]
-    public string? Link4TypeId { get; set; }
+    public Guid? Link4TypeId { get; set; }
 
     public bool? Link4OpenInNewTab { get; set; }
 
@@ -190,8 +174,40 @@ public partial class Section
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;
 
+    [ForeignKey("Link1TargetId")]
+    [InverseProperty("SectionLink1Targets")]
+    public virtual Page? Link1Target { get; set; }
+
+    [ForeignKey("Link1TypeId")]
+    [InverseProperty("SectionLink1Types")]
+    public virtual LinkType? Link1Type { get; set; }
+
+    [ForeignKey("Link2TargetId")]
+    [InverseProperty("SectionLink2Targets")]
+    public virtual Page? Link2Target { get; set; }
+
+    [ForeignKey("Link2TypeId")]
+    [InverseProperty("SectionLink2Types")]
+    public virtual LinkType? Link2Type { get; set; }
+
+    [ForeignKey("Link3TargetId")]
+    [InverseProperty("SectionLink3Targets")]
+    public virtual Page? Link3Target { get; set; }
+
+    [ForeignKey("Link3TypeId")]
+    [InverseProperty("SectionLink3Types")]
+    public virtual LinkType? Link3Type { get; set; }
+
+    [ForeignKey("Link4TargetId")]
+    [InverseProperty("SectionLink4Targets")]
+    public virtual Page? Link4Target { get; set; }
+
+    [ForeignKey("Link4TypeId")]
+    [InverseProperty("SectionLink4Types")]
+    public virtual LinkType? Link4Type { get; set; }
+
     [ForeignKey("PageId")]
-    [InverseProperty("Sections")]
+    [InverseProperty("SectionPages")]
     public virtual Page Page { get; set; } = null!;
 
     [InverseProperty("Section")]

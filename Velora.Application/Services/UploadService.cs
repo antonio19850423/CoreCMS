@@ -77,8 +77,7 @@ namespace Velora.Application.Services
                 await file.CopyToAsync(stream);
 
                 // 6️⃣ ساخت URL دسترسی
-                var baseUrl = _config["App:BaseUrl"]?.TrimEnd('/') ?? "";
-                var fileUrl = $"{baseUrl}/uploads/images/{uniqueName}";
+                var fileUrl = $"/uploads/images/{uniqueName}";
 
                 // 7️⃣ آماده‌سازی نتیجه
                 result.Success = true;

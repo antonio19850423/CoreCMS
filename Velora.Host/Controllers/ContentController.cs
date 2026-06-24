@@ -26,12 +26,57 @@ namespace Velora.Host.Controllers
         }
 
 
+        //[HttpGet]
+        //[Route("GetSiteInfo")]
+        //public async Task<IActionResult> GetSiteInfo()
+        //{
+        //    var result = await _contentService.GetSiteInfoAsync();
+        //    return Ok(result);
+        //}
         [HttpGet]
-        [Route("GetSiteInfo")]
-        public async Task<IActionResult> GetSiteInfo()
+        [Route("GetSiteInfoAsync")]
+        public async Task<ResultDto<SiteInfoDto>> GetSiteInfoAsync()
         {
-            var result = await _contentService.GetSiteInfoAsync();
-            return Ok(result);
+            try
+            {
+                var footerData = await _pageService.GetFooterAsync();
+                var siteData = await _contentService.GetSiteInfoAsync();
+
+                if (!footerData.Success || !siteData.Success)
+                {
+                    return new ResultDto<SiteInfoDto>
+                    {
+                        Success = false,
+                        Message = "Failed to load site info.",
+                        Errors = new List<string>
+                {
+                    footerData.Message,
+                    siteData.Message
+                }
+                    };
+                }
+
+                var result = new SiteInfoDto
+                {
+                    Footer = footerData.Data,
+                    Settings = siteData.Data
+                };
+
+                return new ResultDto<SiteInfoDto>
+                {
+                    Data = result,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<SiteInfoDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    Errors = new List<string> { ex.Message }
+                };
+            }
         }
         [HttpGet]
         [Route("GetPageAsync")]

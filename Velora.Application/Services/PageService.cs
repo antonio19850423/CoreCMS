@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using GreenDonut;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,15 +9,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
@@ -258,9 +260,9 @@ int pageSize)
             {
                 // واکشی صفحه + Sections + SectionItems
                 var pageEntity = await Query()
-     .Include(p => p.Sections)
+     .Include(p => p.SectionPages)
          .ThenInclude(s => s.ComponentType)
-     .Include(p => p.Sections)
+     .Include(p => p.SectionPages)
          .ThenInclude(s => s.SectionItems)
      .FirstOrDefaultAsync(p => p.Slug == slug);
 
@@ -287,7 +289,7 @@ int pageSize)
                     OgImageUrl = pageEntity.OgImageUrl,
                     IsActive = pageEntity.IsActive,
 
-                    Sections = pageEntity.Sections.OrderBy(c=>c.SortOrder).Select(s => new SectionViewDto
+                    Sections = pageEntity.SectionPages.OrderBy(c=>c.SortOrder).Select(s => new SectionViewDto
                     {
                         Id = s.Id,
                         ParentId = pageEntity.Id,
@@ -416,6 +418,115 @@ int pageSize)
 
             return result;
         }
+        public async Task<ResultDto<FooterDto>> GetFooterAsync()
+        {
+            var result = new ResultDto<FooterDto>();
+
+            try
+            {
+                var page = await Query()
+            .Include(p => p.SectionPages)
+                .ThenInclude(s => s.ComponentType)
+
+            .Include(p => p.SectionPages)
+                .ThenInclude(s => s.SectionItems)
+                    .ThenInclude(i => i.SectionGroupItem)
+
+            .Include(p => p.SectionPages)
+                .ThenInclude(s => s.SectionItems)
+                    .ThenInclude(i => i.Link1Type)
+
+            .Include(p => p.SectionPages)
+                .ThenInclude(s => s.SectionItems)
+                    .ThenInclude(i => i.Link1Target)
+
+            .FirstOrDefaultAsync(p => p.Slug == "layout");
+
+                if (page == null)
+                {
+                    result.Success = false;
+                    result.Message = "Layout page not found.";
+                    return result;
+                }
+
+                var footerSections = page.SectionPages
+                    .Where(s =>
+                        s.ComponentType != null &&
+                        s.ComponentType.Code == "footer")
+                    .ToList();
+
+                var footerDto = new FooterDto
+                {
+                    CopyRight = footerSections
+                        .Select(s => s.CopyrightText)
+                        .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)),
+
+                    Groups = footerSections
+                        .SelectMany(s => s.SectionItems ?? new List<SectionItem>())
+                        .Where(i => i.SectionGroupItem != null)
+
+                        .GroupBy(i => new
+                        {
+                            i.SectionGroupItem.Id,
+                            i.SectionGroupItem.Name,
+                            i.SectionGroupItem.Code,
+                            i.SectionGroupItem.SortOrder
+                        })
+
+                        .OrderBy(g => g.Key.SortOrder)
+
+                        .Select(g => new FooterGroupDto
+                        {
+                            Title = g.Key.Name,
+                            Order = g.Key.SortOrder,
+                            Code=g.Key.Code,
+                            Icon = g.FirstOrDefault().Icon,
+                            IconColor = g.FirstOrDefault().IconColor,
+                            IconAlt = g.Key.Name,
+
+                            Items = g
+                                .OrderBy(i => i.SortOrder)
+                                .Select(i => new FooterItemDto
+                                {
+                                    Title =
+                                        !string.IsNullOrWhiteSpace(i.Link1Text)
+                                            ? i.Link1Text
+                                            : i.Title,
+
+                                    Url = i.Link1Url,
+                                    ImageAlt=i.ImageAlt,
+                                    ImageUrl=i.ImageUrl,
+                                    LinkColor = i.Link1Color,
+                                    IsInternalLink =
+                                    i.Link1Type != null &&
+                                    i.Link1Type.Code != "EXTERNAL",
+                                    OpenInNewTab = i.Link1OpenInNewTab,
+
+                                    Order = i.SortOrder,
+
+                                    Icon = i.Icon,
+                                    IconAlt = i.IconAlt,
+                                    IconColor = i.IconColor
+                                })
+                                .ToList()
+                        })
+                        .ToList()
+                };
+
+                result.Data = footerDto;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Failed to load footer.";
+                result.Errors.Add(ex.Message);
+            }
+
+            return result;
+
+        }
+
 
 
     }

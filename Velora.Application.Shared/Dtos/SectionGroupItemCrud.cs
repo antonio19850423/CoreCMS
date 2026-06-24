@@ -31,7 +31,7 @@ namespace Velora.Application.Shared.Dtos
         public string? Color { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "GroupName", Route = "/api/ComboBox/SectionGroupItems", SelectDisplayFields = "[\"name\"]")]
-        public Guid GroupId { get; set; }
+        public Guid? GroupId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "GroupId", Route = "/api/ComboBox/SectionGroupItems", ShowInSelectBox = true, SelectDisplayFields = "[\"name\"]")]
         public string? GroupName { get; set; }
 

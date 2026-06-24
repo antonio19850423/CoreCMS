@@ -33,4 +33,28 @@ public partial class LinkType
     public Guid? UpdatedBy { get; set; }
 
     public bool IsTest { get; set; }
+
+    [InverseProperty("Link1Type")]
+    public virtual ICollection<SectionItem> SectionItemLink1Types { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link2Type")]
+    public virtual ICollection<SectionItem> SectionItemLink2Types { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link3Type")]
+    public virtual ICollection<SectionItem> SectionItemLink3Types { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link4Type")]
+    public virtual ICollection<SectionItem> SectionItemLink4Types { get; set; } = new List<SectionItem>();
+
+    [InverseProperty("Link1Type")]
+    public virtual ICollection<Section> SectionLink1Types { get; set; } = new List<Section>();
+
+    [InverseProperty("Link2Type")]
+    public virtual ICollection<Section> SectionLink2Types { get; set; } = new List<Section>();
+
+    [InverseProperty("Link3Type")]
+    public virtual ICollection<Section> SectionLink3Types { get; set; } = new List<Section>();
+
+    [InverseProperty("Link4Type")]
+    public virtual ICollection<Section> SectionLink4Types { get; set; } = new List<Section>();
 }
