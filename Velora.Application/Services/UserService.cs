@@ -14,7 +14,7 @@ using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.PostgreSQL;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 namespace Velora.Application.Services
-{
+{ 
     public class UserService : GenericService<SqlUser, PgUser, UserDto>, IUserService
     {
         private readonly ISqlRepository<PgUser> _repository;
