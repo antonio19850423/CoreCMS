@@ -57,6 +57,9 @@ public partial class Page
     [InverseProperty("Page")]
     public virtual ICollection<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
 
+    [InverseProperty("Link1Target")]
+    public virtual ICollection<Menu> Menus { get; set; } = new List<Menu>();
+
     [ForeignKey("PageTemplateId")]
     [InverseProperty("Pages")]
     public virtual PageTemplate? PageTemplate { get; set; }
@@ -87,4 +90,7 @@ public partial class Page
 
     [InverseProperty("Page")]
     public virtual ICollection<Section> SectionPages { get; set; } = new List<Section>();
+
+    [InverseProperty("Link1Target")]
+    public virtual ICollection<SiteMenu> SiteMenus { get; set; } = new List<SiteMenu>();
 }

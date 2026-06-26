@@ -166,6 +166,30 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SITEMENU_MANAGEMENT_MENU",
+          "Name": "Page Site Menu",
+          "Route": "basic-info/sitemenu-management",
+          "DisplayName": {
+            "en": "Site Menu",
+            "fa": "منوهای سایت"
+          },
+          "Order": 6,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SITEMENU_MANAGEMENT_PAGE",
+              "Name": "Page Site Menu",
+              "DisplayName": {
+                "en": "Site Menu",
+                "fa": "منوهای سایت"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

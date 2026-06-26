@@ -77,4 +77,6 @@ public partial class VwResourceForm
 
     [StringLength(200)]
     public string? GroupKey { get; set; }
+
+    public bool? ShowInTreeView { get; set; }
 }

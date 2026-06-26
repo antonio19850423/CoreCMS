@@ -57,4 +57,7 @@ public partial class LinkType
 
     [InverseProperty("Link4Type")]
     public virtual ICollection<Section> SectionLink4Types { get; set; } = new List<Section>();
+
+    [InverseProperty("Link1Type")]
+    public virtual ICollection<SiteMenu> SiteMenus { get; set; } = new List<SiteMenu>();
 }

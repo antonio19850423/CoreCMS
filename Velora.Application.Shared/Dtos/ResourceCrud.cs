@@ -66,5 +66,7 @@ namespace Velora.Application.Shared.Dtos
         public string? SelectDisplayFields { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = false, MaxLength = 200, FormOrder = 23, GridOrder = 23, ShowInGrid = false, ShowInForm = true)]
         public string? GroupKey { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, IsRequired = true, FormOrder = 24, GridOrder = 24, ShowInGrid = true, ShowInForm = true)]
+        public bool? ShowInTreeView { get; set; }
     }
 }

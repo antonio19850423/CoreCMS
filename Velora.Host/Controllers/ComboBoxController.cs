@@ -19,8 +19,9 @@ namespace Velora.Host.Controllers
         private readonly ISectionGroupItemService _sectionGroupItemService;
         private readonly ILinkTypeService _linkTypeService;
         private readonly IPageService _pageService;
+        private readonly ISiteMenuService _siteMenuService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -28,6 +29,7 @@ namespace Velora.Host.Controllers
             _sectionGroupItemService = sectionGroupItemService;
             _linkTypeService = linkTypeService;
             _pageService = pageService;
+            _siteMenuService = siteMenuService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -158,6 +160,28 @@ namespace Velora.Host.Controllers
                     Value = r.Id,
                     Label = r.Name,
                     Code = r.Slug
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("SiteMenus")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> SiteMenus()
+        {
+
+            var linkTypes = await _siteMenuService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Link1Text
                 })
                 .ToList();
 

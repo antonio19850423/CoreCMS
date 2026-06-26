@@ -46,6 +46,12 @@ namespace Velora.Application.Shared.Attributes
         public bool ShowInGrid { get; set; } = true;
 
         /// <summary>
+        /// آیا فیلد در Tree View نمایش داده شود
+        /// </summary>
+        public bool ShowInTreeView { get; set; } = true;
+
+
+        /// <summary>
         /// توضیح اضافی / Tooltip
         /// </summary>
         public string? Description { get; set; }

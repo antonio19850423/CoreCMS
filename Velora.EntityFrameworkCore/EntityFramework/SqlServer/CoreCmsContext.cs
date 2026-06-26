@@ -35,6 +35,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<LocalizationTranslation> LocalizationTranslations { get; set; }
 
+    public virtual DbSet<Menu> Menus { get; set; }
+
     public virtual DbSet<Page> Pages { get; set; }
 
     public virtual DbSet<PageTemplate> PageTemplates { get; set; }
@@ -60,6 +62,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<SectionItem> SectionItems { get; set; }
 
     public virtual DbSet<SeedHistory> SeedHistories { get; set; }
+
+    public virtual DbSet<SiteMenu> SiteMenus { get; set; }
 
     public virtual DbSet<SiteSetting> SiteSettings { get; set; }
 
@@ -100,6 +104,10 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwSectionItemForm> VwSectionItemForms { get; set; }
 
     public virtual DbSet<VwSiteGlobalSetting> VwSiteGlobalSettings { get; set; }
+
+    public virtual DbSet<VwSiteMenuForm> VwSiteMenuForms { get; set; }
+
+    public virtual DbSet<VwSiteMenueForm> VwSiteMenueForms { get; set; }
 
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
@@ -211,6 +219,17 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.LocalizationKeyCodeNavigation).WithMany(p => p.LocalizationTranslations)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Localizat__Local__2AD55B43");
+        });
+
+        modelBuilder.Entity<Menu>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Menus__3214EC07ACE71E14");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Link1Target).WithMany(p => p.Menus).HasConstraintName("FK_Menus_Page");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_Menus_Parent");
         });
 
         modelBuilder.Entity<Page>(entity =>
@@ -401,6 +420,19 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
         });
 
+        modelBuilder.Entity<SiteMenu>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SiteMenu__3214EC0723E0C5A6");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Link1Target).WithMany(p => p.SiteMenus).HasConstraintName("FK_SiteMenus_Page");
+
+            entity.HasOne(d => d.Link1Type).WithMany(p => p.SiteMenus).HasConstraintName("FK_SiteMenus_LinkType");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_SiteMenus_Parent");
+        });
+
         modelBuilder.Entity<SiteSetting>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__SiteSett__3214EC07FD9B15D6");
@@ -530,6 +562,16 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteGlobalSetting>(entity =>
         {
             entity.ToView("VwSiteGlobalSettings", "cms");
+        });
+
+        modelBuilder.Entity<VwSiteMenuForm>(entity =>
+        {
+            entity.ToView("VwSiteMenuForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSiteMenueForm>(entity =>
+        {
+            entity.ToView("VwSiteMenueForm", "cms");
         });
 
         modelBuilder.Entity<VwSiteSettingForm>(entity =>

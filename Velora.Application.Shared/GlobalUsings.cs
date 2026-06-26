@@ -83,5 +83,9 @@ global using SqlLinkType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.
 global using SqlLinkTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwLinkTypeForm;
 
 
+global using SqlSiteMenu = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SiteMenu;
+global using SqlSiteMenuView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSiteMenuForm;
+
+
 
 

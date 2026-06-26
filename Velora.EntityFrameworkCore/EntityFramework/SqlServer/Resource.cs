@@ -88,6 +88,8 @@ public partial class Resource
     [StringLength(200)]
     public string? GroupKey { get; set; }
 
+    public bool? ShowInTreeView { get; set; }
+
     [InverseProperty("Resource")]
     public virtual ICollection<Permission> Permissions { get; set; } = new List<Permission>();
 

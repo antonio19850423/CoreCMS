@@ -40,6 +40,8 @@
 	  <EmbeddedResource Remove="Resources\FormResources\SectionGroupItem.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteMenu.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteMenu.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\SiteSetting.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\User.fa.resx" />
@@ -94,6 +96,12 @@
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\SectionGroupItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteMenu.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteMenu.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\SectionItem.fa.resx">

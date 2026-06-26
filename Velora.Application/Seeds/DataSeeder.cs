@@ -585,7 +585,8 @@ namespace Velora.Application.Seeds
 						existing.Data.ServiceName = serviceName;
 						existing.Data.SelectDisplayFields = prop.Attribute.SelectDisplayFields;
 						existing.Data.GroupKey = prop.Attribute.GroupKey;
-						await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
+                        existing.Data.ShowInTreeView = prop.Attribute.ShowInTreeView;
+                        await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
 
 						resourceDto = existing.Data;
 					}
@@ -616,7 +617,8 @@ namespace Velora.Application.Seeds
 							EntityName = entityName,
 							ServiceName = serviceName,
 							GroupKey= prop.Attribute.GroupKey,
-						});
+                            ShowInTreeView = prop.Attribute.ShowInTreeView
+                        });
 
 						resourceDto = created.Data;
 					}

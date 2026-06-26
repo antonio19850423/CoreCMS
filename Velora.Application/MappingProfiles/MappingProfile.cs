@@ -114,6 +114,10 @@ namespace Velora.Application.MappingProfiles
             CreateMap<VwLinkTypeForm, LinkTypeCrud>().ReverseMap();
             CreateMap<SqlLinkType, LinkTypeDto>().ReverseMap();
             CreateMap<LinkTypeCrud, LinkTypeDto>().ReverseMap();
+
+            CreateMap<SqlSiteMenu, SiteMenuCrud>().ReverseMap();
+            CreateMap<VwSiteMenuForm, SiteMenuCrud>().ReverseMap();
+            CreateMap<SqlSiteMenu, SiteMenuDto>().ReverseMap();
         }
     }
 }

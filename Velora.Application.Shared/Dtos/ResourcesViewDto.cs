@@ -50,6 +50,7 @@ namespace Velora.Application.Shared.Dtos
         public string? ServiceName { get; set; }
         public string? SelectDisplayFields { get; set; }
         public string? GroupKey { get; set; }
+        public bool? ShowInTreeView { get; set; }
         // فقط برای ResourceType = MENU
         public List<ResourcesViewDto> Children { get; set; } = new List<ResourcesViewDto>();
     }

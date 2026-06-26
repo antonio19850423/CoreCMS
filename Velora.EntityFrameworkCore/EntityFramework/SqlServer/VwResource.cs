@@ -85,4 +85,6 @@ public partial class VwResource
 
     [StringLength(200)]
     public string? GroupKey { get; set; }
+
+    public bool? ShowInTreeView { get; set; }
 }
