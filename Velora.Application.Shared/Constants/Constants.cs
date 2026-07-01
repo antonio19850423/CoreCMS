@@ -75,8 +75,8 @@ namespace Velora.Application.Shared.Constants
         public const string ContentItem = "ContentItem";
         public const string LinkType = "LinkType";
         public const string SiteMenu = "SiteMenu";
+        public const string ContentCategory = "ContentCategory";
         
-
 
 
 

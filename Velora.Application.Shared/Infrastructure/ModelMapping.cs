@@ -27,7 +27,8 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.SiteSetting, typeof(SiteSettingCrud) },
             { LookupEntities.ContentItem, typeof(ContentItemCrud) },
             { LookupEntities.SectionGroupItem, typeof(SectionGroupItemCrud) },
-            { LookupEntities.SiteMenu, typeof(SiteMenuCrud) }
+            { LookupEntities.SiteMenu, typeof(SiteMenuCrud) },
+            { LookupEntities.ContentCategory, typeof(ContentCategoryCrud) }
         };
 
         public static Type? GetModelType(string entityName)

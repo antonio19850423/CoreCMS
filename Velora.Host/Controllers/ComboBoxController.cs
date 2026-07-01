@@ -20,8 +20,9 @@ namespace Velora.Host.Controllers
         private readonly ILinkTypeService _linkTypeService;
         private readonly IPageService _pageService;
         private readonly ISiteMenuService _siteMenuService;
+        private readonly IContentCategoryService _contentCategoryService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -30,6 +31,7 @@ namespace Velora.Host.Controllers
             _linkTypeService = linkTypeService;
             _pageService = pageService;
             _siteMenuService = siteMenuService;
+            _contentCategoryService = contentCategoryService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -182,6 +184,28 @@ namespace Velora.Host.Controllers
                 {
                     Value = r.Id,
                     Label = r.Link1Text
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("ContentCategories")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> ContentCategories()
+        {
+
+            var linkTypes = await _contentCategoryService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name
                 })
                 .ToList();
 

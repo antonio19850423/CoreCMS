@@ -70,7 +70,7 @@ public partial class ContentItem
 
     [ForeignKey("CategoryId")]
     [InverseProperty("ContentItems")]
-    public virtual Category? Category { get; set; }
+    public virtual ContentCategory? Category { get; set; }
 
     [ForeignKey("PageId")]
     [InverseProperty("ContentItems")]

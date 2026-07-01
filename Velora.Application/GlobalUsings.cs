@@ -111,5 +111,9 @@ global using SqlLinkTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlSer
 global using SqlSiteMenu = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SiteMenu;
 global using SqlSiteMenuView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSiteMenuForm;
 
+global using SqlContentCategory = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ContentCategory;
+global using SqlContentCategoryView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwContentCategoryForm;
+
+
 
 

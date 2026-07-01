@@ -190,6 +190,30 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "CONTENTCATEGORY_MANAGEMENT_MENU",
+          "Name": "Content Category Menu",
+          "Route": "basic-info/contentcategory-management",
+          "DisplayName": {
+            "en": "Content Category",
+            "fa": "دسته بندی اخبار/مقاله"
+          },
+          "Order": 6,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "CONTENTCATEGORY_MANAGEMENT_PAGE",
+              "Name": "Content Category Menu",
+              "DisplayName": {
+                "en": "Content Category",
+                "fa": "دسته بندی اخبار/مقاله"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },
@@ -334,11 +358,21 @@
                 },
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_CONTENT_ITEM",
-                  "Name": "Content Item Management",
+                  "Code": "PAGE_TAB_NEWS",
+                  "Name": "News Management",
                   "DisplayName": {
-                    "en": "Content Item Management",
+                    "en": "News Management",
                     "fa": "مدیریت اخبار"
+                  },
+                  "Order": 1
+                },
+                {
+                  "Type": "TAB",
+                  "Code": "PAGE_TAB_ARTICLE",
+                  "Name": "Article Management",
+                  "DisplayName": {
+                    "en": "Article Management",
+                    "fa": "مدیریت مقالات"
                   },
                   "Order": 1
                 }
@@ -413,7 +447,7 @@
           "Route": "administration/content-item-management",
           "DisplayName": {
             "en": "Content Item Management",
-            "fa": "مدیریت اخبار"
+            "fa": "مدیریت محتوا"
           },
           "Order": 6,
           "Roles": [ "DEV" ],
@@ -424,7 +458,7 @@
               "Name": "Content Item Management Page",
               "DisplayName": {
                 "en": "Content Item Management Page",
-                "fa": "مدیریت اخبار"
+                "fa": "مدیریت محتوا"
               },
               "Order": 1
             }

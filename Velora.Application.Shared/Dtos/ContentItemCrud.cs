@@ -47,11 +47,10 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? Tags { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.Category, ServiceName = "categoryView", LinkedFieldCode = "CategoryName", SelectDisplayFields = "[\"name\",\"code\"]")]
-
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ContentCategory,Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryName")]
         public Guid? CategoryId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.Category, ServiceName = "categoryView", LinkedFieldCode = "CategoryId", SelectDisplayFields = "[\"name\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ContentCategory, Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryId")]
 
         public string? CategoryName { get; set; }
 
@@ -63,10 +62,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 17, GridOrder = 17, ShowInGrid = false, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 17, GridOrder = 17, ShowInGrid = false, ShowInForm = false)]
         public Guid ParentId { get; set; }
 
-        public Guid? PageId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
 

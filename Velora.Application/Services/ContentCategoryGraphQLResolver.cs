@@ -4,13 +4,14 @@ using HotChocolate.Types;
 using Velora.Application.Services;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 [ExtendObjectType("Query")]
-public class ContentItemGqlResolver : IContentItemGqlResolver
+public class ContentCategoryGqlResolver : IContentCategoryGqlResolver
 {
-    IContentItemService _ContentItemService;
-    public ContentItemGqlResolver(IContentItemService ContentItemService)
+    IContentCategoryService _ContentCategoryService;
+    public ContentCategoryGqlResolver(IContentCategoryService ContentCategoryService)
     {
-        _ContentItemService = ContentItemService;
+        _ContentCategoryService = ContentCategoryService;
     }
     /// <summary>
     /// قوانین کلی GraphQL Resolver:
@@ -25,40 +26,31 @@ public class ContentItemGqlResolver : IContentItemGqlResolver
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [GraphQLName("contentItemView")]
+    [GraphQLName("contentCategoryView")]
     [UsePaging(IncludeTotalCount = true)]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<ContentItemCrud>> ContentItemView()
+    public async Task<IQueryable<ContentCategoryCrud>> ContentCategoryView()
     {
-        var query = await _ContentItemService
-            .GetAllViewQueryable<SqlContentItemView, SqlContentItemView, ContentItemCrud>();
-        return query.Select(x => new ContentItemCrud
+        var query = await _ContentCategoryService
+            .GetAllViewQueryable<VwContentCategoryForm, VwContentCategoryForm, ContentCategoryCrud>();
+        return query.Select(x => new ContentCategoryCrud
         {
             Id = x.Id,
             ParentId = x.ParentId,
             IsActive = x.IsActive,
             SortOrder = x.SortOrder,
-            AuthorAvatarUrl = x.AuthorAvatarUrl??"",
-            AuthorName = x.AuthorName ?? "" ,
-            AuthorTitle = x.AuthorTitle ??"",
-            CategoryId = x.CategoryId,
-            CategoryName = x.CategoryName ??"",
-            CategorySlug = x.CategorySlug ??"",
-            Content=x.Content??"",
-            ContentType = x.ContentType ??"",
-            ExternalUrl = x.ExternalUrl ??"",
-            ImageAlt = x.ImageAlt ??"",
-            ImageUrl = x.ImageUrl ??"",
-            PublishedAt = x.PublishedAt,
-            Summary = x.Summary??"",
-            Tags=x.Tags??"",
-            Title = x.Title ??"",
-            ShouldInsert = x.ShouldInsert,
+            Icon=x.Icon??"",
+            Name = x.Name??"",
+            Description=x.Description??"",
+            IconColor=x.IconColor??"",
+            Slug=x.Slug??"",
+            ParentName = x.ParentName??"",
             CreatedAtPersian = x.CreatedAtPersian??"",
-            CreatedByName=x.CreatedByName ??"",
+            CreatedByName = x.CreatedByName ?? "",
             UpdatedAtPersian= x.UpdatedAtPersian ?? "",
-            UpdatedByName = x.UpdatedByName ?? ""
+            UpdatedByName = x.UpdatedByName ?? "",
+            ShouldInsert = x.ShouldInsert
         });
     }
 

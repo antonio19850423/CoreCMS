@@ -21,6 +21,8 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Remove="Resources\FormResources\CmsConfiguration.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentCategory.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentCategory.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\LinkType.en.resx" />
@@ -96,6 +98,12 @@
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\SectionGroupItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentCategory.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentCategory.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\SiteMenu.en.resx">

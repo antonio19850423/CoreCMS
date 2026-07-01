@@ -14,12 +14,13 @@ using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Services
 {
-    public class ContentItemService : GenericService<SqlContentItem, SqlContentItem, ContentItemDto>, IContentItemService
+    public class ContentCategoryService : GenericService<SqlContentCategory, SqlContentCategory, ContentCategoryDto>, IContentCategoryService
     {
-        private readonly ISqlRepository<SqlContentItem> _sqlrepository;
+        private readonly ISqlRepository<SqlContentCategory> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -28,11 +29,11 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        private readonly IContentItemService _roleContentItemService;
+        private readonly IContentCategoryService _roleContentCategoryService;
         protected readonly ICurrentUserService _currentUserService;
-        public ContentItemService(
-              ISqlRepository<SqlContentItem> sqlRepository,
-              IPosgreSqlRepository<SqlContentItem> pgRepository,
+        public ContentCategoryService(
+              ISqlRepository<SqlContentCategory> sqlRepository,
+              IPosgreSqlRepository<SqlContentCategory> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
@@ -48,38 +49,29 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService= currentUserService;
         }
-        public async Task<IQueryable<ContentItemCrud>> GetAllViews()
+        public async Task<IQueryable<ContentCategoryCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<SqlContentItemView, SqlContentItemView, ContentItemCrud>();
+            return await GetAllViewQueryable<VwContentCategoryForm, VwContentCategoryForm, ContentCategoryCrud>();
         }
-        public async Task<ResultDto<ContentItemDto>> CreateAsync(ContentItemCrud input)
+        public async Task<ResultDto<ContentCategoryDto>> CreateAsync(ContentCategoryCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
 
-                var ContentItem = new ContentItemDto
+                var ContentCategory = new ContentCategoryDto
                 {
-                   Title = input.Title,
-                   Content = input.Content,
-                   Tags = input.Tags,
-                   Summary = input.Summary,
-                   PublishedAt = input.PublishedAt,
-                   PageId = input.ParentId,
-                   ImageUrl = input.ImageUrl,
-                   ImageAlt = input.ImageAlt,
-                   ExternalUrl = input.ExternalUrl,
-                   AuthorAvatarUrl = input.AuthorAvatarUrl,
-                   AuthorName = input.AuthorName,
-                   AuthorTitle = input.AuthorTitle,
-                   CategoryId = input.CategoryId,
-                   ContentType = input.ContentType,
-                   IsActive = input.IsActive,
-                   SortOrder = input.SortOrder,
-                    
+                 Icon = input.Icon,
+                 IconColor = input.IconColor,
+                 IsActive = input.IsActive,
+                 Description = input.Description,
+                 Name = input.Name,
+                 Slug = input.Slug,
+                 ParentId = input.ParentId,
+                 SortOrder = input.SortOrder,
                 };
 
-                var result = await CreateAsync(ContentItem);
+                var result = await CreateAsync(ContentCategory);
                 if (!result.Success)
                     return result;
 
@@ -89,7 +81,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ContentItemDto>
+                var result = new ResultDto<ContentCategoryDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -99,14 +91,14 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<ContentItemDto>> UpdateAsync(ContentItemCrud input)
+        public async Task<ResultDto<ContentCategoryDto>> UpdateAsync(ContentCategoryCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ContentItemDto>
+                    return new ResultDto<ContentCategoryDto>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -114,24 +106,16 @@ namespace Velora.Application.Services
                 }
 
                 // 1️⃣ به‌روزرسانی کاربر
-                var userUpdateDto = new ContentItemDto
+                var userUpdateDto = new ContentCategoryDto
                 {
                     Id = input.Id,
-                    Title = input.Title,
-                    Content = input.Content,
-                    Tags = input.Tags,
-                    Summary = input.Summary,
-                    PublishedAt = input.PublishedAt,
-                    PageId = input.ParentId,
-                    ImageUrl = input.ImageUrl,
-                    ImageAlt = input.ImageAlt,
-                    ExternalUrl = input.ExternalUrl,
-                    AuthorAvatarUrl = input.AuthorAvatarUrl,
-                    AuthorName = input.AuthorName,
-                    AuthorTitle = input.AuthorTitle,
-                    CategoryId = input.CategoryId,
-                    ContentType = input.ContentType,
+                    Icon = input.Icon,
+                    IconColor = input.IconColor,
                     IsActive = input.IsActive,
+                    Description = input.Description,
+                    Name = input.Name,
+                    Slug = input.Slug,
+                    ParentId = input.ParentId,
                     SortOrder = input.SortOrder,
                 };
 
@@ -144,7 +128,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ContentItemDto>
+                var result = new ResultDto<ContentCategoryDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -155,25 +139,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdContentItems= new List<ContentItemDto>();
+            var createdContentCategorys= new List<ContentCategoryDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var ContentItems = dt.ToModelList<ContentItemCrud>();
+                var ContentCategorys = dt.ToModelList<ContentCategoryCrud>();
 
-                for (int i = 0; i < ContentItems.Count; i++)
+                for (int i = 0; i < ContentCategorys.Count; i++)
                 {
-                    var ContentItem = ContentItems[i];
+                    var ContentCategory = ContentCategorys[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(ContentItem);
+                    var createResult = await CreateAsync(ContentCategory);
 
                     if (createResult.Success && createResult.Data != null)
                     {
-                        createdContentItems.Add(createResult.Data);
+                        createdContentCategorys.Add(createResult.Data);
                     }
                     else
                     {
@@ -205,7 +189,7 @@ namespace Velora.Application.Services
                         : errorFileTitle,
                     Data = new BulkInsertResult
                     {
-                        InsertedCount = createdContentItems.Count,
+                        InsertedCount = createdContentCategorys.Count,
                         ErrorCount = errors.Count,
                         ErrorFileUrl = errorFileUrl
                     },
@@ -225,32 +209,32 @@ namespace Velora.Application.Services
         }
 
         public async Task<byte[]> ExportAsync(
-bool exportCurrentContentItem,
-int ContentItemNumber,
-int ContentItemSize)
+bool exportCurrentContentCategory,
+int ContentCategoryNumber,
+int ContentCategorySize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
 
             // 2️⃣ Paging و Mapping به DTO
-            List<ContentItemCrud> data;
+            List<ContentCategoryCrud> data;
 
-            if (exportCurrentContentItem)
+            if (exportCurrentContentCategory)
             {
                 data = query
-                    .Skip((ContentItemNumber - 1) * ContentItemSize)
-                    .Take(ContentItemSize)
+                    .Skip((ContentCategoryNumber - 1) * ContentCategorySize)
+                    .Take(ContentCategorySize)
                     .ToList();
             }
             else
             {
                 data = query.ToList();
             }
-            var resource = _mapper.Map<List<ContentItemCrud>>(data);
+            var resource = _mapper.Map<List<ContentCategoryCrud>>(data);
 
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
             var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ContentItem, // نام مدل DTO
+                LookupEntities.ContentCategory, // نام مدل DTO
                 data.Count + 5
             );
 

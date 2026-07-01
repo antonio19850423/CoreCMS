@@ -15,13 +15,13 @@ public partial class CoreCmsContext : DbContext
     {
     }
 
-    public virtual DbSet<Category> Categories { get; set; }
-
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<CmsConfiguration> CmsConfigurations { get; set; }
 
     public virtual DbSet<ComponentType> ComponentTypes { get; set; }
+
+    public virtual DbSet<ContentCategory> ContentCategories { get; set; }
 
     public virtual DbSet<ContentItem> ContentItems { get; set; }
 
@@ -79,6 +79,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
 
+    public virtual DbSet<VwContentCategoryForm> VwContentCategoryForms { get; set; }
+
     public virtual DbSet<VwContentItemForm> VwContentItemForms { get; set; }
 
     public virtual DbSet<VwLinkTypeForm> VwLinkTypeForms { get; set; }
@@ -107,8 +109,6 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSiteMenuForm> VwSiteMenuForms { get; set; }
 
-    public virtual DbSet<VwSiteMenueForm> VwSiteMenueForms { get; set; }
-
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
@@ -119,18 +119,10 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07AE6AB5D9");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
-        });
-
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Cities__3214EC07B13C2BFF");
@@ -160,6 +152,14 @@ public partial class CoreCmsContext : DbContext
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<ContentCategory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07AE6AB5D9");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
@@ -499,6 +499,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwComponentTypeForm", "cms");
         });
 
+        modelBuilder.Entity<VwContentCategoryForm>(entity =>
+        {
+            entity.ToView("VwContentCategoryForm", "cms");
+        });
+
         modelBuilder.Entity<VwContentItemForm>(entity =>
         {
             entity.ToView("VwContentItemForm", "cms");
@@ -567,11 +572,6 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteMenuForm>(entity =>
         {
             entity.ToView("VwSiteMenuForm", "cms");
-        });
-
-        modelBuilder.Entity<VwSiteMenueForm>(entity =>
-        {
-            entity.ToView("VwSiteMenueForm", "cms");
         });
 
         modelBuilder.Entity<VwSiteSettingForm>(entity =>

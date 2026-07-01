@@ -1,5 +1,5 @@
 ﻿SQL SERVER =>
-Scaffold-DbContext "Server=DESKTOP-JLBIAKI\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir EntityFramework/SqlServer -force -d
+Scaffold-DbContext "Server=DESKTOP-JLBIAKI\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir EntityFramework/SqlServer -force -d 
 PostgreSQL =>
 Scaffold-DbContext "Host=localhost;Port=5432;Database=CoreCMS;Username=postgres;Password=Elham#09123507322#" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir EntityFramework/PostgreSQL -Context VeloraPgContext -Force
 
