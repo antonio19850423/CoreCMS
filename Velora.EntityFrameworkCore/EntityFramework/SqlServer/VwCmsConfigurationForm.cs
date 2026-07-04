@@ -33,6 +33,12 @@ public partial class VwCmsConfigurationForm
     [StringLength(50)]
     public string SiteType { get; set; } = null!;
 
+    public bool? EnablePrivacy { get; set; }
+
+    public bool? EnableFaq { get; set; }
+
+    public bool? EnableDynamicPages { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

@@ -33,8 +33,10 @@ namespace Velora.Application.Seeds
 		public const string Seed_Core_Template = "Seed_Core_Template";
 		public const string Seed_Core_SectionGroupItem = "Seed_Core_SectionGroupItem";
 		public const string Seed_Core_LinkTypes = "Seed_Core_LinkTypes";
+        public const string SeedCmsNewsAndArticlePagesAsync = "SeedCmsNewsAndArticlePagesAsync";
+        
 
-	}
+    }
 
 	public class DataSeeder
 	{
@@ -63,8 +65,15 @@ namespace Velora.Application.Seeds
 		private readonly ISectionGroupItemService _sectionGroupItemService;
 		private readonly ILinkTypeService _linkTypeService;
 		ICmsConfigurationService _cmsConfigurationService;
+        private readonly IContentItemService _contentItemService;
+        private readonly IContentCategoryService _contentCategoryService;
+        private readonly IContentItemTagService _contentItemTagService;
+        private readonly ITagService _tagService;
+        
 
-		public DataSeeder(
+
+
+        public DataSeeder(
 			IConfiguration configuration,
 			IRoleService roleService,
 			IUserService userService,
@@ -83,7 +92,7 @@ namespace Velora.Application.Seeds
 			ISiteSettingService siteSettingService,
 			ICmsConfigurationService cmsConfigurationService,
 			ISectionGroupItemService sectionGroupItemService,
-			IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService, ILinkTypeService linkTypeService)
+			IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService, ILinkTypeService linkTypeService, IContentItemService contentItemService, IContentCategoryService contentCategoryService,IContentItemTagService contentItemTagService,ITagService tagService)
 		{
 			var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
 			_dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -114,6 +123,10 @@ namespace Velora.Application.Seeds
 			_sectionItemService = sectionItemService;
 			_sectionGroupItemService = sectionGroupItemService;
 			_linkTypeService = linkTypeService;
+			_contentItemService = contentItemService;
+			_contentCategoryService= contentCategoryService;
+			_contentItemTagService = contentItemTagService;
+			_tagService= tagService;
 		}
 
 		public async Task SeedAllAsync()
@@ -195,7 +208,16 @@ namespace Velora.Application.Seeds
 					CreatedAt = DateTime.Now
 				});
 			}
-			await _transactionService.CommitAsync();
+            if (await ShouldRunSeederAsync(SeederNames.SeedCmsNewsAndArticlePagesAsync))
+            {
+                await SeedCmsNewsAndArticlePagesAsync();
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.SeedCmsNewsAndArticlePagesAsync,
+                    CreatedAt = DateTime.Now
+                });
+            }
+            await _transactionService.CommitAsync();
 		}
 
 		public async Task SeedCoreAsync()
@@ -1230,9 +1252,11 @@ namespace Velora.Application.Seeds
 
 		public async Task SeedCmsTemplateAsync()
 		{
-			var seederName = SeederNames.Seed_Core_Template;
-
-			if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+            var excludedSlugs = new[] { "news", "articles" };
+            var seederName = SeederNames.Seed_Core_Template;
+            var existing = await _cmsConfigurationService
+    .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
 				return;
 
 			var templateName = _configuration["Cms:DefaultTemplate"];
@@ -1289,9 +1313,20 @@ namespace Velora.Application.Seeds
 			// =====================================================
 			foreach (var page in template.Pages)
 			{
-
-				// ================= PAGE UPSERT =================
-				var existingPage = _dbType == DatabaseType.SqlServer
+                // ❌ SKIP special dynamic pages
+                if (excludedSlugs.Contains(page.Slug?.ToLower()))
+                    continue;
+                var cmsConfig = existing?.Data;
+                if (page.Slug == "faq" && !(cmsConfig?.EnableFaq ?? false))
+                {
+                    continue;
+                }
+                if (page.Slug == "privacy" && !(cmsConfig?.EnablePrivacy ?? false))
+                {
+                    continue;
+                }
+                // ================= PAGE UPSERT =================
+                var existingPage = _dbType == DatabaseType.SqlServer
 					 ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
 					 : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
 
@@ -1513,6 +1548,282 @@ namespace Velora.Application.Seeds
 
 			await _transactionService.CommitAsync();
 		}
+        private static string GenerateSlug(string text)
+        {
+            return text
+                .Trim()
+                .ToLowerInvariant()
+                .Replace(" ", "-");
+        }
+        public async Task SeedCmsNewsAndArticlePagesAsync()
+        {
+            var seederName = SeederNames.SeedCmsNewsAndArticlePagesAsync;
+
+            var existing = await _cmsConfigurationService
+                .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+                return;
+
+            var templateName = _configuration["Cms:DefaultTemplate"];
+
+            if (string.IsNullOrWhiteSpace(templateName))
+                throw new Exception("DefaultTemplate is not configured in appsettings");
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+            // =========================
+            // LOAD TEMPLATE
+            // =========================
+            using var templateStream = assembly.GetManifestResourceStream(
+                "Velora.Application.Shared.Resources.Templates.json");
+
+            if (templateStream == null)
+                throw new FileNotFoundException("Templates.json not found");
+
+            var templateModel = await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
+                templateStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (templateModel == null)
+                throw new Exception("Invalid Template JSON");
+
+            var template = templateModel.Templates
+                .FirstOrDefault(x => x.TemplateName == templateName);
+
+            if (template == null)
+                throw new Exception($"Template {templateName} not found");
+
+            // =========================
+            // LOAD COMPONENT RULES
+            // =========================
+
+            using var componentStream = assembly.GetManifestResourceStream(
+"Velora.Application.Shared.Resources.ContentItemRules.json");
+
+            if (componentStream == null)
+                throw new FileNotFoundException("ContentItemRules.json not found");
+
+            var componentRules = await JsonSerializer.DeserializeAsync<
+                Dictionary<string, ContentItemRuleModel>>(
+                componentStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            // 🚨 فقط این صفحات Content دارند
+            var contentPages = new[] { "news", "articles" };
+
+            // =====================================================
+            // PAGES LOOP (UPSERT)
+            // =====================================================
+            foreach (var page in template.Pages)
+            {
+                var cmsConfig = existing?.Data;
+
+                if (page.Slug == "news" && !(cmsConfig?.EnableNews ?? false))
+                {
+                    continue;
+                }
+
+                if (page.Slug == "articles" && !(cmsConfig?.EnableBlog ?? false))
+                {
+                    continue;
+                }
+                var isContentPage = !string.IsNullOrEmpty(page.Slug) &&
+                                    contentPages.Contains(page.Slug.ToLower());
+				if(!isContentPage)
+				{
+					continue;
+				}
+                var existingPage = _dbType == DatabaseType.SqlServer
+                    ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
+                    : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
+
+                var pageEntity = new PageDto
+                {
+                    Name = page.PageName,
+                    Slug = page.Slug,
+                    IsPublished = false,
+                    MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
+                    MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
+                    MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت",
+                    IsActive = true
+                };
+
+                if (existingPage.Data == null)
+                {
+                    var created = await _pageService.CreateAsync(pageEntity);
+                    pageEntity.Id = created.Data.Id;
+                }
+                else
+                {
+                    pageEntity.Id = existingPage.Data.Id;
+                    pageEntity.IsActive = true;
+                }
+
+                // =====================================================
+                // NORMAL PAGES → SECTION SYSTEM (مثل قبل)
+                // =====================================================
+                int sectionIndex = 1;
+
+
+                if (componentRules == null)
+                    throw new Exception("Invalid ComponentRules JSON");
+                foreach (var component in page.Components)
+                {
+                    if (!componentRules.TryGetValue(component.Code, out var rule))
+                        continue;
+                    var existingComponentType = _dbType == DatabaseType.SqlServer
+                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
+                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
+
+                    var componentTypeEntity = new ComponentTypeDto
+                    {
+                        Name = component.Code,
+                        Code = component.Code,
+                        Type = component.Type,
+                        IsActive = true
+                    };
+
+                    if (existingComponentType.Data == null)
+                    {
+                        var created = await _componentTypeService.CreateAsync(componentTypeEntity);
+                        componentTypeEntity.Id = created.Data.Id;
+                    }
+                    else
+                    {
+                        componentTypeEntity.Id = existingComponentType.Data.Id;
+                    }
+
+                    var existingContentItem = _dbType == DatabaseType.SqlServer
+                        ? await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
+                            x => x.PageId == pageEntity.Id)
+                        : await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
+                            x => x.PageId == pageEntity.Id);
+
+                    var rtl = rule.DefaultData?.Rtl;
+                    var currentSectionSortOrder = sectionIndex++;
+					// =====================================================
+					// CATEGORY
+					// =====================================================
+					Guid? categoryId = null;
+                    if (!string.IsNullOrWhiteSpace(rtl?.CategoryName))
+                    {
+                        var existingCategory = await _contentCategoryService
+                            .FirstOrDefaultAsync<SqlContentCategory>(
+                                x => x.Name == rtl.CategoryName);
+
+
+
+                        if (existingCategory.Data == null)
+                        {
+                            var createdCategory = await _contentCategoryService.CreateAsync(
+                                new ContentCategoryDto
+                                {
+                                    Name = rtl.CategoryName,
+                                    Slug = GenerateSlug(rtl.CategoryName),
+                                    IsActive = true
+                                });
+
+                            categoryId = createdCategory.Data.Id;
+                        }
+                        else
+                        {
+                            categoryId = existingCategory.Data.Id;
+                        }
+                    }
+                    Guid currentContentItemId;
+
+                    if (existingContentItem.Data == null)
+                    {
+                        rtl.CategoryId = categoryId;
+                        var contentItemEntity = BuildContentItemDto(
+                            pageEntity.Id,
+                            componentTypeEntity.Id,
+                            rtl,
+                            currentSectionSortOrder);
+
+                        var created =
+                            await _contentItemService.CreateAsync(contentItemEntity);
+
+                        currentContentItemId = created.Data.Id;
+                    }
+                    else
+                    {
+                        rtl.CategoryId = categoryId;
+                        var contentItemUpdated = BuildContentItemDto(
+                            pageEntity.Id,
+                            componentTypeEntity.Id,
+                            rtl,
+                            currentSectionSortOrder);
+                        contentItemUpdated.Id = existingContentItem.Data.Id;
+
+                        await _contentItemService.UpdateAsync(
+                            contentItemUpdated,
+                            contentItemUpdated.Id);
+
+                        currentContentItemId =
+                            existingContentItem.Data.Id;
+                    }
+					var oldTags =
+						await _contentItemTagService.GetByContentItemTagsAsync(currentContentItemId);
+
+                    foreach (var item in oldTags)
+                    {
+                        await _contentItemTagService.DeleteAsync(item.Id);
+                    }
+                    // =====================================================
+                    // TAGS
+                    // =====================================================
+                    if (rtl?.Tags != null && rtl.Tags.Any())
+                    {
+                        foreach (var tag in rtl.Tags)
+                        {
+                            var existingTag =
+                                await _tagService
+                                    .FirstOrDefaultAsync<SqlTag>(
+                                        x => x.Slug == tag.Slug);
+
+                            Guid tagId;
+
+                            if (existingTag.Data == null)
+                            {
+                                var createdTag =
+                                    await _tagService.CreateAsync(
+                                        new TagDto
+                                        {
+                                            Name = tag.Name,
+                                            Slug = tag.Slug,
+                                            IsActive = true
+                                        });
+
+                                tagId = createdTag.Data.Id;
+                            }
+                            else
+                            {
+                                tagId = existingTag.Data.Id;
+                            }
+
+                            var existingContentTag =
+                                await _contentItemTagService
+                                    .FirstOrDefaultAsync<SqlContentItemTag>(
+                                        x =>
+                                            x.ContentItemId == currentContentItemId &&
+                                            x.TagId == tagId);
+
+                            if (existingContentTag.Data == null)
+                            {
+                                await _contentItemTagService.CreateAsync(
+                                    new ContentItemTagDto
+                                    {
+                                        ContentItemId = currentContentItemId,
+                                        TagId = tagId
+                                    });
+                            }
+                        }
+                    }
+                }
+            }
+
+            await _transactionService.CommitAsync();
+        }
         private SectionDto BuildSectionDto(
     Guid pageId,
     Guid componentTypeId,
@@ -1592,6 +1903,40 @@ namespace Velora.Application.Seeds
                 MapEmbedUrl = rtl?.MapEmbedUrl,
 
                 ColumnsCount = 1
+            };
+        }
+        private ContentItemDto BuildContentItemDto(
+Guid pageId,
+Guid componentTypeId,
+ContentItemLanguageData rtl,
+int sortOrder)
+        {
+            return new ContentItemDto
+            {
+                PageId = pageId,
+				AuthorAvatarUrl = rtl?.AuthorAvatarUrl,
+				AuthorName = rtl?.AuthorName,
+				AuthorTitle = rtl?.AuthorTitle,
+				SourceTitle=rtl.SourceTitle,
+				SourceUrl=rtl.SourceUrl,
+				Content=rtl.Content,
+				ContentType=rtl.ContentType,
+				IsPublished=true,
+				PublishedAt = rtl?.PublishedAt,
+				Slug=rtl.Slug,
+				Summary=rtl?.Summary,
+                IsActive = true,
+                IsTest = false,
+                Title = rtl?.Title,
+                SortOrder = sortOrder,
+			ImageAlt=rtl?.ImageAlt,
+			ImageUrl=rtl?.ImageUrl,
+			ExternalUrl=rtl?.ExternalUrl,
+			CategoryId=rtl?.CategoryId,
+			ImageDetailAlt=rtl?.ImageDetailAlt,
+			ImageDetailUrl=rtl?.ImageDetailUrl,
+			
+
             };
         }
         private SectionItemDto BuildSectionItemDto(

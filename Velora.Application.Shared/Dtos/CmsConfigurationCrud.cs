@@ -31,18 +31,25 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true)]
         public bool EnableShop { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true)]
+        public bool? EnableFaq { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = true)]
+        public bool? EnablePrivacy { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true)]
+        public bool? EnableDynamicPages { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = true, MaxLength = 50, ShowInSelectBox = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true, MaxLength = 50, ShowInSelectBox = true)]
         public string SiteType { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
+
     }
 }

@@ -32,13 +32,14 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IPageService _rolePageService;
         protected readonly ICurrentUserService _currentUserService;
+        protected readonly IContentItemService _contentItemService;
         public PageService(
               ISqlRepository<SqlPage> sqlRepository,
               IPosgreSqlRepository<SqlPage> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, IContentItemService contentItemService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -48,7 +49,8 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
+            _contentItemService = contentItemService;
         }
         public async Task<IQueryable<PageCrud>> GetAllViews()
         {
@@ -525,6 +527,118 @@ int pageSize)
 
             return result;
 
+        }
+
+
+        public async Task<ResultDto<PageViewDto>> GetContentPageAsync(
+            string slug,
+            int page = 1,
+            int pageSize = 10,
+            string? categorySlug = null,
+            string? search = null,
+            string? contentType = null,
+            string sort = "newest")
+        {
+            var result = new ResultDto<PageViewDto>();
+
+            try
+            {
+                // =========================
+                // 1. PAGE ONLY (LIGHT QUERY)
+                // =========================
+                var pageEntity = await Query()
+                    .FirstOrDefaultAsync(p => p.Slug == slug);
+
+                if (pageEntity == null)
+                {
+                    result.Success = false;
+                    result.Message = $"Page '{slug}' not found.";
+                    return result;
+                }
+                var contentItem = await _contentItemService.GetPagedAsync(pageEntity.Id, page, pageSize, categorySlug, search, contentType, sort);
+
+
+                // =========================
+                // 3. MAP PAGE + SECTIONS
+                // =========================
+                var pageViewDto = new PageViewDto
+                {
+                    Id = pageEntity.Id,
+                    Name = pageEntity.Name,
+                    Slug = pageEntity.Slug,
+                    MetaTitle = pageEntity.MetaTitle,
+                    MetaDescription = pageEntity.MetaDescription,
+                    MetaKeywords = pageEntity.MetaKeywords,
+                    CanonicalUrl = pageEntity.CanonicalUrl,
+                    OgImageUrl = pageEntity.OgImageUrl,
+                    ContentItems = contentItem.Items,
+                    TotalCount = contentItem.TotalCount,
+                    Page = page,
+                    PageSize = pageSize
+                };
+
+                result.Data = pageViewDto;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Failed to load content page.";
+                result.Errors.Add(ex.Message);
+            }
+
+            return result;
+        }
+
+
+        public async Task<ResultDto<ContentItemListDto>> GetContentDetailAsync(
+            string contentType,
+            string slug)
+        {
+            var result = new ResultDto<ContentItemListDto>();
+
+            try
+            {
+                var item = await _contentItemService
+                    .Query()
+                    .Include(x => x.ContentItemTags)
+                        .ThenInclude(x => x.Tag)
+                    .Where(x =>
+                        x.ContentType == contentType &&
+                        x.Slug == slug &&
+                        x.IsActive &&
+                        x.IsPublished &&
+                        !x.IsDeleted)
+                    .FirstOrDefaultAsync();
+
+                if (item == null)
+                {
+                    return new ResultDto<ContentItemListDto>
+                    {
+                        Success = false,
+                        Message = "Content not found"
+                    };
+                }
+
+                var dto = _mapper.Map<ContentItemListDto>(item);
+
+                // Tags mapping (correct & safe)
+                dto.Tags = item.ContentItemTags?
+                    .Where(x => x.Tag != null)
+                    .Select(x => x.Tag.Name)
+                    .ToList() ?? new List<string>();
+
+                result.Data = dto;
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Failed to load content detail";
+                result.Errors.Add(ex.Message);
+            }
+
+            return result;
         }
 
 

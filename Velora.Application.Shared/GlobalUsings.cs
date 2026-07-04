@@ -90,5 +90,11 @@ global using SqlSiteMenuView = Velora.EntityFrameworkCore.EntityFramework.SqlSer
 global using SqlContentCategory = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ContentCategory;
 global using SqlContentCategoryView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwContentCategoryForm;
 
+global using SqlTag = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Tag;
+global using SqlTagView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwTagForm;
+
+global using SqlContentItemTag = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ContentItemTag;
+
+
 
 

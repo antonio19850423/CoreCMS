@@ -1,0 +1,184 @@
+﻿{
+  "newsHero": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "categoryName": true,
+      "authorName": true,
+      "authorTitle": true,
+      "authorAvatarUrl": true,
+      "publishedAt": true,
+      "tags": true
+    },
+    "defaultData": {
+      "rtl": {
+        "contentType": "0",
+        "title": "مایکروسافت از نسخه جدید Copilot برای کسب‌وکارها رونمایی کرد",
+        "summary": "قابلیت‌های جدید هوش مصنوعی برای افزایش بهره‌وری سازمان‌ها معرفی شد",
+        "content": "شرکت مایکروسافت در رویداد سالانه خود از نسخه جدید Microsoft Copilot رونمایی کرد. این نسخه شامل قابلیت‌های پیشرفته تحلیل داده، تولید محتوا و اتوماسیون فرآیندهای سازمانی است.\n\nبر اساس اعلام مایکروسافت، نسخه جدید Copilot می‌تواند با اتصال به سرویس‌های Microsoft 365 و Azure، گزارش‌های تحلیلی تولید کرده و وظایف تکراری کاربران را به صورت خودکار انجام دهد.\n\nاین قابلیت‌ها از سه‌ماهه چهارم سال 2026 در اختیار مشتریان سازمانی قرار خواهد گرفت و انتظار می‌رود نقش مهمی در تحول دیجیتال کسب‌وکارها ایفا کند.",
+        "imageUrl": "/uploads/sections/copilot.jpg",
+        "imageAlt": "مایکروسافت Copilot 2026",
+        "categoryName": "فناوری",
+        "authorName": "تیم تحریریه",
+        "authorTitle": "خبرنگار فناوری",
+        "authorAvatarUrl": "/uploads/sections/uifaces-popular-avatar-men.jpg",
+        "publishedAt": "2026-07-04",
+        "externalUrl": "https://news.microsoft.com",
+        "sourceTitle": "Microsoft News",
+        "sourceUrl": "https://news.microsoft.com",
+        "slug": "microsoft-copilot-enterprise",
+        "imageDetailUrl": "/uploads/sections/copilot-detail.jpg",
+        "imageDetailAlt": "مایکروسافت Copilot 2026",
+        "tags": [
+          {
+            "name": "مایکروسافت",
+            "slug": "microsoft"
+          },
+          {
+            "name": "هوش مصنوعی",
+            "slug": "artificial-intelligence"
+          },
+          {
+            "name": "Copilot",
+            "slug": "copilot"
+          },
+          {
+            "name": "فناوری",
+            "slug": "technology"
+          }
+        ]
+      },
+      "ltr": {
+        "contentType": "0",
+        "title": "Microsoft Unveils New Copilot Features for Businesses",
+        "summary": "New AI capabilities introduced to improve enterprise productivity",
+        "content": "Microsoft has officially announced the next generation of Microsoft Copilot during its annual event. The new release introduces advanced AI capabilities for data analysis, content generation, and business process automation.\n\nAccording to Microsoft, the updated Copilot integrates deeply with Microsoft 365 and Azure services, enabling organizations to automate repetitive tasks and generate intelligent business insights.\n\nThe new enterprise features are expected to become available in late 2026 and are anticipated to play a major role in accelerating digital transformation initiatives.",
+        "imageUrl": "/uploads/sections/copilot.jpg",
+        "imageAlt": "Microsoft Copilot 2026",
+        "categoryName": "Technology",
+        "authorName": "Editorial Team",
+        "authorTitle": "Technology Reporter",
+        "authorAvatarUrl": "/uploads/sections/uifaces-popular-avatar-men.jpg",
+        "publishedAt": "2026-07-04",
+        "externalUrl": "https://news.microsoft.com",
+        "sourceTitle": "Microsoft News",
+        "sourceUrl": "https://news.microsoft.com",
+        "slug": "microsoft-copilot-enterprise",
+        "imageDetailUrl": "/uploads/sections/copilot-detail.jpg",
+        "imageDetailAlt": "مایکروسافت Copilot 2026",
+        "tags": [
+          {
+            "name": "Microsoft",
+            "slug": "microsoft"
+          },
+          {
+            "name": "Artificial Intelligence",
+            "slug": "artificial-intelligence"
+          },
+          {
+            "name": "Copilot",
+            "slug": "copilot"
+          },
+          {
+            "name": "Technology",
+            "slug": "technology"
+          }
+        ]
+      }
+    }
+  },
+  "articleHero": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "categoryName": true,
+      "authorName": true,
+      "authorTitle": true,
+      "authorAvatarUrl": true,
+      "publishedAt": true,
+      "tags": true
+    },
+    "defaultData": {
+      "rtl": {
+        "contentType": "1",
+        "title": "معماری مدرن در توسعه نرم‌افزار؛ چرا Microservices اهمیت پیدا کرده است؟",
+        "summary": "بررسی نقش معماری میکروسرویس در افزایش مقیاس‌پذیری و نگهداری سیستم‌های بزرگ نرم‌افزاری",
+        "content": "در سال‌های اخیر، معماری نرم‌افزار دچار تغییرات اساسی شده و بسیاری از شرکت‌ها به سمت استفاده از Microservices حرکت کرده‌اند. این معماری به توسعه‌دهندگان اجازه می‌دهد تا سیستم‌های بزرگ را به سرویس‌های کوچک‌تر و مستقل تقسیم کنند.\n\nیکی از مهم‌ترین مزایای این رویکرد، افزایش مقیاس‌پذیری و انعطاف‌پذیری سیستم است. هر سرویس می‌تواند به‌صورت مستقل توسعه، تست و deploy شود که این موضوع سرعت توسعه را به شکل قابل توجهی افزایش می‌دهد.\n\nدر مقابل، پیچیدگی مدیریت سرویس‌ها، مانیتورینگ و ارتباط بین سرویس‌ها از چالش‌های اصلی این معماری محسوب می‌شود. استفاده از ابزارهایی مانند Docker و Kubernetes می‌تواند این مشکلات را تا حد زیادی کاهش دهد.\n\nدر نهایت انتخاب بین معماری Monolith و Microservices باید بر اساس اندازه پروژه، تیم توسعه و نیازهای کسب‌وکار انجام شود.",
+        "imageUrl": "/uploads/sections/microservice.jpg",
+        "imageAlt": "Microservices Architecture Diagram",
+        "categoryName": "تکنیکال",
+        "authorName": "علی محمدی",
+        "authorTitle": "Senior Software Architect",
+        "authorAvatarUrl": "/uploads/sections/uifaces-popular-avatar.jpg",
+        "publishedAt": "2026-07-04",
+        "externalUrl": "https://dev.to",
+        "sourceTitle": "Dev.to",
+        "sourceUrl": "https://dev.to",
+        "slug": "modern-architecture-microservices",
+        "imageDetailUrl": "/uploads/sections/microservice-details.png",
+        "imageDetailAlt": "Microservices Architecture Diagram",
+        "tags": [
+          {
+            "name": "Microservices",
+            "slug": "microservices"
+          },
+          {
+            "name": "Architecture",
+            "slug": "software-architecture"
+          },
+          {
+            "name": "Backend",
+            "slug": "backend"
+          },
+          {
+            "name": "Kubernetes",
+            "slug": "kubernetes"
+          }
+        ]
+      },
+      "ltr": {
+        "contentType": "1",
+        "title": "Modern Software Architecture: Why Microservices Matter",
+        "summary": "A deep dive into microservices architecture and its impact on scalable systems",
+        "content": "In modern software engineering, microservices architecture has become one of the most widely adopted approaches for building scalable systems. Instead of creating a single monolithic application, developers break the system into smaller, independent services.\n\nEach microservice is responsible for a specific business capability and can be developed, deployed, and scaled independently. This separation improves maintainability and allows teams to work more efficiently in parallel.\n\nHowever, microservices also introduce challenges such as distributed system complexity, service communication, and monitoring overhead. Technologies like Docker and Kubernetes help solve many of these issues by providing containerization and orchestration capabilities.\n\nChoosing between monolithic and microservices architecture depends heavily on project size, team structure, and business requirements.",
+        "imageUrl": "/uploads/sections/microservice.jpg",
+        "imageAlt": "Microservices Architecture Diagram",
+        "categoryName": "Technical",
+        "authorName": "Ali Mohammadi",
+        "authorTitle": "Senior Software Architect",
+        "authorAvatarUrl": "/uploads/sections/uifaces-popular-avatar.jpg",
+        "publishedAt": "2026-07-04",
+        "externalUrl": "https://dev.to",
+        "sourceTitle": "Dev.to",
+        "sourceUrl": "https://dev.to",
+        "slug": "modern-architecture-microservices",
+        "imageDetailUrl": "/uploads/sections/microservice-details.png",
+        "imageDetailAlt": "Microservices Architecture Diagram",
+        "tags": [
+          {
+            "name": "Microservices",
+            "slug": "microservices"
+          },
+          {
+            "name": "Architecture",
+            "slug": "software-architecture"
+          },
+          {
+            "name": "Backend",
+            "slug": "backend"
+          },
+          {
+            "name": "Kubernetes",
+            "slug": "kubernetes"
+          }
+        ]
+      }
+    }
+  }
+}

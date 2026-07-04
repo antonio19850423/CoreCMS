@@ -117,99 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="ContentItem.Id" xml:space="preserve">
-  <value>Id</value>
-</data>
-
-	<data name="ContentItem.Title" xml:space="preserve">
-  <value>Title</value>
-</data>
-
-	<data name="ContentItem.Summary" xml:space="preserve">
-  <value>Summary</value>
-</data>
-
-	<data name="ContentItem.Content" xml:space="preserve">
-  <value>Content</value>
-</data>
-
-	<data name="ContentItem.ContentType" xml:space="preserve">
-  <value>Content Type</value>
-</data>
-
-	<data name="ContentItem.AuthorAvatarUrl" xml:space="preserve">
-  <value>Author Avatar</value>
-</data>
-
-	<data name="ContentItem.AuthorName" xml:space="preserve">
-  <value>Author Name</value>
-</data>
-
-	<data name="ContentItem.AuthorTitle" xml:space="preserve">
-  <value>Author Title</value>
-</data>
-
-	<data name="ContentItem.ExternalUrl" xml:space="preserve">
-  <value>External URL</value>
-</data>
-
-	<data name="ContentItem.ImageUrl" xml:space="preserve">
-  <value>Featured Image</value>
-</data>
-
-	<data name="ContentItem.ImageAlt" xml:space="preserve">
-  <value>Image Alt Text</value>
-</data>
-
-	<data name="ContentItem.PublishedAt" xml:space="preserve">
-  <value>Publication Date</value>
-</data>
-
-	<data name="ContentItem.Tags" xml:space="preserve">
-  <value>Tags</value>
-</data>
-
-	<data name="ContentItem.CategoryId" xml:space="preserve">
-  <value>Category</value>
-</data>
-
-	<data name="ContentItem.CategoryName" xml:space="preserve">
-  <value>Category Name</value>
-</data>
-
-	<data name="ContentItem.CategorySlug" xml:space="preserve">
-  <value>Category Slug</value>
-</data>
-
-	<data name="ContentItem.IsActive" xml:space="preserve">
-  <value>Active</value>
-</data>
-
-	<data name="ContentItem.SortOrder" xml:space="preserve">
-  <value>Display Order</value>
-</data>
-
-	<data name="ContentItem.ParentId" xml:space="preserve">
-  <value>Parent Id</value>
-</data>
-
-	<data name="ContentItem.PageId" xml:space="preserve">
-  <value>Page Id</value>
-</data>
-
-	<data name="ContentItem.CreatedAtPersian" xml:space="preserve">
-  <value>Created Date</value>
-</data>
-
-	<data name="ContentItem.UpdatedAtPersian" xml:space="preserve">
-  <value>Last Updated Date</value>
-</data>
-
-	<data name="ContentItem.CreatedByName" xml:space="preserve">
-  <value>Created By</value>
-</data>
-
-	<data name="ContentItem.UpdatedByName" xml:space="preserve">
-  <value>Last Updated By</value>
-</data>
+  <data name="ContentItem.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ContentItem.Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ContentItem.Summary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="ContentItem.Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="ContentItem.ContentType" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
+  <data name="ContentItem.AuthorAvatarUrl" xml:space="preserve">
+    <value>Author Avatar</value>
+  </data>
+  <data name="ContentItem.AuthorName" xml:space="preserve">
+    <value>Author Name</value>
+  </data>
+  <data name="ContentItem.AuthorTitle" xml:space="preserve">
+    <value>Author Title</value>
+  </data>
+  <data name="ContentItem.ExternalUrl" xml:space="preserve">
+    <value>External URL</value>
+  </data>
+  <data name="ContentItem.ImageUrl" xml:space="preserve">
+    <value>Featured Image</value>
+  </data>
+  <data name="ContentItem.ImageAlt" xml:space="preserve">
+    <value>Image Alt Text</value>
+  </data>
+  <data name="ContentItem.PublishedAt" xml:space="preserve">
+    <value>Publication Date</value>
+  </data>
+  <data name="ContentItem.Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="ContentItem.CategoryId" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ContentItem.CategoryName" xml:space="preserve">
+    <value>Category Name</value>
+  </data>
+  <data name="ContentItem.CategorySlug" xml:space="preserve">
+    <value>Category Slug</value>
+  </data>
+  <data name="ContentItem.IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="ContentItem.SortOrder" xml:space="preserve">
+    <value>Display Order</value>
+  </data>
+  <data name="ContentItem.ParentId" xml:space="preserve">
+    <value>Parent Id</value>
+  </data>
+  <data name="ContentItem.PageId" xml:space="preserve">
+    <value>Page Id</value>
+  </data>
+  <data name="ContentItem.CreatedAtPersian" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="ContentItem.UpdatedAtPersian" xml:space="preserve">
+    <value>Last Updated Date</value>
+  </data>
+  <data name="ContentItem.CreatedByName" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="ContentItem.UpdatedByName" xml:space="preserve">
+    <value>Last Updated By</value>
+  </data>
+  <data name="ContentItem.Slug" xml:space="preserve">
+    <value>Slug</value>
+  </data>
+  <data name="ContentItem.TagIds" xml:space="preserve">
+    <value>TagIds</value>
+  </data>
+  <data name="ContentItem.SourceTitle" xml:space="preserve">
+    <value>SourceTitle</value>
+  </data>
+  <data name="ContentItem.SourceUrl" xml:space="preserve">
+    <value>SourceUrl</value>
+  </data>
+  <data name="ContentItem.ImageDetailUrl" xml:space="preserve">
+    <value>ImageDetailUrl</value>
+  </data>
+  <data name="ContentItem.ImageDetailAlt" xml:space="preserve">
+    <value>ImageDetailAlt</value>
+  </data>
 </root>

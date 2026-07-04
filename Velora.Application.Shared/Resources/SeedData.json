@@ -214,6 +214,30 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "TAG_MANAGEMENT_MENU",
+          "Name": "Tag Menu",
+          "Route": "basic-info/tag-management",
+          "DisplayName": {
+            "en": "Tag",
+            "fa": "مدیریت تگ‌ها"
+          },
+          "Order": 6,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "TAG_MANAGEMENT_PAGE",
+              "Name": "Tag Menu",
+              "DisplayName": {
+                "en": "Tag",
+                "fa": "مدیریت تگ‌ها"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

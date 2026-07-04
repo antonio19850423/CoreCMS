@@ -117,99 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="ContentItem.Id" xml:space="preserve">
-  <value>شناسه</value>
-</data>
-
-	<data name="ContentItem.Title" xml:space="preserve">
-  <value>عنوان</value>
-</data>
-
-	<data name="ContentItem.Summary" xml:space="preserve">
-  <value>خلاصه مطلب</value>
-</data>
-
-	<data name="ContentItem.Content" xml:space="preserve">
-  <value>متن کامل محتوا</value>
-</data>
-
-	<data name="ContentItem.ContentType" xml:space="preserve">
-  <value>نوع محتوا</value>
-</data>
-
-	<data name="ContentItem.AuthorAvatarUrl" xml:space="preserve">
-  <value>تصویر نویسنده</value>
-</data>
-
-	<data name="ContentItem.AuthorName" xml:space="preserve">
-  <value>نام نویسنده</value>
-</data>
-
-	<data name="ContentItem.AuthorTitle" xml:space="preserve">
-  <value>سمت نویسنده</value>
-</data>
-
-	<data name="ContentItem.ExternalUrl" xml:space="preserve">
-  <value>لینک مرجع</value>
-</data>
-
-	<data name="ContentItem.ImageUrl" xml:space="preserve">
-  <value>تصویر شاخص</value>
-</data>
-
-	<data name="ContentItem.ImageAlt" xml:space="preserve">
-  <value>متن جایگزین تصویر</value>
-</data>
-
-	<data name="ContentItem.PublishedAt" xml:space="preserve">
-  <value>تاریخ انتشار</value>
-</data>
-
-	<data name="ContentItem.Tags" xml:space="preserve">
-  <value>برچسب‌ها</value>
-</data>
-
-	<data name="ContentItem.CategoryId" xml:space="preserve">
-  <value>دسته‌بندی</value>
-</data>
-
-	<data name="ContentItem.CategoryName" xml:space="preserve">
-  <value>نام دسته‌بندی</value>
-</data>
-
-	<data name="ContentItem.CategorySlug" xml:space="preserve">
-  <value>اسلاگ دسته‌بندی</value>
-</data>
-
-	<data name="ContentItem.IsActive" xml:space="preserve">
-  <value>فعال</value>
-</data>
-
-	<data name="ContentItem.SortOrder" xml:space="preserve">
-  <value>ترتیب نمایش</value>
-</data>
-
-	<data name="ContentItem.ParentId" xml:space="preserve">
-  <value>شناسه والد</value>
-</data>
-
-	<data name="ContentItem.PageId" xml:space="preserve">
-  <value>شناسه صفحه</value>
-</data>
-
-	<data name="ContentItem.CreatedAtPersian" xml:space="preserve">
-  <value>تاریخ ایجاد</value>
-</data>
-
-	<data name="ContentItem.UpdatedAtPersian" xml:space="preserve">
-  <value>تاریخ آخرین ویرایش</value>
-</data>
-
-	<data name="ContentItem.CreatedByName" xml:space="preserve">
-  <value>ایجادکننده</value>
-</data>
-
-	<data name="ContentItem.UpdatedByName" xml:space="preserve">
-  <value>آخرین ویرایش‌کننده</value>
-</data>
+  <data name="ContentItem.Id" xml:space="preserve">
+    <value>شناسه</value>
+  </data>
+  <data name="ContentItem.Title" xml:space="preserve">
+    <value>عنوان</value>
+  </data>
+  <data name="ContentItem.Summary" xml:space="preserve">
+    <value>خلاصه مطلب</value>
+  </data>
+  <data name="ContentItem.Content" xml:space="preserve">
+    <value>متن کامل محتوا</value>
+  </data>
+  <data name="ContentItem.ContentType" xml:space="preserve">
+    <value>نوع محتوا</value>
+  </data>
+  <data name="ContentItem.AuthorAvatarUrl" xml:space="preserve">
+    <value>تصویر نویسنده</value>
+  </data>
+  <data name="ContentItem.AuthorName" xml:space="preserve">
+    <value>نام نویسنده</value>
+  </data>
+  <data name="ContentItem.AuthorTitle" xml:space="preserve">
+    <value>سمت نویسنده</value>
+  </data>
+  <data name="ContentItem.ExternalUrl" xml:space="preserve">
+    <value>لینک مرجع</value>
+  </data>
+  <data name="ContentItem.ImageUrl" xml:space="preserve">
+    <value>تصویر شاخص</value>
+  </data>
+  <data name="ContentItem.ImageAlt" xml:space="preserve">
+    <value>متن جایگزین تصویر</value>
+  </data>
+  <data name="ContentItem.PublishedAt" xml:space="preserve">
+    <value>تاریخ انتشار</value>
+  </data>
+  <data name="ContentItem.Tags" xml:space="preserve">
+    <value>برچسب‌ها</value>
+  </data>
+  <data name="ContentItem.CategoryId" xml:space="preserve">
+    <value>دسته‌بندی</value>
+  </data>
+  <data name="ContentItem.CategoryName" xml:space="preserve">
+    <value>نام دسته‌بندی</value>
+  </data>
+  <data name="ContentItem.CategorySlug" xml:space="preserve">
+    <value>اسلاگ دسته‌بندی</value>
+  </data>
+  <data name="ContentItem.IsActive" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="ContentItem.SortOrder" xml:space="preserve">
+    <value>ترتیب نمایش</value>
+  </data>
+  <data name="ContentItem.ParentId" xml:space="preserve">
+    <value>شناسه والد</value>
+  </data>
+  <data name="ContentItem.PageId" xml:space="preserve">
+    <value>شناسه صفحه</value>
+  </data>
+  <data name="ContentItem.CreatedAtPersian" xml:space="preserve">
+    <value>تاریخ ایجاد</value>
+  </data>
+  <data name="ContentItem.UpdatedAtPersian" xml:space="preserve">
+    <value>تاریخ آخرین ویرایش</value>
+  </data>
+  <data name="ContentItem.CreatedByName" xml:space="preserve">
+    <value>ایجادکننده</value>
+  </data>
+  <data name="ContentItem.UpdatedByName" xml:space="preserve">
+    <value>آخرین ویرایش‌کننده</value>
+  </data>
+  <data name="ContentItem.Slug" xml:space="preserve">
+    <value>اسلاگ</value>
+  </data>
+  <data name="ContentItem.TagIds" xml:space="preserve">
+    <value>برچسب‌ها</value>
+  </data>
+  <data name="ContentItem.SourceTitle" xml:space="preserve">
+    <value>عنوان منبع</value>
+  </data>
+  <data name="ContentItem.SourceUrl" xml:space="preserve">
+    <value>لینک منبع</value>
+  </data>
+  <data name="ContentItem.ImageDetailUrl" xml:space="preserve">
+    <value>تصویر صفحه جزئیات</value>
+  </data>
+  <data name="ContentItem.ImageDetailAlt" xml:space="preserve">
+    <value>متن جایگزین تصویر جزئیات</value>
+  </data>
 </root>

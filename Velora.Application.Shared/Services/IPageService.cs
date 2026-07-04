@@ -19,5 +19,16 @@ int pageNumber,
 int pageSize);
         Task<ResultDto<PageViewDto>> GetPageAsync(string slug);
         Task<ResultDto<FooterDto>> GetFooterAsync();
+        Task<ResultDto<PageViewDto>> GetContentPageAsync(
+            string slug,
+            int page = 1,
+            int pageSize = 10,
+            string? categorySlug = null,
+            string? search = null,
+            string? contentType = null,
+            string sort = "newest");
+        Task<ResultDto<ContentItemListDto>> GetContentDetailAsync(
+                    string contentType,
+                    string slug);
     }
 }

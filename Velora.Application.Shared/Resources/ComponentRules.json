@@ -641,7 +641,7 @@
       "backgroundColor": true,
       "headerColor": true,
       "descriptionColor": true,
-      "copyrightText" : true,
+      "copyrightText": true,
       "items": {
         "sectionGroupItemCode": true,
         "SectionGroupItemId": true,

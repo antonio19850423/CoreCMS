@@ -160,4 +160,13 @@
   <data name="CmsConfiguration.SiteType" xml:space="preserve">
     <value>نوع سایت</value>
   </data>
+  <data name="CmsConfiguration.EnablePrivacy" xml:space="preserve">
+    <value>فعال بودن صفحه قوانین و مقررات</value>
+  </data>
+  <data name="CmsConfiguration.EnableFaq" xml:space="preserve">
+    <value>فعال بودن صفحه سوال / پرسش</value>
+  </data>
+  <data name="CmsConfiguration.EnableDynamicPages" xml:space="preserve">
+    <value>فعال بودن صفحات داینامیک</value>
+  </data>
 </root>

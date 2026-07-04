@@ -86,6 +86,34 @@
               "type": "footer"
             }
           ]
+        },
+        {
+          "pageName": "اخبار",
+          "slug": "news",
+          "isPublished": false,
+          "metaTitle": "اخبار و مقالات - وب‌سایت شرکتی",
+          "metaDescription": "آخرین اخبار، مقالات و به‌روزرسانی‌های سیستم مدیریت محتوا",
+          "metaKeywords": "اخبار، مقالات، CMS، تکنولوژی، آپدیت‌ها",
+          "components": [
+            {
+              "code": "newsHero",
+              "type": "hero"
+            }
+          ]
+        },
+        {
+          "pageName": "مقالات",
+          "slug": "articles",
+          "isPublished": false,
+          "metaTitle": "مقالات تخصصی - وب‌سایت شرکتی",
+          "metaDescription": "آخرین مقالات تخصصی در حوزه فناوری، توسعه نرم‌افزار و معماری سیستم‌ها",
+          "metaKeywords": "مقالات، فناوری، برنامه‌نویسی، معماری نرم‌افزار، CMS",
+          "components": [
+            {
+              "code": "articleHero",
+              "type": "hero"
+            }
+          ]
         }
       ]
     }

@@ -52,8 +52,6 @@ namespace Velora.Application.Shared.Dtos
 
         public bool IsPublished { get; set; }
 
-        [StringLength(500)]
-        public string? Tags { get; set; }
 
         public int SortOrder { get; set; }
 
@@ -70,6 +68,18 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+        [StringLength(200)]
+        public string? Slug { get; set; }
+        [StringLength(150)]
+        public string? SourceTitle { get; set; }
+
+        [StringLength(500)]
+        public string? SourceUrl { get; set; }
+        [StringLength(512)]
+        public string? ImageDetailUrl { get; set; }
+
+        [StringLength(250)]
+        public string? ImageDetailAlt { get; set; }
 
     }
 }

@@ -50,6 +50,9 @@ public class CmsConfigurationGqlResolver : ICmsConfigurationGqlResolver
             UpdatedAtPersian = x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
+            EnablePrivacy = x.EnablePrivacy ,
+            EnableFaq = x.EnableFaq ,
+            EnableDynamicPages= x.EnableDynamicPages ,
             ShouldInsert = x.ShouldInsert
         });
     }

@@ -17,5 +17,13 @@ namespace Velora.Application.Shared.Services
 bool exportCurrentPage,
 int pageNumber,
 int pageSize);
+        Task<PagedResultDto<ContentItemListDto>> GetPagedAsync(
+    Guid? pageId,
+    int page = 1,
+    int pageSize = 10,
+    string? categorySlug = null,
+    string? search = null,
+    string? contentType = null,
+    string sort = "newest");
     }
 }

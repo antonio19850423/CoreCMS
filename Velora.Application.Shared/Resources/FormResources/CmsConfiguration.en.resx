@@ -160,4 +160,13 @@
   <data name="CmsConfiguration.SiteType" xml:space="preserve">
     <value>SiteType</value>
   </data>
+  <data name="CmsConfiguration.EnablePrivacy" xml:space="preserve">
+    <value>EnablePrivacy</value>
+  </data>
+  <data name="CmsConfiguration.EnableFaq" xml:space="preserve">
+    <value>EnableFaq</value>
+  </data>
+  <data name="CmsConfiguration.EnableDynamicPages" xml:space="preserve">
+    <value>EnableDynamicPages</value>
+  </data>
 </root>

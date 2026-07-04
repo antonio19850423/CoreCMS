@@ -86,7 +86,26 @@ namespace Velora.Host.Controllers
             return Ok(result);
         }
 
-
+        [HttpGet]
+        [Route("GetContentDetailAsync")]
+        public async Task<IActionResult> GetContentDetailAsync(string contentType,string slug)
+        {
+            var result = await _pageService.GetContentDetailAsync(contentType,slug);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("GetContentPageAsync")]
+        public async Task<IActionResult> GetContentPageAsync(string slug,
+            int page = 1,
+            int pageSize = 10,
+            string? categorySlug = null,
+            string? search = null,
+            string? contentType = null,
+            string sort = "newest")
+        {
+            var result = await _pageService.GetContentPageAsync(slug,page,pageSize,categorySlug,search,contentType,sort);
+            return Ok(result);
+        }
 
     }
 }

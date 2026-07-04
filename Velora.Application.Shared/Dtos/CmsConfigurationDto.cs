@@ -41,5 +41,10 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+        public bool? EnableFaq { get; set; }
+
+        public bool? EnablePrivacy { get; set; }
+
+        public bool? EnableDynamicPages { get; set; }
     }
 }

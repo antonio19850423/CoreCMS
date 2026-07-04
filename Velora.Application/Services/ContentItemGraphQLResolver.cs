@@ -52,13 +52,17 @@ public class ContentItemGqlResolver : IContentItemGqlResolver
             ImageUrl = x.ImageUrl ??"",
             PublishedAt = x.PublishedAt,
             Summary = x.Summary??"",
-            Tags=x.Tags??"",
             Title = x.Title ??"",
             ShouldInsert = x.ShouldInsert,
             CreatedAtPersian = x.CreatedAtPersian??"",
             CreatedByName=x.CreatedByName ??"",
             UpdatedAtPersian= x.UpdatedAtPersian ?? "",
-            UpdatedByName = x.UpdatedByName ?? ""
+            UpdatedByName = x.UpdatedByName ?? "",
+            Slug=x.Slug ??"",
+            TagIds=x.TagIds??"",
+            TagNames=x.TagNames??"",
+            SourceTitle=x.SourceTitle ??"",
+            SourceUrl=x.SourceUrl ??""
         });
     }
 

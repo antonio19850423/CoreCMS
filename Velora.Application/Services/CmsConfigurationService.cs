@@ -70,6 +70,9 @@ namespace Velora.Application.Services
                  EnableShop = input.EnableShop,
                  IsActive = input.IsActive,
                  SiteType = input.SiteType,
+                 EnableDynamicPages = input.EnableDynamicPages,
+                 EnableFaq = input.EnableFaq,
+                 EnablePrivacy = input.EnablePrivacy,
                 };
 
                 var result = await CreateAsync(CmsConfiguration);
@@ -120,6 +123,10 @@ namespace Velora.Application.Services
                     EnableMultiLanguage = input.EnableMultiLanguage,
                     EnableNews = input.EnableNews,
                     EnableSeo = input.EnableSeo,
+                    EnableDynamicPages = input.EnableDynamicPages,
+                    EnableFaq = input.EnableFaq,
+                    EnablePrivacy = input.EnablePrivacy,
+
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

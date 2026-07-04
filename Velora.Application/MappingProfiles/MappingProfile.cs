@@ -104,7 +104,7 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlContentItem, ContentItemCrud>().ReverseMap();
             CreateMap<SqlContentItemView, ContentItemCrud>().ReverseMap();
             CreateMap<SqlContentItem, ContentItemDto>().ReverseMap();
-
+            CreateMap<ContentItem, ContentItemListDto>().ReverseMap();
 
             CreateMap<SqlSectionGroupItem, SectionGroupItemCrud>().ReverseMap();
             CreateMap<VwSectionGroupItemForm, SectionGroupItemCrud>().ReverseMap();
@@ -122,6 +122,38 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlContentCategory, ContentCategoryCrud>().ReverseMap();
             CreateMap<VwContentCategoryForm, ContentCategoryCrud>().ReverseMap();
             CreateMap<SqlContentCategory, ContentCategoryDto>().ReverseMap();
+
+            CreateMap<SqlTag, TagCrud>().ReverseMap();
+            CreateMap<VwTagForm, TagCrud>().ReverseMap();
+            CreateMap<SqlTag, TagDto>().ReverseMap();
+
+            CreateMap<SqlContentItem, ContentItemListDto>()
+    .ForMember(
+        dest => dest.CategoryName,
+        opt => opt.MapFrom(src =>
+            src.Category != null
+                ? src.Category.Name
+                : null))
+    .ForMember(
+        dest => dest.CategorySlug,
+        opt => opt.MapFrom(src =>
+            src.Category != null
+                ? src.Category.Slug
+                : null))
+    .ForMember(
+        dest => dest.Tags,
+        opt => opt.MapFrom(src =>
+            src.ContentItemTags
+                .Where(x => x.Tag != null)
+                .Select(x => x.Tag.Name)
+                .ToList()
+        ));
+
+            CreateMap<SqlContentItemTag, ContentItemTagDto>().ReverseMap();
+
+            
         }
+
+
     }
 }

@@ -25,6 +25,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<ContentItem> ContentItems { get; set; }
 
+    public virtual DbSet<ContentItemTag> ContentItemTags { get; set; }
+
     public virtual DbSet<Country> Countries { get; set; }
 
     public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
@@ -69,6 +71,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<State> States { get; set; }
 
+    public virtual DbSet<Tag> Tags { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
@@ -111,6 +115,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
+    public virtual DbSet<VwTagForm> VwTagForms { get; set; }
+
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
 
     public virtual DbSet<VwUserRole> VwUserRoles { get; set; }
@@ -119,7 +125,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=1000;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -177,6 +183,16 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Page).WithMany(p => p.ContentItems)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_ContentItem_Page");
+        });
+
+        modelBuilder.Entity<ContentItemTag>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysdatetime())");
+
+            entity.HasOne(d => d.ContentItem).WithMany(p => p.ContentItemTags).HasConstraintName("FK_ContentItemTags_ContentItems");
+
+            entity.HasOne(d => d.Tag).WithMany(p => p.ContentItemTags).HasConstraintName("FK_ContentItemTags_Tags");
         });
 
         modelBuilder.Entity<Country>(entity =>
@@ -454,6 +470,15 @@ public partial class CoreCmsContext : DbContext
                 .HasConstraintName("FK__States__CountryI__4D94879B");
         });
 
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_cms_Tags");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysdatetime())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3214EC079F63A5A8");
@@ -577,6 +602,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteSettingForm>(entity =>
         {
             entity.ToView("VwSiteSettingForm", "cms");
+        });
+
+        modelBuilder.Entity<VwTagForm>(entity =>
+        {
+            entity.ToView("VwTagForm", "cms");
         });
 
         modelBuilder.Entity<VwUserForm>(entity =>

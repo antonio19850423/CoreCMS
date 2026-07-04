@@ -42,9 +42,6 @@ public partial class VwContentItemForm
 
     public DateTime? PublishedAt { get; set; }
 
-    [StringLength(500)]
-    public string? Tags { get; set; }
-
     public Guid? CategoryId { get; set; }
 
     [StringLength(150)]
@@ -61,6 +58,21 @@ public partial class VwContentItemForm
 
     public Guid? ParentId { get; set; }
 
+    [StringLength(200)]
+    public string? Slug { get; set; }
+
+    [StringLength(150)]
+    public string? SourceTitle { get; set; }
+
+    [StringLength(500)]
+    public string? SourceUrl { get; set; }
+
+    [StringLength(512)]
+    public string? ImageDetailUrl { get; set; }
+
+    [StringLength(250)]
+    public string? ImageDetailAlt { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 
@@ -72,4 +84,10 @@ public partial class VwContentItemForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    [StringLength(4000)]
+    public string? TagIds { get; set; }
+
+    [StringLength(4000)]
+    public string? TagNames { get; set; }
 }
