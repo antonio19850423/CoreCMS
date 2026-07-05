@@ -174,6 +174,11 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link4TypeId { get; set; }
 
         public bool? Link4OpenInNewTab { get; set; }
+        [StringLength(500)]
+        public string? VideoUrl { get; set; }
+
+        [StringLength(500)]
+        public string? ThumbnailUrl { get; set; }
         public List<ComponentItemData>? Items { get; set; }
     }
 }

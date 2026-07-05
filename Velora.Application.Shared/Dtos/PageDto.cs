@@ -54,6 +54,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+        public bool? IsDynamic { get; set; }
 
     }
 }

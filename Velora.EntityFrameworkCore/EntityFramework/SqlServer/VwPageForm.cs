@@ -43,6 +43,8 @@ public partial class VwPageForm
     [StringLength(200)]
     public string Slug { get; set; } = null!;
 
+    public bool? IsDynamic { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

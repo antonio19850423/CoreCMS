@@ -165,4 +165,7 @@
   <data name="Page.PageTemplateName" xml:space="preserve">
     <value>PageTemplateName</value>
   </data>
+  <data name="Page.IsDynamic" xml:space="preserve">
+    <value>IsDynamic</value>
+  </data>
 </root>

@@ -447,18 +447,14 @@
       "title": true,
       "subtitle": true,
       "description": true,
-
       "backgroundColor": true,
-
       "contactFirstNameLabel": true,
       "contactLastNameLabel": true,
       "contactEmailLabel": true,
       "contactMessageLabel": true,
       "contactSubmitButtonText": true,
-
       "mapEmbedUrl": true,
       "features": true,
-
       "items": {
         "title": true,
         "subtitle": true,
@@ -466,25 +462,19 @@
         "sortOrder": true
       }
     },
-
     "defaultData": {
       "rtl": {
         "title": "تماس با ما",
         "subtitle": "با ما در ارتباط باشید",
         "description": "فرم زیر را پر کنید تا در سریع‌ترین زمان با شما تماس بگیریم.",
-
         "features": "اطلاعات تماس",
-
         "backgroundColor": "#ffffff",
-
         "contactFirstNameLabel": "نام",
         "contactLastNameLabel": "نام خانوادگی",
         "contactEmailLabel": "ایمیل",
         "contactMessageLabel": "پیام شما",
         "contactSubmitButtonText": "ارسال پیام",
-
         "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25897.79404833424!2d51.37081479478659!3d35.76986729372537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e06f8e6ad6b4b%3A0x4fde4f4d6ca30e47!2sVanak%2C%20District%203%2C%20Tehran%2C%20Tehran%20Province%2C%20Iran!5e0!3m2!1sen!2s!4v1782208730923!5m2!1sen!2s",
-
         "items": [
           {
             "title": "📍 آدرس: تهران، ایران",
@@ -506,24 +496,18 @@
           }
         ]
       },
-
       "ltr": {
         "title": "Contact Us",
         "subtitle": "Get in touch with us",
         "description": "Fill out the form and we will contact you soon.",
-
         "features": "Contact Info",
-
         "backgroundColor": "#ffffff",
-
         "contactFirstNameLabel": "First Name",
         "contactLastNameLabel": "Last Name",
         "contactEmailLabel": "Email",
         "contactMessageLabel": "Message",
         "contactSubmitButtonText": "Send Message",
-
         "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!...",
-
         "items": [
           {
             "title": "📍 Address: Tehran, Iran",
@@ -655,7 +639,6 @@
         "sortOrder": true
       }
     },
-
     "defaultData": {
       "rtl": {
         "backgroundColor": "#ffffff",
@@ -682,7 +665,6 @@
             "isActive": true,
             "sortOrder": 3
           },
-
           {
             "sectionGroupItemCode": "FOOTER_SUPPORT",
             "link1Text": "سوالات متداول",
@@ -697,7 +679,6 @@
             "isActive": true,
             "sortOrder": 2
           },
-
           {
             "sectionGroupItemCode": "FOOTER_LEGAL",
             "link1Text": "حریم خصوصی",
@@ -712,7 +693,6 @@
             "isActive": true,
             "sortOrder": 2
           },
-
           {
             "sectionGroupItemCode": "FOOTER_CONTACT",
             "title": "آدرس",
@@ -748,7 +728,6 @@
             "isActive": true,
             "sortOrder": 5
           },
-
           {
             "sectionGroupItemCode": "FOOTER_SOCIAL",
             "title": "Instagram",
@@ -824,6 +803,124 @@
             "sortOrder": 2
           }
         ]
+      }
+    }
+  },
+  "dynamicHero": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "link1Text": true,
+      "link1Url": true,
+      "link2Text": true,
+      "link2Url": true
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "سرویس‌های داینامیک",
+        "title": "ساخت صفحات سرویس مدرن بدون نیاز به تغییر کد",
+        "description": "این ساختار امکان مدیریت کامل صفحات خدمات، مقالات و لندینگ‌ها را فقط با داده در CMS فراهم می‌کند. بدون نیاز به تغییر در کد، صفحات کاملاً داینامیک، قابل توسعه و حرفه‌ای ساخته می‌شوند.",
+        "imageUrl": "/uploads/sections/hero-default.jpg",
+        "imageAlt": "Dynamic Hero Service",
+        "link1Text": "مشاهده خدمات",
+        "link1Url": "/services",
+        "link2Text": "تماس با ما",
+        "link2Url": "/contact"
+      }
+    }
+  },
+  "dynamicGallery": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkUrl": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "نمونه پروژه‌ها",
+        "subtitle": "گالری خدمات و نمونه کارها",
+        "description": "برخی از پروژه‌ها و خدمات انجام شده توسط تیم ما",
+        "items": [
+          {
+            "title": "طراحی رابط کاربری مدرن",
+            "description": "تمرکز بر UX/UI حرفه‌ای برای تجربه کاربری بهتر",
+            "imageUrl": "/uploads/sections/ui-ux.png",
+            "imageAlt": "UI UX Design",
+            "linkUrl": "#"
+          },
+          {
+            "title": "معماری نرم‌افزار",
+            "description": "طراحی سیستم‌های مقیاس‌پذیر با Microservices",
+            "imageUrl": "/uploads/sections/software-architect.webp",
+            "imageAlt": "Software Architecture",
+            "linkUrl": "#"
+          },
+          {
+            "title": "توسعه API",
+            "description": "ساخت API امن و سریع با ASP.NET Core",
+            "imageUrl": "/uploads/sections/develop-api.jpg",
+            "imageAlt": "API Development",
+            "linkUrl": "#"
+          }
+        ]
+      }
+    }
+  },
+  "dynamicRichContent": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "features": true,
+      "copyrightText": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "link1Text": true,
+      "link1Url": true,
+      "link2Text": true,
+      "link2Url": true
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "توضیحات سرویس",
+        "subtitle": "معماری CMS داینامیک",
+        "description": "صفحات داینامیک به شما اجازه می‌دهند بدون تغییر در کد، ساختار کامل سرویس‌ها را از CMS مدیریت کنید. هر بخش شامل Hero، Gallery و Content Block است.",
+        "features": "Hero | Gallery | Video | Rich Content",
+        "copyrightText": "ساختار درست CMS باعث می‌شود سیستم بدون محدودیت رشد کند و در آینده به راحتی توسعه یابد",
+        "imageUrl": "/uploads/sections/cms.jpg",
+        "imageAlt": "CMS Architecture",
+        "link1Text": "مشاهده خدمات",
+        "link1Url": "/page/services",
+        "link2Text": "بیشتر بدانید",
+        "link2Url": "/about"
+      }
+    }
+  },
+  "dynamicVideoSection": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "videoUrl": true,
+      "thumbnailUrl": true,
+      "description": true
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "ویدیو معرفی سرویس",
+        "subtitle": "دموی سیستم CMS داینامیک",
+        "videoUrl": "https://www.aparat.com/video/video/embed/videohash/VIDEO_ID/vt/frame/rgh0055",
+        "thumbnailUrl": "/uploads/sections/youtube-thumbnail.avif",
+        "description": "در این ویدیو نحوه عملکرد سیستم داینامیک CMS و ساخت صفحات بدون نیاز به کدنویسی نمایش داده می‌شود"
       }
     }
   }

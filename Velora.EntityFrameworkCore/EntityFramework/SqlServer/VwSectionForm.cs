@@ -141,6 +141,12 @@ public partial class VwSectionForm
 
     public bool? Link4OpenInNewTab { get; set; }
 
+    [StringLength(500)]
+    public string? VideoUrl { get; set; }
+
+    [StringLength(500)]
+    public string? ThumbnailUrl { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

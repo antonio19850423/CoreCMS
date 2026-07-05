@@ -300,4 +300,10 @@
   <data name="Section.Link4OpenInNewTab" xml:space="preserve">
     <value>باز شدن در صفحه جدید</value>
   </data>
+  <data name="Section.VideoUrl" xml:space="preserve">
+    <value>لینک ویدیو (YouTube / Aparat)</value>
+  </data>
+  <data name="Section.ThumbnailUrl" xml:space="preserve">
+    <value>تصویر پیش‌نمایش ویدیو</value>
+  </data>
 </root>

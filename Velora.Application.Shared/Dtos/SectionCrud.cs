@@ -120,68 +120,75 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 26, GridOrder = 26, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ComponentType, ServiceName = "componentTypeView", LinkedFieldCode = "ComponentTypeId", SelectDisplayFields = "[\"name\",\"code\"]")]
         public string? ComponentTypeName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 27, GridOrder = 27, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+
+        public string? VideoUrl { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 28, GridOrder = 28, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? ThumbnailUrl { get; set; }
 
         // Status & sorting
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 27, GridOrder = 27, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 29, GridOrder = 29, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 28, GridOrder = 28, ShowInGrid = true, ShowInForm = true)]
+
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 30, GridOrder = 30, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 29, GridOrder = 29, ShowInGrid = false, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 31, GridOrder = 31, ShowInGrid = false, ShowInForm = true)]
         public Guid ParentId { get; set; }
 
         // Audit info
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 30, GridOrder = 30, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 32, GridOrder = 32, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 31, GridOrder = 31, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 33, GridOrder = 33, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 32, GridOrder = 32, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 34, GridOrder = 34, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 33, GridOrder = 33, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 35, GridOrder = 35, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 34, GridOrder = 34, ShowInGrid = false, ShowInForm = true, MaxLength = 2000)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true, MaxLength = 2000)]
         public string? Features { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 35, GridOrder = 35, ShowInGrid = false, ShowInForm = true, MaxLength = 350)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = true, MaxLength = 350)]
         public string? CopyrightText { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 38, GridOrder = 38, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ContactFirstNameLabel { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 39, GridOrder = 39, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ContactLastNameLabel { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 38, GridOrder = 38, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 40, GridOrder = 40, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ContactEmailLabel { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 39, GridOrder = 39, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 41, GridOrder = 41, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ContactMessageLabel { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 40, GridOrder = 40, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 42, GridOrder = 42, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ContactSubmitButtonText { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 41, GridOrder = 41, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 43, GridOrder = 43, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
         public string? ImageUrl2 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 42, GridOrder = 42, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 44, GridOrder = 44, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ImageAlt2 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 43, GridOrder = 43, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 45, GridOrder = 45, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
         public string? ImageUrl3 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 44, GridOrder = 44, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 46, GridOrder = 46, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ImageAlt3 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 45, GridOrder = 45, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 47, GridOrder = 47, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
         public string? ImageUrl4 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 46, GridOrder = 46, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 48, GridOrder = 48, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? ImageAlt4 { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 47, GridOrder = 47, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 49, GridOrder = 49, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? MapEmbedUrl { get; set; }
 
     }

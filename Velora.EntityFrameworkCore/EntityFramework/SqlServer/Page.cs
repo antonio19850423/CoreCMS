@@ -54,6 +54,8 @@ public partial class Page
 
     public Guid? UpdatedBy { get; set; }
 
+    public bool? IsDynamic { get; set; }
+
     [InverseProperty("Page")]
     public virtual ICollection<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
 

@@ -77,6 +77,7 @@ namespace Velora.Application.Services
                     Slug= input.Slug,
                     IsActive = input.IsActive,
                     Name = input.Name,
+                    IsDynamic=input.IsDynamic,
                 };
 
                 var result = await CreateAsync(Page);
@@ -350,6 +351,8 @@ int pageSize)
                         Link3TargetId = s.Link3TargetId,
                         Link4TargetId = s.Link4TargetId,
                         MapEmbedUrl = s.MapEmbedUrl,
+                        ThumbnailUrl = s.ThumbnailUrl,
+                        VideoUrl = s.VideoUrl,
                         Items = s.SectionItems.OrderBy(c => c.SortOrder).Select(si => new SectionItemCrud
                         {
                             Id = si.Id,

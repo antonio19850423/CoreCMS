@@ -115,6 +115,8 @@ namespace Velora.Application.Services
                     Link4Url = input.Link4Url,
                     MapEmbedUrl = input.MapEmbedUrl,
                     SubtitleColor = input.SubtitleColor,
+                    ThumbnailUrl = input.ThumbnailUrl,
+                    VideoUrl = input.VideoUrl,
 
 
                 };
@@ -212,7 +214,10 @@ namespace Velora.Application.Services
                     Link4Url = input.Link4Url,
                     MapEmbedUrl = input.MapEmbedUrl ,
                     SubtitleColor = input.SubtitleColor,
-                    
+                    ThumbnailUrl = input.ThumbnailUrl,
+                    VideoUrl = input.VideoUrl,
+
+
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

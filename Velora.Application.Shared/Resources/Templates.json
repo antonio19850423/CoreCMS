@@ -54,7 +54,6 @@
           "metaTitle": "تماس با ما - وب‌سایت شرکتی",
           "metaDescription": "ارتباط با تیم پشتیبانی و ارسال پیام، درخواست همکاری یا سوالات مشتریان",
           "metaKeywords": "تماس با ما، پشتیبانی، ارتباط، فرم تماس، شرکت",
-
           "components": [
             {
               "code": "contact",
@@ -112,6 +111,33 @@
             {
               "code": "articleHero",
               "type": "hero"
+            }
+          ]
+        },
+        {
+          "pageName": "خدمات",
+          "slug": "services",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "خدمات تخصصی توسعه نرم‌افزار و طراحی سیستم‌های مدرن",
+          "metaDescription": "ارائه خدمات حرفه‌ای شامل طراحی UI/UX، توسعه API، و معماری نرم‌افزارهای مقیاس‌پذیر",
+          "metaKeywords": "خدمات، طراحی UI، توسعه API، معماری نرم‌افزار، Microservices",
+          "components": [
+            {
+              "code": "dynamicHero",
+              "type": "hero"
+            },
+            {
+              "code": "dynamicRichContent",
+              "type": "richContent"
+            },
+            {
+              "code": "dynamicGallery",
+              "type": "gallery"
+            },
+            {
+              "code": "dynamicVideoSection",
+              "type": "video"
             }
           ]
         }

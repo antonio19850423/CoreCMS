@@ -45,15 +45,17 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true)]
         public bool IsHome { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = true)]
+        public bool? IsDynamic { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true)]
         public bool IsPublished { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = false)]
-        public string CreatedAtPersian { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = false)]
+        public string CreatedAtPersian { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false)]
-        public string? CreatedByName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = false)]
+        public string? CreatedByName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
     }
 }

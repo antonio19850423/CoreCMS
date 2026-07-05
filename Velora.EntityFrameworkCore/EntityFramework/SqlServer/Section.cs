@@ -170,6 +170,12 @@ public partial class Section
 
     public bool? Link4OpenInNewTab { get; set; }
 
+    [StringLength(500)]
+    public string? VideoUrl { get; set; }
+
+    [StringLength(500)]
+    public string? ThumbnailUrl { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

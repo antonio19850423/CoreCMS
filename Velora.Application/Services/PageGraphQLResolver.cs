@@ -51,7 +51,8 @@ public class PageGqlResolver : IPageGqlResolver
             UpdatedAtPersian= x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
-            IsActive=x.IsActive
+            IsActive=x.IsActive,
+            IsDynamic=x.IsDynamic
         });
     }
 

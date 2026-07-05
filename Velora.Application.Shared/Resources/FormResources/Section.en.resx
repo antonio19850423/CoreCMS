@@ -300,4 +300,10 @@
   <data name="Section.Link4OpenInNewTab" xml:space="preserve">
     <value>Link4 Open In New Tab</value>
   </data>
+  <data name="Section.VideoUrl" xml:space="preserve">
+    <value>VideoUrl</value>
+  </data>
+  <data name="Section.ThumbnailUrl" xml:space="preserve">
+    <value>ThumbnailUrl</value>
+  </data>
 </root>

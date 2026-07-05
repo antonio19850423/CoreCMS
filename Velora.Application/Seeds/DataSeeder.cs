@@ -1334,6 +1334,7 @@ namespace Velora.Application.Seeds
 				{
 					Name = page.PageName,
 					Slug = page.Slug,
+					IsDynamic = page.IsDynamic,
 					IsPublished = false,
 					MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
 					MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
@@ -1901,7 +1902,8 @@ namespace Velora.Application.Seeds
                 Link4OpenInNewTab = rtl?.Link4OpenInNewTab,
 
                 MapEmbedUrl = rtl?.MapEmbedUrl,
-
+				ThumbnailUrl = rtl?.ThumbnailUrl,
+				VideoUrl = rtl?.VideoUrl,
                 ColumnsCount = 1
             };
         }
