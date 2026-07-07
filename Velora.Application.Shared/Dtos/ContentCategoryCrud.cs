@@ -15,10 +15,10 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = true, MaxLength = 150,ShowInSelectBox =true,SelectBoxOrder =1)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = true, MaxLength = 150,ShowInSelectBox =true,SelectBoxOrder =1,IsRequired =true)]
         public string Name { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, ShowInTreeView = true, MaxLength = 200, ShowInSelectBox = true, SelectBoxOrder = 1)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, ShowInTreeView = true, MaxLength = 200, ShowInSelectBox = true, SelectBoxOrder = 1,IsRequired =true)]
         public string? Slug { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 300)]
@@ -32,7 +32,7 @@ namespace Velora.Application.Shared.Dtos
         public string? Icon { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 50)]
         public string? IconColor { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false,IsRequired =true)]
         public int SortOrder { get; set; }
 
 

@@ -923,5 +923,93 @@
         "description": "در این ویدیو نحوه عملکرد سیستم داینامیک CMS و ساخت صفحات بدون نیاز به کدنویسی نمایش داده می‌شود"
       }
     }
+  },
+  "defaultPrivacyHero": {
+    "rules": {
+      "title": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "سیاست حفظ حریم خصوصی کاربران",
+        "description": "ما به حفظ اطلاعات شخصی کاربران متعهد هستیم. در این صفحه توضیح داده‌ایم چه اطلاعاتی جمع‌آوری می‌شود، چگونه از آن استفاده می‌کنیم و چه حقوقی برای کاربران در نظر گرفته شده است.",
+        "imageUrl": "/uploads/sections/privacy-policy.jpg",
+        "imageAlt": "سیاست حفظ حریم خصوصی"
+      },
+      "ltr": {
+        "title": "Privacy Policy",
+        "description": "We are committed to protecting our users' personal information. This page explains what data we collect, how we use it, and your rights regarding your personal information.",
+        "imageUrl": "/uploads/sections/privacy-policy.jpg",
+        "imageAlt": "Privacy Policy"
+      }
+    }
+  },
+  "defaultPrivacyFaq": {
+    "rules": {
+      "items": {
+        "question": true,
+        "answer": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "items": [
+          {
+            "question": "۱. اطلاعاتی که جمع‌آوری می‌کنیم",
+            "answer": "ممکن است اطلاعاتی مانند نام، ایمیل، شماره تماس، اطلاعات فرم‌های تماس و داده‌های آماری مربوط به بازدید از سایت را جمع‌آوری کنیم."
+          },
+          {
+            "question": "۲. نحوه استفاده از اطلاعات",
+            "answer": "اطلاعات کاربران تنها برای ارائه خدمات، بهبود کیفیت سیستم، پاسخگویی به درخواست‌ها و افزایش امنیت استفاده خواهد شد."
+          },
+          {
+            "question": "۳. امنیت اطلاعات",
+            "answer": "تمامی اطلاعات با استفاده از روش‌های استاندارد امنیتی محافظت می‌شوند و دسترسی به آن‌ها محدود به افراد مجاز است."
+          },
+          {
+            "question": "۴. کوکی‌ها",
+            "answer": "برای بهبود تجربه کاربری ممکن است از Cookie استفاده شود. کاربران می‌توانند در هر زمان تنظیمات مرورگر خود را برای مدیریت Cookie تغییر دهند."
+          },
+          {
+            "question": "۵. اشتراک‌گذاری اطلاعات",
+            "answer": "اطلاعات شخصی کاربران بدون رضایت آن‌ها در اختیار اشخاص ثالث قرار نخواهد گرفت؛ مگر در مواردی که قانون الزام کرده باشد."
+          },
+          {
+            "question": "۶. حقوق کاربران",
+            "answer": "کاربران می‌توانند درخواست مشاهده، اصلاح یا حذف اطلاعات شخصی خود را از طریق بخش تماس با ما ثبت کنند."
+          }
+        ]
+      },
+      "ltr": {
+        "items": [
+          {
+            "question": "1. Information We Collect",
+            "answer": "We may collect information such as your name, email address, phone number, contact form submissions and anonymous website usage statistics."
+          },
+          {
+            "question": "2. How We Use Information",
+            "answer": "Your information is only used to provide services, improve our platform, respond to your requests and enhance security."
+          },
+          {
+            "question": "3. Data Security",
+            "answer": "All user information is protected using industry-standard security measures and is only accessible by authorized personnel."
+          },
+          {
+            "question": "4. Cookies",
+            "answer": "Cookies may be used to improve user experience. Users may manage cookies through their browser settings."
+          },
+          {
+            "question": "5. Sharing Information",
+            "answer": "We never share personal information with third parties unless required by law or with your explicit consent."
+          },
+          {
+            "question": "6. User Rights",
+            "answer": "Users may request access, correction or deletion of their personal information through our contact page."
+          }
+        ]
+      }
+    }
   }
 }

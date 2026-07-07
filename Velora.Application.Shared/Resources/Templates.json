@@ -140,6 +140,25 @@
               "type": "video"
             }
           ]
+        },
+        {
+          "pageName": "حریم خصوصی",
+          "slug": "privacy-policy",
+          "isPublished": false,
+          "IsDynamic": false,
+          "metaTitle": "سیاست حفظ حریم خصوصی | نحوه جمع‌آوری و حفاظت از اطلاعات کاربران",
+          "metaDescription": "در این صفحه نحوه جمع‌آوری، نگهداری، استفاده و محافظت از اطلاعات شخصی کاربران، استفاده از کوکی‌ها و حقوق کاربران توضیح داده شده است.",
+          "metaKeywords": "حریم خصوصی، Privacy Policy، امنیت اطلاعات، اطلاعات کاربران، کوکی، حفاظت از داده، GDPR",
+          "components": [
+            {
+              "code": "defaultPrivacyHero",
+              "type": "hero"
+            },
+            {
+              "code": "defaultPrivacyFaq",
+              "type": "faq"
+            }
+          ]
         }
       ]
     }

@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,ShowInTreeView =true, MaxLength = 200, GroupKey = "Link1", Route = "/api/ComboBox/Pages")]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,ShowInTreeView =true, MaxLength = 200, GroupKey = "Link1", Route = "/api/ComboBox/Pages",IsRequired =true)]
         public string? Link1Text { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 500, GroupKey = "Link1")]

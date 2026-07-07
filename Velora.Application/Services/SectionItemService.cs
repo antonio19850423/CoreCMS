@@ -57,7 +57,14 @@ namespace Velora.Application.Services
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SectionItemDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
                 var SectionItem = new SectionItemDto
                 {
                     AvatarAlt = input.AvatarAlt,
@@ -141,9 +148,17 @@ namespace Velora.Application.Services
                     return new ResultDto<SectionItemDto>
                     {
                         Success = false,
-                        Message = "Id is required"
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SectionItemDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
 
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SectionItemDto

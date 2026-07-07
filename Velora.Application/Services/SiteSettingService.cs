@@ -59,7 +59,14 @@ namespace Velora.Application.Services
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SiteSettingDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
                 var SiteSetting = new SiteSettingDto
                 {
                     Address = input.Address,
@@ -86,6 +93,12 @@ namespace Velora.Application.Services
                     PhoneTitle = input.PhoneTitle,
                     Phone2Title = input.Phone2Title,
                     SiteName = input.SiteName,
+                    SmtpHost = input.SmtpHost,
+                    SmtpPort = input.SmtpPort,
+                    SmtpUserName = input.SmtpUserName,
+                    SmtpPassword = input.SmtpPassword,
+                    SmtpEnableSsl = input.SmtpEnableSsl,
+                    
                 };
 
                 var result = await CreateAsync(SiteSetting);
@@ -118,9 +131,18 @@ namespace Velora.Application.Services
                     return new ResultDto<SiteSettingDto>
                     {
                         Success = false,
-                        Message = "Id is required"
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SiteSettingDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+
 
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SiteSettingDto
@@ -151,6 +173,11 @@ namespace Velora.Application.Services
                     MobileTitle = input.MobileTitle,
                     Phone = input.Phone,
                     Phone2 = input.Phone2,
+                    SmtpEnableSsl=input.SmtpEnableSsl,
+                    SmtpPassword=input.SmtpPassword,
+                    SmtpUserName=input.SmtpUserName,
+                    SmtpPort=input.SmtpPort,
+                    SmtpHost=input.SmtpHost,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

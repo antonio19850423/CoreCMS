@@ -201,4 +201,19 @@
   <data name="SiteSetting.DefaultMetaKeywords" xml:space="preserve">
     <value>کلمات کلیدی پیش‌فرض سئو</value>
   </data>
+  <data name="SiteSetting.SmtpHost" xml:space="preserve">
+    <value>آدرس سرور SMTP</value>
+  </data>
+  <data name="SiteSetting.SmtpPort" xml:space="preserve">
+    <value>پورت SMTP</value>
+  </data>
+  <data name="SiteSetting.SmtpUserName" xml:space="preserve">
+    <value>نام کاربری SMTP</value>
+  </data>
+  <data name="SiteSetting.SmtpPassword" xml:space="preserve">
+    <value>رمز عبور SMTP</value>
+  </data>
+  <data name="SiteSetting.SmtpEnableSsl" xml:space="preserve">
+    <value>فعال‌سازی SSL</value>
+  </data>
 </root>

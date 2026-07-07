@@ -13,14 +13,14 @@ namespace Velora.Application.Shared.Dtos
     public class ContentItemCrud : BulkInsert
     {
         public Guid Id { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 0, GridOrder = 0, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 0, GridOrder = 0, ShowInGrid = true, ShowInForm = true, MaxLength = 200,IsRequired =true)]
         public string? Slug { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 250)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 250, IsRequired = true)]
         public string Title { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 500)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)]
         public string? Summary { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true, MaxLength = 900)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true, MaxLength = 900, IsRequired = true)]
         public string? Content { get; set; }
         public string ContentType { get; set; } = null!;
 
@@ -51,7 +51,7 @@ namespace Velora.Application.Shared.Dtos
         public DateTime? PublishedAt { get; set; }
 
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ContentCategory,Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryName")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ContentCategory,Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryName")]
         public Guid? CategoryId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ContentCategory, Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryId")]

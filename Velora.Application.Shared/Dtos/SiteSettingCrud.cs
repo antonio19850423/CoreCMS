@@ -84,17 +84,28 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = true, MaxLength = 1000)]
 
         public string? DefaultMetaKeywords { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 24, GridOrder = 24, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 24, GridOrder = 24, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
+        public string? SmtpHost { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 25, GridOrder = 25, ShowInGrid = false, ShowInForm = true)]
+        public int? SmtpPort { get; set; }
 
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 26, GridOrder = 26, ShowInGrid = false, ShowInForm = true, MaxLength = 300)]
+        public string? SmtpUserName { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 27, GridOrder = 27, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? SmtpPassword { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 28, GridOrder = 28, ShowInGrid = false, ShowInForm = true)]
+        public bool? SmtpEnableSsl { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 29, GridOrder = 29, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 25, GridOrder = 25, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 30, GridOrder = 30, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 26, GridOrder = 26, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 31, GridOrder = 31, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 27, GridOrder = 27, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 32, GridOrder = 32, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 28, GridOrder = 28, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 33, GridOrder = 33, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
 
     }

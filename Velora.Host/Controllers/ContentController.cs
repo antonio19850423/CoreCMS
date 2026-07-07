@@ -16,13 +16,15 @@ namespace Velora.Host.Controllers
         private readonly IContentService _contentService;
         private readonly ITransactionService _transactionService;
         private readonly IPageService _pageService;
+        private readonly IContactService _contactService;
 
 
-        public ContentController(IContentService ContentService, IPageService pageService)
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService)
         {
 
             _contentService = ContentService;
             _pageService = pageService;
+            _contactService = contactService;
         }
 
 
@@ -106,6 +108,22 @@ namespace Velora.Host.Controllers
             var result = await _pageService.GetContentPageAsync(slug,page,pageSize,categorySlug,search,contentType,sort);
             return Ok(result);
         }
+        [HttpPost]
+        [Route("SendContactAsync")]
+        public async Task<IActionResult> SendContactAsync([FromBody] ContactUsDto input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new ResultDto<ContactUsDto>
+                {
+                    Success = false,
+                    Message = "اطلاعات ورودی معتبر نیست."
+                });
+            }
 
+            var result = await _contactService.SendContactAsync(input);
+
+            return Ok(result);
+        }
     }
 }

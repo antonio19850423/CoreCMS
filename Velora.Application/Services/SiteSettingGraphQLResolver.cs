@@ -64,6 +64,11 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             UpdatedAtPersian = x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
+            SmtpEnableSsl = x.SmtpEnableSsl,
+            SmtpPassword= x.SmtpPassword ??"",
+            SmtpUserName= x.SmtpUserName ??"",
+            SmtpPort= x.SmtpPort,
+            SmtpHost= x.SmtpHost ??"",
             ShouldInsert = x.ShouldInsert
         });
     }

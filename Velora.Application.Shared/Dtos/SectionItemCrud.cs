@@ -120,7 +120,7 @@ namespace Velora.Application.Shared.Dtos
 
 
         // ===== Settings =====
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 28, GridOrder = 28, ShowInGrid = false, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 28, GridOrder = 28, ShowInGrid = false, ShowInForm = true,IsRequired =true)]
 
         public int SortOrder { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 29, GridOrder = 29, ShowInGrid = false, ShowInForm = true)]

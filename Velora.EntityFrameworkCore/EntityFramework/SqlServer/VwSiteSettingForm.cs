@@ -82,6 +82,19 @@ public partial class VwSiteSettingForm
 
     public bool IsActive { get; set; }
 
+    public bool? SmtpEnableSsl { get; set; }
+
+    [StringLength(200)]
+    public string? SmtpHost { get; set; }
+
+    public int? SmtpPort { get; set; }
+
+    [StringLength(300)]
+    public string? SmtpUserName { get; set; }
+
+    [StringLength(500)]
+    public string? SmtpPassword { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

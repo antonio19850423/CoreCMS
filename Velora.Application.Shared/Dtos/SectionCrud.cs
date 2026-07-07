@@ -132,7 +132,7 @@ namespace Velora.Application.Shared.Dtos
         public bool IsActive { get; set; }
 
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 30, GridOrder = 30, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 30, GridOrder = 30, ShowInGrid = true, ShowInForm = true,IsRequired =true)]
         public int SortOrder { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 31, GridOrder = 31, ShowInGrid = false, ShowInForm = true)]
