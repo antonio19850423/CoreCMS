@@ -1,0 +1,32 @@
+using System.ComponentModel.DataAnnotations;
+using Velora.Application.Shared.Attributes;
+using Velora.Application.Shared.Constants;
+
+namespace Velora.Application.Shared.Dtos;
+public class ProductBrandCrud : BulkInsert
+{
+    public Guid? Id { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 150, ShowInSelectBox = true,IsRequired =true)]
+    public string Name { get; set; } = null!;
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 150, ShowInSelectBox = true, IsRequired = true)]
+    public string Slug { get; set; } = null!;
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 300, ShowInSelectBox = true, IsRequired = true)]
+    public string Logo { get; set; } = null!;
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 300, ShowInSelectBox = true, IsRequired = true)]
+    public string Website { get; set; } = null!;
+
+    [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, MaxLength = 500)]
+    public string? Description { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true,IsRequired =true)]
+    public int? SortOrder { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true)]
+    public bool? IsActive { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder =8, ShowInGrid = true, ShowInForm = false)]
+    public string CreatedAtPersian { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder =9, GridOrder = 9, ShowInGrid = true, ShowInForm = false)]
+    public string UpdatedAtPersian { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = false)]
+    public string? CreatedByName { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = false)]
+    public string? UpdatedByName { get; set; }
+}

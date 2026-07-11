@@ -95,6 +95,15 @@ global using SqlTagView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.V
 
 global using SqlContentItemTag = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ContentItemTag;
 
+global using SqlProductCategory = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductCategory;
+global using SqlProductCategoryView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductCategoryForm;
+
+global using SqlProductTag = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductTag;
+global using SqlProductTagView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductTagForm;
+
+global using SqlProductBrand = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductBrand;
+global using SqlProductBrandView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductBrandForm;
+
 
 
 

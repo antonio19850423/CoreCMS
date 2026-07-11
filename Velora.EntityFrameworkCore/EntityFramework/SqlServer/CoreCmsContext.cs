@@ -47,6 +47,12 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<Permission> Permissions { get; set; }
 
+    public virtual DbSet<ProductBrand> ProductBrands { get; set; }
+
+    public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+
+    public virtual DbSet<ProductTag> ProductTags { get; set; }
+
     public virtual DbSet<Resource> Resources { get; set; }
 
     public virtual DbSet<ResourceLanguage> ResourceLanguages { get; set; }
@@ -98,6 +104,12 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwPageTemplateForm> VwPageTemplateForms { get; set; }
 
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
+
+    public virtual DbSet<VwProductBrandForm> VwProductBrandForms { get; set; }
+
+    public virtual DbSet<VwProductCategoryForm> VwProductCategoryForms { get; set; }
+
+    public virtual DbSet<VwProductTagForm> VwProductTagForms { get; set; }
 
     public virtual DbSet<VwResource> VwResources { get; set; }
 
@@ -298,6 +310,29 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Resource).WithMany(p => p.Permissions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Permissions_Resources");
+        });
+
+        modelBuilder.Entity<ProductBrand>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<ProductCategory>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_ProductCategory_Parent");
+        });
+
+        modelBuilder.Entity<ProductTag>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<Resource>(entity =>
@@ -562,6 +597,21 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwPermissionForm>(entity =>
         {
             entity.ToView("VwPermissionForm", "auth");
+        });
+
+        modelBuilder.Entity<VwProductBrandForm>(entity =>
+        {
+            entity.ToView("VwProductBrandForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductCategoryForm>(entity =>
+        {
+            entity.ToView("VwProductCategoryForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductTagForm>(entity =>
+        {
+            entity.ToView("VwProductTagForm", "cms");
         });
 
         modelBuilder.Entity<VwResource>(entity =>

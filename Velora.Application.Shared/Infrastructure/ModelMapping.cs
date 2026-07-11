@@ -29,7 +29,10 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.SectionGroupItem, typeof(SectionGroupItemCrud) },
             { LookupEntities.SiteMenu, typeof(SiteMenuCrud) },
             { LookupEntities.ContentCategory, typeof(ContentCategoryCrud) },
-            { LookupEntities.Tag, typeof(TagCrud) }
+            { LookupEntities.Tag, typeof(TagCrud) },
+            { LookupEntities.ProductBrand, typeof(ProductBrandCrud) },
+            { LookupEntities.ProductCategory, typeof(ProductCategoryCrud) },
+            { LookupEntities.ProductTag, typeof(ProductTagCrud) },
         };
 
         public static Type? GetModelType(string entityName)

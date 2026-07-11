@@ -238,6 +238,78 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTTAG_MANAGEMENT_MENU",
+          "Name": "Product Tag Menu",
+          "Route": "basic-info/producttag-management",
+          "DisplayName": {
+            "en": "Product Tag",
+            "fa": "مدیریت تگ‌های محصول"
+          },
+          "Order": 7,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTTAG_MANAGEMENT_PAGE",
+              "Name": "Product Tag Page",
+              "DisplayName": {
+                "en": "Product Tag",
+                "fa": "مدیریت تگ‌های محصول"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTCATEGORY_MANAGEMENT_MENU",
+          "Name": "Product Category Menu",
+          "Route": "basic-info/productcategory-management",
+          "DisplayName": {
+            "en": "Product Category",
+            "fa": "مدیریت دسته بندی محصولات"
+          },
+          "Order": 8,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTCATEGORY_MANAGEMENT_PAGE",
+              "Name": "Product Category Page",
+              "DisplayName": {
+                "en": "Product Category",
+                "fa": "مدیریت دسته بندی محصولات"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTBRAND_MANAGEMENT_MENU",
+          "Name": "Product Brand Menu",
+          "Route": "basic-info/productbrand-management",
+          "DisplayName": {
+            "en": "Product Brand",
+            "fa": "مدیریت برند محصولات"
+          },
+          "Order": 9,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTBRAND_MANAGEMENT_PAGE",
+              "Name": "Product Brand Page",
+              "DisplayName": {
+                "en": "Product Brand",
+                "fa": "مدیریت برند محصولات"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

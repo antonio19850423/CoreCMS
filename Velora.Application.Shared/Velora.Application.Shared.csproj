@@ -32,6 +32,8 @@
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplateComponent.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\PageTemplateComponent.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ProductCategory.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ProductCategory.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Resource.en.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\Resource.fa.resx" />
 	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.en.resx" />
@@ -84,6 +86,12 @@
 
 	<ItemGroup>
 	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ProductCategory.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ProductCategory.fa.resx">
 	    <SubType>Designer</SubType>
 	  </None>
 	  <None Include="Resources\FormResources\LinkType.en.resx">
@@ -161,6 +169,18 @@
 	  <None Include="Resources\FormResources\User.en.resx" />
 	  <None Include="Resources\FormResources\Role.en.resx" />
 	  <None Include="Resources\FormResources\Role.fa.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\FormResources\ProductBrand.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\ProductBrand.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\ProductTag.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

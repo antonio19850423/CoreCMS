@@ -77,6 +77,10 @@ namespace Velora.Application.Shared.Constants
         public const string SiteMenu = "SiteMenu";
         public const string ContentCategory = "ContentCategory";
         public const string Tag = "Tag";
+        public const string ProductTag = "ProductTag";
+        public const string ProductCategory = "ProductCategory";
+        public const string ProductBrand = "ProductBrand";
+
 
 
 
