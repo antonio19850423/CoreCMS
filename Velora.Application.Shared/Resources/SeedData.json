@@ -310,6 +310,54 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTATTRIBUTE_MANAGEMENT_MENU",
+          "Name": "Product Attribute Menu",
+          "Route": "basic-info/productattribute-management",
+          "DisplayName": {
+            "en": "Product Attribute",
+            "fa": "مدیریت ویژگی های محصولات"
+          },
+          "Order": 10,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTATTRIBUTE_MANAGEMENT_PAGE",
+              "Name": "Product Attribute Page",
+              "DisplayName": {
+                "en": "Product Attribute",
+                "fa": "مدیریت ویژگی های محصولات"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "CATEGORYATTRIBUTE_MANAGEMENT_MENU",
+          "Name": "Category Attribute Menu",
+          "Route": "basic-info/categoryattribute-management",
+          "DisplayName": {
+            "en": "Category Attribute",
+            "fa": "مدیریت ویژگی دسته‌بندی"
+          },
+          "Order": 11,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "CATEGORYATTRIBUTE_MANAGEMENT_PAGE",
+              "Name": "Category Attribute Page",
+              "DisplayName": {
+                "en": "Category Attribute",
+                "fa": "مدیریت ویژگی دسته‌بندی"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

@@ -15,6 +15,8 @@ public partial class CoreCmsContext : DbContext
     {
     }
 
+    public virtual DbSet<CategoryAttribute> CategoryAttributes { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<CmsConfiguration> CmsConfigurations { get; set; }
@@ -46,6 +48,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<PageTemplateComponent> PageTemplateComponents { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
+
+    public virtual DbSet<ProductAttribute> ProductAttributes { get; set; }
 
     public virtual DbSet<ProductBrand> ProductBrands { get; set; }
 
@@ -85,6 +89,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<VwCategoryAttributeForm> VwCategoryAttributeForms { get; set; }
+
     public virtual DbSet<VwCmsConfigurationForm> VwCmsConfigurationForms { get; set; }
 
     public virtual DbSet<VwComponentTypeForm> VwComponentTypeForms { get; set; }
@@ -104,6 +110,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwPageTemplateForm> VwPageTemplateForms { get; set; }
 
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
+
+    public virtual DbSet<VwProductAttributeForm> VwProductAttributeForms { get; set; }
 
     public virtual DbSet<VwProductBrandForm> VwProductBrandForms { get; set; }
 
@@ -141,6 +149,20 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<CategoryAttribute>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Attribute).WithMany(p => p.CategoryAttributes)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CategoryAttribute_ProductAttribute");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.CategoryAttributes)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CategoryAttribute_ProductCategory");
+        });
+
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Cities__3214EC07B13C2BFF");
@@ -310,6 +332,13 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Resource).WithMany(p => p.Permissions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Permissions_Resources");
+        });
+
+        modelBuilder.Entity<ProductAttribute>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<ProductBrand>(entity =>
@@ -549,6 +578,11 @@ public partial class CoreCmsContext : DbContext
                 .HasConstraintName("FK__UserRoles__UserI__440B1D61");
         });
 
+        modelBuilder.Entity<VwCategoryAttributeForm>(entity =>
+        {
+            entity.ToView("VwCategoryAttributeForm", "cms");
+        });
+
         modelBuilder.Entity<VwCmsConfigurationForm>(entity =>
         {
             entity.ToView("VwCmsConfigurationForm", "cms");
@@ -597,6 +631,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwPermissionForm>(entity =>
         {
             entity.ToView("VwPermissionForm", "auth");
+        });
+
+        modelBuilder.Entity<VwProductAttributeForm>(entity =>
+        {
+            entity.ToView("VwProductAttributeForm", "cms");
         });
 
         modelBuilder.Entity<VwProductBrandForm>(entity =>

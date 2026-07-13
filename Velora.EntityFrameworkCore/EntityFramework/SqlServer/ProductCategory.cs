@@ -54,6 +54,9 @@ public partial class ProductCategory
 
     public Guid? UpdatedBy { get; set; }
 
+    [InverseProperty("Category")]
+    public virtual ICollection<CategoryAttribute> CategoryAttributes { get; set; } = new List<CategoryAttribute>();
+
     [InverseProperty("Parent")]
     public virtual ICollection<ProductCategory> InverseParent { get; set; } = new List<ProductCategory>();
 

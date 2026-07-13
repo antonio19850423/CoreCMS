@@ -166,6 +166,15 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlProductTag, ProductTagDto>().ReverseMap();
 
 
+            CreateMap<SqlCategoryAttribute, CategoryAttributeCrud>().ReverseMap();
+            CreateMap<VwCategoryAttributeForm, CategoryAttributeCrud>().ReverseMap();
+            CreateMap<SqlCategoryAttribute, CategoryAttributeDto>().ReverseMap();
+
+
+            CreateMap<SqlProductAttribute, ProductAttributeCrud>().ReverseMap();
+            CreateMap<VwProductAttributeForm, ProductAttributeCrud>().ReverseMap();
+            CreateMap<SqlProductAttribute, ProductAttributeDto>().ReverseMap();
+
         }
 
 
