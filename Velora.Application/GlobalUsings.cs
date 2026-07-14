@@ -134,6 +134,15 @@ global using SqlProductAttributeView = Velora.EntityFrameworkCore.EntityFramewor
 global using SqlCategoryAttribute = Velora.EntityFrameworkCore.EntityFramework.SqlServer.CategoryAttribute;
 global using SqlCategoryAttributeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCategoryAttributeForm;
 
+global using SqlProductType = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductType;
+global using SqlProductTypeView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductTypeForm;
+
+global using SqlInventoryTransactionReason = Velora.EntityFrameworkCore.EntityFramework.SqlServer.InventoryTransactionReason;
+global using SqlInventoryTransactionReasonView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwInventoryTransactionReasonForm;
+
+global using SqlProduct = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Product;
+global using SqlProductView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductForm;
+
 
 
 

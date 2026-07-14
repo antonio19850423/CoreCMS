@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Include="Services\CmsConfigurationGraphQLResolver.cs" />
+    <None Include="Services\ProductTypeGraphQLResolver.cs" />
   </ItemGroup>
 
   <ItemGroup>

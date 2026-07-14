@@ -63,4 +63,7 @@ public partial class ProductCategory
     [ForeignKey("ParentId")]
     [InverseProperty("InverseParent")]
     public virtual ProductCategory? Parent { get; set; }
+
+    [InverseProperty("Category")]
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

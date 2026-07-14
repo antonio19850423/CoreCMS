@@ -82,7 +82,11 @@ namespace Velora.Application.Shared.Constants
         public const string ProductBrand = "ProductBrand";
         public const string ProductAttribute = "ProductAttribute";
         public const string CategoryAttribute = "CategoryAttribute";
-        
+        public const string ProductType = "ProductType";
+        public const string InventoryTransactionReason = "InventoryTransactionReason";
+        public const string Product = "Product";
+
+
 
 
 

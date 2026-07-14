@@ -43,4 +43,7 @@ public partial class ProductTag
     public Guid? CreatedBy { get; set; }
 
     public Guid? UpdatedBy { get; set; }
+
+    [InverseProperty("ProductTag")]
+    public virtual ICollection<ProductTagMapping> ProductTagMappings { get; set; } = new List<ProductTagMapping>();
 }

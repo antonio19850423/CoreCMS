@@ -358,6 +358,54 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTTYPE_MANAGEMENT_MENU",
+          "Name": "Product Type Menu",
+          "Route": "basic-info/producttype-management",
+          "DisplayName": {
+            "en": "Product Type",
+            "fa": "مدیریت نوع محصولات"
+          },
+          "Order": 12,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTTYPE_MANAGEMENT_PAGE",
+              "Name": "Product Type Page",
+              "DisplayName": {
+                "en": "Product Type",
+                "fa": "مدیریت نوع محصولات"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "INVENTORYTRANSACTIONREASON_MANAGEMENT_MENU",
+          "Name": "Inventory Transaction Reason Menu",
+          "Route": "basic-info/inventorytransactionreason-management",
+          "DisplayName": {
+            "en": "Inventory Transaction Reason",
+            "fa": "علت تراکنش انبار"
+          },
+          "Order": 13,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "INVENTORYTRANSACTIONREASON_MANAGEMENT_PAGE",
+              "Name": "Inventory Transaction Reason Page",
+              "DisplayName": {
+                "en": "Inventory Transaction Reason",
+                "fa": "علت تراکنش انبار"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },
@@ -651,6 +699,30 @@
               "DisplayName": {
                 "en": "Site Setting",
                 "fa": "تنظیمات سایت"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCT_MANAGEMENT_MENU",
+          "Name": "Product Menu",
+          "Route": "administration/product-management",
+          "DisplayName": {
+            "en": "Product",
+            "fa": "محصولات"
+          },
+          "Order": 8,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCT_MANAGEMENT_PAGE",
+              "Name": "Product Page",
+              "DisplayName": {
+                "en": "Product",
+                "fa": "محصولات"
               },
               "Order": 1
             }

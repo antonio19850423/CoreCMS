@@ -38,4 +38,10 @@ public partial class ProductAttribute
 
     [InverseProperty("Attribute")]
     public virtual ICollection<CategoryAttribute> CategoryAttributes { get; set; } = new List<CategoryAttribute>();
+
+    [InverseProperty("ProductAttribute")]
+    public virtual ICollection<ProductAttributeValue> ProductAttributeValues { get; set; } = new List<ProductAttributeValue>();
+
+    [InverseProperty("ProductAttribute")]
+    public virtual ICollection<ProductVariantAttribute> ProductVariantAttributes { get; set; } = new List<ProductVariantAttribute>();
 }

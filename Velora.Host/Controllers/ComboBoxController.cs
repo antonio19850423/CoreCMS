@@ -23,8 +23,10 @@ namespace Velora.Host.Controllers
         private readonly IContentCategoryService _contentCategoryService;
         private readonly IProductCategoryService _productCategoryService;
         private readonly IProductAttributeService _productAttributeService;
+        private readonly IProductBrandService _productBrandService;
+        private readonly IProductTypeService _productTypeService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -36,6 +38,8 @@ namespace Velora.Host.Controllers
             _contentCategoryService = contentCategoryService;
             _productCategoryService = productCategoryService;
             _productAttributeService = productAttributeService;
+            _productBrandService = productBrandService;
+            _productTypeService = productTypeService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -248,6 +252,50 @@ namespace Velora.Host.Controllers
         {
 
             var linkTypes = await _productAttributeService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("ProductBrands")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> ProductBrands()
+        {
+
+            var linkTypes = await _productBrandService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id.Value,
+                    Label = r.Name
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("ProductTypes")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> ProductTypes()
+        {
+
+            var linkTypes = await _productTypeService.GetAllViews();
 
             var resourceItems = linkTypes
                 .Select(r => new ComboBoxItemDto<Guid>

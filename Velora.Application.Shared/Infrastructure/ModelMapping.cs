@@ -35,6 +35,9 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.ProductTag, typeof(ProductTagCrud) },
             { LookupEntities.ProductAttribute, typeof(ProductAttributeCrud) },
             { LookupEntities.CategoryAttribute, typeof(CategoryAttributeCrud) },
+            { LookupEntities.ProductType, typeof(ProductTypeCrud) },
+            { LookupEntities.Product, typeof(ProductCrud) },
+            { LookupEntities.InventoryTransactionReason, typeof(InventoryTransactionReasonCrud) },
         };
 
         public static Type? GetModelType(string entityName)

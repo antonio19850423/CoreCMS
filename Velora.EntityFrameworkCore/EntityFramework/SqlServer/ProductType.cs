@@ -6,29 +6,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
-[Table("ProductBrand", Schema = "cms")]
-[Index("SortOrder", Name = "IX_ProductBrand_SortOrder")]
-[Index("Name", Name = "UQ_ProductBrand_Name", IsUnique = true)]
-[Index("Slug", Name = "UQ_ProductBrand_Slug", IsUnique = true)]
-public partial class ProductBrand
+[Table("ProductType", Schema = "cms")]
+[Index("Name", Name = "IX_ProductType_Name")]
+[Index("SortOrder", Name = "IX_ProductType_SortOrder")]
+[Index("Code", Name = "UQ_ProductType_Code", IsUnique = true)]
+public partial class ProductType
 {
     [Key]
     public Guid Id { get; set; }
 
-    [StringLength(150)]
+    [StringLength(100)]
     public string Name { get; set; } = null!;
 
-    [StringLength(150)]
-    public string? Slug { get; set; }
+    [StringLength(50)]
+    public string Code { get; set; } = null!;
 
-    [StringLength(500)]
+    [StringLength(300)]
     public string? Description { get; set; }
-
-    [StringLength(300)]
-    public string? Logo { get; set; }
-
-    [StringLength(300)]
-    public string? Website { get; set; }
 
     public int SortOrder { get; set; }
 
@@ -44,6 +38,6 @@ public partial class ProductBrand
 
     public Guid? UpdatedBy { get; set; }
 
-    [InverseProperty("Brand")]
+    [InverseProperty("ProductType")]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }
