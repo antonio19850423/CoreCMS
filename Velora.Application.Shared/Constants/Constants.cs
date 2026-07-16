@@ -85,7 +85,11 @@ namespace Velora.Application.Shared.Constants
         public const string ProductType = "ProductType";
         public const string InventoryTransactionReason = "InventoryTransactionReason";
         public const string Product = "Product";
-
+        public const string ProductFile = "ProductFile";
+        public const string ProductAttributeValue = "ProductAttributeValue";
+        public const string ProductVariant = "ProductVariant";
+        public const string ProductInventoryTransaction = "ProductInventoryTransaction";
+        
 
 
 

@@ -61,11 +61,9 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
-    public virtual DbSet<ProductDiscount> ProductDiscounts { get; set; }
+    public virtual DbSet<ProductFile> ProductFiles { get; set; }
 
     public virtual DbSet<ProductInventoryTransaction> ProductInventoryTransactions { get; set; }
-
-    public virtual DbSet<ProductMedium> ProductMedia { get; set; }
 
     public virtual DbSet<ProductTag> ProductTags { get; set; }
 
@@ -74,8 +72,6 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public virtual DbSet<ProductVariant> ProductVariants { get; set; }
-
-    public virtual DbSet<ProductVariantAttribute> ProductVariantAttributes { get; set; }
 
     public virtual DbSet<Resource> Resources { get; set; }
 
@@ -135,15 +131,23 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwProductAttributeForm> VwProductAttributeForms { get; set; }
 
+    public virtual DbSet<VwProductAttributeValueForm> VwProductAttributeValueForms { get; set; }
+
     public virtual DbSet<VwProductBrandForm> VwProductBrandForms { get; set; }
 
     public virtual DbSet<VwProductCategoryForm> VwProductCategoryForms { get; set; }
 
+    public virtual DbSet<VwProductFileForm> VwProductFileForms { get; set; }
+
     public virtual DbSet<VwProductForm> VwProductForms { get; set; }
+
+    public virtual DbSet<VwProductInventoryTransactionForm> VwProductInventoryTransactionForms { get; set; }
 
     public virtual DbSet<VwProductTagForm> VwProductTagForms { get; set; }
 
     public virtual DbSet<VwProductTypeForm> VwProductTypeForms { get; set; }
+
+    public virtual DbSet<VwProductVariantForm> VwProductVariantForms { get; set; }
 
     public virtual DbSet<VwResource> VwResources { get; set; }
 
@@ -171,7 +175,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=1800;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -273,6 +277,7 @@ public partial class CoreCmsContext : DbContext
 
         modelBuilder.Entity<InventoryTransactionReason>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
@@ -421,23 +426,33 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_ProductCategory_Parent");
         });
 
-        modelBuilder.Entity<ProductDiscount>(entity =>
+        modelBuilder.Entity<ProductFile>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK_ProductMedia");
+
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductDiscounts)
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductFiles)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductDiscount_Product");
-
-            entity.HasOne(d => d.ProductVariant).WithMany(p => p.ProductDiscounts).HasConstraintName("FK_ProductDiscount_ProductVariant");
+                .HasConstraintName("FK_ProductMedia_Product");
         });
 
         modelBuilder.Entity<ProductInventoryTransaction>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.TransactionDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.ChangeQuantity).HasComment("تعداد تغییر یافته موجودی");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasComment("زمان انجام تراکنش موجودی");
+            entity.Property(e => e.CreatedBy).HasComment("کاربر ایجاد کننده تراکنش");
+            entity.Property(e => e.Note).HasComment("توضیحات تکمیلی تراکنش");
+            entity.Property(e => e.OperationType).HasComment("نوع عملیات موجودی - 1 افزایش، 2 کاهش");
+            entity.Property(e => e.ProductId).HasComment("شناسه محصول");
+            entity.Property(e => e.ProductVariantId).HasComment("شناسه واریانت محصول (در صورت وجود)");
+            entity.Property(e => e.ReferenceDetailId).HasComment("شناسه جزئیات سند مرتبط مانند OrderItemId");
+            entity.Property(e => e.ReferenceId).HasComment("شناسه سند اصلی مرتبط مانند OrderId");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductInventoryTransactions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -448,19 +463,6 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Reason).WithMany(p => p.ProductInventoryTransactions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductInventoryTransaction_Reason");
-        });
-
-        modelBuilder.Entity<ProductMedium>(entity =>
-        {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductMedia)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductMedia_Product");
-
-            entity.HasOne(d => d.ProductVariant).WithMany(p => p.ProductMedia).HasConstraintName("FK_ProductMedia_ProductVariant");
         });
 
         modelBuilder.Entity<ProductTag>(entity =>
@@ -493,27 +495,22 @@ public partial class CoreCmsContext : DbContext
 
         modelBuilder.Entity<ProductVariant>(entity =>
         {
+            entity.HasIndex(e => e.Barcode, "UX_ProductVariant_Barcode")
+                .IsUnique()
+                .HasFilter("([Barcode] IS NOT NULL)");
+
+            entity.HasIndex(e => e.Sku, "UX_ProductVariant_Sku")
+                .IsUnique()
+                .HasFilter("([Sku] IS NOT NULL)");
+
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.Name).HasDefaultValue("");
 
             entity.HasOne(d => d.Product).WithMany(p => p.ProductVariants)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductVariant_Product");
-        });
-
-        modelBuilder.Entity<ProductVariantAttribute>(entity =>
-        {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.ProductAttribute).WithMany(p => p.ProductVariantAttributes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductVariantAttribute_ProductAttribute");
-
-            entity.HasOne(d => d.ProductVariant).WithMany(p => p.ProductVariantAttributes)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductVariantAttribute_ProductVariant");
         });
 
         modelBuilder.Entity<Resource>(entity =>
@@ -795,6 +792,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwProductAttributeForm", "cms");
         });
 
+        modelBuilder.Entity<VwProductAttributeValueForm>(entity =>
+        {
+            entity.ToView("VwProductAttributeValueForm", "cms");
+        });
+
         modelBuilder.Entity<VwProductBrandForm>(entity =>
         {
             entity.ToView("VwProductBrandForm", "cms");
@@ -805,9 +807,19 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwProductCategoryForm", "cms");
         });
 
+        modelBuilder.Entity<VwProductFileForm>(entity =>
+        {
+            entity.ToView("VwProductFileForm", "cms");
+        });
+
         modelBuilder.Entity<VwProductForm>(entity =>
         {
             entity.ToView("VwProductForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductInventoryTransactionForm>(entity =>
+        {
+            entity.ToView("VwProductInventoryTransactionForm", "cms");
         });
 
         modelBuilder.Entity<VwProductTagForm>(entity =>
@@ -818,6 +830,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwProductTypeForm>(entity =>
         {
             entity.ToView("VwProductTypeForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductVariantForm>(entity =>
+        {
+            entity.ToView("VwProductVariantForm", "cms");
         });
 
         modelBuilder.Entity<VwResource>(entity =>

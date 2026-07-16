@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Dtos
 {
     public class InventoryTransactionReasonCrud : BulkInsert {
 
-        public byte Id { get; set; }
+        public Guid Id { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 100, ShowInSelectBox = true, IsRequired = true)]
         public string Name { get; set; } = null!;

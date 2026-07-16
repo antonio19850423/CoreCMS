@@ -6,19 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
-[Table("ProductMedia", Schema = "cms")]
+[Table("ProductFile", Schema = "cms")]
 [Index("IsMain", Name = "IX_ProductMedia_IsMain")]
 [Index("MediaType", Name = "IX_ProductMedia_MediaType")]
 [Index("ProductId", Name = "IX_ProductMedia_ProductId")]
-[Index("ProductVariantId", Name = "IX_ProductMedia_ProductVariantId")]
-public partial class ProductMedium
+public partial class ProductFile
 {
     [Key]
     public Guid Id { get; set; }
 
     public Guid ProductId { get; set; }
-
-    public Guid? ProductVariantId { get; set; }
 
     [StringLength(300)]
     public string FileUrl { get; set; } = null!;
@@ -52,10 +49,6 @@ public partial class ProductMedium
     public Guid? UpdatedBy { get; set; }
 
     [ForeignKey("ProductId")]
-    [InverseProperty("ProductMedia")]
+    [InverseProperty("ProductFiles")]
     public virtual Product Product { get; set; } = null!;
-
-    [ForeignKey("ProductVariantId")]
-    [InverseProperty("ProductMedia")]
-    public virtual ProductVariant? ProductVariant { get; set; }
 }

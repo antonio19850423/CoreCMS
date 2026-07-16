@@ -5,7 +5,9 @@ using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Host.Controllers
     {
@@ -25,8 +27,11 @@ namespace Velora.Host.Controllers
         private readonly IProductAttributeService _productAttributeService;
         private readonly IProductBrandService _productBrandService;
         private readonly IProductTypeService _productTypeService;
+        private readonly IInventoryTransactionReasonService _inventoryTransactionReasonService;
+        private readonly IProductService _productService;
+        private readonly IProductVariantService _productVariantService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductService productService, IProductVariantService productVariantService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -40,6 +45,9 @@ namespace Velora.Host.Controllers
             _productAttributeService = productAttributeService;
             _productBrandService = productBrandService;
             _productTypeService = productTypeService;
+            _inventoryTransactionReasonService = inventoryTransactionReasonService;
+            _productService = productService;
+            _productVariantService = productVariantService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -113,8 +121,8 @@ namespace Velora.Host.Controllers
         [HttpGet("permissions")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<int>>>> GetPermissions()
         {
-            var values = Enum.GetValues(typeof(Permission))
-                 .Cast<Permission>()
+            var values = Enum.GetValues(typeof(Application.Shared.Enums.Permission))
+                 .Cast<Application.Shared.Enums.Permission>()
                  .Select(x => new { Id = x, Name = x.GetDescription() }) // <--- اصلاح شد
                  .ToList();
 
@@ -312,6 +320,81 @@ namespace Velora.Host.Controllers
             };
 
             return result;
+        }
+        [HttpGet("InventoryTransactionReasons")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> InventoryTransactionReasons()
+        {
+
+            var linkTypes = await _inventoryTransactionReasonService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("Products")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> Products()
+        {
+
+            var linkTypes = await _productService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("ProductVariants")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> ProductVariants()
+        {
+
+            var linkTypes = await _productVariantService.GetAllViews();
+
+            var resourceItems = linkTypes
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name
+                })
+                .ToList();
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+
+            return result;
+        }
+        [HttpGet("OperationTypes")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<int>>> OperationTypes()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<int>>>
+            {
+                Data = EnumHelper.GetComboItems<OperationType>(),
+                Success = true
+            };
         }
     }
 }

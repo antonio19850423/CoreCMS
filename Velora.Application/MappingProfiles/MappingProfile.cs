@@ -187,6 +187,24 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlInventoryTransactionReason, InventoryTransactionReasonCrud>().ReverseMap();
             CreateMap<VwInventoryTransactionReasonForm, InventoryTransactionReasonCrud>().ReverseMap();
             CreateMap<SqlInventoryTransactionReason, InventoryTransactionReasonDto>().ReverseMap();
+
+            CreateMap<SqlProductFile, ProductFileCrud>().ReverseMap();
+            CreateMap<VwProductFileForm, ProductFileCrud>().ReverseMap();
+            CreateMap<SqlProductFile, ProductFileDto>().ReverseMap();
+
+            CreateMap<SqlProductAttributeValue, ProductAttributeValueCrud>().ReverseMap();
+            CreateMap<VwProductAttributeValueForm, ProductAttributeValueCrud>().ReverseMap();
+            CreateMap<SqlProductAttributeValue, ProductAttributeValueDto>().ReverseMap();
+
+
+            CreateMap<SqlProductVariant, ProductVariantCrud>().ReverseMap();
+            CreateMap<VwProductVariantForm, ProductVariantCrud>().ReverseMap();
+            CreateMap<SqlProductVariant, ProductVariantDto>().ReverseMap();
+
+
+            CreateMap<SqlProductInventoryTransaction, ProductInventoryTransactionCrud>().ReverseMap();
+            CreateMap<VwProductInventoryTransactionForm, ProductInventoryTransactionCrud>().ReverseMap();
+            CreateMap<SqlProductInventoryTransaction, ProductInventoryTransactionDto>().ReverseMap();
         }
 
 

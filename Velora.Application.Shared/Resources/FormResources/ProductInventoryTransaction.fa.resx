@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="ProductInventoryTransaction.ChangeQuantity" xml:space="preserve">
+        <value>مقدار تغییر</value>
+    </data>
+	<data name="ProductInventoryTransaction.Note" xml:space="preserve">
+        <value>یادداشت</value>
+    </data>
+	<data name="ProductInventoryTransaction.OperationType" xml:space="preserve">
+        <value>نوع عملیات</value>
+    </data>
+	<data name="ProductInventoryTransaction.OperationTypeName" xml:space="preserve">
+        <value>عنوان نوع عملیات</value>
+    </data>
+	<data name="ProductInventoryTransaction.ReasonId" xml:space="preserve">
+        <value>شناسه دلیل تراکنش</value>
+    </data>
+	<data name="ProductInventoryTransaction.ReasonName" xml:space="preserve">
+        <value>دلیل تراکنش</value>
+    </data>
+	<data name="ProductInventoryTransaction.ProductId" xml:space="preserve">
+        <value>شناسه محصول</value>
+    </data>
+	<data name="ProductInventoryTransaction.ProductName" xml:space="preserve">
+        <value>نام محصول</value>
+    </data>
+	<data name="ProductInventoryTransaction.ProductVariantId" xml:space="preserve">
+        <value>شناسه تنوع محصول</value>
+    </data>
+	<data name="ProductInventoryTransaction.ProductVariantName" xml:space="preserve">
+        <value>نام تنوع محصول</value>
+    </data>
+	<data name="ProductInventoryTransaction.ReasonCode" xml:space="preserve">
+        <value>کد دلیل</value>
+    </data>
+	<data name="ProductInventoryTransaction.ReferenceId" xml:space="preserve">
+        <value>شناسه مرجع</value>
+    </data>
+	<data name="ProductInventoryTransaction.ReferenceDetailId" xml:space="preserve">
+        <value>شناسه جزئیات مرجع</value>
+    </data>
+	<data name="ProductInventoryTransaction.ParentId" xml:space="preserve">
+        <value>شناسه والد</value>
+    </data>
+	<data name="ProductInventoryTransaction.CreatedAtPersian" xml:space="preserve">
+        <value>تاریخ ایجاد</value>
+    </data>
+	<data name="ProductInventoryTransaction.CreatedByName" xml:space="preserve">
+        <value>ایجادکننده</value>
+    </data>
+
+</root>

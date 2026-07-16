@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Velora.Application.Shared.Dtos;
+
+namespace Velora.Application.Shared.Services
+{
+    public interface IProductInventoryTransactionService : IGenericService<SqlProductInventoryTransaction, SqlProductInventoryTransaction, ProductInventoryTransactionDto>, IBaseService
+    {
+        Task<IQueryable<ProductInventoryTransactionCrud>> GetAllViews();
+        Task<ResultDto<ProductInventoryTransactionDto>> CreateAsync(ProductInventoryTransactionCrud input);
+        Task<ResultDto<ProductInventoryTransactionDto>> UpdateAsync(ProductInventoryTransactionCrud input);
+        Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<byte[]> ExportAsync(
+bool exportCurrentPage,
+int pageNumber,
+int pageSize);
+    }
+}

@@ -94,13 +94,10 @@ public partial class Product
     public virtual ICollection<ProductAttributeValue> ProductAttributeValues { get; set; } = new List<ProductAttributeValue>();
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; } = new List<ProductDiscount>();
+    public virtual ICollection<ProductFile> ProductFiles { get; set; } = new List<ProductFile>();
 
     [InverseProperty("Product")]
     public virtual ICollection<ProductInventoryTransaction> ProductInventoryTransactions { get; set; } = new List<ProductInventoryTransaction>();
-
-    [InverseProperty("Product")]
-    public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
 
     [InverseProperty("Product")]
     public virtual ICollection<ProductTagMapping> ProductTagMappings { get; set; } = new List<ProductTagMapping>();

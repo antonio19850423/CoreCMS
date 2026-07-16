@@ -45,19 +45,18 @@ public partial class ProductVariant
 
     public Guid? UpdatedBy { get; set; }
 
+    [StringLength(150)]
+    public string Name { get; set; } = null!;
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? ComparePrice { get; set; }
+
+    public bool IsDeleted { get; set; }
+
     [ForeignKey("ProductId")]
     [InverseProperty("ProductVariants")]
     public virtual Product Product { get; set; } = null!;
 
     [InverseProperty("ProductVariant")]
-    public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; } = new List<ProductDiscount>();
-
-    [InverseProperty("ProductVariant")]
     public virtual ICollection<ProductInventoryTransaction> ProductInventoryTransactions { get; set; } = new List<ProductInventoryTransaction>();
-
-    [InverseProperty("ProductVariant")]
-    public virtual ICollection<ProductMedium> ProductMedia { get; set; } = new List<ProductMedium>();
-
-    [InverseProperty("ProductVariant")]
-    public virtual ICollection<ProductVariantAttribute> ProductVariantAttributes { get; set; } = new List<ProductVariantAttribute>();
 }

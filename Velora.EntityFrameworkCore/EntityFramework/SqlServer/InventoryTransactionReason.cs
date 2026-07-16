@@ -10,7 +10,7 @@ namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 public partial class InventoryTransactionReason
 {
     [Key]
-    public byte Id { get; set; }
+    public Guid Id { get; set; }
 
     [StringLength(100)]
     public string Name { get; set; } = null!;
@@ -26,6 +26,9 @@ public partial class InventoryTransactionReason
     public Guid? CreatedBy { get; set; }
 
     public Guid? UpdatedBy { get; set; }
+
+    [StringLength(50)]
+    public string? Code { get; set; }
 
     [InverseProperty("Reason")]
     public virtual ICollection<ProductInventoryTransaction> ProductInventoryTransactions { get; set; } = new List<ProductInventoryTransaction>();
