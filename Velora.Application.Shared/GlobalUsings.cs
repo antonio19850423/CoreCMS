@@ -136,6 +136,16 @@ global using SqlProductVariantView = Velora.EntityFrameworkCore.EntityFramework.
 global using SqlProductInventoryTransaction = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductInventoryTransaction;
 global using SqlProductInventoryTransactionView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductInventoryTransactionForm;
 
+global using SqlDiscount = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Discount;
+global using SqlDiscountView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwDiscountForm;
+
+
+global using SqlDiscountItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.DiscountItem;
+global using SqlDiscountItemView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwDiscountItemForm;
+
+global using SqlCoupon = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Coupon;
+global using SqlCouponView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCouponForm;
+
 
 
 

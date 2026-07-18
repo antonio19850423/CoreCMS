@@ -1,0 +1,203 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ClosedXML" Version="0.105.0" />
+		<PackageReference Include="HotChocolate" Version="15.1.11" />
+		<PackageReference Include="HotChocolate.AspNetCore" Version="15.1.9" />
+		<PackageReference Include="HotChocolate.Authorization" Version="15.1.11" />
+		<PackageReference Include="HotChocolate.Types" Version="15.1.11" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="9.3.2" />
+		<None Include="Resources\*.resx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="Resources\FormResources\CmsConfiguration.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentCategory.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentCategory.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ContentItem.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\LinkType.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Page.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Page.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\PageTemplate.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\PageTemplateComponent.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\PageTemplateComponent.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Discount.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Discount.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\DiscountCategory.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\DiscountCategory.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Resource.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Resource.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\ResourceType.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Section.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\Section.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionGroupItem.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionGroupItem.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SectionItem.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteMenu.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteMenu.fa.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\SiteSetting.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\User.en.resx" />
+	  <EmbeddedResource Remove="Resources\FormResources\User.fa.resx" />
+	  <EmbeddedResource Remove="Resources\Languages.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\SeedData.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\ContentItemRules.json" />
+	  <EmbeddedResource Include="Resources\ComponentRules.json" />
+	  <EmbeddedResource Include="Resources\SeedData.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\Templates.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Velora.EntityFrameworkCore\Velora.EntityFrameworkCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Languages.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Languages.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Resources\Languages.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Discount.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Discount.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\DiscountCategory.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\DiscountCategory.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\LinkType.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentItem.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionGroupItem.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionGroupItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentCategory.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\ContentCategory.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteMenu.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteMenu.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionItem.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SectionItem.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\SiteSetting.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Section.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Section.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Page.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Page.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\PageTemplateComponent.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\PageTemplateComponent.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\PageTemplate.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\PageTemplate.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\LinkType.en.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Resource.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\Resource.en.resx" />
+	  <None Include="Resources\FormResources\ResourceType.fa.resx" />
+	  <None Include="Resources\FormResources\ResourceType.en.resx" />
+	  <None Include="Resources\FormResources\User.fa.resx">
+	    <SubType>Designer</SubType>
+	  </None>
+	  <None Include="Resources\FormResources\User.en.resx" />
+	  <None Include="Resources\FormResources\Role.en.resx" />
+	  <None Include="Resources\FormResources\Role.fa.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\FormResources\CategoryAttribute.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\CategoryAttribute.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\DiscountAttribute.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\DiscountAttribute.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\DiscountTag.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\InventoryTransactionReason.en.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>

@@ -396,5 +396,14 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
+        [HttpGet("DiscountTypes")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<int>>> DiscountTypes()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<int>>>
+            {
+                Data = EnumHelper.GetComboItems<DiscountType>(),
+                Success = true
+            };
+        }
     }
 }

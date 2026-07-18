@@ -44,6 +44,9 @@ public partial class ProductBrand
 
     public Guid? UpdatedBy { get; set; }
 
+    [InverseProperty("ProductBrand")]
+    public virtual ICollection<DiscountItem> DiscountItems { get; set; } = new List<DiscountItem>();
+
     [InverseProperty("Brand")]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

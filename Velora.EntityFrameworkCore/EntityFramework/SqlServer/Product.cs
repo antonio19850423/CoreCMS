@@ -91,6 +91,9 @@ public partial class Product
     public virtual ProductCategory Category { get; set; } = null!;
 
     [InverseProperty("Product")]
+    public virtual ICollection<DiscountItem> DiscountItems { get; set; } = new List<DiscountItem>();
+
+    [InverseProperty("Product")]
     public virtual ICollection<ProductAttributeValue> ProductAttributeValues { get; set; } = new List<ProductAttributeValue>();
 
     [InverseProperty("Product")]

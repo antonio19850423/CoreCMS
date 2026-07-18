@@ -89,7 +89,10 @@ namespace Velora.Application.Shared.Constants
         public const string ProductAttributeValue = "ProductAttributeValue";
         public const string ProductVariant = "ProductVariant";
         public const string ProductInventoryTransaction = "ProductInventoryTransaction";
-        
+        public const string Discount = "Discount";
+        public const string DiscountItem = "DiscountItem";
+        public const string Coupon = "Coupon";
+
 
 
 

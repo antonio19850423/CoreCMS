@@ -30,14 +30,14 @@ namespace Velora.Application.Shared.Dtos
             Route = "/api/ComboBox/OperationTypes")]
         public string OperationTypeName { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = true,
-    EntityName = LookupEntities.ProductCategory,
+    EntityName = LookupEntities.InventoryTransactionReason,
     ServiceName = "inventoryTransactionReasonView",
     LinkedFieldCode = "ReasonName",
     Route = "/api/ComboBox/InventoryTransactionReasons",
     SelectDisplayFields = "[\"name\",\"code\"]")]
         public Guid ReasonId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = false,
-           EntityName = LookupEntities.ProductCategory,
+           EntityName = LookupEntities.InventoryTransactionReason,
            ServiceName = "inventoryTransactionReasonView",
            LinkedFieldCode = "ReasonId",
            Route = "/api/ComboBox/InventoryTransactionReasons",
@@ -45,7 +45,7 @@ namespace Velora.Application.Shared.Dtos
         public string? ReasonName { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true,
-            EntityName = LookupEntities.ProductCategory,
+            EntityName = LookupEntities.Product,
             ServiceName = "productView",
             LinkedFieldCode = "ProductName",
             Route = "/api/ComboBox/Products",
@@ -53,14 +53,14 @@ namespace Velora.Application.Shared.Dtos
         public Guid ProductId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = false,
-            EntityName = LookupEntities.ProductCategory,
+            EntityName = LookupEntities.Product,
             ServiceName = "productView",
             LinkedFieldCode = "ProductId",
             Route = "/api/ComboBox/Products",
             SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string? ProductName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true,
-        EntityName = LookupEntities.ProductCategory,
+        EntityName = LookupEntities.ProductVariant,
         ServiceName = "productVariantView",
         LinkedFieldCode = "ProductVariantName",
         Route = "/api/ComboBox/ProductVariants",
@@ -68,7 +68,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? ProductVariantId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false,
-           EntityName = LookupEntities.ProductCategory,
+           EntityName = LookupEntities.ProductVariant,
            ServiceName = "productVariantView",
            LinkedFieldCode = "ProductVariantId",
            Route = "/api/ComboBox/ProductVariants",

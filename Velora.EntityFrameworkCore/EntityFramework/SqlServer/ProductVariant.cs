@@ -53,6 +53,9 @@ public partial class ProductVariant
 
     public bool IsDeleted { get; set; }
 
+    [InverseProperty("ProductVariant")]
+    public virtual ICollection<DiscountItem> DiscountItems { get; set; } = new List<DiscountItem>();
+
     [ForeignKey("ProductId")]
     [InverseProperty("ProductVariants")]
     public virtual Product Product { get; set; } = null!;

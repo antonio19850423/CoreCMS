@@ -7,33 +7,27 @@ using Microsoft.EntityFrameworkCore;
 namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 [Keyless]
-public partial class VwProductVariantForm
+public partial class VwDiscountForm
 {
     public Guid Id { get; set; }
 
-    [StringLength(150)]
+    [StringLength(200)]
     public string Name { get; set; } = null!;
 
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal Price { get; set; }
-
-    [StringLength(100)]
-    public string? Sku { get; set; }
-
-    public bool IsDefault { get; set; }
-
-    public Guid ParentId { get; set; }
-
-    [StringLength(100)]
-    public string? Barcode { get; set; }
-
-    [StringLength(300)]
-    public string? Image { get; set; }
-
-    public int SortOrder { get; set; }
+    public byte DiscountType { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
-    public decimal? ComparePrice { get; set; }
+    public decimal DiscountValue { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
+
+    [StringLength(19)]
+    public string? StartDatePersian { get; set; }
+
+    [StringLength(19)]
+    public string? EndDatePersian { get; set; }
 
     public bool IsActive { get; set; }
 

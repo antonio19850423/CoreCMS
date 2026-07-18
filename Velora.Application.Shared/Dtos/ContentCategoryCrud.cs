@@ -23,9 +23,9 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 300)]
         public string? Description { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/ContentCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ContentCategory, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/ContentCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
         public Guid? ParentId { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentId", Route = "/api/ComboBox/ContentCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ContentCategory, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentId", Route = "/api/ComboBox/ContentCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
         public string? ParentName { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 150)]

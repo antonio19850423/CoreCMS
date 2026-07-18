@@ -29,9 +29,9 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 300)]
         public string? Description { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ContentCategory, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
         public Guid? ParentId { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentId", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ContentCategory, ServiceName = "contentCategoryView", LinkedFieldCode = "ParentId", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
         public string? ParentName { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder =8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, MaxLength = 150)]

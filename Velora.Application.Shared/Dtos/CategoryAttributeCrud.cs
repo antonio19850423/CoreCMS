@@ -14,22 +14,22 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ProductCategory, ServiceName = "productAttributeView", LinkedFieldCode = "AttributeName", Route = "/api/ComboBox/ProductAttributes", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ProductAttribute, ServiceName = "productAttributeView", LinkedFieldCode = "AttributeName", Route = "/api/ComboBox/ProductAttributes", SelectDisplayFields = "[\"label\",\"code\"]")]
 
         public Guid AttributeId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ProductCategory, ServiceName = "productAttributeView", LinkedFieldCode = "AttributeId", Route = "/api/ComboBox/ProductAttributes", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ProductAttribute, ServiceName = "productAttributeView", LinkedFieldCode = "AttributeId", Route = "/api/ComboBox/ProductAttributes", SelectDisplayFields = "[\"label\",\"code\"]")]
 
         public string? AttributeName { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = false, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = false)]
 
         public string? AttributeCode { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ProductAttribute, ServiceName = "productCategoryView", LinkedFieldCode = "CategoryName", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.ProductCategory, ServiceName = "productCategoryView", LinkedFieldCode = "CategoryName", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
 
         public Guid CategoryId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ProductAttribute, ServiceName = "productCategoryView", LinkedFieldCode = "CategoryId", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.ProductCategory, ServiceName = "productCategoryView", LinkedFieldCode = "CategoryId", Route = "/api/ComboBox/ProductCategories", SelectDisplayFields = "[\"label\",\"code\"]")]
 
         public string? CategoryName { get; set; }
 

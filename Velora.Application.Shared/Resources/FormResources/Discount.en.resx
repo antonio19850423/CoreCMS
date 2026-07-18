@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="Discount.Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+	<data name="Discount.DiscountType" xml:space="preserve">
+        <value>Discount Type</value>
+    </data>
+	<data name="Discount.DiscountTypeName" xml:space="preserve">
+        <value>Discount Type</value>
+    </data>
+	<data name="Discount.DiscountValue" xml:space="preserve">
+        <value>Discount Value</value>
+    </data>
+	<data name="Discount.StartDate" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+	<data name="Discount.EndDate" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+	<data name="Discount.StartDatePersian" xml:space="preserve">
+        <value>Start Date</value>
+    </data>
+	<data name="Discount.EndDatePersian" xml:space="preserve">
+        <value>End Date</value>
+    </data>
+	<data name="Discount.IsActive" xml:space="preserve">
+        <value>Is Active</value>
+    </data>
+	<data name="Discount.CreatedAtPersian" xml:space="preserve">
+        <value>Created At</value>
+    </data>
+	<data name="Discount.UpdatedAtPersian" xml:space="preserve">
+        <value>Updated At</value>
+    </data>
+	<data name="Discount.CreatedByName" xml:space="preserve">
+        <value>Created By</value>
+    </data>
+	<data name="Discount.UpdatedByName" xml:space="preserve">
+        <value>Updated By</value>
+    </data>
+</root>

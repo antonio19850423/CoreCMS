@@ -31,6 +31,14 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<Country> Countries { get; set; }
 
+    public virtual DbSet<Coupon> Coupons { get; set; }
+
+    public virtual DbSet<CouponUsage> CouponUsages { get; set; }
+
+    public virtual DbSet<Discount> Discounts { get; set; }
+
+    public virtual DbSet<DiscountItem> DiscountItems { get; set; }
+
     public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
 
     public virtual DbSet<InventoryTransactionReason> InventoryTransactionReasons { get; set; }
@@ -115,6 +123,12 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwContentItemForm> VwContentItemForms { get; set; }
 
+    public virtual DbSet<VwCouponForm> VwCouponForms { get; set; }
+
+    public virtual DbSet<VwDiscountForm> VwDiscountForms { get; set; }
+
+    public virtual DbSet<VwDiscountItemForm> VwDiscountItemForms { get; set; }
+
     public virtual DbSet<VwInventoryTransactionReasonForm> VwInventoryTransactionReasonForms { get; set; }
 
     public virtual DbSet<VwLinkTypeForm> VwLinkTypeForms { get; set; }
@@ -175,7 +189,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=1800;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -265,6 +279,52 @@ public partial class CoreCmsContext : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<Coupon>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.Coupons)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Coupon_Discount");
+        });
+
+        modelBuilder.Entity<CouponUsage>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.UsedAt).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Coupon).WithMany(p => p.CouponUsages)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CouponUsage_Coupon");
+        });
+
+        modelBuilder.Entity<Discount>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<DiscountItem>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.DiscountItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DiscountItem_Discount");
+
+            entity.HasOne(d => d.ProductBrand).WithMany(p => p.DiscountItems).HasConstraintName("FK_DiscountItem_ProductBrand");
+
+            entity.HasOne(d => d.ProductCategory).WithMany(p => p.DiscountItems).HasConstraintName("FK_DiscountItem_ProductCategory");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.DiscountItems).HasConstraintName("FK_DiscountItem_Product");
+
+            entity.HasOne(d => d.ProductVariant).WithMany(p => p.DiscountItems).HasConstraintName("FK_DiscountItem_ProductVariant");
         });
 
         modelBuilder.Entity<GeneralSetting>(entity =>
@@ -750,6 +810,21 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwContentItemForm>(entity =>
         {
             entity.ToView("VwContentItemForm", "cms");
+        });
+
+        modelBuilder.Entity<VwCouponForm>(entity =>
+        {
+            entity.ToView("VwCouponForm", "cms");
+        });
+
+        modelBuilder.Entity<VwDiscountForm>(entity =>
+        {
+            entity.ToView("VwDiscountForm", "cms");
+        });
+
+        modelBuilder.Entity<VwDiscountItemForm>(entity =>
+        {
+            entity.ToView("VwDiscountItemForm", "cms");
         });
 
         modelBuilder.Entity<VwInventoryTransactionReasonForm>(entity =>

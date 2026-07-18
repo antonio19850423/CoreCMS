@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="DiscountItem.ParentId" xml:space="preserve">
+        <value>Parent Discount Id</value>
+    </data>
+	<data name="DiscountItem.ParentName" xml:space="preserve">
+        <value>Parent Discount</value>
+    </data>
+	<data name="DiscountItem.ProductBrandId" xml:space="preserve">
+        <value>Product Brand Id</value>
+    </data>
+	<data name="DiscountItem.ProductBrandName" xml:space="preserve">
+        <value>Product Brand</value>
+    </data>
+	<data name="DiscountItem.ProductCategoryId" xml:space="preserve">
+        <value>Product Category Id</value>
+    </data>
+	<data name="DiscountItem.ProductCategoryName" xml:space="preserve">
+        <value>Product Category</value>
+    </data>
+	<data name="DiscountItem.ProductId" xml:space="preserve">
+        <value>Product Id</value>
+    </data>
+	<data name="DiscountItem.ProductName" xml:space="preserve">
+        <value>Product</value>
+    </data>
+	<data name="DiscountItem.ProductVariantId" xml:space="preserve">
+        <value>Product Variant Id</value>
+    </data>
+	<data name="DiscountItem.ProductVariantName" xml:space="preserve">
+        <value>Product Variant</value>
+    </data>
+	<data name="DiscountItem.SortOrder" xml:space="preserve">
+        <value>Sort Order</value>
+    </data>
+	<data name="DiscountItem.CreatedAtPersian" xml:space="preserve">
+        <value>Created At</value>
+    </data>
+	<data name="DiscountItem.UpdatedAtPersian" xml:space="preserve">
+        <value>Updated At</value>
+    </data>
+	<data name="DiscountItem.CreatedByName" xml:space="preserve">
+        <value>Created By</value>
+    </data>
+	<data name="DiscountItem.UpdatedByName" xml:space="preserve">
+        <value>Updated By</value>
+    </data>
+</root>
