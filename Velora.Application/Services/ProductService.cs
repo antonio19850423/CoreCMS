@@ -33,13 +33,15 @@ namespace Velora.Application.Services
         private readonly IProductService _roleProductService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IProductTagService _ProductTagService;
+        protected readonly IProductTagMappingService _productTagMappingService;
+        
         public ProductService(
               ISqlRepository<SqlProduct> sqlRepository,
               IPosgreSqlRepository<SqlProduct> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IProductTagService ProductTagService)
+              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -51,6 +53,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
             _ProductTagService = ProductTagService;
+            _productTagMappingService = productTagMappingService;
         }
         public async Task<IQueryable<ProductCrud>> GetAllViews()
         {
@@ -94,12 +97,43 @@ namespace Velora.Application.Services
                     Summary = input.Summary,
                     Thumbnail = input.Thumbnail,
                     Weight = input.Weight,
+                    
                 };
 
                 var ProductResult = await CreateAsync(Product);
                 if (!ProductResult.Success)
                     return ProductResult;
+                var ProductId = ProductResult.Data.Id;
 
+
+                var ProductTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                       .Select(Guid.Parse)
+                       .ToList();
+
+                var ProductTags = await _productTagMappingService.GetByProductTagMappingsAsync(ProductId);
+
+                var tagsToRemove = ProductTags
+                    .Where(r => !ProductTagIds.Contains(r.ProductTagId))
+                    .ToList();
+
+                foreach (var r in tagsToRemove)
+                {
+                    await _productTagMappingService.DeleteAsync(r.Id);
+                }
+
+                if (ProductTagIds!=null&&ProductTagIds.Any())
+                {
+                    foreach (var Tag in ProductTagIds)
+                    {
+                        var ProductTag = new ProductTagMappingDto
+                        {
+                            ProductTagId = Tag,
+                            ProductId = ProductId
+                        };
+                        await _productTagMappingService.CreateAsync(ProductTag);
+                    }
+
+                }
                 await _transactionService.CommitAsync();
                 return ProductResult;
             }
@@ -166,7 +200,37 @@ namespace Velora.Application.Services
                 var ProductResult = await UpdateAsync(updateDto, input.Id);
                 if (!ProductResult.Success)
                     return ProductResult;
+                var ProductId = ProductResult.Data.Id;
 
+
+                var ProductTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                       .Select(Guid.Parse)
+                       .ToList();
+
+                var ProductTags = await _productTagMappingService.GetByProductTagMappingsAsync(ProductId);
+
+                var tagsToRemove = ProductTags
+                    .Where(r => !ProductTagIds.Contains(r.ProductTagId))
+                    .ToList();
+
+                foreach (var r in tagsToRemove)
+                {
+                    await _productTagMappingService.DeleteAsync(r.Id);
+                }
+
+                if (ProductTagIds != null && ProductTagIds.Any())
+                {
+                    foreach (var Tag in ProductTagIds)
+                    {
+                        var ProductTag = new ProductTagMappingDto
+                        {
+                            ProductTagId = Tag,
+                            ProductId = ProductId
+                        };
+                        await _productTagMappingService.CreateAsync(ProductTag);
+                    }
+
+                }
                 await _transactionService.CommitAsync();
                 return ProductResult;
             }

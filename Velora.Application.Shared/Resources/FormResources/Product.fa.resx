@@ -117,102 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="Product.Id" xml:space="preserve">
+  <data name="Product.Id" xml:space="preserve">
     <value>شناسه</value>
   </data>
-
-	<data name="Product.Name" xml:space="preserve">
+  <data name="Product.Name" xml:space="preserve">
     <value>نام محصول</value>
   </data>
-
-	<data name="Product.Summary" xml:space="preserve">
+  <data name="Product.Summary" xml:space="preserve">
     <value>خلاصه</value>
   </data>
-
-	<data name="Product.Description" xml:space="preserve">
+  <data name="Product.Description" xml:space="preserve">
     <value>توضیحات</value>
   </data>
-
-	<data name="Product.CategoryId" xml:space="preserve">
+  <data name="Product.CategoryId" xml:space="preserve">
     <value>دسته‌بندی</value>
   </data>
-
-	<data name="Product.CategoryName" xml:space="preserve">
+  <data name="Product.CategoryName" xml:space="preserve">
     <value>نام دسته‌بندی</value>
   </data>
-
-	<data name="Product.BrandId" xml:space="preserve">
+  <data name="Product.BrandId" xml:space="preserve">
     <value>برند</value>
   </data>
-
-	<data name="Product.BrandName" xml:space="preserve">
+  <data name="Product.BrandName" xml:space="preserve">
     <value>نام برند</value>
   </data>
-
-	<data name="Product.ProductTypeId" xml:space="preserve">
+  <data name="Product.ProductTypeId" xml:space="preserve">
     <value>نوع محصول</value>
   </data>
-
-	<data name="Product.ProductTypeName" xml:space="preserve">
+  <data name="Product.ProductTypeName" xml:space="preserve">
     <value>نام نوع محصول</value>
   </data>
-
-	<data name="Product.Price" xml:space="preserve">
+  <data name="Product.Price" xml:space="preserve">
     <value>قیمت</value>
   </data>
-
-	<data name="Product.Barcode" xml:space="preserve">
+  <data name="Product.Barcode" xml:space="preserve">
     <value>بارکد</value>
   </data>
-
-	<data name="Product.Sku" xml:space="preserve">
+  <data name="Product.Sku" xml:space="preserve">
     <value>کد کالا</value>
   </data>
-	<data name="Product.Slug" xml:space="preserve">
+  <data name="Product.Slug" xml:space="preserve">
     <value>اسلاگ</value>
   </data>
-
-	<data name="Product.Weight" xml:space="preserve">
+  <data name="Product.Weight" xml:space="preserve">
     <value>وزن</value>
   </data>
-
-	<data name="Product.MainImage" xml:space="preserve">
+  <data name="Product.MainImage" xml:space="preserve">
     <value>تصویر اصلی</value>
   </data>
-
-	<data name="Product.Thumbnail" xml:space="preserve">
+  <data name="Product.Thumbnail" xml:space="preserve">
     <value>تصویر بندانگشتی</value>
   </data>
-
-	<data name="Product.SortOrder" xml:space="preserve">
+  <data name="Product.SortOrder" xml:space="preserve">
     <value>ترتیب نمایش</value>
   </data>
-
-	<data name="Product.IsFeatured" xml:space="preserve">
+  <data name="Product.IsFeatured" xml:space="preserve">
     <value>محصول ویژه</value>
   </data>
-
-	<data name="Product.IsPublished" xml:space="preserve">
+  <data name="Product.IsPublished" xml:space="preserve">
     <value>منتشر شده</value>
   </data>
-
-	<data name="Product.IsActive" xml:space="preserve">
+  <data name="Product.IsActive" xml:space="preserve">
     <value>فعال</value>
   </data>
-
-	<data name="Product.SeoTitle" xml:space="preserve">
+  <data name="Product.SeoTitle" xml:space="preserve">
     <value>عنوان سئو</value>
   </data>
-
-	<data name="Product.SeoDescription" xml:space="preserve">
+  <data name="Product.SeoDescription" xml:space="preserve">
     <value>توضیحات سئو</value>
   </data>
-
-	<data name="Product.SaleCount" xml:space="preserve">
+  <data name="Product.SaleCount" xml:space="preserve">
     <value>تعداد فروش</value>
   </data>
-
-	<data name="Product.ViewCount" xml:space="preserve">
+  <data name="Product.ViewCount" xml:space="preserve">
     <value>تعداد بازدید</value>
+  </data>
+  <data name="Product.ProductTagIds" xml:space="preserve">
+    <value>برچسب ها</value>
+  </data>
+  <data name="Product.ProductTagNames" xml:space="preserve">
+    <value>برچسب ها </value>
   </data>
 </root>

@@ -41,7 +41,7 @@ namespace Velora.Application.Shared.Dtos
         public string? Thumbnail { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Weight { get; set; }
@@ -52,19 +52,19 @@ namespace Velora.Application.Shared.Dtos
         [StringLength(500)]
         public string? SeoDescription { get; set; }
 
-        public int ViewCount { get; set; }
+        public int? ViewCount { get; set; }
 
-        public int SaleCount { get; set; }
+        public int? SaleCount { get; set; }
 
         public int SortOrder { get; set; }
 
-        public bool IsPublished { get; set; }
+        public bool? IsPublished { get; set; }
 
-        public bool IsFeatured { get; set; }
+        public bool? IsFeatured { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
 
-        public bool IsTest { get; set; }
+        public bool? IsTest { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -76,6 +76,5 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(300)]
         public string? MainImage { get; set; }
-
     }
 }

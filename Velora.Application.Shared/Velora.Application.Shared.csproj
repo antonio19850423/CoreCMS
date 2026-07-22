@@ -55,12 +55,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Products.json" />
 	  <None Remove="Resources\SeedData.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\ContentItemRules.json" />
 	  <EmbeddedResource Include="Resources\ComponentRules.json" />
+	  <EmbeddedResource Include="Resources\Products.json" />
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>

@@ -82,37 +82,41 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true, MaxLength = 250, IsRequired = true)]
         public string Slug { get; set; } = null!;
+        [ResourceColumn(FieldType = FieldTypes.MultiSelectBox, IsRequired = true, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ProductTag, ServiceName = "productTagView", LinkedFieldCode = "ProductTagNames", Route = "", SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public string? ProductTagIds { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = true, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false, EntityName = LookupEntities.ProductTag, ServiceName = "productTagView", LinkedFieldCode = "ProductTagIds", Route = "", SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public string? ProductTagNames { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = true)]
         public decimal? Weight { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
         public string? MainImage { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
         public string? Thumbnail { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 19, GridOrder = 19, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = true)]
-        public bool IsFeatured { get; set; }
-
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 19, GridOrder = 19, ShowInGrid = true, ShowInForm = true)]
-        public bool IsPublished { get; set; }
-
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 20, GridOrder = 20, ShowInGrid = true, ShowInForm = true)]
-        public bool IsActive { get; set; }
+        public bool? IsFeatured { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true, MaxLength = 200, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
+        public bool? IsPublished { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 22, GridOrder = 22, ShowInGrid = true, ShowInForm = true)]
+        public bool? IsActive { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = true, MaxLength = 200, IsRequired = true)]
         public string? SeoTitle { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 22, GridOrder = 22, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 24, GridOrder = 24, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)]
         public string? SeoDescription { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 25, GridOrder = 25, ShowInGrid = true, ShowInForm = false)]
         public int SaleCount { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 24, GridOrder = 24, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 26, GridOrder = 26, ShowInGrid = true, ShowInForm = false)]
         public int ViewCount { get; set; }
     }
 }

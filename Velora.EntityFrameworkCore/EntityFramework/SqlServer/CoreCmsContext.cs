@@ -436,7 +436,11 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsFeatured).HasDefaultValue(false);
             entity.Property(e => e.IsPublished).HasDefaultValue(true);
+            entity.Property(e => e.IsTest).HasDefaultValue(false);
+            entity.Property(e => e.SaleCount).HasDefaultValue(0);
+            entity.Property(e => e.ViewCount).HasDefaultValue(0);
 
             entity.HasOne(d => d.Brand).WithMany(p => p.Products).HasConstraintName("FK_Product_ProductBrand");
 

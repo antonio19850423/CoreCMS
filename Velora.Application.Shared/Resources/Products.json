@@ -1,0 +1,149 @@
+﻿{
+  "Products": [
+    {
+      "Category": {
+        "Name": "پوشاک زنانه",
+        "Slug": "women-clothing",
+        "SeoTitle": "پوشاک زنانه",
+        "SeoDescription": "انواع لباس زنانه"
+      },
+
+      "Brand": {
+        "Name": "Atelier Nova",
+        "Slug": "atelier-nova",
+        "Logo": "/brands/atelier-nova.png",
+        "Website": "https://ateliernova.com",
+        "Description": "برند تخصصی پوشاک"
+      },
+      "ProductType": {
+        "Name": "محصول فیزیکی",
+        "Code": "Physical",
+        "Description": "محصول قابل ارسال",
+        "SortOrder": 2,
+        "IsActive": true
+      },
+
+      "Product": {
+
+        "Name": "ست کت و شلوار زنانه Atelier Nova",
+
+        "Slug": "atelier-nova-women-suit",
+
+        "Summary": "ست رسمی زنانه با طراحی کلاسیک",
+
+        "Description": "کت و شلوار زنانه با پارچه کرپ مازراتی مناسب جلسات رسمی",
+
+        "Price": 8500000,
+
+        "Sku": "AN-SUIT-001",
+
+        "Barcode": "10000001",
+
+        "MainImage": "/products/atelier-nova/main.jpg",
+
+        "Thumbnail": "/products/atelier-nova/thumb.jpg",
+
+        "IsFeatured": true,
+
+        "IsPublished": true,
+
+        "SeoTitle": "خرید ست کت و شلوار زنانه Atelier Nova",
+
+        "SeoDescription": "ست کت و شلوار زنانه Atelier Nova با طراحی کلاسیک و پارچه کرپ مازراتی مناسب استفاده رسمی و جلسات کاری",
+        "InitialStock": 10
+
+      },
+
+
+      "Files": [
+
+        {
+          "FileUrl": "/products/atelier-nova/main.jpg",
+
+          "ThumbnailUrl": "/products/atelier-nova/thumb.jpg",
+
+          "Title": "نمای اصلی",
+
+          "Alt": "کت و شلوار زنانه",
+
+          "MediaType": "IMAGE",
+
+          "IsMain": true,
+
+          "SortOrder": 1
+        },
+
+
+        {
+          "FileUrl": "/products/atelier-nova/back.jpg",
+
+          "ThumbnailUrl": "/products/atelier-nova/back-thumb.jpg",
+
+          "Title": "نمای پشت",
+
+          "Alt": "پشت کت",
+
+          "MediaType": "IMAGE",
+
+          "IsMain": false,
+
+          "SortOrder": 2
+        }
+
+      ],
+
+
+
+      "Variants": [
+
+        {
+          "Name": "رنگ طوسی - سایز 38",
+
+          "Price": 8500000,
+
+          "ComparePrice": 9000000,
+
+          "Sku": "AN-GRAY-38",
+
+          "Barcode": "10000011",
+
+          "Image": "/products/atelier-nova/gray.jpg",
+
+          "IsDefault": true,
+          "InitialStock": 20,
+
+          "SortOrder": 1
+        }
+
+      ],
+
+
+
+      "Attributes": [
+        {
+          "Name": "جنس پارچه",
+          "Code": "fabric",
+          "Value": "کرپ مازراتی",
+          "SortOrder": 1
+        },
+        {
+          "Name": "استایل",
+          "Code": "style",
+          "Value": "رسمی و نیمه رسمی",
+          "SortOrder": 2
+        }
+      ],
+      "Tags": [
+        {
+          "Name": "لباس زنانه",
+          "Slug": "women-fashion"
+        },
+        {
+          "Name": "رسمی",
+          "Slug": "formal"
+        }
+      ]
+
+    }
+  ]
+}

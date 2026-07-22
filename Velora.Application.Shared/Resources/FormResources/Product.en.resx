@@ -117,102 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<data name="Product.Id" xml:space="preserve">
+  <data name="Product.Id" xml:space="preserve">
     <value>Id</value>
   </data>
-
-	<data name="Product.Name" xml:space="preserve">
+  <data name="Product.Name" xml:space="preserve">
     <value>Product Name</value>
   </data>
-
-	<data name="Product.Summary" xml:space="preserve">
+  <data name="Product.Summary" xml:space="preserve">
     <value>Summary</value>
   </data>
-
-	<data name="Product.Description" xml:space="preserve">
+  <data name="Product.Description" xml:space="preserve">
     <value>Description</value>
   </data>
-
-	<data name="Product.CategoryId" xml:space="preserve">
+  <data name="Product.CategoryId" xml:space="preserve">
     <value>Category</value>
   </data>
-
-	<data name="Product.CategoryName" xml:space="preserve">
+  <data name="Product.CategoryName" xml:space="preserve">
     <value>Category Name</value>
   </data>
-
-	<data name="Product.BrandId" xml:space="preserve">
+  <data name="Product.BrandId" xml:space="preserve">
     <value>Brand</value>
   </data>
-
-	<data name="Product.BrandName" xml:space="preserve">
+  <data name="Product.BrandName" xml:space="preserve">
     <value>Brand Name</value>
   </data>
-
-	<data name="Product.ProductTypeId" xml:space="preserve">
+  <data name="Product.ProductTypeId" xml:space="preserve">
     <value>Product Type</value>
   </data>
-
-	<data name="Product.ProductTypeName" xml:space="preserve">
+  <data name="Product.ProductTypeName" xml:space="preserve">
     <value>Product Type Name</value>
   </data>
-
-	<data name="Product.Price" xml:space="preserve">
+  <data name="Product.Price" xml:space="preserve">
     <value>Price</value>
   </data>
-
-	<data name="Product.Barcode" xml:space="preserve">
+  <data name="Product.Barcode" xml:space="preserve">
     <value>Barcode</value>
   </data>
-
-	<data name="Product.Sku" xml:space="preserve">
+  <data name="Product.Sku" xml:space="preserve">
     <value>SKU</value>
   </data>
-	<data name="Product.Slug" xml:space="preserve">
+  <data name="Product.Slug" xml:space="preserve">
     <value>Slug</value>
   </data>
-
-	<data name="Product.Weight" xml:space="preserve">
+  <data name="Product.Weight" xml:space="preserve">
     <value>Weight</value>
   </data>
-
-	<data name="Product.MainImage" xml:space="preserve">
+  <data name="Product.MainImage" xml:space="preserve">
     <value>Main Image</value>
   </data>
-
-	<data name="Product.Thumbnail" xml:space="preserve">
+  <data name="Product.Thumbnail" xml:space="preserve">
     <value>Thumbnail</value>
   </data>
-
-	<data name="Product.SortOrder" xml:space="preserve">
+  <data name="Product.SortOrder" xml:space="preserve">
     <value>Display Order</value>
   </data>
-
-	<data name="Product.IsFeatured" xml:space="preserve">
+  <data name="Product.IsFeatured" xml:space="preserve">
     <value>Featured</value>
   </data>
-
-	<data name="Product.IsPublished" xml:space="preserve">
+  <data name="Product.IsPublished" xml:space="preserve">
     <value>Published</value>
   </data>
-
-	<data name="Product.IsActive" xml:space="preserve">
+  <data name="Product.IsActive" xml:space="preserve">
     <value>Active</value>
   </data>
-
-	<data name="Product.SeoTitle" xml:space="preserve">
+  <data name="Product.SeoTitle" xml:space="preserve">
     <value>SEO Title</value>
   </data>
-
-	<data name="Product.SeoDescription" xml:space="preserve">
+  <data name="Product.SeoDescription" xml:space="preserve">
     <value>SEO Description</value>
   </data>
-
-	<data name="Product.SaleCount" xml:space="preserve">
+  <data name="Product.SaleCount" xml:space="preserve">
     <value>Sale Count</value>
   </data>
-
-	<data name="Product.ViewCount" xml:space="preserve">
+  <data name="Product.ViewCount" xml:space="preserve">
     <value>View Count</value>
+  </data>
+  <data name="Product.ProductTagIds" xml:space="preserve">
+    <value>Product Tags</value>
+  </data>
+  <data name="Product.ProductTagNames" xml:space="preserve">
+    <value>Product Tags</value>
   </data>
 </root>

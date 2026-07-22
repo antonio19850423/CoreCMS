@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
@@ -34,7 +35,7 @@ namespace Velora.Application.Seeds
 		public const string Seed_Core_SectionGroupItem = "Seed_Core_SectionGroupItem";
 		public const string Seed_Core_LinkTypes = "Seed_Core_LinkTypes";
         public const string SeedCmsNewsAndArticlePagesAsync = "SeedCmsNewsAndArticlePagesAsync";
-        
+        public const string Seed_Products = "Seed_Products";
 
     }
 
@@ -65,11 +66,22 @@ namespace Velora.Application.Seeds
 		private readonly ISectionGroupItemService _sectionGroupItemService;
 		private readonly ILinkTypeService _linkTypeService;
 		ICmsConfigurationService _cmsConfigurationService;
-        private readonly IContentItemService _contentItemService;
-        private readonly IContentCategoryService _contentCategoryService;
-        private readonly IContentItemTagService _contentItemTagService;
-        private readonly ITagService _tagService;
-        
+		private readonly IContentItemService _contentItemService;
+		private readonly IContentCategoryService _contentCategoryService;
+		private readonly IContentItemTagService _contentItemTagService;
+		private readonly ITagService _tagService;
+		private readonly IProductService _productService;
+		private readonly IProductBrandService _productBrandService;
+		private readonly IProductCategoryService _productCategoryService;
+		private readonly IProductFileService _productFileService;
+		private readonly IProductVariantService _productVariantService;
+		private readonly IProductTypeService _productTypeService;
+		private readonly IProductAttributeService _productAttributeService;
+		private readonly IProductTagService _productTagService;
+        private readonly IProductTagMappingService _productTagMappingService;
+        private readonly IProductAttributeValueService _productAttributeValueService;
+        private readonly IInventoryTransactionReasonService _inventoryTransactionReasonService;
+        private readonly IProductInventoryTransactionService _productInventoryTransactionService;
 
 
 
@@ -92,7 +104,11 @@ namespace Velora.Application.Seeds
 			ISiteSettingService siteSettingService,
 			ICmsConfigurationService cmsConfigurationService,
 			ISectionGroupItemService sectionGroupItemService,
-			IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService, ILinkTypeService linkTypeService, IContentItemService contentItemService, IContentCategoryService contentCategoryService,IContentItemTagService contentItemTagService,ITagService tagService)
+			IMapper mapper, IPageService pageService, ISectionService sectionService, IComponentTypeService componentTypeService, ISectionItemService sectionItemService, ILinkTypeService linkTypeService, IContentItemService contentItemService, IContentCategoryService contentCategoryService, IContentItemTagService contentItemTagService, ITagService tagService, IProductService productService,
+		IProductBrandService productBrandService,
+		IProductCategoryService productCategoryService,
+		IProductFileService productFileService,
+		IProductVariantService productVariantService, IProductTypeService productTypeService, IProductAttributeService productAttributeService, IProductTagService productTagService, IProductAttributeValueService productAttributeValueService, IProductTagMappingService productTagMappingService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductInventoryTransactionService productInventoryTransactionService)
 		{
 			var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
 			_dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -124,10 +140,23 @@ namespace Velora.Application.Seeds
 			_sectionGroupItemService = sectionGroupItemService;
 			_linkTypeService = linkTypeService;
 			_contentItemService = contentItemService;
-			_contentCategoryService= contentCategoryService;
+			_contentCategoryService = contentCategoryService;
 			_contentItemTagService = contentItemTagService;
-			_tagService= tagService;
-		}
+			_tagService = tagService;
+			_productService = productService;
+			_productBrandService = productBrandService;
+			_productCategoryService = productCategoryService;
+			_productFileService = productFileService;
+			_productVariantService = productVariantService;
+			_productTypeService = productTypeService;
+			_productAttributeService = productAttributeService;
+			_productTagService = productTagService;
+			_productTagMappingService= productTagMappingService;
+            _productAttributeValueService= productAttributeValueService;
+            _inventoryTransactionReasonService=inventoryTransactionReasonService;
+            _productInventoryTransactionService= productInventoryTransactionService;
+
+        }
 
 		public async Task SeedAllAsync()
 		{
@@ -208,16 +237,26 @@ namespace Velora.Application.Seeds
 					CreatedAt = DateTime.Now
 				});
 			}
-            if (await ShouldRunSeederAsync(SeederNames.SeedCmsNewsAndArticlePagesAsync))
-            {
-                await SeedCmsNewsAndArticlePagesAsync();
-                await _seedHistoryService.CreateAsync(new()
-                {
-                    Name = SeederNames.SeedCmsNewsAndArticlePagesAsync,
-                    CreatedAt = DateTime.Now
-                });
-            }
-            await _transactionService.CommitAsync();
+			if (await ShouldRunSeederAsync(SeederNames.SeedCmsNewsAndArticlePagesAsync))
+			{
+				await SeedCmsNewsAndArticlePagesAsync();
+				await _seedHistoryService.CreateAsync(new()
+				{
+					Name = SeederNames.SeedCmsNewsAndArticlePagesAsync,
+					CreatedAt = DateTime.Now
+				});
+			}
+			if (await ShouldRunSeederAsync(SeederNames.Seed_Products))
+			{
+				await SeedProductsAsync();
+				await _seedHistoryService.CreateAsync(new()
+				{
+					Name = SeederNames.Seed_Products,
+					CreatedAt = DateTime.Now
+				});
+			}
+
+			await _transactionService.CommitAsync();
 		}
 
 		public async Task SeedCoreAsync()
@@ -607,8 +646,8 @@ namespace Velora.Application.Seeds
 						existing.Data.ServiceName = serviceName;
 						existing.Data.SelectDisplayFields = prop.Attribute.SelectDisplayFields;
 						existing.Data.GroupKey = prop.Attribute.GroupKey;
-                        existing.Data.ShowInTreeView = prop.Attribute.ShowInTreeView;
-                        await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
+						existing.Data.ShowInTreeView = prop.Attribute.ShowInTreeView;
+						await _resourceService.UpdateAsync(existing.Data, existing.Data.Id);
 
 						resourceDto = existing.Data;
 					}
@@ -638,9 +677,9 @@ namespace Velora.Application.Seeds
 							SelectDisplayFields = prop.Attribute.SelectDisplayFields,
 							EntityName = entityName,
 							ServiceName = serviceName,
-							GroupKey= prop.Attribute.GroupKey,
-                            ShowInTreeView = prop.Attribute.ShowInTreeView
-                        });
+							GroupKey = prop.Attribute.GroupKey,
+							ShowInTreeView = prop.Attribute.ShowInTreeView
+						});
 
 						resourceDto = created.Data;
 					}
@@ -1189,7 +1228,7 @@ namespace Velora.Application.Seeds
 
 					await _linkTypeService.UpdateAsync(
 						_mapper.Map<LinkTypeCrud>(existing.Data), existing.Data.Id
-                    );
+					);
 				}
 			}
 
@@ -1252,11 +1291,11 @@ namespace Velora.Application.Seeds
 
 		public async Task SeedCmsTemplateAsync()
 		{
-            var excludedSlugs = new[] { "news", "articles" };
-            var seederName = SeederNames.Seed_Core_Template;
-            var existing = await _cmsConfigurationService
-    .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+			var excludedSlugs = new[] { "news", "articles" };
+			var seederName = SeederNames.Seed_Core_Template;
+			var existing = await _cmsConfigurationService
+	.FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+			if (await _seedHistoryService.GetByNameAsync(seederName) != null)
 				return;
 
 			var templateName = _configuration["Cms:DefaultTemplate"];
@@ -1313,20 +1352,20 @@ namespace Velora.Application.Seeds
 			// =====================================================
 			foreach (var page in template.Pages)
 			{
-                // ❌ SKIP special dynamic pages
-                if (excludedSlugs.Contains(page.Slug?.ToLower()))
-                    continue;
-                var cmsConfig = existing?.Data;
-                if (page.Slug == "faq" && !(cmsConfig?.EnableFaq ?? false))
-                {
-                    continue;
-                }
-                if (page.Slug == "privacy" && !(cmsConfig?.EnablePrivacy ?? false))
-                {
-                    continue;
-                }
-                // ================= PAGE UPSERT =================
-                var existingPage = _dbType == DatabaseType.SqlServer
+				// ❌ SKIP special dynamic pages
+				if (excludedSlugs.Contains(page.Slug?.ToLower()))
+					continue;
+				var cmsConfig = existing?.Data;
+				if (page.Slug == "faq" && !(cmsConfig?.EnableFaq ?? false))
+				{
+					continue;
+				}
+				if (page.Slug == "privacy" && !(cmsConfig?.EnablePrivacy ?? false))
+				{
+					continue;
+				}
+				// ================= PAGE UPSERT =================
+				var existingPage = _dbType == DatabaseType.SqlServer
 					 ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
 					 : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
 
@@ -1339,7 +1378,7 @@ namespace Velora.Application.Seeds
 					MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
 					MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
 					MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت",
-					IsActive=true
+					IsActive = true
 				};
 
 				if (existingPage.Data == null)
@@ -1350,9 +1389,9 @@ namespace Velora.Application.Seeds
 				else
 				{
 					pageEntity.Id = existingPage.Data.Id;
-                    pageEntity.IsActive=true;
+					pageEntity.IsActive = true;
 
-                }
+				}
 
 				// =================================================
 				// COMPONENT LOOP
@@ -1407,131 +1446,131 @@ namespace Velora.Application.Seeds
 
 					if (existingSection.Data == null)
 					{
-                        sectionEntity = BuildSectionDto(
-    pageEntity.Id,
-    componentTypeEntity.Id,
-    rtl,
-    currentSectionSortOrder);
+						sectionEntity = BuildSectionDto(
+	pageEntity.Id,
+	componentTypeEntity.Id,
+	rtl,
+	currentSectionSortOrder);
 
 						var created = await _sectionService.CreateAsync(sectionEntity);
 						sectionEntity.Id = created.Data.Id;
 
-                        // =========================================
-                        // SECTION ITEMS SEED
-                        // =========================================
-                        int itemSortOrder = 1;
-                        var sectionGroupCache = new Dictionary<string, Guid>();
-                        foreach (var item in rtl.Items)
-                        {
+						// =========================================
+						// SECTION ITEMS SEED
+						// =========================================
+						int itemSortOrder = 1;
+						var sectionGroupCache = new Dictionary<string, Guid>();
+						foreach (var item in rtl.Items)
+						{
 
-                            Guid? sectionGroupItemId = null;
+							Guid? sectionGroupItemId = null;
 
-                            if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
-                            {
-                                if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
-                                {
-                                    var groupResult =
-                                        await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
-                                            x => x.Code == item.SectionGroupItemCode);
+							if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
+							{
+								if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
+								{
+									var groupResult =
+										await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
+											x => x.Code == item.SectionGroupItemCode);
 
-                                    if (groupResult.Data != null)
-                                    {
-                                        cachedId = groupResult.Data.Id;
+									if (groupResult.Data != null)
+									{
+										cachedId = groupResult.Data.Id;
 
-                                        sectionGroupCache[item.SectionGroupItemCode] = cachedId;
-                                    }
-                                }
+										sectionGroupCache[item.SectionGroupItemCode] = cachedId;
+									}
+								}
 
-                                if (cachedId != Guid.Empty)
-                                {
-                                    sectionGroupItemId = cachedId;
-                                }
-                            }
-                            var existingItem = await _sectionItemService
-                                .FirstOrDefaultAsync<SqlSectionItem>(
-                                    x => x.SectionId == sectionEntity.Id &&
-                                         x.Title == item.Title);
+								if (cachedId != Guid.Empty)
+								{
+									sectionGroupItemId = cachedId;
+								}
+							}
+							var existingItem = await _sectionItemService
+								.FirstOrDefaultAsync<SqlSectionItem>(
+									x => x.SectionId == sectionEntity.Id &&
+										 x.Title == item.Title);
 
-                            var sectionItem = BuildSectionItemDto(
-                    sectionEntity.Id,
-                    item,
-                    sectionGroupItemId,
-                    itemSortOrder++);
+							var sectionItem = BuildSectionItemDto(
+					sectionEntity.Id,
+					item,
+					sectionGroupItemId,
+					itemSortOrder++);
 
-                            if (existingItem.Data == null)
-                            {
-                                await _sectionItemService.CreateAsync(sectionItem);
-                            }
-                            else
-                            {
-                                sectionItem.Id = existingItem.Data.Id;
-                                await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
-                            }
-                        }
-                    }
+							if (existingItem.Data == null)
+							{
+								await _sectionItemService.CreateAsync(sectionItem);
+							}
+							else
+							{
+								sectionItem.Id = existingItem.Data.Id;
+								await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
+							}
+						}
+					}
 					else
 					{
 						sectionEntity = existingSection.Data;
-                        // ===============================
-                        // 🔥 FULL SECTION UPDATE FROM SEED
-                        // ===============================
-                        var updatedSection = BuildSectionDto(
-                            pageEntity.Id,
-                            componentTypeEntity.Id,
-                            rtl,
-                            currentSectionSortOrder);
+						// ===============================
+						// 🔥 FULL SECTION UPDATE FROM SEED
+						// ===============================
+						var updatedSection = BuildSectionDto(
+							pageEntity.Id,
+							componentTypeEntity.Id,
+							rtl,
+							currentSectionSortOrder);
 
-                        updatedSection.Id = sectionEntity.Id;
+						updatedSection.Id = sectionEntity.Id;
 
-                        await _sectionService.UpdateAsync(
-                            updatedSection,
-                            updatedSection.Id);
-                        // =========================================
-                        // SECTION ITEMS SEED IF NOT EXISTS
-                        // =========================================
-                        int itemSortOrder = 1;
-                        var sectionGroupCache = new Dictionary<string, Guid>();
-                        if (rtl?.Items != null)
+						await _sectionService.UpdateAsync(
+							updatedSection,
+							updatedSection.Id);
+						// =========================================
+						// SECTION ITEMS SEED IF NOT EXISTS
+						// =========================================
+						int itemSortOrder = 1;
+						var sectionGroupCache = new Dictionary<string, Guid>();
+						if (rtl?.Items != null)
 						{
 
 
 
-                            foreach (var item in rtl.Items)
+							foreach (var item in rtl.Items)
 							{
-                                Guid? sectionGroupItemId = null;
+								Guid? sectionGroupItemId = null;
 
-                                if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
-                                {
-                                    if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
-                                    {
-                                        var groupResult =
-                                            await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
-                                                x => x.Code == item.SectionGroupItemCode);
+								if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
+								{
+									if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
+									{
+										var groupResult =
+											await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
+												x => x.Code == item.SectionGroupItemCode);
 
-                                        if (groupResult.Data != null)
-                                        {
-                                            cachedId = groupResult.Data.Id;
+										if (groupResult.Data != null)
+										{
+											cachedId = groupResult.Data.Id;
 
-                                            sectionGroupCache[item.SectionGroupItemCode] = cachedId;
-                                        }
-                                    }
+											sectionGroupCache[item.SectionGroupItemCode] = cachedId;
+										}
+									}
 
-                                    if (cachedId != Guid.Empty)
-                                    {
-                                        sectionGroupItemId = cachedId;
-                                    }
-                                }
-                                var existingItem = await _sectionItemService
+									if (cachedId != Guid.Empty)
+									{
+										sectionGroupItemId = cachedId;
+									}
+								}
+								var existingItem = await _sectionItemService
 									.FirstOrDefaultAsync<SqlSectionItem>(
 										x => x.SectionId == sectionEntity.Id &&
 											 x.Title == item.Title);
-                                var sectionItem = BuildSectionItemDto(
-                                    sectionEntity.Id,
-                                    item,
-                                    sectionGroupItemId,
-                                    itemSortOrder++);
+								var sectionItem = BuildSectionItemDto(
+									sectionEntity.Id,
+									item,
+									sectionGroupItemId,
+									itemSortOrder++);
 
-                                if (existingItem.Data == null)
+								if (existingItem.Data == null)
 								{
 									await _sectionItemService.CreateAsync(sectionItem);
 								}
@@ -1549,556 +1588,1957 @@ namespace Velora.Application.Seeds
 
 			await _transactionService.CommitAsync();
 		}
-        private static string GenerateSlug(string text)
-        {
-            return text
-                .Trim()
-                .ToLowerInvariant()
-                .Replace(" ", "-");
-        }
-        public async Task SeedCmsNewsAndArticlePagesAsync()
-        {
-            var seederName = SeederNames.SeedCmsNewsAndArticlePagesAsync;
+		private static string GenerateSlug(string text)
+		{
+			return text
+				.Trim()
+				.ToLowerInvariant()
+				.Replace(" ", "-");
+		}
+		public async Task SeedCmsNewsAndArticlePagesAsync()
+		{
+			var seederName = SeederNames.SeedCmsNewsAndArticlePagesAsync;
 
-            var existing = await _cmsConfigurationService
-                .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
-                return;
+			var existing = await _cmsConfigurationService
+				.FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+			if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+				return;
 
-            var templateName = _configuration["Cms:DefaultTemplate"];
+			var templateName = _configuration["Cms:DefaultTemplate"];
 
-            if (string.IsNullOrWhiteSpace(templateName))
-                throw new Exception("DefaultTemplate is not configured in appsettings");
+			if (string.IsNullOrWhiteSpace(templateName))
+				throw new Exception("DefaultTemplate is not configured in appsettings");
 
-            var assembly = typeof(SeedJsonModel).Assembly;
+			var assembly = typeof(SeedJsonModel).Assembly;
 
-            // =========================
-            // LOAD TEMPLATE
-            // =========================
-            using var templateStream = assembly.GetManifestResourceStream(
-                "Velora.Application.Shared.Resources.Templates.json");
+			// =========================
+			// LOAD TEMPLATE
+			// =========================
+			using var templateStream = assembly.GetManifestResourceStream(
+				"Velora.Application.Shared.Resources.Templates.json");
 
-            if (templateStream == null)
-                throw new FileNotFoundException("Templates.json not found");
+			if (templateStream == null)
+				throw new FileNotFoundException("Templates.json not found");
 
-            var templateModel = await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
-                templateStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			var templateModel = await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
+				templateStream,
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (templateModel == null)
-                throw new Exception("Invalid Template JSON");
+			if (templateModel == null)
+				throw new Exception("Invalid Template JSON");
 
-            var template = templateModel.Templates
-                .FirstOrDefault(x => x.TemplateName == templateName);
+			var template = templateModel.Templates
+				.FirstOrDefault(x => x.TemplateName == templateName);
 
-            if (template == null)
-                throw new Exception($"Template {templateName} not found");
+			if (template == null)
+				throw new Exception($"Template {templateName} not found");
 
-            // =========================
-            // LOAD COMPONENT RULES
-            // =========================
+			// =========================
+			// LOAD COMPONENT RULES
+			// =========================
 
-            using var componentStream = assembly.GetManifestResourceStream(
+			using var componentStream = assembly.GetManifestResourceStream(
 "Velora.Application.Shared.Resources.ContentItemRules.json");
 
-            if (componentStream == null)
-                throw new FileNotFoundException("ContentItemRules.json not found");
+			if (componentStream == null)
+				throw new FileNotFoundException("ContentItemRules.json not found");
 
-            var componentRules = await JsonSerializer.DeserializeAsync<
-                Dictionary<string, ContentItemRuleModel>>(
-                componentStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            // 🚨 فقط این صفحات Content دارند
-            var contentPages = new[] { "news", "articles" };
+			var componentRules = await JsonSerializer.DeserializeAsync<
+				Dictionary<string, ContentItemRuleModel>>(
+				componentStream,
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			// 🚨 فقط این صفحات Content دارند
+			var contentPages = new[] { "news", "articles" };
 
-            // =====================================================
-            // PAGES LOOP (UPSERT)
-            // =====================================================
-            foreach (var page in template.Pages)
-            {
-                var cmsConfig = existing?.Data;
+			// =====================================================
+			// PAGES LOOP (UPSERT)
+			// =====================================================
+			foreach (var page in template.Pages)
+			{
+				var cmsConfig = existing?.Data;
 
-                if (page.Slug == "news" && !(cmsConfig?.EnableNews ?? false))
-                {
-                    continue;
-                }
-
-                if (page.Slug == "articles" && !(cmsConfig?.EnableBlog ?? false))
-                {
-                    continue;
-                }
-                var isContentPage = !string.IsNullOrEmpty(page.Slug) &&
-                                    contentPages.Contains(page.Slug.ToLower());
-				if(!isContentPage)
+				if (page.Slug == "news" && !(cmsConfig?.EnableNews ?? false))
 				{
 					continue;
 				}
-                var existingPage = _dbType == DatabaseType.SqlServer
-                    ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
-                    : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
 
-                var pageEntity = new PageDto
-                {
-                    Name = page.PageName,
-                    Slug = page.Slug,
-                    IsPublished = false,
-                    MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
-                    MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
-                    MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت",
-                    IsActive = true
-                };
+				if (page.Slug == "articles" && !(cmsConfig?.EnableBlog ?? false))
+				{
+					continue;
+				}
+				var isContentPage = !string.IsNullOrEmpty(page.Slug) &&
+									contentPages.Contains(page.Slug.ToLower());
+				if (!isContentPage)
+				{
+					continue;
+				}
+				var existingPage = _dbType == DatabaseType.SqlServer
+					? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
+					: await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
 
-                if (existingPage.Data == null)
-                {
-                    var created = await _pageService.CreateAsync(pageEntity);
-                    pageEntity.Id = created.Data.Id;
-                }
-                else
-                {
-                    pageEntity.Id = existingPage.Data.Id;
-                    pageEntity.IsActive = true;
-                }
+				var pageEntity = new PageDto
+				{
+					Name = page.PageName,
+					Slug = page.Slug,
+					IsPublished = false,
+					MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
+					MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
+					MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت",
+					IsActive = true
+				};
 
-                // =====================================================
-                // NORMAL PAGES → SECTION SYSTEM (مثل قبل)
-                // =====================================================
-                int sectionIndex = 1;
+				if (existingPage.Data == null)
+				{
+					var created = await _pageService.CreateAsync(pageEntity);
+					pageEntity.Id = created.Data.Id;
+				}
+				else
+				{
+					pageEntity.Id = existingPage.Data.Id;
+					pageEntity.IsActive = true;
+				}
+
+				// =====================================================
+				// NORMAL PAGES → SECTION SYSTEM (مثل قبل)
+				// =====================================================
+				int sectionIndex = 1;
 
 
-                if (componentRules == null)
-                    throw new Exception("Invalid ComponentRules JSON");
-                foreach (var component in page.Components)
-                {
-                    if (!componentRules.TryGetValue(component.Code, out var rule))
-                        continue;
-                    var existingComponentType = _dbType == DatabaseType.SqlServer
-                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
-                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
+				if (componentRules == null)
+					throw new Exception("Invalid ComponentRules JSON");
+				foreach (var component in page.Components)
+				{
+					if (!componentRules.TryGetValue(component.Code, out var rule))
+						continue;
+					var existingComponentType = _dbType == DatabaseType.SqlServer
+						? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
+						: await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
 
-                    var componentTypeEntity = new ComponentTypeDto
-                    {
-                        Name = component.Code,
-                        Code = component.Code,
-                        Type = component.Type,
-                        IsActive = true
-                    };
+					var componentTypeEntity = new ComponentTypeDto
+					{
+						Name = component.Code,
+						Code = component.Code,
+						Type = component.Type,
+						IsActive = true
+					};
 
-                    if (existingComponentType.Data == null)
-                    {
-                        var created = await _componentTypeService.CreateAsync(componentTypeEntity);
-                        componentTypeEntity.Id = created.Data.Id;
-                    }
-                    else
-                    {
-                        componentTypeEntity.Id = existingComponentType.Data.Id;
-                    }
+					if (existingComponentType.Data == null)
+					{
+						var created = await _componentTypeService.CreateAsync(componentTypeEntity);
+						componentTypeEntity.Id = created.Data.Id;
+					}
+					else
+					{
+						componentTypeEntity.Id = existingComponentType.Data.Id;
+					}
 
-                    var existingContentItem = _dbType == DatabaseType.SqlServer
-                        ? await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
-                            x => x.PageId == pageEntity.Id)
-                        : await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
-                            x => x.PageId == pageEntity.Id);
+					var existingContentItem = _dbType == DatabaseType.SqlServer
+						? await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
+							x => x.PageId == pageEntity.Id)
+						: await _contentItemService.FirstOrDefaultAsync<SqlContentItem>(
+							x => x.PageId == pageEntity.Id);
 
-                    var rtl = rule.DefaultData?.Rtl;
-                    var currentSectionSortOrder = sectionIndex++;
+					var rtl = rule.DefaultData?.Rtl;
+					var currentSectionSortOrder = sectionIndex++;
 					// =====================================================
 					// CATEGORY
 					// =====================================================
 					Guid? categoryId = null;
-                    if (!string.IsNullOrWhiteSpace(rtl?.CategoryName))
-                    {
-                        var existingCategory = await _contentCategoryService
-                            .FirstOrDefaultAsync<SqlContentCategory>(
-                                x => x.Name == rtl.CategoryName);
+					if (!string.IsNullOrWhiteSpace(rtl?.CategoryName))
+					{
+						var existingCategory = await _contentCategoryService
+							.FirstOrDefaultAsync<SqlContentCategory>(
+								x => x.Name == rtl.CategoryName);
 
 
 
-                        if (existingCategory.Data == null)
-                        {
-                            var createdCategory = await _contentCategoryService.CreateAsync(
-                                new ContentCategoryDto
-                                {
-                                    Name = rtl.CategoryName,
-                                    Slug = GenerateSlug(rtl.CategoryName),
-                                    IsActive = true
-                                });
+						if (existingCategory.Data == null)
+						{
+							var createdCategory = await _contentCategoryService.CreateAsync(
+								new ContentCategoryDto
+								{
+									Name = rtl.CategoryName,
+									Slug = GenerateSlug(rtl.CategoryName),
+									IsActive = true
+								});
 
-                            categoryId = createdCategory.Data.Id;
-                        }
-                        else
-                        {
-                            categoryId = existingCategory.Data.Id;
-                        }
-                    }
-                    Guid currentContentItemId;
+							categoryId = createdCategory.Data.Id;
+						}
+						else
+						{
+							categoryId = existingCategory.Data.Id;
+						}
+					}
+					Guid currentContentItemId;
 
-                    if (existingContentItem.Data == null)
-                    {
-                        rtl.CategoryId = categoryId;
-                        var contentItemEntity = BuildContentItemDto(
-                            pageEntity.Id,
-                            componentTypeEntity.Id,
-                            rtl,
-                            currentSectionSortOrder);
+					if (existingContentItem.Data == null)
+					{
+						rtl.CategoryId = categoryId;
+						var contentItemEntity = BuildContentItemDto(
+							pageEntity.Id,
+							componentTypeEntity.Id,
+							rtl,
+							currentSectionSortOrder);
 
-                        var created =
-                            await _contentItemService.CreateAsync(contentItemEntity);
+						var created =
+							await _contentItemService.CreateAsync(contentItemEntity);
 
-                        currentContentItemId = created.Data.Id;
-                    }
-                    else
-                    {
-                        rtl.CategoryId = categoryId;
-                        var contentItemUpdated = BuildContentItemDto(
-                            pageEntity.Id,
-                            componentTypeEntity.Id,
-                            rtl,
-                            currentSectionSortOrder);
-                        contentItemUpdated.Id = existingContentItem.Data.Id;
+						currentContentItemId = created.Data.Id;
+					}
+					else
+					{
+						rtl.CategoryId = categoryId;
+						var contentItemUpdated = BuildContentItemDto(
+							pageEntity.Id,
+							componentTypeEntity.Id,
+							rtl,
+							currentSectionSortOrder);
+						contentItemUpdated.Id = existingContentItem.Data.Id;
 
-                        await _contentItemService.UpdateAsync(
-                            contentItemUpdated,
-                            contentItemUpdated.Id);
+						await _contentItemService.UpdateAsync(
+							contentItemUpdated,
+							contentItemUpdated.Id);
 
-                        currentContentItemId =
-                            existingContentItem.Data.Id;
-                    }
+						currentContentItemId =
+							existingContentItem.Data.Id;
+					}
 					var oldTags =
 						await _contentItemTagService.GetByContentItemTagsAsync(currentContentItemId);
 
-                    foreach (var item in oldTags)
-                    {
-                        await _contentItemTagService.DeleteAsync(item.Id);
-                    }
-                    // =====================================================
-                    // TAGS
-                    // =====================================================
-                    if (rtl?.Tags != null && rtl.Tags.Any())
-                    {
-                        foreach (var tag in rtl.Tags)
-                        {
-                            var existingTag =
-                                await _tagService
-                                    .FirstOrDefaultAsync<SqlTag>(
-                                        x => x.Slug == tag.Slug);
+					foreach (var item in oldTags)
+					{
+						await _contentItemTagService.DeleteAsync(item.Id);
+					}
+					// =====================================================
+					// TAGS
+					// =====================================================
+					if (rtl?.Tags != null && rtl.Tags.Any())
+					{
+						foreach (var tag in rtl.Tags)
+						{
+							var existingTag =
+								await _tagService
+									.FirstOrDefaultAsync<SqlTag>(
+										x => x.Slug == tag.Slug);
 
-                            Guid tagId;
+							Guid tagId;
 
-                            if (existingTag.Data == null)
-                            {
-                                var createdTag =
-                                    await _tagService.CreateAsync(
-                                        new TagDto
-                                        {
-                                            Name = tag.Name,
-                                            Slug = tag.Slug,
-                                            IsActive = true
-                                        });
+							if (existingTag.Data == null)
+							{
+								var createdTag =
+									await _tagService.CreateAsync(
+										new TagDto
+										{
+											Name = tag.Name,
+											Slug = tag.Slug,
+											IsActive = true
+										});
 
-                                tagId = createdTag.Data.Id;
-                            }
-                            else
-                            {
-                                tagId = existingTag.Data.Id;
-                            }
+								tagId = createdTag.Data.Id;
+							}
+							else
+							{
+								tagId = existingTag.Data.Id;
+							}
 
-                            var existingContentTag =
-                                await _contentItemTagService
-                                    .FirstOrDefaultAsync<SqlContentItemTag>(
-                                        x =>
-                                            x.ContentItemId == currentContentItemId &&
-                                            x.TagId == tagId);
+							var existingContentTag =
+								await _contentItemTagService
+									.FirstOrDefaultAsync<SqlContentItemTag>(
+										x =>
+											x.ContentItemId == currentContentItemId &&
+											x.TagId == tagId);
 
-                            if (existingContentTag.Data == null)
-                            {
-                                await _contentItemTagService.CreateAsync(
-                                    new ContentItemTagDto
-                                    {
-                                        ContentItemId = currentContentItemId,
-                                        TagId = tagId
-                                    });
-                            }
-                        }
-                    }
-                }
-            }
+							if (existingContentTag.Data == null)
+							{
+								await _contentItemTagService.CreateAsync(
+									new ContentItemTagDto
+									{
+										ContentItemId = currentContentItemId,
+										TagId = tagId
+									});
+							}
+						}
+					}
+				}
+			}
 
-            await _transactionService.CommitAsync();
-        }
-        private SectionDto BuildSectionDto(
-    Guid pageId,
-    Guid componentTypeId,
-    ComponentLanguageData rtl,
-    int sortOrder)
-        {
-            return new SectionDto
-            {
-                PageId = pageId,
-                ComponentTypeId = componentTypeId,
+			await _transactionService.CommitAsync();
+		}
+		private SectionDto BuildSectionDto(
+	Guid pageId,
+	Guid componentTypeId,
+	ComponentLanguageData rtl,
+	int sortOrder)
+		{
+			return new SectionDto
+			{
+				PageId = pageId,
+				ComponentTypeId = componentTypeId,
 
-                IsActive = true,
-                IsTest = false,
+				IsActive = true,
+				IsTest = false,
 
-                SortOrder = sortOrder,
+				SortOrder = sortOrder,
 
-                BackgroundColor = "#ffffff",
-                HeaderColor = "#000000",
-                SubtitleColor = "#333333",
-                DescriptionColor = "#555555",
+				BackgroundColor = "#ffffff",
+				HeaderColor = "#000000",
+				SubtitleColor = "#333333",
+				DescriptionColor = "#555555",
 
-                Title = rtl?.Title,
-                Subtitle = rtl?.Subtitle,
-                Description = rtl?.Description,
+				Title = rtl?.Title,
+				Subtitle = rtl?.Subtitle,
+				Description = rtl?.Description,
 
-                ImageUrl = rtl?.ImageUrl,
-                ImageUrl2 = rtl?.ImageUrl2,
-                ImageUrl3 = rtl?.ImageUrl3,
-                ImageUrl4 = rtl?.ImageUrl4,
+				ImageUrl = rtl?.ImageUrl,
+				ImageUrl2 = rtl?.ImageUrl2,
+				ImageUrl3 = rtl?.ImageUrl3,
+				ImageUrl4 = rtl?.ImageUrl4,
 
-                ImageAlt = rtl?.ImageAlt,
-                ImageAlt2 = rtl?.ImageAlt2,
-                ImageAlt3 = rtl?.ImageAlt3,
-                ImageAlt4 = rtl?.ImageAlt4,
+				ImageAlt = rtl?.ImageAlt,
+				ImageAlt2 = rtl?.ImageAlt2,
+				ImageAlt3 = rtl?.ImageAlt3,
+				ImageAlt4 = rtl?.ImageAlt4,
 
-                Icon = rtl?.Icon,
-                IconAlt = rtl?.IconAlt,
-                IconColor = rtl?.IconColor,
+				Icon = rtl?.Icon,
+				IconAlt = rtl?.IconAlt,
+				IconColor = rtl?.IconColor,
 
-                Features = rtl?.Features,
-                CopyrightText = rtl?.CopyrightText,
+				Features = rtl?.Features,
+				CopyrightText = rtl?.CopyrightText,
 
-                ContactEmailLabel = rtl?.ContactEmailLabel,
-                ContactFirstNameLabel = rtl?.ContactFirstNameLabel,
-                ContactLastNameLabel = rtl?.ContactLastNameLabel,
-                ContactMessageLabel = rtl?.ContactMessageLabel,
-                ContactSubmitButtonText = rtl?.ContactSubmitButtonText,
+				ContactEmailLabel = rtl?.ContactEmailLabel,
+				ContactFirstNameLabel = rtl?.ContactFirstNameLabel,
+				ContactLastNameLabel = rtl?.ContactLastNameLabel,
+				ContactMessageLabel = rtl?.ContactMessageLabel,
+				ContactSubmitButtonText = rtl?.ContactSubmitButtonText,
 
-                Link1Text = rtl?.Link1Text,
-                Link1Url = rtl?.Link1Url,
-                Link1Color = rtl?.Link1Color,
-                Link1TypeId = rtl?.Link1TypeId,
-                Link1TargetId = rtl?.Link1TargetId,
-                Link1OpenInNewTab = rtl?.Link1OpenInNewTab,
+				Link1Text = rtl?.Link1Text,
+				Link1Url = rtl?.Link1Url,
+				Link1Color = rtl?.Link1Color,
+				Link1TypeId = rtl?.Link1TypeId,
+				Link1TargetId = rtl?.Link1TargetId,
+				Link1OpenInNewTab = rtl?.Link1OpenInNewTab,
 
-                Link2Text = rtl?.Link2Text,
-                Link2Url = rtl?.Link2Url,
-                Link2Color = rtl?.Link2Color,
-                Link2TypeId = rtl?.Link2TypeId,
-                Link2TargetId = rtl?.Link2TargetId,
-                Link2OpenInNewTab = rtl?.Link2OpenInNewTab,
+				Link2Text = rtl?.Link2Text,
+				Link2Url = rtl?.Link2Url,
+				Link2Color = rtl?.Link2Color,
+				Link2TypeId = rtl?.Link2TypeId,
+				Link2TargetId = rtl?.Link2TargetId,
+				Link2OpenInNewTab = rtl?.Link2OpenInNewTab,
 
-                Link3Text = rtl?.Link3Text,
-                Link3Url = rtl?.Link3Url,
-                Link3Color = rtl?.Link3Color,
-                Link3TypeId = rtl?.Link3TypeId,
-                Link3TargetId = rtl?.Link3TargetId,
-                Link3OpenInNewTab = rtl?.Link3OpenInNewTab,
+				Link3Text = rtl?.Link3Text,
+				Link3Url = rtl?.Link3Url,
+				Link3Color = rtl?.Link3Color,
+				Link3TypeId = rtl?.Link3TypeId,
+				Link3TargetId = rtl?.Link3TargetId,
+				Link3OpenInNewTab = rtl?.Link3OpenInNewTab,
 
-                Link4Text = rtl?.Link4Text,
-                Link4Url = rtl?.Link4Url,
-                Link4Color = rtl?.Link4Color,
-                Link4TypeId = rtl?.Link4TypeId,
-                Link4TargetId = rtl?.Link4TargetId,
-                Link4OpenInNewTab = rtl?.Link4OpenInNewTab,
+				Link4Text = rtl?.Link4Text,
+				Link4Url = rtl?.Link4Url,
+				Link4Color = rtl?.Link4Color,
+				Link4TypeId = rtl?.Link4TypeId,
+				Link4TargetId = rtl?.Link4TargetId,
+				Link4OpenInNewTab = rtl?.Link4OpenInNewTab,
 
-                MapEmbedUrl = rtl?.MapEmbedUrl,
+				MapEmbedUrl = rtl?.MapEmbedUrl,
 				ThumbnailUrl = rtl?.ThumbnailUrl,
 				VideoUrl = rtl?.VideoUrl,
-                ColumnsCount = 1
-            };
-        }
-        private ContentItemDto BuildContentItemDto(
+				ColumnsCount = 1
+			};
+		}
+		private ContentItemDto BuildContentItemDto(
 Guid pageId,
 Guid componentTypeId,
 ContentItemLanguageData rtl,
 int sortOrder)
-        {
-            return new ContentItemDto
-            {
-                PageId = pageId,
+		{
+			return new ContentItemDto
+			{
+				PageId = pageId,
 				AuthorAvatarUrl = rtl?.AuthorAvatarUrl,
 				AuthorName = rtl?.AuthorName,
 				AuthorTitle = rtl?.AuthorTitle,
-				SourceTitle=rtl.SourceTitle,
-				SourceUrl=rtl.SourceUrl,
-				Content=rtl.Content,
-				ContentType=rtl.ContentType,
-				IsPublished=true,
+				SourceTitle = rtl.SourceTitle,
+				SourceUrl = rtl.SourceUrl,
+				Content = rtl.Content,
+				ContentType = rtl.ContentType,
+				IsPublished = true,
 				PublishedAt = rtl?.PublishedAt,
-				Slug=rtl.Slug,
-				Summary=rtl?.Summary,
-                IsActive = true,
-                IsTest = false,
-                Title = rtl?.Title,
-                SortOrder = sortOrder,
-			ImageAlt=rtl?.ImageAlt,
-			ImageUrl=rtl?.ImageUrl,
-			ExternalUrl=rtl?.ExternalUrl,
-			CategoryId=rtl?.CategoryId,
-			ImageDetailAlt=rtl?.ImageDetailAlt,
-			ImageDetailUrl=rtl?.ImageDetailUrl,
-			
+				Slug = rtl.Slug,
+				Summary = rtl?.Summary,
+				IsActive = true,
+				IsTest = false,
+				Title = rtl?.Title,
+				SortOrder = sortOrder,
+				ImageAlt = rtl?.ImageAlt,
+				ImageUrl = rtl?.ImageUrl,
+				ExternalUrl = rtl?.ExternalUrl,
+				CategoryId = rtl?.CategoryId,
+				ImageDetailAlt = rtl?.ImageDetailAlt,
+				ImageDetailUrl = rtl?.ImageDetailUrl,
 
-            };
-        }
-        private SectionItemDto BuildSectionItemDto(
-    Guid sectionId,
-    ComponentItemData item,
-    Guid? sectionGroupItemId,
-    int sortOrder)
+
+			};
+		}
+		private SectionItemDto BuildSectionItemDto(
+	Guid sectionId,
+	ComponentItemData item,
+	Guid? sectionGroupItemId,
+	int sortOrder)
+		{
+			return new SectionItemDto
+			{
+				SectionId = sectionId,
+
+				Title = item.Title,
+				Subtitle = item.Subtitle,
+				Description = item.Description,
+
+				Icon = item.Icon,
+				ImageUrl = item.ImageUrl,
+				ImageAlt = item.ImageAlt,
+
+				AvatarUrl = item.AvatarUrl,
+				AvatarAlt = item.AvatarAlt,
+
+				BackgroundColor = item.BackgroundColor,
+				DescriptionColor = item.DescriptionColor,
+				SubtitleColor = item.SubtitleColor,
+				TitleColor = item.TitleColor,
+
+				IconAlt = item.IconAlt,
+				IconColor = item.IconColor,
+
+				Features = item.Features,
+
+				Link1Text = item.Link1Text,
+				Link1Url = item.Link1Url,
+				Link1Color = item.Link1Color,
+				Link1TypeId = item.Link1TypeId,
+				Link1TargetId = item.Link1TargetId,
+				Link1OpenInNewTab = item.Link1OpenInNewTab,
+
+				Link2Text = item.Link2Text,
+				Link2Url = item.Link2Url,
+				Link2Color = item.Link2Color,
+				Link2TypeId = item.Link2TypeId,
+				Link2TargetId = item.Link2TargetId,
+				Link2OpenInNewTab = item.Link2OpenInNewTab,
+
+				Link3Text = item.Link3Text,
+				Link3Url = item.Link3Url,
+				Link3Color = item.Link3Color,
+				Link3TypeId = item.Link3TypeId,
+				Link3TargetId = item.Link3TargetId,
+				Link3OpenInNewTab = item.Link3OpenInNewTab,
+
+				Link4Text = item.Link4Text,
+				Link4Url = item.Link4Url,
+				Link4Color = item.Link4Color,
+				Link4TypeId = item.Link4TypeId,
+				Link4TargetId = item.Link4TargetId,
+				Link4OpenInNewTab = item.Link4OpenInNewTab,
+
+				Name = item.Name,
+				Price = item.Price,
+				Question = item.Question,
+				Answer = item.Answer,
+				Role = item.Role,
+
+				SectionGroupItemId = sectionGroupItemId,
+
+				IsActive = true,
+				SortOrder = sortOrder
+			};
+		}
+		public async Task SeedCoreSectionGroupItemAsync()
+		{
+			const string seederName = SeederNames.Seed_Core_SectionGroupItem;
+
+			if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+				return;
+
+			async Task UpsertAsync(
+				string code,
+				string name,
+				string description,
+				int sortOrder,
+				Guid? groupId = null)
+			{
+				var existing = await _sectionGroupItemService
+					.FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == code);
+
+				if (existing.Data == null)
+				{
+					await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
+					{
+						Code = code,
+						Name = name,
+						Description = description,
+						SortOrder = sortOrder,
+						IsActive = true,
+						GroupId = groupId
+					});
+				}
+				else
+				{
+					existing.Data.Code = code;
+					existing.Data.Name = name;
+					existing.Data.Description = description;
+					existing.Data.SortOrder = sortOrder;
+					existing.Data.IsActive = true;
+					existing.Data.GroupId = groupId;
+
+					await _sectionGroupItemService.UpdateAsync(existing.Data, existing.Data.Id);
+				}
+			}
+
+			// =========================
+			// FOOTER ROOT GROUP
+			// =========================
+			var footerGroup = await _sectionGroupItemService
+				.FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == "FOOTER");
+
+			Guid footerGroupId;
+
+			if (footerGroup.Data == null)
+			{
+				var created = await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
+				{
+					Code = "FOOTER",
+					Name = "فوتر",
+					Description = "فوتر",
+					SortOrder = 1,
+					IsActive = true
+				});
+
+				footerGroupId = created.Data.Id;
+			}
+			else
+			{
+				footerGroupId = footerGroup.Data.Id;
+
+				footerGroup.Data.Name = "فوتر";
+				footerGroup.Data.Description = "فوتر";
+				footerGroup.Data.SortOrder = 1;
+				footerGroup.Data.IsActive = true;
+
+				await _sectionGroupItemService.UpdateAsync(footerGroup.Data, footerGroup.Data.Id);
+			}
+
+			// =========================
+			// FOOTER CHILD GROUPS
+			// =========================
+			await UpsertAsync("FOOTER_COMPANY", "شرکت", "بخش شرکت", 1, footerGroupId);
+			await UpsertAsync("FOOTER_SUPPORT", "پشتیبانی", "بخش پشتیبانی", 2, footerGroupId);
+			await UpsertAsync("FOOTER_SOCIAL", "شبکه‌های اجتماعی", "شبکه‌های اجتماعی", 3, footerGroupId);
+			await UpsertAsync("FOOTER_CONTACT", "تماس با ما", "بخش تماس", 4, footerGroupId);
+			await UpsertAsync("FOOTER_LEGAL", "قوانین", "بخش قوانین", 5, footerGroupId);
+			await UpsertAsync("FOOTER_TRUST", "نمادها", "نمادهای اعتماد", 6, footerGroupId);
+
+			await _transactionService.CommitAsync();
+		}
+
+        private async Task<Guid> SeedCategoryAsync(
+            ProductCategorySeedModel category)
         {
-            return new SectionItemDto
+            var query =
+                await _productCategoryService.GetAllViews();
+
+
+            var exist =
+                await query.FirstOrDefaultAsync(x =>
+                    x.Slug == category.Slug);
+
+
+
+            if (exist != null)
             {
-                SectionId = sectionId,
 
-                Title = item.Title,
-                Subtitle = item.Subtitle,
-                Description = item.Description,
-
-                Icon = item.Icon,
-                ImageUrl = item.ImageUrl,
-                ImageAlt = item.ImageAlt,
-
-                AvatarUrl = item.AvatarUrl,
-                AvatarAlt = item.AvatarAlt,
-
-                BackgroundColor = item.BackgroundColor,
-                DescriptionColor = item.DescriptionColor,
-                SubtitleColor = item.SubtitleColor,
-                TitleColor = item.TitleColor,
-
-                IconAlt = item.IconAlt,
-                IconColor = item.IconColor,
-
-                Features = item.Features,
-
-                Link1Text = item.Link1Text,
-                Link1Url = item.Link1Url,
-                Link1Color = item.Link1Color,
-                Link1TypeId = item.Link1TypeId,
-                Link1TargetId = item.Link1TargetId,
-                Link1OpenInNewTab = item.Link1OpenInNewTab,
-
-                Link2Text = item.Link2Text,
-                Link2Url = item.Link2Url,
-                Link2Color = item.Link2Color,
-                Link2TypeId = item.Link2TypeId,
-                Link2TargetId = item.Link2TargetId,
-                Link2OpenInNewTab = item.Link2OpenInNewTab,
-
-                Link3Text = item.Link3Text,
-                Link3Url = item.Link3Url,
-                Link3Color = item.Link3Color,
-                Link3TypeId = item.Link3TypeId,
-                Link3TargetId = item.Link3TargetId,
-                Link3OpenInNewTab = item.Link3OpenInNewTab,
-
-                Link4Text = item.Link4Text,
-                Link4Url = item.Link4Url,
-                Link4Color = item.Link4Color,
-                Link4TypeId = item.Link4TypeId,
-                Link4TargetId = item.Link4TargetId,
-                Link4OpenInNewTab = item.Link4OpenInNewTab,
-
-                Name = item.Name,
-                Price = item.Price,
-                Question = item.Question,
-                Answer = item.Answer,
-                Role = item.Role,
-
-                SectionGroupItemId = sectionGroupItemId,
-
-                IsActive = true,
-                SortOrder = sortOrder
-            };
-        }
-        public async Task SeedCoreSectionGroupItemAsync()
-        {
-            const string seederName = SeederNames.Seed_Core_SectionGroupItem;
-
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
-                return;
-
-            async Task UpsertAsync(
-                string code,
-                string name,
-                string description,
-                int sortOrder,
-                Guid? groupId = null)
-            {
-                var existing = await _sectionGroupItemService
-                    .FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == code);
-
-                if (existing.Data == null)
+                var model = new ProductCategoryCrud
                 {
-                    await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
-                    {
-                        Code = code,
-                        Name = name,
-                        Description = description,
-                        SortOrder = sortOrder,
-                        IsActive = true,
-                        GroupId = groupId
-                    });
-                }
-                else
-                {
-                    existing.Data.Code = code;
-                    existing.Data.Name = name;
-                    existing.Data.Description = description;
-                    existing.Data.SortOrder = sortOrder;
-                    existing.Data.IsActive = true;
-                    existing.Data.GroupId = groupId;
+                    Id = exist.Id,
 
-                    await _sectionGroupItemService.UpdateAsync(existing.Data, existing.Data.Id);
-                }
-            }
+                    Name = category.Name,
+                    Slug = category.Slug,
 
-            // =========================
-            // FOOTER ROOT GROUP
-            // =========================
-            var footerGroup = await _sectionGroupItemService
-                .FirstOrDefaultAsync<SqlSectionGroupItem>(x => x.Code == "FOOTER");
+                    Description = category.Description,
 
-            Guid footerGroupId;
+                    SeoTitle = category.SeoTitle,
+                    SeoDescription = category.SeoDescription,
 
-            if (footerGroup.Data == null)
-            {
-                var created = await _sectionGroupItemService.CreateAsync(new SectionGroupItemCrud
-                {
-                    Code = "FOOTER",
-                    Name = "فوتر",
-                    Description = "فوتر",
-                    SortOrder = 1,
-                    IsActive = true
-                });
+                    Icon = category.Icon,
 
-                footerGroupId = created.Data.Id;
+                    SortOrder = category.SortOrder,
+
+                    IsActive = category.IsActive
+                };
+
+
+                var result =
+                    await _productCategoryService.UpdateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Category update failed : {category.Name}");
+
+
+
+                return exist.Id;
+
             }
             else
             {
-                footerGroupId = footerGroup.Data.Id;
 
-                footerGroup.Data.Name = "فوتر";
-                footerGroup.Data.Description = "فوتر";
-                footerGroup.Data.SortOrder = 1;
-                footerGroup.Data.IsActive = true;
+                var model = new ProductCategoryCrud
+                {
+                    Name = category.Name,
+                    Slug = category.Slug,
 
-                await _sectionGroupItemService.UpdateAsync(footerGroup.Data, footerGroup.Data.Id);
+                    Description = category.Description,
+
+                    SeoTitle = category.SeoTitle,
+                    SeoDescription = category.SeoDescription,
+
+                    Icon = category.Icon,
+                    IconColor = category.IconColor,
+
+                    SortOrder = category.SortOrder,
+
+                    IsActive = category.IsActive
+                };
+
+
+
+                var result =
+                    await _productCategoryService.CreateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Category create failed : {category.Name}");
+
+
+
+                return result.Data.Id;
+
+            }
+        }
+
+
+        private async Task<Guid> SeedBrandAsync(
+            ProductBrandSeedModel brand)
+        {
+            var query =
+                await _productBrandService.GetAllViews();
+
+
+            var exist =
+                await query.FirstOrDefaultAsync(x =>
+                    x.Slug == brand.Slug);
+
+
+
+            if (exist != null)
+            {
+
+                var model = new ProductBrandCrud
+                {
+                    Id = exist.Id,
+
+                    Name = brand.Name,
+
+                    Slug = brand.Slug,
+
+                    Logo = brand.Logo,
+
+                    Website = brand.Website,
+
+                    Description = brand.Description,
+
+                    SortOrder = brand.SortOrder,
+
+                    IsActive = brand.IsActive
+                };
+
+
+                var result =
+                    await _productBrandService.UpdateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Brand update failed : {brand.Name}");
+
+
+
+                return exist.Id.Value;
+            }
+            else
+            {
+
+                var model = new ProductBrandCrud
+                {
+                    Name = brand.Name,
+
+                    Slug = brand.Slug,
+
+                    Logo = brand.Logo,
+
+                    Website = brand.Website,
+
+                    Description = brand.Description,
+
+                    SortOrder = brand.SortOrder,
+
+                    IsActive = brand.IsActive
+                };
+
+
+
+                var result =
+                    await _productBrandService.CreateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Brand create failed : {brand.Name}");
+
+
+
+                return result.Data.Id;
+            }
+        }
+
+        private async Task<Guid> SeedProductTypeAsync(
+           ProductTypeSeedModel type)
+        {
+            var query =
+                await _productTypeService.GetAllViews();
+
+
+
+            var exist =
+                await query.FirstOrDefaultAsync(x =>
+                    x.Code == type.Code);
+
+
+
+            if (exist != null)
+            {
+
+                var model = new ProductTypeCrud
+                {
+                    Id = exist.Id,
+
+                    Name = type.Name,
+
+                    Code = type.Code,
+
+                    Description = type.Description,
+
+                    SortOrder = type.SortOrder,
+
+                    IsActive = type.IsActive
+                };
+
+
+
+                var result =
+                    await _productTypeService.UpdateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"ProductType update failed : {type.Name}");
+
+
+
+                return exist.Id;
+
+            }
+            else
+            {
+
+                var model = new ProductTypeCrud
+                {
+                    Name = type.Name,
+
+                    Code = type.Code,
+
+                    Description = type.Description,
+
+                    SortOrder = type.SortOrder,
+
+                    IsActive = type.IsActive
+                };
+
+
+
+                var result =
+                    await _productTypeService.CreateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"ProductType create failed : {type.Name}");
+
+
+
+                return result.Data.Id;
+            }
+        }
+        public async Task SeedProductsAsync()
+        {
+
+
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+
+
+            using var stream =
+                assembly.GetManifestResourceStream(
+                    "Velora.Application.Shared.Resources.Products.json");
+
+
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    "Products.json not found");
+
+
+
+            using var reader = new StreamReader(stream);
+
+
+            var json = await reader.ReadToEndAsync();
+
+
+
+            var model =
+                JsonSerializer.Deserialize<ProductSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+
+
+            if (model == null)
+                throw new Exception(
+                    "Products.json deserialize failed");
+
+
+
+            foreach (var item in model.Products)
+            {
+
+                // دسته بندی
+                var categoryId =
+                    await SeedCategoryAsync(item.Category);
+
+
+
+                // برند
+                var brandId =
+                    await SeedBrandAsync(item.Brand);
+
+
+
+                // نوع محصول
+                var productTypeId =
+                    await SeedProductTypeAsync(item.ProductType);
+
+
+
+                // محصول اصلی
+                var productId =
+                    await SeedProductAsync(
+                        item.Product,
+                        categoryId,
+                        brandId,
+                        productTypeId);
+
+
+
+                // تصاویر
+                await SeedProductFilesAsync(
+                    productId,
+                    item.Files);
+
+                if (item.Variants == null || !item.Variants.Any())
+                {
+                    await SeedProductInventoryAsync(
+                        productId,
+                        item.Product.InitialStock);
+                }
+
+                // واریانت ها
+                await SeedProductVariantsAsync(
+                    productId,
+                    item.Variants);
+
+
+
+                // ویژگی ها
+                await SeedProductAttributeValuesAsync(
+                    productId,
+                    item.Attributes);
+
+
+
+                // تگ ها
+                await SeedProductTagsAsync(
+                    productId,
+                    item.Tags);
+
+            }
+        }
+        private async Task SeedProductTagsAsync(
+            Guid productId,
+            List<ProductTagSeedModel>? tags)
+        {
+            if (tags == null || !tags.Any())
+                return;
+
+
+
+            // =====================================
+            // تگ های فعلی محصول
+            // =====================================
+
+            var currentMappings =
+                await _productTagMappingService
+                    .GetByProductTagMappingsAsync(productId);
+
+
+
+            // =====================================
+            // دریافت همه تگ ها
+            // =====================================
+
+            var existingTagsQuery =
+                await _productTagService.GetAllViews();
+
+
+
+            // =====================================
+            // حذف Mapping های اضافی
+            // =====================================
+
+            var incomingSlugs =
+                tags
+                .Select(x => x.Slug)
+                .ToList();
+
+
+
+            foreach (var mapping in currentMappings)
+            {
+
+                var tag =
+                    await existingTagsQuery
+                        .FirstOrDefaultAsync(x =>
+                            x.Id == mapping.ProductTagId);
+
+
+
+                if (tag == null)
+                    continue;
+
+
+
+                if (!incomingSlugs.Contains(tag.Slug))
+                {
+                    await _productTagMappingService
+                        .DeleteAsync(mapping.Id);
+                }
+
             }
 
-            // =========================
-            // FOOTER CHILD GROUPS
-            // =========================
-            await UpsertAsync("FOOTER_COMPANY", "شرکت", "بخش شرکت", 1, footerGroupId);
-            await UpsertAsync("FOOTER_SUPPORT", "پشتیبانی", "بخش پشتیبانی", 2, footerGroupId);
-            await UpsertAsync("FOOTER_SOCIAL", "شبکه‌های اجتماعی", "شبکه‌های اجتماعی", 3, footerGroupId);
-            await UpsertAsync("FOOTER_CONTACT", "تماس با ما", "بخش تماس", 4, footerGroupId);
-            await UpsertAsync("FOOTER_LEGAL", "قوانین", "بخش قوانین", 5, footerGroupId);
-            await UpsertAsync("FOOTER_TRUST", "نمادها", "نمادهای اعتماد", 6, footerGroupId);
 
-            await _transactionService.CommitAsync();
+
+
+            // =====================================
+            // Create / Update Tag + Mapping
+            // =====================================
+
+            int sortOrder = 1;
+
+
+            foreach (var item in tags)
+            {
+
+                var tag =
+                    await existingTagsQuery
+                        .FirstOrDefaultAsync(x =>
+                            x.Slug == item.Slug);
+
+
+
+                Guid tagId;
+
+
+
+                // ================================
+                // Update Existing Tag
+                // ================================
+
+                if (tag != null)
+                {
+
+                    var tagModel =
+                        new ProductTagCrud
+                        {
+                            Id = tag.Id,
+
+                            Name = item.Name,
+
+                            Slug = item.Slug,
+
+                            SortOrder = sortOrder,
+
+                            IsActive = true
+                        };
+
+
+                    await _productTagService
+                        .UpdateAsync(tagModel);
+
+
+
+                    tagId = tag.Id.Value;
+
+                }
+
+
+                // ================================
+                // Insert New Tag
+                // ================================
+
+                else
+                {
+
+                    var tagModel =
+                        new ProductTagCrud
+                        {
+                            Name = item.Name,
+
+                            Slug = item.Slug,
+
+                            SortOrder = sortOrder,
+
+                            IsActive = true
+                        };
+
+
+                    var result =
+                        await _productTagService
+                            .CreateAsync(tagModel);
+
+
+
+                    if (!result.Success)
+                        throw new Exception(
+                            $"Product Tag create failed : {item.Name}");
+
+
+
+                    tagId = result.Data.Id;
+
+                }
+
+
+
+
+                // ================================
+                // بررسی Mapping
+                // ================================
+
+                var mappingExist =
+                    await _productTagMappingService
+                        .GetByProductTagMappingIdAsync(
+                            productId,
+                            tagId);
+
+
+
+                if (mappingExist == null)
+                {
+
+                    var mapping =
+                        new ProductTagMappingDto
+                        {
+                            ProductId = productId,
+
+                            ProductTagId = tagId
+                        };
+
+
+                    await _productTagMappingService
+                        .CreateAsync(mapping);
+
+                }
+
+
+                sortOrder++;
+
+            }
+
+        }
+        private async Task<Guid> SeedProductAsync(
+    ProductSeedModel item,
+    Guid categoryId,
+    Guid brandId,
+    Guid productTypeId)
+        {
+            var products =
+                await _productService.GetAllViews();
+
+
+            var existProduct =
+                await products.FirstOrDefaultAsync(x =>
+                    x.Slug == item.Slug);
+
+
+
+            ProductCrud model;
+
+
+            if (existProduct != null)
+            {
+                model = new ProductCrud
+                {
+                    Id = existProduct.Id,
+
+                    Name = item.Name,
+
+                    Slug = item.Slug,
+
+                    CategoryId = categoryId,
+
+                    BrandId = brandId,
+
+                    ProductTypeId = productTypeId,
+
+
+                    Summary = item.Summary,
+
+                    Description = item.Description,
+
+
+                    Price = item.Price,
+
+
+                    Barcode = item.Barcode,
+
+                    Sku = item.Sku,
+
+
+                    Weight = item.Weight,
+
+
+                    MainImage = item.MainImage,
+
+                    Thumbnail = item.Thumbnail,
+
+
+                    SeoTitle = item.SeoTitle,
+
+                    SeoDescription = item.SeoDescription,
+
+
+                    SortOrder = item.SortOrder,
+
+
+                    IsFeatured = item.IsFeatured,
+
+                    IsPublished = item.IsPublished,
+
+                    IsActive = item.IsActive
+                };
+
+
+                var result =
+                    await _productService.UpdateAsync(model);
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Product update failed : {item.Name}");
+
+
+                return existProduct.Id;
+
+            }
+
+
+            else
+            {
+
+                model = new ProductCrud
+                {
+                    Name = item.Name,
+
+                    Slug = item.Slug,
+
+                    CategoryId = categoryId,
+
+                    BrandId = brandId,
+
+                    ProductTypeId = productTypeId,
+
+
+                    Summary = item.Summary,
+
+                    Description = item.Description,
+
+					
+                    Price = item.Price,
+
+
+                    Barcode = item.Barcode,
+
+                    Sku = item.Sku,
+
+
+                    Weight = item.Weight,
+
+
+                    MainImage = item.MainImage,
+
+                    Thumbnail = item.Thumbnail,
+
+
+                    SeoTitle = item.SeoTitle,
+
+                    SeoDescription = item.SeoDescription,
+
+
+                    SortOrder = item.SortOrder,
+
+
+                    IsFeatured = item.IsFeatured,
+
+                    IsPublished = item.IsPublished,
+
+                    IsActive = item.IsActive,
+                };
+
+
+
+                var result =
+                    await _productService.CreateAsync(model);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        $"Product create failed : {item.Name}");
+
+
+
+                return result.Data.Id;
+
+            }
+
+        }
+        private async Task SeedProductFilesAsync(
+    Guid productId,
+    List<ProductFileSeedModel> files)
+        {
+
+            if (files == null || !files.Any())
+                return;
+
+
+
+            var existingFilesQuery =
+                await _productFileService.GetAllViews();
+
+
+
+            var existingFiles =
+                await existingFilesQuery
+                .Where(x => x.ParentId == productId)
+                .ToListAsync();
+
+
+
+            foreach (var item in files)
+            {
+
+                var exist =
+                    existingFiles.FirstOrDefault(
+                        x => x.FileUrl == item.FileUrl);
+
+
+
+                ProductFileCrud model;
+
+
+
+                if (exist != null)
+                {
+
+                    model = new ProductFileCrud
+                    {
+                        Id = exist.Id,
+
+                        ParentId = productId,
+
+                        FileUrl = item.FileUrl,
+
+                        ThumbnailUrl = item.ThumbnailUrl,
+
+                        Title = item.Title,
+
+                        Alt = item.Alt,
+
+                        MediaType = item.MediaType,
+
+                        IsMain = item.IsMain,
+
+                        SortOrder = item.SortOrder,
+
+                        IsActive = true
+                    };
+
+
+                    await _productFileService
+                        .UpdateAsync(model);
+
+                }
+                else
+                {
+
+                    model = new ProductFileCrud
+                    {
+
+                        ParentId = productId,
+
+                        FileUrl = item.FileUrl,
+
+                        ThumbnailUrl = item.ThumbnailUrl,
+
+                        Title = item.Title,
+
+                        Alt = item.Alt,
+
+                        MediaType = item.MediaType,
+
+                        IsMain = item.IsMain,
+
+                        SortOrder = item.SortOrder,
+
+                        IsActive = true
+                    };
+
+
+                    await _productFileService
+                        .CreateAsync(model);
+
+                }
+
+            }
+
+        }
+        private async Task SeedProductVariantsAsync(
+            Guid productId,
+            List<ProductVariantSeedModel> variants)
+        {
+            if (variants == null || !variants.Any())
+                return;
+
+
+            var variantsQuery =
+                await _productVariantService.GetAllViews();
+
+
+
+            var existingVariants =
+                await variantsQuery
+                .Where(x => x.ParentId == productId)
+                .ToListAsync();
+
+
+
+            foreach (var item in variants)
+            {
+
+                var exist =
+                    existingVariants.FirstOrDefault(
+                        x => x.Sku == item.Sku);
+
+
+
+                Guid variantId;
+
+
+
+                if (exist != null)
+                {
+
+                    var model = new ProductVariantCrud
+                    {
+                        Id = exist.Id,
+
+                        ParentId = productId,
+
+                        Name = item.Name,
+
+                        Price = item.Price,
+
+                        ComparePrice = item.ComparePrice,
+
+                        Image = item.Image,
+
+                        Sku = item.Sku,
+
+                        Barcode = item.Barcode,
+
+                        IsDefault = item.IsDefault,
+
+                        SortOrder = item.SortOrder,
+
+                        IsActive = item.IsActive
+                    };
+
+
+                    await _productVariantService
+                        .UpdateAsync(model);
+
+
+                    variantId = exist.Id;
+
+                }
+                else
+                {
+
+                    var model = new ProductVariantCrud
+                    {
+                        ParentId = productId,
+
+                        Name = item.Name,
+
+                        Price = item.Price,
+
+                        ComparePrice = item.ComparePrice,
+
+                        Image = item.Image,
+
+                        Sku = item.Sku,
+
+                        Barcode = item.Barcode,
+
+                        IsDefault = item.IsDefault,
+
+                        SortOrder = item.SortOrder,
+
+                        IsActive = item.IsActive
+                    };
+
+
+                    var result =
+                        await _productVariantService
+                        .CreateAsync(model);
+
+
+
+                    if (!result.Success)
+                        throw new Exception(
+                            $"Variant create failed : {item.Name}");
+
+
+
+                    variantId = result.Data.Id;
+
+                }
+
+
+
+                // =====================================
+                // موجودی اولیه Variant
+                // =====================================
+
+                await SeedProductInventoryAsync(
+                    productId,
+                    variantId,
+                    item.InitialStock);
+
+            }
+
+        }
+        private const string InitialStockReasonCode = "INITIAL_STOCK";
+        private async Task<Guid> GetInitialStockReasonIdAsync()
+        {
+            // ==========================================
+            // دریافت Reason موجود
+            // ==========================================
+
+            var reasonQuery =
+                await _inventoryTransactionReasonService
+                    .GetAllViews();
+
+
+            var reason =
+                await reasonQuery
+                    .FirstOrDefaultAsync(x =>
+                        x.Code == InitialStockReasonCode);
+
+
+
+            // ==========================================
+            // اگر وجود نداشت ایجاد کن
+            // ==========================================
+
+            if (reason == null)
+            {
+
+                var reasonModel =
+                    new InventoryTransactionReasonCrud
+                    {
+                        Name = "موجودی اولیه",
+
+                        Code = InitialStockReasonCode,
+
+                        IsActive = true
+                    };
+
+
+                var result =
+                    await _inventoryTransactionReasonService
+                        .CreateAsync(reasonModel);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        "Create InventoryTransactionReason failed");
+
+
+
+                return result.Data.Id;
+            }
+
+
+
+            // ==========================================
+            // اگر وجود داشت همان Id
+            // ==========================================
+
+            return reason.Id;
+        }
+        private async Task SeedProductAttributeValuesAsync(
+            Guid productId,
+            List<ProductAttributeSeedModel> attributes)
+        {
+
+            if (attributes == null || !attributes.Any())
+                return;
+
+
+
+            var attributesQuery =
+                await _productAttributeService.GetAllViews();
+
+
+
+            var valuesQuery =
+                await _productAttributeValueService.GetAllViews();
+
+
+
+            var existingValues =
+                await valuesQuery
+                .Where(x => x.ParentId == productId)
+                .ToListAsync();
+
+
+
+
+            foreach (var item in attributes)
+            {
+
+
+                // ==============================
+                // ATTRIBUTE
+                // ==============================
+
+                var attribute =
+                    await attributesQuery
+                    .FirstOrDefaultAsync(
+                        x => x.Code == item.Code);
+
+
+
+                if (attribute == null)
+                {
+
+                    var createAttribute =
+                        new ProductAttributeCrud
+                        {
+
+                            Name = item.Code,
+
+                            Code = item.Code,
+
+                            IsActive = true
+
+                        };
+
+
+                    var result =
+                        await _productAttributeService
+                        .CreateAsync(createAttribute);
+
+
+                    attribute =
+                        await attributesQuery
+                        .FirstOrDefaultAsync(
+                            x => x.Id == result.Data.Id);
+
+                }
+
+
+
+
+
+                // ==============================
+                // ATTRIBUTE VALUE
+                // ==============================
+
+
+                var exist =
+                    existingValues.FirstOrDefault(
+                        x =>
+                        x.ProductAttributeId == attribute.Id
+                        &&
+                        x.Value == item.Value);
+
+
+
+                ProductAttributeValueCrud model;
+
+
+
+                if (exist != null)
+                {
+
+                    model = new ProductAttributeValueCrud
+                    {
+
+                        Id = exist.Id,
+
+                        ParentId = productId,
+
+                        ProductAttributeId = attribute.Id,
+
+                        Value = item.Value,
+
+                        SortOrder = item.SortOrder
+
+                    };
+
+
+                    await _productAttributeValueService
+                        .UpdateAsync(model);
+
+
+                }
+                else
+                {
+
+                    model = new ProductAttributeValueCrud
+                    {
+
+                        ParentId = productId,
+
+                        ProductAttributeId = attribute.Id,
+
+                        Value = item.Value,
+
+                        SortOrder = item.SortOrder
+
+                    };
+
+
+                    await _productAttributeValueService
+                        .CreateAsync(model);
+
+                }
+
+
+            }
+
+
+        }
+
+        private async Task SeedProductInventoryAsync(
+    Guid productId,
+    Guid? productVariantId,
+    int quantity)
+        {
+
+            if (quantity <= 0)
+                return;
+
+
+
+
+
+
+
+
+            // ==========================================
+            // 2- بررسی تراکنش قبلی
+            // ==========================================
+
+            var transactionQuery =
+                await _productInventoryTransactionService
+                    .GetAllViews();
+
+
+            var transactions =
+                await transactionQuery
+                    .ToListAsync();
+
+            var reasonId =
+    await GetInitialStockReasonIdAsync();
+
+            var existTransaction =
+                transactions
+                .FirstOrDefault(x =>
+
+                    x.ProductId == productId &&
+
+                    x.ProductVariantId == productVariantId &&
+
+                    x.ReasonId == reasonId
+
+                );
+
+
+            if (existTransaction != null)
+                return;
+
+
+
+
+            // ==========================================
+            // 3- ایجاد تراکنش افزایش موجودی
+            // ==========================================
+
+
+            var transaction =
+                new ProductInventoryTransactionCrud
+                {
+
+                    ProductId = productId,
+
+                    ProductVariantId = productVariantId,
+					ParentId = productId,
+
+                    OperationType = 1, // افزایش موجودی
+
+
+                    ChangeQuantity = quantity,
+
+
+                    ReasonId = reasonId,
+
+
+                    Note = "Seed initial product inventory"
+
+                };
+
+
+
+            var createResult =
+                await _productInventoryTransactionService
+                    .CreateAsync(transaction);
+
+
+
+            if (!createResult.Success)
+                throw new Exception(
+                    "Create ProductInventoryTransaction failed");
+
+        }
+        private async Task SeedProductInventoryAsync(
+    Guid productId,
+    int quantity)
+        {
+            if (quantity <= 0)
+                return;
+
+
+
+            // ==========================================
+            // 1- دریافت یا ایجاد Reason
+            // ==========================================
+
+            var reasonQuery =
+                await _inventoryTransactionReasonService
+                    .GetAllViews();
+
+
+
+            var reason =
+                await reasonQuery
+                .FirstOrDefaultAsync(x =>
+                    x.Code == InitialStockReasonCode);
+
+
+
+            Guid reasonId;
+
+
+
+            if (reason == null)
+            {
+
+                var reasonModel =
+                    new InventoryTransactionReasonCrud
+                    {
+                        Name = "موجودی اولیه",
+
+                        Code = InitialStockReasonCode,
+
+                        IsActive = true
+                    };
+
+
+
+                var result =
+                    await _inventoryTransactionReasonService
+                        .CreateAsync(reasonModel);
+
+
+
+                if (!result.Success)
+                    throw new Exception(
+                        "Create InventoryTransactionReason failed");
+
+
+
+                reasonId = result.Data.Id;
+
+            }
+            else
+            {
+                reasonId = reason.Id;
+            }
+
+
+
+
+            // ==========================================
+            // 2- بررسی تراکنش موجودی اولیه Product
+            //    بدون Variant
+            // ==========================================
+
+            var transactionQuery =
+                await _productInventoryTransactionService
+                    .GetAllViews();
+
+
+
+            var existTransaction =
+                await transactionQuery
+                .FirstOrDefaultAsync(x =>
+
+                    x.ProductId == productId &&
+
+                    x.ProductVariantId == null &&
+
+                    x.ReasonId == reasonId
+
+                );
+
+
+
+
+            // ==========================================
+            // 3- Update موجودی قبلی
+            // ==========================================
+
+            if (existTransaction != null)
+            {
+
+                var transactionModel =
+                    new ProductInventoryTransactionCrud
+                    {
+                        Id = existTransaction.Id,
+
+                        ProductId = productId,
+
+                        ProductVariantId = null,
+
+                        OperationType = 1,
+
+                        ChangeQuantity = quantity,
+
+                        ReasonId = reasonId,
+
+                        Note = "Update seed initial product inventory"
+                    };
+
+
+
+                await _productInventoryTransactionService
+                    .UpdateAsync(transactionModel);
+
+
+
+                return;
+            }
+
+
+
+
+            // ==========================================
+            // 4- ایجاد موجودی اولیه جدید
+            // ==========================================
+
+            var inventoryTransaction =
+                new ProductInventoryTransactionCrud
+                {
+                    ProductId = productId,
+
+                    ProductVariantId = null,
+
+                    OperationType = 1,
+
+                    ChangeQuantity = quantity,
+
+                    ReasonId = reasonId,
+
+                    Note = "Seed initial product inventory"
+                };
+
+
+
+            var createResult =
+                await _productInventoryTransactionService
+                    .CreateAsync(inventoryTransaction);
+
+
+
+            if (!createResult.Success)
+                throw new Exception(
+                    "Create ProductInventoryTransaction failed");
+
         }
     }
-}
+    }
 

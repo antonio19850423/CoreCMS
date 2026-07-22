@@ -21,9 +21,6 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true)]
-        public int SortOrder { get; set; }
-
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder =5, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = false)]

@@ -96,6 +96,12 @@ namespace Velora.Application.MappingProfiles
 
             CreateMap<SqlSiteGlobalSetting,VwSiteGlobalSetting>().ReverseMap();
 
+
+
+            CreateMap<SqlProductTagMapping, ProductTagMappingDto>().ReverseMap();
+
+            
+
             CreateMap<SqlSectionItem, SectionItemCrud>().ReverseMap();
             CreateMap<SqlSectionItemView, SectionItemCrud>().ReverseMap();
             CreateMap<SqlSectionItem, SectionItemDto>().ReverseMap();

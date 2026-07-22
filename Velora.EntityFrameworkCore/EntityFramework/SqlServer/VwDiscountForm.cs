@@ -16,6 +16,9 @@ public partial class VwDiscountForm
 
     public byte DiscountType { get; set; }
 
+    [StringLength(9)]
+    public string DiscountTypeName { get; set; } = null!;
+
     [Column(TypeName = "decimal(18, 2)")]
     public decimal DiscountValue { get; set; }
 

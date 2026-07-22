@@ -26,24 +26,24 @@ public partial class VwProductForm
 
     public string? Description { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
-    public bool IsFeatured { get; set; }
+    public bool? IsFeatured { get; set; }
 
     [StringLength(200)]
     public string Name { get; set; } = null!;
 
     [Column(TypeName = "decimal(18, 2)")]
-    public decimal Price { get; set; }
+    public decimal? Price { get; set; }
 
-    public bool IsPublished { get; set; }
+    public bool? IsPublished { get; set; }
 
     public Guid ProductTypeId { get; set; }
 
     [StringLength(100)]
     public string? ProductTypeName { get; set; }
 
-    public int SaleCount { get; set; }
+    public int? SaleCount { get; set; }
 
     [StringLength(500)]
     public string? SeoDescription { get; set; }
@@ -65,7 +65,7 @@ public partial class VwProductForm
     [StringLength(300)]
     public string? Thumbnail { get; set; }
 
-    public int ViewCount { get; set; }
+    public int? ViewCount { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? Weight { get; set; }
@@ -84,4 +84,10 @@ public partial class VwProductForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    [StringLength(4000)]
+    public string? ProductTagIds { get; set; }
+
+    [StringLength(4000)]
+    public string? ProductTagNames { get; set; }
 }

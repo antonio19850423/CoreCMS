@@ -9,7 +9,7 @@ namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 [Keyless]
 public partial class VwInventoryTransactionReasonForm
 {
-    public byte Id { get; set; }
+    public Guid Id { get; set; }
 
     public bool IsActive { get; set; }
 
