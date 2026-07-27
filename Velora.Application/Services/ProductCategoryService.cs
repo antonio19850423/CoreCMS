@@ -263,6 +263,58 @@ int ProductCategorySize)
             return resultBytes;
         }
 
+        public async Task<List<ProductCategoryTreeDto>> GetProductCategoryTreeAsync()
+        {
+
+            var query = await GetAllViews();
+
+
+            var categories =
+                 query
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.SortOrder)
+                .ToList();
+
+
+
+            var tree =
+                BuildTree(categories, null);
+
+
+            return tree;
+
+        }
+
+        private List<ProductCategoryTreeDto> BuildTree(
+    List<ProductCategoryCrud> categories,
+    Guid? parentId)
+        {
+
+            return categories
+                .Where(x => x.ParentId == parentId)
+                .Select(x => new ProductCategoryTreeDto
+                {
+
+                    Id = x.Id,
+
+                    Name = x.Name,
+
+                    Slug = x.Slug,
+
+                    ParentId = x.ParentId,
+
+
+                    Children =
+                        BuildTree(
+                            categories,
+                            x.Id
+                        )
+
+                })
+                .ToList();
+
+        }
+
 
     }
 

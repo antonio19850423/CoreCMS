@@ -176,9 +176,17 @@ namespace Velora.Application.Services
                 dynamic entity = _dbType == DatabaseType.SqlServer
                     ? _mapper.Map<TEntitySql>(dto)
                     : _mapper.Map<TEntityPosgreSql>(dto);
-
                 var idProp = entity.GetType().GetProperty("Id");
-                if (idProp != null && idProp.PropertyType == typeof(Guid)) idProp.SetValue(entity, Guid.NewGuid());
+
+                if (idProp != null && idProp.PropertyType == typeof(Guid))
+                {
+                    var currentId = (Guid)idProp.GetValue(entity);
+
+                    if (currentId == Guid.Empty)
+                    {
+                        idProp.SetValue(entity, Guid.NewGuid());
+                    }
+                }
                 var userId = _currentUserService.GetUserId();
                 var CreatedAtProp = entity.GetType().GetProperty("CreatedAt");
                 if (CreatedAtProp != null)

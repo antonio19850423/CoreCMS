@@ -2764,7 +2764,13 @@ int sortOrder)
 
                     IsPublished = item.IsPublished,
 
-                    IsActive = item.IsActive
+                    IsActive = item.IsActive,
+					ProductTagIds= existProduct.ProductTagIds,
+					BrandName = existProduct.BrandName,
+					CategoryName = existProduct.CategoryName,	
+					ProductTagNames = existProduct.ProductTagNames,
+					ProductTypeName = existProduct.ProductTypeName,
+					
                 };
 
 

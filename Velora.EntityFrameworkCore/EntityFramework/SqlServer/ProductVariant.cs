@@ -62,4 +62,7 @@ public partial class ProductVariant
 
     [InverseProperty("ProductVariant")]
     public virtual ICollection<ProductInventoryTransaction> ProductInventoryTransactions { get; set; } = new List<ProductInventoryTransaction>();
+
+    [InverseProperty("Variant")]
+    public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }

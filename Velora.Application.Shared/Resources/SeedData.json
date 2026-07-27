@@ -728,7 +728,7 @@
               "Children": [
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_PRODUCTFILE",
+                  "Code": "PRODUCT_TAB_PRODUCTFILE",
                   "Name": "Product File Management",
                   "DisplayName": {
                     "en": "Product File Management",
@@ -738,7 +738,7 @@
                 },
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_PRODUCTATTRIBUTEVALUE",
+                  "Code": "PRODUCT_TAB_PRODUCTATTRIBUTEVALUE",
                   "Name": "Product Attribute Management",
                   "DisplayName": {
                     "en": "Product Attribute Management",
@@ -748,7 +748,7 @@
                 },
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_PRODUCTVARIANT",
+                  "Code": "PRODUCT_TAB_PRODUCTVARIANT",
                   "Name": "Product Variant Management",
                   "DisplayName": {
                     "en": "Product Variant Management",
@@ -758,7 +758,7 @@
                 },
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_PRODUCTINVENTORYTRANSACTION",
+                  "Code": "PRODUCT_TAB_PRODUCTINVENTORYTRANSACTION",
                   "Name": "Product Inventory Transaction Management",
                   "DisplayName": {
                     "en": "Product Inventory Transaction Management",

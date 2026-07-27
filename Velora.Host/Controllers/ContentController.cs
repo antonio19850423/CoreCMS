@@ -17,14 +17,22 @@ namespace Velora.Host.Controllers
         private readonly ITransactionService _transactionService;
         private readonly IPageService _pageService;
         private readonly IContactService _contactService;
+        private readonly IProductService _productService;
+        private readonly IProductCategoryService _productCategoryService;
+        private readonly IProductBrandService _productBrandService;
+        
 
 
-        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService)
+
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService)
         {
 
             _contentService = ContentService;
             _pageService = pageService;
             _contactService = contactService;
+            _productService= productService;
+            _productCategoryService= productCategoryService;
+            _productBrandService= productBrandService;
         }
 
 
@@ -124,6 +132,98 @@ namespace Velora.Host.Controllers
             var result = await _contactService.SendContactAsync(input);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetProductsAsync")]
+        public async Task<IActionResult> GetProductsAsync(
+    int page = 1,
+    int pageSize = 12,
+    string? categorySlug = null,
+    string? brandSlug = null,
+    string? search = null,
+    string sort = "newest",
+    decimal? minPrice = null,
+    decimal? maxPrice = null)
+        {
+
+            var result =
+                await _productService.GetProductsAsync(
+                    page,
+                    pageSize,
+                    categorySlug,
+                    brandSlug,
+                    search,
+                    sort,
+                    minPrice,
+                    maxPrice
+                );
+
+
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("GetProductCategoryTreeAsync")]
+        public async Task<IActionResult> GetProductCategoryTreeAsync()
+        {
+            var result =
+                await _productCategoryService
+                .GetProductCategoryTreeAsync();
+
+
+            var data =
+                result
+                .Select(MapCategory)
+                .ToList();
+
+
+            return Ok(new ResultDto<List<ComboBoxItemDto<string>>>
+            {
+                Success = true,
+                Data = data
+            });
+        }
+        private ComboBoxItemDto<string> MapCategory(ProductCategoryTreeDto item)
+        {
+            return new ComboBoxItemDto<string>
+            {
+                Value = item.Slug,
+                Label = item.Name,
+                Code = item.Slug,
+
+                Children = item.Children?
+                    .Select(MapCategory)
+                    .ToList()
+                    ?? new()
+            };
+        }
+        [HttpGet]
+        [Route("GetProductBrandsAsync")]
+        public async Task<IActionResult> GetProductBrandsAsync()
+        {
+            var result =
+                await _productBrandService
+                .GetProductBrandsAsync();
+
+
+            var data =
+                result.Data
+                .Select(x => new ComboBoxItemDto<string>
+                {
+                    Value = x.Slug,
+                    Label = x.Name,
+                    Code = x.Slug
+                })
+                .ToList();
+
+
+            return Ok(new ResultDto<List<ComboBoxItemDto<string>>>
+            {
+                Success = true,
+                Data = data
+            });
         }
     }
 }

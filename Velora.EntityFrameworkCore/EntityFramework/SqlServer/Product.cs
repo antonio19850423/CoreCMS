@@ -111,4 +111,7 @@ public partial class Product
 
     [InverseProperty("Product")]
     public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
+
+    [InverseProperty("Product")]
+    public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }

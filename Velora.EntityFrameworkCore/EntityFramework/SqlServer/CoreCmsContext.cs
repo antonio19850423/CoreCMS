@@ -99,6 +99,10 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<SeedHistory> SeedHistories { get; set; }
 
+    public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+    public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
     public virtual DbSet<SiteMenu> SiteMenus { get; set; }
 
     public virtual DbSet<SiteSetting> SiteSettings { get; set; }
@@ -711,6 +715,26 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<SeedHistory>(entity =>
         {
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+        });
+
+        modelBuilder.Entity<ShoppingCart>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<ShoppingCartItem>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ShoppingCartItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShoppingCartItems_Product");
+
+            entity.HasOne(d => d.ShoppingCart).WithMany(p => p.ShoppingCartItems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShoppingCartItems_ShoppingCarts");
+
+            entity.HasOne(d => d.Variant).WithMany(p => p.ShoppingCartItems).HasConstraintName("FK_ShoppingCartItems_ProductVariant");
         });
 
         modelBuilder.Entity<SiteMenu>(entity =>

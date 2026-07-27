@@ -258,6 +258,59 @@ int pageSize)
             return resultBytes;
         }
 
+        public async Task<ResultDto<List<ProductBrandOptionDto>>> GetProductBrandsAsync()
+        {
+            try
+            {
+
+                var query = await GetAllViews();
+
+
+                var brands =
+                     query
+                    .Where(x => x.IsActive==true)
+                    .OrderBy(x => x.SortOrder)
+                    .Select(x => new ProductBrandOptionDto
+                    {
+                        Id = x.Id,
+
+                        Name = x.Name,
+
+                        Slug = x.Slug,
+
+                        Logo = x.Logo
+
+                    })
+                    .ToList();
+
+
+
+                return new ResultDto<List<ProductBrandOptionDto>>
+                {
+                    Success = true,
+
+                    Data = brands
+                };
+
+            }
+            catch (Exception ex)
+            {
+
+                return new ResultDto<List<ProductBrandOptionDto>>
+                {
+                    Success = false,
+
+                    Message = "خطا در دریافت برند محصولات",
+
+                    Errors = new List<string>
+            {
+                ex.Message
+            }
+                };
+
+            }
+        }
+
 
     }
 

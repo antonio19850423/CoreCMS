@@ -171,4 +171,7 @@ global using SqlDiscountItemView = Velora.EntityFrameworkCore.EntityFramework.Sq
 global using SqlCoupon = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Coupon;
 global using SqlCouponView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCouponForm;
 
+global using SqlShoppingCart = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCart;
+global using SqlShoppingCartItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCartItem;
+
 

@@ -225,6 +225,11 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlCoupon, CouponCrud>().ReverseMap();
             CreateMap<VwCouponForm, CouponCrud>().ReverseMap();
             CreateMap<SqlCoupon, CouponDto>().ReverseMap();
+
+            CreateMap<SqlShoppingCart, ShoppingCartDto>().ReverseMap();
+            CreateMap<SqlShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
+
+            
         }
 
 

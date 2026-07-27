@@ -14,6 +14,7 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<ProductCategoryDto>> CreateAsync(ProductCategoryCrud input);
         Task<ResultDto<ProductCategoryDto>> UpdateAsync(ProductCategoryCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<List<ProductCategoryTreeDto>> GetProductCategoryTreeAsync();
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

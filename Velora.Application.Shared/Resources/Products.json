@@ -2,18 +2,103 @@
   "Products": [
     {
       "Category": {
+        "Name": "عطر و ادکلن",
+        "Slug": "perfume",
+        "SeoTitle": "عطر و ادکلن",
+        "SeoDescription": "انواع عطر زنانه و مردانه اصل با رایحه‌های ماندگار"
+      },
+      "Brand": {
+        "Name": "Maison Élan",
+        "Slug": "maison-elan",
+        "Logo": "/brands/maison-elan.png",
+        "Website": "https://maisonelan.com",
+        "Description": "برند تخصصی تولید عطرهای لوکس زنانه و مردانه"
+      },
+      "ProductType": {
+        "Name": "محصول فیزیکی",
+        "Code": "Physical",
+        "Description": "محصول قابل ارسال",
+        "SortOrder": 1,
+        "IsActive": true
+      },
+      "Product": {
+        "Name": "عطر زنانه Élan Bloom Eau de Parfum",
+        "Slug": "elan-bloom-eau-de-parfum",
+        "Summary": "عطر زنانه لوکس با رایحه گل‌های طبیعی و ماندگار",
+        "Description": "ادوپرفیوم زنانه Élan Bloom با ترکیبی از رایحه‌های گل، میوه و نت‌های چوبی مناسب استفاده روزانه و مجالس رسمی",
+        "Price": 4850000,
+        "Sku": "ME-W-BLOOM-001",
+        "Barcode": "10000001",
+        "MainImage": "/uploads/sections/product1.jpg",
+        "Thumbnail": "/uploads/sections/product1.jpg",
+        "IsFeatured": true,
+        "IsPublished": true,
+        "SeoTitle": "خرید عطر زنانه Élan Bloom Eau de Parfum",
+        "SeoDescription": "خرید عطر زنانه Maison Élan Bloom با رایحه ماندگار و طراحی لوکس",
+        "InitialStock": 25
+      },
+      "Files": [
+        {
+          "FileUrl": "/uploads/sections/product1.jpg",
+          "ThumbnailUrl": "/uploads/sections/product1.jpg",
+          "Title": "نمای اصلی",
+          "Alt": "عطر زنانه Élan Bloom",
+          "MediaType": "IMAGE",
+          "IsMain": true,
+          "SortOrder": 1
+        }
+      ],
+      "Variants": [
+        {
+          "Name": "حجم 100 میلی لیتر",
+          "Price": 4850000,
+          "ComparePrice": 5600000,
+          "Sku": "ME-BLOOM-100",
+          "Barcode": "10000011",
+          "Image": "/uploads/sections/product1.jpg",
+          "IsDefault": true,
+          "InitialStock": 25,
+          "SortOrder": 1
+        }
+      ],
+      "Attributes": [
+        {
+          "Name": "نوع رایحه",
+          "Code": "fragrance",
+          "Value": "گل و میوه‌ای",
+          "SortOrder": 1
+        },
+        {
+          "Name": "حجم",
+          "Code": "volume",
+          "Value": "100 میلی لیتر",
+          "SortOrder": 2
+        }
+      ],
+      "Tags": [
+        {
+          "Name": "عطر زنانه",
+          "Slug": "women-perfume"
+        },
+        {
+          "Name": "لوکس",
+          "Slug": "luxury"
+        }
+      ]
+    },
+    {
+      "Category": {
         "Name": "پوشاک زنانه",
         "Slug": "women-clothing",
         "SeoTitle": "پوشاک زنانه",
-        "SeoDescription": "انواع لباس زنانه"
+        "SeoDescription": "انواع لباس زنانه رسمی و روزمره"
       },
-
       "Brand": {
         "Name": "Atelier Nova",
         "Slug": "atelier-nova",
         "Logo": "/brands/atelier-nova.png",
         "Website": "https://ateliernova.com",
-        "Description": "برند تخصصی پوشاک"
+        "Description": "برند تخصصی پوشاک مدرن زنانه"
       },
       "ProductType": {
         "Name": "محصول فیزیکی",
@@ -22,114 +107,57 @@
         "SortOrder": 2,
         "IsActive": true
       },
-
       "Product": {
-
-        "Name": "ست کت و شلوار زنانه Atelier Nova",
-
-        "Slug": "atelier-nova-women-suit",
-
+        "Name": "ست کت و شلوار زنانه Atelier Classic",
+        "Slug": "atelier-classic-women-suit",
         "Summary": "ست رسمی زنانه با طراحی کلاسیک",
-
-        "Description": "کت و شلوار زنانه با پارچه کرپ مازراتی مناسب جلسات رسمی",
-
-        "Price": 8500000,
-
-        "Sku": "AN-SUIT-001",
-
-        "Barcode": "10000001",
-
-        "MainImage": "/products/atelier-nova/main.jpg",
-
-        "Thumbnail": "/products/atelier-nova/thumb.jpg",
-
+        "Description": "کت و شلوار زنانه Atelier Nova ساخته شده از پارچه با کیفیت مناسب جلسات رسمی و استایل کاری",
+        "Price": 12900000,
+        "Sku": "AN-SUIT-002",
+        "Barcode": "10000002",
+        "MainImage": "/uploads/sections/product2.jpg",
+        "Thumbnail": "/uploads/sections/product2.jpg",
         "IsFeatured": true,
-
         "IsPublished": true,
-
-        "SeoTitle": "خرید ست کت و شلوار زنانه Atelier Nova",
-
-        "SeoDescription": "ست کت و شلوار زنانه Atelier Nova با طراحی کلاسیک و پارچه کرپ مازراتی مناسب استفاده رسمی و جلسات کاری",
-        "InitialStock": 10
-
+        "SeoTitle": "خرید ست کت و شلوار زنانه Atelier Classic",
+        "SeoDescription": "ست کت و شلوار رسمی زنانه Atelier Nova با طراحی مدرن",
+        "InitialStock": 15
       },
-
-
       "Files": [
-
         {
-          "FileUrl": "/products/atelier-nova/main.jpg",
-
-          "ThumbnailUrl": "/products/atelier-nova/thumb.jpg",
-
+          "FileUrl": "/uploads/sections/product2.jpg",
+          "ThumbnailUrl": "/uploads/sections/product2.jpg",
           "Title": "نمای اصلی",
-
-          "Alt": "کت و شلوار زنانه",
-
+          "Alt": "کت و شلوار زنانه Atelier",
           "MediaType": "IMAGE",
-
           "IsMain": true,
-
           "SortOrder": 1
-        },
-
-
-        {
-          "FileUrl": "/products/atelier-nova/back.jpg",
-
-          "ThumbnailUrl": "/products/atelier-nova/back-thumb.jpg",
-
-          "Title": "نمای پشت",
-
-          "Alt": "پشت کت",
-
-          "MediaType": "IMAGE",
-
-          "IsMain": false,
-
-          "SortOrder": 2
         }
-
       ],
-
-
-
       "Variants": [
-
         {
-          "Name": "رنگ طوسی - سایز 38",
-
-          "Price": 8500000,
-
-          "ComparePrice": 9000000,
-
-          "Sku": "AN-GRAY-38",
-
-          "Barcode": "10000011",
-
-          "Image": "/products/atelier-nova/gray.jpg",
-
+          "Name": "رنگ مشکی سایز 38",
+          "Price": 12900000,
+          "ComparePrice": 14900000,
+          "Sku": "AN-BLACK-38",
+          "Barcode": "10000021",
+          "Image": "/uploads/sections/product2.jpg",
           "IsDefault": true,
-          "InitialStock": 20,
-
+          "InitialStock": 15,
           "SortOrder": 1
         }
-
       ],
-
-
-
       "Attributes": [
         {
           "Name": "جنس پارچه",
           "Code": "fabric",
-          "Value": "کرپ مازراتی",
+          "Value": "کرپ با کیفیت",
           "SortOrder": 1
         },
         {
           "Name": "استایل",
           "Code": "style",
-          "Value": "رسمی و نیمه رسمی",
+          "Value": "رسمی",
           "SortOrder": 2
         }
       ],
@@ -143,7 +171,268 @@
           "Slug": "formal"
         }
       ]
+    },
+    {
+      "Category": {
+        "Name": "عطر و ادکلن",
+        "Slug": "perfume",
+        "SeoTitle": "عطر و ادکلن",
+        "SeoDescription": "انواع عطر مردانه و زنانه با رایحه‌های خاص"
+      },
+      "Brand": {
+        "Name": "Maison Élan",
+        "Slug": "maison-elan",
+        "Logo": "/brands/maison-elan.png",
+        "Website": "https://maisonelan.com",
+        "Description": "برند تولید کننده عطرهای لوکس و ماندگار"
+      },
+      "ProductType": {
+        "Name": "محصول فیزیکی",
+        "Code": "Physical",
+        "Description": "محصول قابل ارسال",
+        "SortOrder": 1,
+        "IsActive": true
+      },
+      "Product": {
+        "Name": "عطر مردانه Noir Intense Eau de Parfum",
+        "Slug": "noir-intense-eau-de-parfum",
+        "Summary": "عطر مردانه با رایحه‌ای عمیق و ماندگار",
+        "Description": "ادوپرفیوم مردانه Noir Intense با ترکیبی از نت‌های چوبی، ادویه‌ای و رایحه گرم مناسب استفاده روزانه و رسمی",
+        "Price": 5350000,
+        "Sku": "ME-M-NOIR-001",
+        "Barcode": "10000003",
+        "MainImage": "/uploads/sections/product3.jpg",
+        "Thumbnail": "/uploads/sections/product3.jpg",
+        "IsFeatured": true,
+        "IsPublished": true,
+        "SeoTitle": "خرید عطر مردانه Noir Intense",
+        "SeoDescription": "عطر مردانه Maison Élan Noir Intense با رایحه خاص و ماندگار",
+        "InitialStock": 30
+      },
+      "Files": [
+        {
+          "FileUrl": "/uploads/sections/product3.jpg",
+          "ThumbnailUrl": "/uploads/sections/product3.jpg",
+          "Title": "نمای اصلی",
+          "Alt": "عطر مردانه Noir Intense",
+          "MediaType": "IMAGE",
+          "IsMain": true,
+          "SortOrder": 1
+        }
+      ],
+      "Variants": [
+        {
+          "Name": "حجم 100 میلی لیتر",
+          "Price": 5350000,
+          "ComparePrice": 6200000,
+          "Sku": "ME-NOIR-100",
+          "Barcode": "10000031",
+          "Image": "/uploads/sections/product3.jpg",
+          "IsDefault": true,
+          "InitialStock": 30,
+          "SortOrder": 1
+        }
+      ],
+      "Attributes": [
+        {
+          "Name": "نوع رایحه",
+          "Code": "fragrance",
+          "Value": "چوبی و ادویه‌ای",
+          "SortOrder": 1
+        },
+        {
+          "Name": "مناسب برای",
+          "Code": "gender",
+          "Value": "آقایان",
+          "SortOrder": 2
+        }
+      ],
+      "Tags": [
+        {
+          "Name": "عطر مردانه",
+          "Slug": "men-perfume"
+        },
+        {
+          "Name": "رایحه گرم",
+          "Slug": "warm-fragrance"
+        }
+      ]
+    },
 
+
+    {
+      "Category": {
+        "Name": "پوشاک مردانه",
+        "Slug": "men-clothing",
+        "SeoTitle": "پوشاک مردانه",
+        "SeoDescription": "انواع لباس و پوشاک مردانه رسمی و اسپرت"
+      },
+      "Brand": {
+        "Name": "Atelier Nova",
+        "Slug": "atelier-nova",
+        "Logo": "/brands/atelier-nova.png",
+        "Website": "https://ateliernova.com",
+        "Description": "برند تخصصی پوشاک مدرن"
+      },
+      "ProductType": {
+        "Name": "محصول فیزیکی",
+        "Code": "Physical",
+        "Description": "محصول قابل ارسال",
+        "SortOrder": 2,
+        "IsActive": true
+      },
+      "Product": {
+        "Name": "شلوار مردانه Urban Gray Tailored",
+        "Slug": "urban-gray-tailored-pants",
+        "Summary": "شلوار مردانه رسمی با طراحی مدرن",
+        "Description": "شلوار مردانه Urban Gray با برش Tailored مناسب استایل رسمی و نیمه رسمی",
+        "Price": 4650000,
+        "Sku": "AN-M-PANTS-001",
+        "Barcode": "10000004",
+        "MainImage": "/uploads/sections/product4.jpg",
+        "Thumbnail": "/uploads/sections/product4.jpg",
+        "IsFeatured": false,
+        "IsPublished": true,
+        "SeoTitle": "خرید شلوار مردانه Urban Gray",
+        "SeoDescription": "شلوار مردانه رسمی Atelier Nova با طراحی خاص",
+        "InitialStock": 40
+      },
+      "Files": [
+        {
+          "FileUrl": "/uploads/sections/product4.jpg",
+          "ThumbnailUrl": "/uploads/sections/product4.jpg",
+          "Title": "نمای اصلی",
+          "Alt": "شلوار مردانه Urban Gray",
+          "MediaType": "IMAGE",
+          "IsMain": true,
+          "SortOrder": 1
+        }
+      ],
+      "Variants": [
+        {
+          "Name": "رنگ خاکستری سایز 32",
+          "Price": 4650000,
+          "ComparePrice": 5200000,
+          "Sku": "AN-GRAY-32",
+          "Barcode": "10000041",
+          "Image": "/uploads/sections/product4.jpg",
+          "IsDefault": true,
+          "InitialStock": 40,
+          "SortOrder": 1
+        }
+      ],
+      "Attributes": [
+        {
+          "Name": "جنس",
+          "Code": "material",
+          "Value": "پارچه فاستونی",
+          "SortOrder": 1
+        },
+        {
+          "Name": "استایل",
+          "Code": "style",
+          "Value": "رسمی",
+          "SortOrder": 2
+        }
+      ],
+      "Tags": [
+        {
+          "Name": "لباس مردانه",
+          "Slug": "men-fashion"
+        },
+        {
+          "Name": "رسمی",
+          "Slug": "formal"
+        }
+      ]
+    },
+
+
+    {
+      "Category": {
+        "Name": "زیورآلات",
+        "Slug": "jewelry",
+        "SeoTitle": "زیورآلات زنانه",
+        "SeoDescription": "انواع طلا و زیورآلات لوکس زنانه"
+      },
+      "Brand": {
+        "Name": "Aurelia",
+        "Slug": "aurelia",
+        "Logo": "/brands/aurelia.png",
+        "Website": "https://aurelia.com",
+        "Description": "برند طراحی زیورآلات لوکس"
+      },
+      "ProductType": {
+        "Name": "محصول فیزیکی",
+        "Code": "Physical",
+        "Description": "محصول قابل ارسال",
+        "SortOrder": 3,
+        "IsActive": true
+      },
+      "Product": {
+        "Name": "ست گردنبند و گوشواره طلای زنانه Aurelia",
+        "Slug": "aurelia-women-gold-set",
+        "Summary": "ست لوکس گردنبند و گوشواره زنانه",
+        "Description": "ست زیورآلات Aurelia با طراحی ظریف و مناسب استفاده رسمی و هدیه",
+        "Price": 28500000,
+        "Sku": "AUR-GOLD-SET-001",
+        "Barcode": "10000005",
+        "MainImage": "/uploads/sections/product5.jpg",
+        "Thumbnail": "/uploads/sections/product5.jpg",
+        "IsFeatured": true,
+        "IsPublished": true,
+        "SeoTitle": "خرید ست گردنبند و گوشواره Aurelia",
+        "SeoDescription": "ست طلای زنانه Aurelia با طراحی خاص",
+        "InitialStock": 8
+      },
+      "Files": [
+        {
+          "FileUrl": "/uploads/sections/product5.jpg",
+          "ThumbnailUrl": "/uploads/sections/product5.jpg",
+          "Title": "نمای اصلی",
+          "Alt": "ست طلای زنانه Aurelia",
+          "MediaType": "IMAGE",
+          "IsMain": true,
+          "SortOrder": 1
+        }
+      ],
+      "Variants": [
+        {
+          "Name": "طلای زرد",
+          "Price": 28500000,
+          "ComparePrice": 32000000,
+          "Sku": "AUR-YELLOW-GOLD",
+          "Barcode": "10000051",
+          "Image": "/uploads/sections/product5.jpg",
+          "IsDefault": true,
+          "InitialStock": 8,
+          "SortOrder": 1
+        }
+      ],
+      "Attributes": [
+        {
+          "Name": "جنس",
+          "Code": "material",
+          "Value": "طلای 18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Name": "نوع محصول",
+          "Code": "type",
+          "Value": "گردنبند و گوشواره",
+          "SortOrder": 2
+        }
+      ],
+      "Tags": [
+        {
+          "Name": "زیورآلات زنانه",
+          "Slug": "women-jewelry"
+        },
+        {
+          "Name": "طلای لوکس",
+          "Slug": "luxury-gold"
+        }
+      ]
     }
   ]
 }

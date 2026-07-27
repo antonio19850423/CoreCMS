@@ -60,7 +60,9 @@ public class ProductGqlResolver : IProductGqlResolver
             SeoTitle=x.SeoTitle ??"",
             ShouldInsert=x.ShouldInsert,
             Sku=x.Sku ??"",
-            ViewCount = x.ViewCount
+            ViewCount = x.ViewCount,
+            ProductTagIds=x.ProductTagIds??"",
+            ProductTagNames=x.ProductTagNames??"",
         });
     }
 

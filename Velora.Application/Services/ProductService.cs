@@ -34,14 +34,16 @@ namespace Velora.Application.Services
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IProductTagService _ProductTagService;
         protected readonly IProductTagMappingService _productTagMappingService;
+        protected readonly IProductInventoryTransactionService _productInventoryService;
         
+
         public ProductService(
               ISqlRepository<SqlProduct> sqlRepository,
               IPosgreSqlRepository<SqlProduct> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService)
+              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -54,6 +56,7 @@ namespace Velora.Application.Services
             _currentUserService = currentUserService;
             _ProductTagService = ProductTagService;
             _productTagMappingService = productTagMappingService;
+            _productInventoryService = productInventoryService;
         }
         public async Task<IQueryable<ProductCrud>> GetAllViews()
         {
@@ -202,34 +205,45 @@ namespace Velora.Application.Services
                     return ProductResult;
                 var ProductId = ProductResult.Data.Id;
 
+                var ProductTagIds = input.ProductTagIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(Guid.Parse)
+                    .Distinct()
+                    .ToList() ?? new List<Guid>();
 
-                var ProductTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                       .Select(Guid.Parse)
-                       .ToList();
+                var existingProductTags = await _productTagMappingService
+                    .GetByProductTagMappingsAsync(ProductId);
 
-                var ProductTags = await _productTagMappingService.GetByProductTagMappingsAsync(ProductId);
 
-                var tagsToRemove = ProductTags
-                    .Where(r => !ProductTagIds.Contains(r.ProductTagId))
+                // حذف مواردی که دیگر وجود ندارند
+                var tagsToRemove = existingProductTags
+                    .Where(x => !ProductTagIds.Contains(x.ProductTagId))
                     .ToList();
 
-                foreach (var r in tagsToRemove)
+                foreach (var tag in tagsToRemove)
                 {
-                    await _productTagMappingService.DeleteAsync(r.Id);
+                    await _productTagMappingService.DeleteAsync(tag.Id);
                 }
 
-                if (ProductTagIds != null && ProductTagIds.Any())
-                {
-                    foreach (var Tag in ProductTagIds)
-                    {
-                        var ProductTag = new ProductTagMappingDto
-                        {
-                            ProductTagId = Tag,
-                            ProductId = ProductId
-                        };
-                        await _productTagMappingService.CreateAsync(ProductTag);
-                    }
 
+                // اضافه کردن فقط موارد جدید
+                var existingTagIds = existingProductTags
+                    .Select(x => x.ProductTagId)
+                    .ToHashSet();
+
+
+                var tagsToAdd = ProductTagIds
+                    .Where(x => !existingTagIds.Contains(x))
+                    .ToList();
+
+
+                foreach (var tagId in tagsToAdd)
+                {
+                    await _productTagMappingService.CreateAsync(new ProductTagMappingDto
+                    {
+                        ProductId = ProductId,
+                        ProductTagId = tagId
+                    });
                 }
                 await _transactionService.CommitAsync();
                 return ProductResult;
@@ -353,7 +367,336 @@ int ProductSize)
             return resultBytes;
         }
 
+        public async Task<ResultDto<ProductListResultDto>> GetProductsAsync(
+            int page,
+            int pageSize,
+            string? categorySlug,
+            string? brandSlug,
+            string? search,
+            string sort,
+            decimal? minPrice = null,
+            decimal? maxPrice = null)
+        {
+            try
+            {
 
+                var query =
+                    Query()
+
+                    .Include(x => x.Category)
+
+                    .Include(x => x.Brand)
+
+                    .Include(x => x.ProductFiles)
+                    .Include(x => x.ProductVariants)
+                    .Include(x => x.ProductTagMappings)
+                        .ThenInclude(x => x.ProductTag)
+
+                    .Where(x =>
+                        x.IsPublished == true &&
+                        x.IsActive == true);
+
+
+
+                // ===============================
+                // Category Filter
+                // ===============================
+
+                if (!string.IsNullOrWhiteSpace(categorySlug))
+                {
+                    query =
+                        query.Where(x =>
+                            x.Category != null &&
+                            x.Category.Slug == categorySlug);
+                }
+
+
+
+                // ===============================
+                // Brand Filter
+                // ===============================
+
+                if (!string.IsNullOrWhiteSpace(brandSlug))
+                {
+                    query =
+                        query.Where(x =>
+                            x.Brand != null &&
+                            x.Brand.Slug == brandSlug);
+                }
+
+
+
+                // ===============================
+                // Search
+                // ===============================
+
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    query =
+                        query.Where(x =>
+                            x.Name.Contains(search));
+                }
+
+
+                // ===============================
+                // Price Filter
+                // ===============================
+
+                if (minPrice.HasValue)
+                {
+                    query =
+                        query.Where(x =>
+                            (x.ProductVariants.Any()
+                                ? x.ProductVariants.Min(v => v.Price)
+                                : x.Price) >= minPrice.Value);
+                }
+
+
+                if (maxPrice.HasValue)
+                {
+                    query =
+                        query.Where(x =>
+                            (x.ProductVariants.Any()
+                                ? x.ProductVariants.Min(v => v.Price)
+                                : x.Price) <= maxPrice.Value);
+                }
+
+                // ===============================
+                // Sort
+                // ===============================
+
+                query =
+                    sort switch
+                    {
+                        "priceAsc" =>
+                            query.OrderBy(x =>
+                                x.ProductVariants.Any()
+                                    ? x.ProductVariants.Min(v => v.Price)
+                                    : x.Price),
+
+
+                        "priceDesc" =>
+                            query.OrderByDescending(x =>
+                                x.ProductVariants.Any()
+                                    ? x.ProductVariants.Max(v => v.Price)
+                                    : x.Price),
+
+
+                        "oldest" =>
+                            query.OrderBy(x => x.CreatedAt),
+
+
+                        _ =>
+                            query.OrderByDescending(x => x.CreatedAt)
+                    };
+
+
+
+
+
+                // ===============================
+                // Total Count
+                // ===============================
+
+                var total =
+                    await query.CountAsync();
+
+
+
+
+
+
+                // ===============================
+                // Pagination
+                // ===============================
+
+                var products =
+                    await query
+
+                    .Skip((page - 1) * pageSize)
+
+                    .Take(pageSize)
+
+                    .ToListAsync();
+
+
+
+
+
+
+                // ===============================
+                // Inventory Bulk Calculation
+                // ===============================
+
+
+                var productIds =
+                    products
+                    .Select(x => x.Id)
+                    .ToList();
+
+
+
+                var inventories =
+                    await _productInventoryService
+                        .GetInventoryAsync(productIds);
+
+
+
+
+
+
+
+                // ===============================
+                // Mapping
+                // ===============================
+
+                var data =
+                    products.Select(x =>
+                    {
+
+                        inventories.TryGetValue(
+                            x.Id,
+                            out var inventory);
+
+
+
+                        return new ProductListViewDto
+                        {
+
+                            Id = x.Id,
+
+
+                            Name = x.Name,
+
+
+                            Slug = x.Slug,
+
+
+                            Summary = x.Summary,
+
+
+                            Price =
+    x.ProductVariants.Count == 1
+        ? x.ProductVariants.First().Price
+        : x.ProductVariants.Any()
+            ? x.ProductVariants.Min(v => v.Price)
+            : x.Price ?? 0,
+
+
+
+                            MainImage = x.MainImage,
+
+
+                            Thumbnail = x.Thumbnail,
+
+
+
+                            CategoryName =
+                                x.Category?.Name,
+
+
+                            CategorySlug =
+                                x.Category?.Slug,
+
+
+
+                            BrandName =
+                                x.Brand?.Name,
+
+
+                            BrandSlug =
+                                x.Brand?.Slug,
+
+
+
+                            Inventory = inventory,
+
+
+
+                            CreatedAt =
+                                x.CreatedAt,
+
+
+                            HasVariant =
+    x.ProductVariants.Count > 1,
+
+
+                            DefaultVariantId =
+    x.ProductVariants.Count == 1
+        ? x.ProductVariants.First().Id
+        : null,
+
+
+                            Gallery =
+                                x.ProductFiles
+
+                                .OrderBy(f => f.SortOrder)
+
+                                .Select(m =>
+                                    new ProductMediaViewDto
+                                    {
+                                        Id = m.Id,
+
+                                        FileUrl = m.FileUrl,
+
+                                        ThumbnailUrl =
+                                            m.ThumbnailUrl,
+
+                                        IsMain =
+                                            m.IsMain,
+
+                                        SortOrder =
+                                            m.SortOrder
+
+                                    })
+                                .ToList(),
+
+                        };
+
+                    })
+
+                    .ToList();
+
+
+
+
+
+
+
+                return new ResultDto<ProductListResultDto>
+                {
+                    Success = true,
+
+                    Data = new ProductListResultDto
+                    {
+                        Items = data,
+
+                        TotalCount = total,
+
+                        Page = page,
+
+                        PageSize = pageSize
+                    }
+                };
+
+            }
+            catch (Exception ex)
+            {
+
+                return new ResultDto<ProductListResultDto>
+                {
+                    Success = false,
+
+                    Message = "خطا در دریافت لیست محصولات",
+
+                    Errors =
+            {
+                ex.Message
+            }
+                };
+
+            }
+        }
     }
 
 }
