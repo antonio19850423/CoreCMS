@@ -229,7 +229,15 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlShoppingCart, ShoppingCartDto>().ReverseMap();
             CreateMap<SqlShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
 
-            
+            CreateMap<SqlSmsLog, SmsLogCrud>().ReverseMap();
+            CreateMap<VwSmsLogForm, SmsLogCrud>().ReverseMap();
+            CreateMap<SqlSmsLog, SmsLogDto>().ReverseMap();
+
+            CreateMap<SqlSmsSetting, SmsSettingCrud>().ReverseMap();
+            CreateMap<VwSmsSettingForm, SmsSettingCrud>().ReverseMap();
+            CreateMap<SqlSmsSetting, SmsSettingDto>().ReverseMap();
+
+
         }
 
 

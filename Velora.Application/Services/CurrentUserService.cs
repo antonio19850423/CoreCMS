@@ -18,11 +18,11 @@ namespace Velora.Application.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid GetUserId()
+        public Guid? GetUserId()
         {
             var claim = _httpContextAccessor.HttpContext?.User.Claims
                         .FirstOrDefault(c => c.Type == "UserGuid");
-            return claim != null ? Guid.Parse(claim.Value) : Guid.Empty;
+            return claim != null ? Guid.Parse(claim.Value) : null;
         }
 
         public List<string> GetRoles()

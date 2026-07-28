@@ -406,6 +406,54 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SMSSETTING_MANAGEMENT_MENU",
+          "Name": "Sms Setting Menu",
+          "Route": "basic-info/smssetting-management",
+          "DisplayName": {
+            "en": "Sms Setting",
+            "fa": "تنظیمات پیامک"
+          },
+          "Order": 14,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SMSSETTING_MANAGEMENT_PAGE",
+              "Name": "Sms Setting Page",
+              "DisplayName": {
+                "en": "Sms Setting",
+                "fa": "تنظیمات پیامک"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SMSLOG_MANAGEMENT_MENU",
+          "Name": "Sms Log Menu",
+          "Route": "basic-info/smslog-management",
+          "DisplayName": {
+            "en": "Sms Log",
+            "fa": "گزارش پیامک"
+          },
+          "Order": 13,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SMSLOG_MANAGEMENT_PAGE",
+              "Name": "Sms Log Page",
+              "DisplayName": {
+                "en": "Sms Log",
+                "fa": "گزارش پیامک"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     },

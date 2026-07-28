@@ -148,6 +148,12 @@ global using SqlDiscountItemView = Velora.EntityFrameworkCore.EntityFramework.Sq
 global using SqlCoupon = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Coupon;
 global using SqlCouponView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCouponForm;
 
+global using SqlSmsSetting = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SmsSetting;
+global using SqlSmsSettingView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSmsSettingForm;
+
+global using SqlSmsLog = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SmsLog;
+global using SqlSmsLogView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSmsLogForm;
+
 
 
 

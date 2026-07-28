@@ -191,7 +191,7 @@ namespace Velora.Application.Services
                     await GetOrCreateCartAsync(
                         userId,
                         cartToken);
-                await _transactionService.CommitAsync();
+               
 
 
                 var cart = cartResult;
@@ -347,16 +347,21 @@ namespace Velora.Application.Services
 
             item.Quantity = quantity;
 
-            item.UpdatedAt = DateTime.Now;
-
 
 
             await _shoppingCartItemService
-                .UpdateAsync(
-                    item,
-                    item.Id);
+                .Query()
+                .Where(x => x.Id == itemId)
+                .ExecuteUpdateAsync(x =>
+                    x.SetProperty(
+                        p => p.Quantity,
+                        quantity)
+                     .SetProperty(
+                        p => p.UpdatedAt,
+                        DateTime.UtcNow)
+                );
 
-
+            await _transactionService.CommitAsync();
 
             return await GetCartAsync(
                 userId,
@@ -393,7 +398,7 @@ namespace Velora.Application.Services
 
             }
 
-
+            await _transactionService.CommitAsync();
 
             return await GetCartAsync(
                 userId,
@@ -438,7 +443,7 @@ namespace Velora.Application.Services
 
             }
 
-
+            await _transactionService.CommitAsync();
 
             return new ResultDto<bool>
             {
@@ -457,7 +462,7 @@ namespace Velora.Application.Services
 
 
         public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-            Guid userId,
+            Guid? userId,
             string cartToken)
         {
 
@@ -487,7 +492,7 @@ namespace Velora.Application.Services
                     guestCart.Id);
 
 
-
+            await _transactionService.CommitAsync();
             return await GetCartAsync(
                 userId,
                 cartToken);
@@ -536,9 +541,21 @@ namespace Velora.Application.Services
 
 
         private async Task<ShoppingCart> GetOrCreateCartAsync(
-            Guid? userId,
-            string? cartToken)
+       Guid? userId,
+       string? cartToken)
         {
+            // اگر userId خالی باشد تبدیل به null شود
+            if (userId == Guid.Empty)
+                userId = null;
+
+
+            // اگر Token نداریم ایجاد کنیم
+            if (string.IsNullOrWhiteSpace(cartToken))
+            {
+                cartToken = Guid.NewGuid().ToString();
+            }
+
+
 
             var cart =
                 await GetCartEntityAsync(
@@ -554,20 +571,15 @@ namespace Velora.Application.Services
 
             var entity = new ShoppingCart
             {
-
                 Id = Guid.NewGuid(),
 
-                UserId = (userId==Guid.Empty?null:userId),
+                UserId = userId,
 
-                CartToken =
-                    cartToken
-                    ??
-                    Guid.NewGuid()
-                    .ToString(),
+                CartToken = cartToken,
 
+                Status = 1,
 
-                Status = 1
-
+                ExpireAt = DateTime.Now.AddDays(30)
             };
 
 
@@ -578,7 +590,6 @@ namespace Velora.Application.Services
 
 
             return entity;
-
         }
 
 

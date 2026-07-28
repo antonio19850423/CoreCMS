@@ -62,7 +62,7 @@ namespace Velora.Application.Shared.Services
         /// انتقال سبد مهمان به کاربر لاگین شده
         /// </summary>
         Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-            Guid userId,
+            Guid? userId,
             string cartToken);
 
 

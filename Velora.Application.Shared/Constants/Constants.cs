@@ -92,9 +92,9 @@ namespace Velora.Application.Shared.Constants
         public const string Discount = "Discount";
         public const string DiscountItem = "DiscountItem";
         public const string Coupon = "Coupon";
-
-
-
+        public const string SmsSetting = "SmsSetting";
+        public const string SmsLog = "SmsLog";
+        
 
 
 

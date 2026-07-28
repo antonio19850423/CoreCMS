@@ -8,7 +8,7 @@ namespace Velora.Application.Shared.Services
 {
     public interface ICurrentUserService:IBaseService
     {
-        Guid GetUserId();
+        Guid? GetUserId();
         List<string> GetRoles();
         string GetUserName();
     }

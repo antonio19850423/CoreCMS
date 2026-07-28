@@ -45,6 +45,8 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.Discount, typeof(DiscountCrud) },
             { LookupEntities.DiscountItem, typeof(DiscountItemCrud) },
             { LookupEntities.Coupon, typeof(CouponCrud) },
+            { LookupEntities.SmsLog, typeof(SmsLogCrud) },
+            { LookupEntities.SmsSetting, typeof(SmsSettingCrud) },
         };
 
         public static Type? GetModelType(string entityName)

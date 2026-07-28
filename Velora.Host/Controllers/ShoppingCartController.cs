@@ -35,10 +35,14 @@ namespace Velora.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetCartAsync")]
-        public async Task<IActionResult> GetCartAsync(
-            Guid? userId,
-            string? cartToken)
+        public async Task<IActionResult> GetCartAsync()
         {
+            var userId = _currentUserService.GetUserId();
+            var cartToken =
+      _cookieService
+      .GetOrCreate(
+          CookieKeys.CartToken,
+          () => Guid.NewGuid().ToString());
             var result =
                 await _shoppingCartService
                 .GetCartAsync(
@@ -94,13 +98,16 @@ namespace Velora.Api.Controllers
         [HttpPut]
         [Route("UpdateQuantityAsync")]
         public async Task<IActionResult> UpdateQuantityAsync(
-            Guid? userId,
-            string? cartToken,
             Guid itemId,
             int quantity)
         {
 
-
+            var userId = _currentUserService.GetUserId();
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
             var result =
                 await _shoppingCartService
                 .UpdateQuantityAsync(
@@ -127,11 +134,15 @@ namespace Velora.Api.Controllers
         [HttpDelete]
         [Route("RemoveAsync")]
         public async Task<IActionResult> RemoveAsync(
-            Guid? userId,
-            string? cartToken,
             Guid itemId)
         {
+            var userId = _currentUserService.GetUserId();
 
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
 
             var result =
                 await _shoppingCartService
@@ -158,11 +169,14 @@ namespace Velora.Api.Controllers
         /// </summary>
         [HttpDelete]
         [Route("ClearAsync")]
-        public async Task<IActionResult> ClearAsync(
-            Guid? userId,
-            string? cartToken)
+        public async Task<IActionResult> ClearAsync()
         {
-
+            var userId = _currentUserService.GetUserId();
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
             var result =
                 await _shoppingCartService
                 .ClearAsync(
@@ -187,12 +201,15 @@ namespace Velora.Api.Controllers
         /// </summary>
         [HttpPost]
         [Route("MergeAsync")]
-        public async Task<IActionResult> MergeAsync(
-            Guid userId,
-            string cartToken)
+        public async Task<IActionResult> MergeAsync()
         {
 
-
+            var userId = _currentUserService.GetUserId();
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
             var result =
                 await _shoppingCartService
                 .MergeAsync(
@@ -217,11 +234,14 @@ namespace Velora.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetCountAsync")]
-        public async Task<IActionResult> GetCountAsync(
-            Guid? userId,
-            string? cartToken)
+        public async Task<IActionResult> GetCountAsync()
         {
-
+            var userId = _currentUserService.GetUserId();
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
             var result =
                 await _shoppingCartService
                 .GetCountAsync(

@@ -175,3 +175,11 @@ global using SqlShoppingCart = Velora.EntityFrameworkCore.EntityFramework.SqlSer
 global using SqlShoppingCartItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCartItem;
 
 
+global using SqlSmsSetting = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SmsSetting;
+global using SqlSmsSettingView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSmsSettingForm;
+
+
+global using SqlSmsLog = Velora.EntityFrameworkCore.EntityFramework.SqlServer.SmsLog;
+global using SqlSmsLogView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSmsLogForm;
+
+

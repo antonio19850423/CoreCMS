@@ -107,6 +107,10 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<SiteSetting> SiteSettings { get; set; }
 
+    public virtual DbSet<SmsLog> SmsLogs { get; set; }
+
+    public virtual DbSet<SmsSetting> SmsSettings { get; set; }
+
     public virtual DbSet<State> States { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -183,6 +187,10 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSiteSettingForm> VwSiteSettingForms { get; set; }
 
+    public virtual DbSet<VwSmsLogForm> VwSmsLogForms { get; set; }
+
+    public virtual DbSet<VwSmsSettingForm> VwSmsSettingForms { get; set; }
+
     public virtual DbSet<VwTagForm> VwTagForms { get; set; }
 
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
@@ -193,7 +201,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=1800;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -759,6 +767,21 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
+        modelBuilder.Entity<SmsLog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SmsLogs__3214EC077600A246");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<SmsSetting>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SmsSetti__3214EC075CC304D9");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
         modelBuilder.Entity<State>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__States__3214EC07719326B1");
@@ -978,6 +1001,16 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteSettingForm>(entity =>
         {
             entity.ToView("VwSiteSettingForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSmsLogForm>(entity =>
+        {
+            entity.ToView("VwSmsLogForm", "cms");
+        });
+
+        modelBuilder.Entity<VwSmsSettingForm>(entity =>
+        {
+            entity.ToView("VwSmsSettingForm", "cms");
         });
 
         modelBuilder.Entity<VwTagForm>(entity =>

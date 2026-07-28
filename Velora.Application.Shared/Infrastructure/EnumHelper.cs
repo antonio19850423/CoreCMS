@@ -33,5 +33,16 @@ namespace Velora.Application.Shared.Infrastructure
                     Label = GetDisplayName(e)
                 });
         }
+        public static IEnumerable<ComboBoxItemDto<TValue>> GetComboItems<TEnum, TValue>()
+    where TEnum : Enum
+        {
+            return Enum.GetValues(typeof(TEnum))
+                .Cast<TEnum>()
+                .Select(e => new ComboBoxItemDto<TValue>
+                {
+                    Value = (TValue)Convert.ChangeType(e, typeof(TValue)),
+                    Label = GetDisplayName(e)
+                });
+        }
     }
 }
