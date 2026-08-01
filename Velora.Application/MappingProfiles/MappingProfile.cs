@@ -238,6 +238,22 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlSmsSetting, SmsSettingDto>().ReverseMap();
 
 
+            CreateMap<SqlUserOtp, UserOtpCrud>().ReverseMap();
+            CreateMap<VwUserOtpForm, UserOtpCrud>().ReverseMap();
+            CreateMap<SqlUserOtp, UserOtpDto>().ReverseMap();
+
+
+            CreateMap<SqlUserAddress, UserAddressCrud>().ReverseMap();
+            CreateMap<VwUserAddressForm, UserAddressCrud>().ReverseMap();
+            CreateMap<SqlUserAddress, UserAddressDto>().ReverseMap();
+
+            CreateMap<SqlCity, CityCrud>().ReverseMap();
+            CreateMap<VwCityForm, CityCrud>().ReverseMap();
+            CreateMap<SqlCity, CityDto>().ReverseMap();
+
+            CreateMap<SqlState, StateCrud>().ReverseMap();
+            CreateMap<VwStateForm, StateCrud>().ReverseMap();
+            CreateMap<SqlState, StateDto>().ReverseMap();
         }
 
 

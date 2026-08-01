@@ -15,6 +15,7 @@ namespace Velora.Application.Shared.Services
         Task<IQueryable<UserRoleViewDto>> GetSqlUserRolesView();
         Task<UserRoleDto?> GetByUserRoleIdAsync(Guid UserId, Guid RoleId);
         Task<List<UserRoleDto>> GetByUserRolesAsync(Guid userId);
-    }
+        Task<RoleDto?> GetRoleByCodeAsync(
+    string roleCode);    }
 
 }

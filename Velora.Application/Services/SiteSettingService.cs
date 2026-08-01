@@ -98,6 +98,13 @@ namespace Velora.Application.Services
                     SmtpUserName = input.SmtpUserName,
                     SmtpPassword = input.SmtpPassword,
                     SmtpEnableSsl = input.SmtpEnableSsl,
+                    OtpCodeLength = input.OtpCodeLength,
+                    OtpExpirationMinutes = input.OtpExpirationMinutes,
+                    OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
+                    OtpMaxVerifyAttempts = input.OtpMaxVerifyAttempts,
+                    OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
+                    
+                    
                     
                 };
 
@@ -178,6 +185,11 @@ namespace Velora.Application.Services
                     SmtpUserName=input.SmtpUserName,
                     SmtpPort=input.SmtpPort,
                     SmtpHost=input.SmtpHost,
+                    OtpCodeLength = input.OtpCodeLength,
+                    OtpExpirationMinutes = input.OtpExpirationMinutes,
+                    OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
+                    OtpMaxVerifyAttempts = input.OtpMaxVerifyAttempts,
+                    OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

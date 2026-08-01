@@ -87,7 +87,7 @@ namespace Velora.Application.Services
                 {
                     Email = input.Email,
                     IsActive = input.IsActive ?? true,
-                    Password = BCrypt.Net.BCrypt.HashPassword(input.Password),
+                    Password = input.Password?? BCrypt.Net.BCrypt.HashPassword(input.Password),
                     PhoneNumber = input.PhoneNumber,
                     UserName = input.UserName,
                     MobileNumber = input.MobileNumber,
@@ -384,8 +384,290 @@ int pageSize)
 
             return resultBytes;
         }
+        public async Task<UserDto?> GetByMobileNumberAsync(
+          string mobileNumber)
+        {
+            if (string.IsNullOrWhiteSpace(mobileNumber))
+                return null;
 
+            mobileNumber = mobileNumber.Trim();
 
+            if (_dbType == DatabaseType.SqlServer)
+            {
+                var repository =
+                    (ISqlRepository<SqlUser>)GetRepository();
+
+                var entity = await repository
+                    .FirstOrDefaultAsync(
+                        x => x.MobileNumber == mobileNumber);
+
+                return entity == null
+                    ? null
+                    : _mapper.Map<UserDto>(entity);
+            }
+            else
+            {
+                var repository =
+                    (IPosgreSqlRepository<PgUser>)GetRepository();
+
+                var entity = await repository
+                    .FirstOrDefaultAsync(
+                        x => x.MobileNumber == mobileNumber);
+
+                return entity == null
+                    ? null
+                    : _mapper.Map<UserDto>(entity);
+            }
+        }
+        public async Task<ResultDto<UserDto>> CreateCustomerAsync(
+            CustomerRegistrationDto input,
+            CancellationToken cancellationToken = default)
+        {
+            var (_, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(input.Mobile))
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+                        Message = "شماره موبایل الزامی است."
+                    };
+                }
+
+                if (string.IsNullOrWhiteSpace(input.FirstName))
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+                        Message = "نام الزامی است."
+                    };
+                }
+
+                if (string.IsNullOrWhiteSpace(input.LastName))
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+                        Message = "نام خانوادگی الزامی است."
+                    };
+                }
+                if (string.IsNullOrWhiteSpace(input.NationalCode))
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+                        Message = "کد ملی الزامی است."
+                    };
+                }
+
+                var mobile = input.Mobile.Trim();
+
+                var firstName = input.FirstName.Trim();
+
+                var lastName = input.LastName.Trim();
+                var nationalCode = input.NationalCode.Trim();
+
+                var customerRole =
+                    await _userRoleService.GetRoleByCodeAsync(
+                        RoleCodes.USER);
+
+                if (customerRole == null)
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+                        Message = "نقش کاربر در سیستم تعریف نشده است."
+                    };
+                }
+
+                var existingUser =
+                    await GetByMobileNumberAsync(
+                        mobile);
+
+                // =====================================================
+                // کاربر قبلاً وجود دارد
+                // =====================================================
+                if (existingUser != null)
+                {
+                    var existingUserRoles =
+                        await _userRoleService
+                            .GetRolesByUserIdAsync(
+                                existingUser.Id);
+
+                    var hasUserRole =
+                        existingUserRoles.Any(
+                            x => x.Id == customerRole.Id);
+
+                    // اگر نقش USER ندارد، به کاربر اضافه می‌شود
+                    if (!hasUserRole)
+                    {
+                        var userRole =
+                            await _userRoleService.CreateAsync(
+                                new UserRoleDto
+                                {
+                                    Userid = existingUser.Id,
+                                    Roleid = customerRole.Id
+                                });
+
+                        if (!userRole.Success)
+                        {
+                            await _transactionService
+                                .RollbackAsync();
+
+                            return new ResultDto<UserDto>
+                            {
+                                Success = false,
+                                Message =
+                                    userRole.Message
+                                    ?? "خطا در افزودن نقش کاربر.",
+
+                                Errors =
+                                    userRole.Errors
+                            };
+                        }
+
+                        await _transactionService
+                            .CommitAsync();
+                    }
+
+                    return new ResultDto<UserDto>
+                    {
+                        Success = true,
+
+                        Message =
+                            hasUserRole
+                                ? "کاربر قبلاً ثبت‌نام شده است."
+                                : "نقش کاربر با موفقیت اضافه شد.",
+
+                        Data = existingUser
+                    };
+                }
+
+                // =====================================================
+                // کاربر وجود ندارد؛ ایجاد کاربر جدید
+                // =====================================================
+
+                var user = new UserDto
+                {
+                    UserName = mobile,
+
+                    MobileNumber = mobile,
+
+                    NationalCode = nationalCode,
+
+                    IsActive = true
+                };
+
+                var userResult =
+                    await CreateAsync(user);
+
+                if (!userResult.Success ||
+                    userResult.Data == null)
+                {
+                    await _transactionService
+                        .RollbackAsync();
+
+                    return userResult;
+                }
+
+                var userId =
+                    userResult.Data.Id;
+
+                // =====================================================
+                // ایجاد پروفایل
+                // =====================================================
+
+                var profile =
+                    new UserProfileDto
+                    {
+                        Userid = userId,
+
+                        Firstname = firstName,
+
+                        Lastname = lastName,
+                        Nationalcode = nationalCode,
+                    };
+
+                var profileResult =
+                    await _userProfileService
+                        .CreateAsync(profile);
+
+                if (!profileResult.Success)
+                {
+                    await _transactionService
+                        .RollbackAsync();
+
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+
+                        Message =
+                            profileResult.Message
+                            ?? "خطا در ایجاد پروفایل کاربر.",
+
+                        Errors =
+                            profileResult.Errors
+                    };
+                }
+
+                // =====================================================
+                // اختصاص نقش USER
+                // =====================================================
+
+                var userRoleResult =
+                    await _userRoleService
+                        .CreateAsync(
+                            new UserRoleDto
+                            {
+                                Userid = userId,
+
+                                Roleid = customerRole.Id
+                            });
+
+                if (!userRoleResult.Success)
+                {
+                    await _transactionService
+                        .RollbackAsync();
+
+                    return new ResultDto<UserDto>
+                    {
+                        Success = false,
+
+                        Message =
+                            userRoleResult.Message
+                            ?? "خطا در اختصاص نقش کاربر.",
+
+                        Errors =
+                            userRoleResult.Errors
+                    };
+                }
+
+                await _transactionService
+                    .CommitAsync();
+
+                return userResult;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                return new ResultDto<UserDto>
+                {
+                    Success = false,
+
+                    Message = errorMessage,
+
+                    Errors = new List<string>
+            {
+                ex.Message
+            }
+                };
+            }
+        }
 
     }
 }

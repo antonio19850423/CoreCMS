@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Infrastructure;
 
 namespace Velora.Host.Middlewares
 {
@@ -27,6 +29,24 @@ namespace Velora.Host.Middlewares
             {
                 // Continue processing the request
                 await _next(context);
+            }
+            catch (BusinessException ex)
+            {
+                context.Response.StatusCode =
+                    StatusCodes.Status400BadRequest;
+
+                context.Response.ContentType =
+                    "application/json";
+
+                var response =
+                    new ResultDto<object>
+                    {
+                        Success = false,
+                        Message = ex.Message
+                    };
+
+                await context.Response
+                    .WriteAsJsonAsync(response);
             }
             catch (Exception ex)
             {

@@ -14,10 +14,10 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Id { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, MaxLength = 100, IsRequired = true, FormOrder = 0, GridOrder = 0,ShowInGrid =true,ShowInForm =true)]
         public string? UserName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text,InputMask =InputMasks.Password,MaxLength = 255,IsRequired = true,FormOrder = 1,GridOrder = 1,ShowInGrid = false,ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text,InputMask =InputMasks.Password,MaxLength = 255,IsRequired = false,FormOrder = 1,GridOrder = 1,ShowInGrid = false,ShowInForm = true)]
         public string? Password { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, InputMask=InputMasks.Email, MaxLength = 200, IsRequired = true, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, InputMask=InputMasks.Email, MaxLength = 200, IsRequired = false, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true)]
         public string? Email { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, InputMask = InputMasks.Mobile, MaxLength = 20, IsRequired = true, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true)]
         public string? MobileNumber { get; set; }
@@ -28,11 +28,11 @@ namespace Velora.Application.Shared.Dtos
         public string? FirstName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, MaxLength = 100, IsRequired = true, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true)]
         public string? LastName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, MaxLength = 20, InputMask = InputMasks.NationalCode, IsRequired = true, FormOrder =7, GridOrder = 7, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, MaxLength = 20, InputMask = InputMasks.NationalCode, IsRequired = false, FormOrder =7, GridOrder = 7, ShowInGrid = true, ShowInForm = true)]
         public string? NationalCode { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Image,MaxLength = 512,IsRequired = false,FormOrder =8,GridOrder = 8,ShowInGrid = true,ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Image,MaxLength = 512,IsRequired = false,FormOrder =8,GridOrder = 8,ShowInGrid = false,ShowInForm = true)]
         public string? ProfileImage { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Textarea, MaxLength = 500, IsRequired = false, FormOrder = 9,GridOrder =9, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, MaxLength = 500, IsRequired = false, FormOrder = 9,GridOrder =9, ShowInGrid = false, ShowInForm = true)]
         public string? Address { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, MaxLength = 100, IsRequired = false, FormOrder = 10, GridOrder =10, ShowInGrid = false, ShowInForm = false)]
         public string? CountryName { get; set; }

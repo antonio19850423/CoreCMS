@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Constants;
+using Velora.Application.Shared.Dtos;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Infrastructure
 {
@@ -47,6 +48,10 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.Coupon, typeof(CouponCrud) },
             { LookupEntities.SmsLog, typeof(SmsLogCrud) },
             { LookupEntities.SmsSetting, typeof(SmsSettingCrud) },
+            { LookupEntities.UserOtp, typeof(UserOtpCrud) },
+            { LookupEntities.UserAddress, typeof(UserAddressCrud) },
+            { LookupEntities.City, typeof(CityCrud) },
+            { LookupEntities.State, typeof(StateCrud) },
         };
 
         public static Type? GetModelType(string entityName)

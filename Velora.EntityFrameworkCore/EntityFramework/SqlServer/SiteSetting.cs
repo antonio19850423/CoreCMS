@@ -103,4 +103,14 @@ public partial class SiteSetting
     public string? SmtpPassword { get; set; }
 
     public bool? SmtpEnableSsl { get; set; }
+
+    public int? OtpExpirationMinutes { get; set; }
+
+    public int? OtpCodeLength { get; set; }
+
+    public int? OtpMaxVerifyAttempts { get; set; }
+
+    public int? OtpRequestCooldownSeconds { get; set; }
+
+    public int? OtpMaxRequestsPerHour { get; set; }
 }

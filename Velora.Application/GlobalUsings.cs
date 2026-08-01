@@ -183,3 +183,17 @@ global using SqlSmsLog = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Sm
 global using SqlSmsLogView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwSmsLogForm;
 
 
+global using SqlUserOtp = Velora.EntityFrameworkCore.EntityFramework.SqlServer.UserOtp;
+global using SqlUserOtpView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwUserOtpForm;
+
+
+global using SqlUserAddress = Velora.EntityFrameworkCore.EntityFramework.SqlServer.UserAddress;
+global using SqlUserAddressView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwUserAddressForm;
+
+global using SqlCity = Velora.EntityFrameworkCore.EntityFramework.SqlServer.City;
+global using SqlCityView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCityForm;
+
+global using SqlState = Velora.EntityFrameworkCore.EntityFramework.SqlServer.State;
+global using SqlStateView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwStateForm;
+
+

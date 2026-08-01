@@ -216,4 +216,19 @@
   <data name="SiteSetting.SmtpEnableSsl" xml:space="preserve">
     <value>فعال‌سازی SSL</value>
   </data>
+  <data name="SiteSetting.OtpExpirationMinutes" xml:space="preserve">
+    <value>مدت اعتبار کد یکبار مصرف</value>
+  </data>
+  <data name="SiteSetting.OtpCodeLength" xml:space="preserve">
+    <value>تعداد ارقام کد یکبار مصرف</value>
+  </data>
+  <data name="SiteSetting.OtpRequestCooldownSeconds" xml:space="preserve">
+    <value>فاصله زمانی درخواست مجدد کد</value>
+  </data>
+  <data name="SiteSetting.OtpMaxRequestsPerHour" xml:space="preserve">
+    <value>حداکثر تعداد درخواست کد در ساعت"</value>
+  </data>
+  <data name="SiteSetting.OtpMaxVerifyAttempts" xml:space="preserve">
+    <value>حداکثر تعداد تلاش برای ورود کد</value>
+  </data>
 </root>

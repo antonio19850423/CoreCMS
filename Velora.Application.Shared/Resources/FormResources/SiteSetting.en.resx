@@ -216,4 +216,19 @@
   <data name="SiteSetting.SmtpEnableSsl" xml:space="preserve">
     <value>EnableSsl</value>
   </data>
+  <data name="SiteSetting.OtpExpirationMinutes" xml:space="preserve">
+    <value>OtpExpirationMinutes</value>
+  </data>
+  <data name="SiteSetting.OtpCodeLength" xml:space="preserve">
+    <value>OtpCodeLength </value>
+  </data>
+  <data name="SiteSetting.OtpRequestCooldownSeconds" xml:space="preserve">
+    <value>OtpRequestCooldownSeconds </value>
+  </data>
+  <data name="SiteSetting.OtpMaxRequestsPerHour" xml:space="preserve">
+    <value>OtpMaxRequestsPerHour</value>
+  </data>
+  <data name="SiteSetting.OtpMaxVerifyAttempts" xml:space="preserve">
+    <value>OtpMaxVerifyAttempts </value>
+  </data>
 </root>

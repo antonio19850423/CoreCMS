@@ -117,11 +117,17 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserAddress> UserAddresses { get; set; }
+
+    public virtual DbSet<UserOtp> UserOtps { get; set; }
+
     public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
     public virtual DbSet<VwCategoryAttributeForm> VwCategoryAttributeForms { get; set; }
+
+    public virtual DbSet<VwCityForm> VwCityForms { get; set; }
 
     public virtual DbSet<VwCmsConfigurationForm> VwCmsConfigurationForms { get; set; }
 
@@ -191,9 +197,15 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwSmsSettingForm> VwSmsSettingForms { get; set; }
 
+    public virtual DbSet<VwStateForm> VwStateForms { get; set; }
+
     public virtual DbSet<VwTagForm> VwTagForms { get; set; }
 
+    public virtual DbSet<VwUserAddressForm> VwUserAddressForms { get; set; }
+
     public virtual DbSet<VwUserForm> VwUserForms { get; set; }
+
+    public virtual DbSet<VwUserOtpForm> VwUserOtpForms { get; set; }
 
     public virtual DbSet<VwUserRole> VwUserRoles { get; set; }
 
@@ -201,7 +213,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=1800;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -812,6 +824,25 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
+        modelBuilder.Entity<UserAddress>(entity =>
+        {
+            entity.HasIndex(e => new { e.UserId, e.PostalCode }, "UX_UserAddresses_UserId_PostalCode")
+                .IsUnique()
+                .HasFilter("([IsDeleted]=(0))");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserAddresses).OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<UserOtp>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.MaxAttempts).HasDefaultValue(5);
+        });
+
         modelBuilder.Entity<UserProfile>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__UserProf__3214EC07E311A7CF");
@@ -841,6 +872,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwCategoryAttributeForm>(entity =>
         {
             entity.ToView("VwCategoryAttributeForm", "cms");
+        });
+
+        modelBuilder.Entity<VwCityForm>(entity =>
+        {
+            entity.ToView("VwCityForm", "cms");
         });
 
         modelBuilder.Entity<VwCmsConfigurationForm>(entity =>
@@ -1013,14 +1049,29 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwSmsSettingForm", "cms");
         });
 
+        modelBuilder.Entity<VwStateForm>(entity =>
+        {
+            entity.ToView("VwStateForm", "cms");
+        });
+
         modelBuilder.Entity<VwTagForm>(entity =>
         {
             entity.ToView("VwTagForm", "cms");
         });
 
+        modelBuilder.Entity<VwUserAddressForm>(entity =>
+        {
+            entity.ToView("VwUserAddressForm", "cms");
+        });
+
         modelBuilder.Entity<VwUserForm>(entity =>
         {
             entity.ToView("VwUserForm", "auth");
+        });
+
+        modelBuilder.Entity<VwUserOtpForm>(entity =>
+        {
+            entity.ToView("VwUserOtpForm", "cms");
         });
 
         modelBuilder.Entity<VwUserRole>(entity =>

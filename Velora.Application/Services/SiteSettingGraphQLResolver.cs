@@ -69,6 +69,11 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             SmtpUserName= x.SmtpUserName ??"",
             SmtpPort= x.SmtpPort,
             SmtpHost= x.SmtpHost ??"",
+            OtpCodeLength= x.OtpCodeLength ,
+            OtpRequestCooldownSeconds= x.OtpRequestCooldownSeconds ,
+            OtpMaxVerifyAttempts= x.OtpMaxVerifyAttempts ,
+            OtpMaxRequestsPerHour= x.OtpMaxRequestsPerHour ,
+            OtpExpirationMinutes= x.OtpExpirationMinutes ,
             ShouldInsert = x.ShouldInsert
         });
     }

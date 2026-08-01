@@ -45,6 +45,9 @@ public partial class User
     public string? Password { get; set; }
 
     [InverseProperty("User")]
+    public virtual ICollection<UserAddress> UserAddresses { get; set; } = new List<UserAddress>();
+
+    [InverseProperty("User")]
     public virtual ICollection<UserProfile> UserProfiles { get; set; } = new List<UserProfile>();
 
     [InverseProperty("User")]

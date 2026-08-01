@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Velora.Application.Shared.Enums;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Constants
 {
@@ -94,7 +95,10 @@ namespace Velora.Application.Shared.Constants
         public const string Coupon = "Coupon";
         public const string SmsSetting = "SmsSetting";
         public const string SmsLog = "SmsLog";
-        
+        public const string UserOtp = "UserOtp";
+        public const string UserAddress = "UserAddress";
+        public const string City = "City";
+        public const string State = "State";
 
 
 
@@ -121,5 +125,14 @@ namespace Velora.Application.Shared.Constants
     }
 
 
-
+    public static class SmsTemplateNames
+    {
+        public const string AUTHOTP = "AUTHOTP";
+    }
+    public static class RoleCodes
+    {
+        public const string USER = "USER";
+        public const string DEV = "DEV";
+        public const string ADMIN = "ADMIN";
+    }
 }

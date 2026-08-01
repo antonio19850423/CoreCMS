@@ -90,7 +90,44 @@ namespace Velora.Application.Services
                 return _mapper.Map<List<UserRoleDto>>(entities); // ✅ مپ به لیست
             }
         }
+        public async Task<RoleDto?> GetRoleByCodeAsync(string roleCode)
+        {
+            if (string.IsNullOrWhiteSpace(roleCode))
+                return null;
 
+            roleCode = roleCode.Trim();
+
+            if (_dbType == DatabaseType.SqlServer)
+            {
+                var roles = await GetSqlRepository()
+                    .GetListAsync<RoleDto>(
+                        u => u.Role.Code == roleCode,
+                        c => new RoleDto
+                        {
+                            Id = c.RoleId,
+                            Name = c.Role.Name,
+                            Code = c.Role.Code
+                        },
+                        u => u.Role);
+
+                return roles.FirstOrDefault();
+            }
+            else
+            {
+                var roles = await GetPgRepository()
+                    .GetListAsync<RoleDto>(
+                        u => u.Role.Code == roleCode,
+                        c => new RoleDto
+                        {
+                            Id = c.RoleId,
+                            Name = c.Role.Name,
+                            Code = c.Role.Code
+                        },
+                        u => u.Role);
+
+                return roles.FirstOrDefault();
+            }
+        }
         public async Task<IQueryable<UserRoleViewDto>> GetPgUserRolesView()
         {
 

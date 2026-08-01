@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public  class SiteSettingDto
+    public class SiteSettingDto
     {
         [Key]
         public Guid Id { get; set; }
@@ -90,6 +90,7 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(200)]
         public string? DarkLogoAlt { get; set; }
+
         [StringLength(200)]
         public string? SmtpHost { get; set; }
 
@@ -102,5 +103,17 @@ namespace Velora.Application.Shared.Dtos
         public string? SmtpPassword { get; set; }
 
         public bool? SmtpEnableSsl { get; set; }
+
+        public int? OtpExpirationMinutes { get; set; }
+
+        public int? OtpCodeLength { get; set; }
+
+        public int? OtpMaxVerifyAttempts { get; set; }
+
+        public int? OtpRequestCooldownSeconds { get; set; }
+
+        public int? OtpMaxRequestsPerHour { get; set; }
+
+        public bool? OtpEnabled { get; set; }
     }
 }
