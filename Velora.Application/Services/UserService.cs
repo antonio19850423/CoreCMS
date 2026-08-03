@@ -9,12 +9,13 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.PostgreSQL;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 namespace Velora.Application.Services
-{ 
+{
     public class UserService : GenericService<SqlUser, PgUser, UserDto>, IUserService
     {
         private readonly ISqlRepository<PgUser> _repository;
@@ -87,7 +88,7 @@ namespace Velora.Application.Services
                 {
                     Email = input.Email,
                     IsActive = input.IsActive ?? true,
-                    Password = input.Password?? BCrypt.Net.BCrypt.HashPassword(input.Password),
+                    Password = input.Password ?? BCrypt.Net.BCrypt.HashPassword(input.Password),
                     PhoneNumber = input.PhoneNumber,
                     UserName = input.UserName,
                     MobileNumber = input.MobileNumber,
@@ -248,7 +249,7 @@ namespace Velora.Application.Services
                 {
                     foreach (var Role in RoleIds)
                     {
-                        var existingRole = await _userRoleService.GetByUserRoleIdAsync(userId,Role);
+                        var existingRole = await _userRoleService.GetByUserRoleIdAsync(userId, Role);
 
                         if (existingRole == null)
                         {
@@ -668,6 +669,9 @@ int pageSize)
                 };
             }
         }
+
+
+
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Velora.Application.Services
     _userRoleService;
         private readonly IUserAddressService _userAddressService;
 
-
+        private readonly IUploadService _uploadService;
         private readonly DatabaseType _dbType;
         public UserAuthenticationService(
             IUserService userService,
@@ -51,7 +52,7 @@ namespace Velora.Application.Services
             ISiteSettingService siteSettingService,
             ISmsService smsService,
             IJwtTokenService jwtTokenService,
-            ITransactionService transactionService, IConfiguration configuration, IUserRoleService userRoleService,IUserAddressService userAddressService, ICurrentUserService currentUserService)
+            ITransactionService transactionService, IConfiguration configuration, IUserRoleService userRoleService, IUserAddressService userAddressService, ICurrentUserService currentUserService, IUploadService uploadService)
         {
             _userService = userService;
 
@@ -78,6 +79,7 @@ namespace Velora.Application.Services
             _userRoleService = userRoleService;
             _userAddressService = userAddressService;
             _currentUserService = currentUserService;
+            _uploadService = uploadService;
         }
 
         /// <summary>
@@ -411,7 +413,7 @@ namespace Velora.Application.Services
                     FirstName = profile?.Firstname,
 
                     LastName = profile?.Lastname,
-                    NationalCode= user?.NationalCode,
+                    NationalCode = user?.NationalCode,
                     Email = user.Email,
 
                     Avatar = profile?.ProfileImage
@@ -895,7 +897,7 @@ nationalCode
             }
             firstName = firstName.Trim();
             lastName = lastName.Trim();
-            nationalCode= nationalCode.Trim();
+            nationalCode = nationalCode.Trim();
             /*
              * ایجاد کاربر
              *
@@ -906,9 +908,9 @@ nationalCode
             {
                 Mobile = mobile,
                 FirstName = firstName,
-                
+
                 LastName = lastName,
-                NationalCode= nationalCode,
+                NationalCode = nationalCode,
             };
 
             var createUserResult =
@@ -1036,10 +1038,22 @@ nationalCode
                  * فقط OTP تأییدشده و استفاده‌نشده
                  * اجازه ثبت‌نام دارد.
                  */
-                var otp =
-                    await _userOtpService
-                        .FirstOrDefaultAsync<
-                            UserOtpDto>(
+
+                var otp = _dbType == DatabaseType.SqlServer
+? await _userOtpService.FirstOrDefaultAsync<UserOtpDto>(
+                            x =>
+                                x.Mobile == mobile
+                                &&
+                                x.Purpose ==
+                                (int)
+                                UserOtpPurpose
+                                    .Authentication
+                                &&
+                                x.IsVerified
+                                &&
+                                !x.IsUsed
+                        )
+: await _userOtpService.FirstOrDefaultAsync<UserOtpDto>(
                             x =>
                                 x.Mobile == mobile
                                 &&
@@ -1392,304 +1406,310 @@ nationalCode
         public async Task<ResultDto<UserAddressDto>> CreateUserAddressAsync(
             UserAddressCrud input,
             CancellationToken cancellationToken = default)
-                {
-                    var result = new ResultDto<UserAddressDto>();
+        {
+            var result = new ResultDto<UserAddressDto>();
             var userId = _currentUserService.GetUserId();
-                    try
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (userId == Guid.Empty)
+                {
+                    return new ResultDto<UserAddressDto>
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
+                        Success = false,
+                        Message = "کاربر معتبر نیست."
+                    };
+                }
 
-                        if (userId == Guid.Empty)
+                if (input == null)
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آدرس ارسال نشده است."
+                    };
+                }
+
+
+                var title = input.Title?.Trim();
+
+                var addressText = input.Address?.Trim();
+
+                var postalCode =
+                    input.PostalCode?
+                        .Trim()
+                        .Replace("-", "")
+                        .Replace(" ", "");
+
+
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "عنوان آدرس الزامی است."
+                    };
+                }
+
+
+                if (input.ProvinceId == Guid.Empty)
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "استان را انتخاب کنید."
+                    };
+                }
+
+
+                if (input.CityId == Guid.Empty)
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "شهر را انتخاب کنید."
+                    };
+                }
+
+
+                if (string.IsNullOrWhiteSpace(addressText))
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "آدرس الزامی است."
+                    };
+                }
+
+
+                if (string.IsNullOrWhiteSpace(postalCode))
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "کد پستی الزامی است."
+                    };
+                }
+
+
+                if (postalCode.Length != 10 ||
+                    !postalCode.All(char.IsDigit))
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "کد پستی باید دقیقاً ۱۰ رقم باشد."
+                    };
+                }
+
+
+                /*
+                    * تعداد آدرس های کاربر
+                    */
+
+                var addresses =
+                    await _userAddressService.GetUserAddressesAsync();
+
+
+                var addressList =
+                    addresses.Data?.ToList()
+                    ?? new List<UserAddressDto>();
+
+
+                if (addressList.Count >= 5)
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "هر کاربر حداکثر می‌تواند ۵ آدرس ثبت کند."
+                    };
+                }
+
+
+
+                /*
+                    * بررسی کد پستی تکراری
+                    */
+
+                var duplicate =
+                    addressList.Any(
+                        x =>
+                            x.PostalCode == postalCode);
+
+
+                if (duplicate)
+                {
+                    return new ResultDto<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = "برای این کد پستی قبلاً آدرس ثبت شده است."
+                    };
+                }
+
+
+
+                /*
+                    * اگر Default است،
+                    * قبلی ها را غیر فعال کن
+                    */
+
+
+                if (input.IsDefault)
+                {
+                    foreach (var address in addressList.Where(x => x.IsDefault))
+                    {
+                        var updateDto = new UserAddressDto
                         {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "کاربر معتبر نیست."
-                            };
-                        }
+                            Id = address.Id,
 
-                        if (input == null)
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "اطلاعات آدرس ارسال نشده است."
-                            };
-                        }
+                            UserId = address.UserId,
 
+                            Title = address.Title,
 
-                        var title = input.Title?.Trim();
+                            Address = address.Address,
 
-                        var addressText = input.Address?.Trim();
+                            CityId = address.CityId,
 
-                        var postalCode =
-                            input.PostalCode?
-                                .Trim()
-                                .Replace("-", "")
-                                .Replace(" ", "");
+                            ProvinceId = address.ProvinceId,
 
+                            PostalCode = address.PostalCode,
 
-                        if (string.IsNullOrWhiteSpace(title))
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "عنوان آدرس الزامی است."
-                            };
-                        }
+                            PhoneNumber = address.PhoneNumber,
 
+                            IsActive = address.IsActive,
 
-                        if (input.ProvinceId == Guid.Empty)
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "استان را انتخاب کنید."
-                            };
-                        }
-
-
-                        if (input.CityId == Guid.Empty)
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "شهر را انتخاب کنید."
-                            };
-                        }
-
-
-                        if (string.IsNullOrWhiteSpace(addressText))
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "آدرس الزامی است."
-                            };
-                        }
-
-
-                        if (string.IsNullOrWhiteSpace(postalCode))
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "کد پستی الزامی است."
-                            };
-                        }
-
-
-                        if (postalCode.Length != 10 ||
-                            !postalCode.All(char.IsDigit))
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "کد پستی باید دقیقاً ۱۰ رقم باشد."
-                            };
-                        }
-
-
-                        /*
-                            * تعداد آدرس های کاربر
-                            */
-
-                        var addresses =
-                            await _userAddressService.GetUserAddressesAsync();
-
-
-                        var addressList =
-                            addresses.Data?.ToList()
-                            ?? new List<UserAddressDto>();
-
-
-                        if (addressList.Count >= 5)
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "هر کاربر حداکثر می‌تواند ۵ آدرس ثبت کند."
-                            };
-                        }
-
-
-
-                        /*
-                            * بررسی کد پستی تکراری
-                            */
-
-                        var duplicate =
-                            addressList.Any(
-                                x =>
-                                    x.PostalCode == postalCode);
-
-
-                        if (duplicate)
-                        {
-                            return new ResultDto<UserAddressDto>
-                            {
-                                Success = false,
-                                Message = "برای این کد پستی قبلاً آدرس ثبت شده است."
-                            };
-                        }
-
-
-
-                        /*
-                            * اگر Default است،
-                            * قبلی ها را غیر فعال کن
-                            */
-
-
-                        if (input.IsDefault)
-                        {
-                            foreach (var address in addressList.Where(x => x.IsDefault))
-                            {
-                                var updateDto = new UserAddressDto
-                                {
-                                    Id = address.Id,
-
-                                    UserId = address.UserId,
-
-                                    Title = address.Title,
-
-                                    Address = address.Address,
-
-                                    CityId = address.CityId,
-
-                                    ProvinceId = address.ProvinceId,
-
-                                    PostalCode = address.PostalCode,
-
-                                    PhoneNumber = address.PhoneNumber,
-
-                                    IsActive = address.IsActive,
-
-                                    IsDefault = false
-                                };
-
-
-                                await _userAddressService.UpdateAsync(
-                                    updateDto,
-                                    address.Id);
-                            }
-                        }
-
-
-                        /*
-                            * اولین آدرس خودکار Default
-                            */
-
-                        var userAddressDto = new UserAddressDto
-                        {
-                            UserId = userId.Value,
-
-                            Title = title,
-
-                            ProvinceId = input.ProvinceId,
-
-                            CityId = input.CityId,
-
-                            Address = addressText,
-
-                            PostalCode = postalCode,
-
-                            PhoneNumber =
-                                string.IsNullOrWhiteSpace(input.PhoneNumber)
-                                ? null
-                                : input.PhoneNumber.Trim(),
-
-
-                            IsDefault =
-                                addressList.Count == 0 ||
-                                input.IsDefault,
-
-
-                            IsActive = true
+                            IsDefault = false
                         };
 
 
-
-                        /*
-                            * استفاده از GenericService
-                            */
-
-                        var createResult =
-                            await _userAddressService.CreateAsync(userAddressDto);
-
-
-                        if (!createResult.Success)
-                        {
-                            return createResult;
-                        }
-
-
-                        await _transactionService.CommitAsync();
-
-
-                        return new ResultDto<UserAddressDto>
-                        {
-                            Success = true,
-
-                            Message = "آدرس با موفقیت ثبت شد.",
-
-                            Data = createResult.Data
-                        };
-
-                    }
-                    catch (Exception ex)
-                    {
-                        await _transactionService.RollbackAsync();
-
-                        return new ResultDto<UserAddressDto>
-                        {
-                            Success = false,
-
-                            Message = "خطا در ثبت آدرس.",
-
-                            Errors = new List<string>
-                    {
-                        ex.Message
-                    }
-                        };
+                        await _userAddressService.UpdateAsync(
+                            updateDto,
+                            address.Id);
                     }
                 }
 
+
+                /*
+                    * اولین آدرس خودکار Default
+                    */
+
+                var userAddressDto = new UserAddressDto
+                {
+                    UserId = userId.Value,
+
+                    Title = title,
+
+                    ProvinceId = input.ProvinceId,
+
+                    CityId = input.CityId,
+
+                    Address = addressText,
+
+                    PostalCode = postalCode,
+
+                    PhoneNumber =
+                        string.IsNullOrWhiteSpace(input.PhoneNumber)
+                        ? null
+                        : input.PhoneNumber.Trim(),
+
+
+                    IsDefault =
+                        addressList.Count == 0 ||
+                        input.IsDefault,
+
+
+                    IsActive = true
+                };
+
+
+
+                /*
+                    * استفاده از GenericService
+                    */
+
+                var createResult =
+                    await _userAddressService.CreateAsync(userAddressDto);
+
+
+                if (!createResult.Success)
+                {
+                    return createResult;
+                }
+
+
+                await _transactionService.CommitAsync();
+
+
+                return new ResultDto<UserAddressDto>
+                {
+                    Success = true,
+
+                    Message = "آدرس با موفقیت ثبت شد.",
+
+                    Data = createResult.Data
+                };
+
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                return new ResultDto<UserAddressDto>
+                {
+                    Success = false,
+
+                    Message = "خطا در ثبت آدرس.",
+
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
+                };
+            }
+        }
+
         public async Task<ResultDto<bool>> DeleteUserAddressAsync(
-    Guid addressId,
-    CancellationToken cancellationToken = default)
+            Guid addressId,
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             try
             {
                 var userId = _currentUserService.GetUserId();
+
                 if (userId == Guid.Empty)
                     throw new BusinessException("کاربر معتبر نیست.");
+
 
                 if (addressId == Guid.Empty)
                     throw new BusinessException("شناسه آدرس معتبر نیست.");
 
 
+                /*
+                 * دریافت آدرس مورد نظر
+                 */
                 var addressResult =
-                    await _userAddressService.GetUserAddressesAsync();
+                    await _userAddressService.GetUserAddressByIdAsync(addressId);
 
 
-                var address =
-                    addressResult.Data?.FirstOrDefault();
+                var address = addressResult.Data;
 
 
-                if (address == null)
+                if (address == null || address.UserId != userId)
                 {
                     throw new BusinessException(
                         "آدرس موردنظر یافت نشد.");
                 }
 
 
-                var wasDefault =
-                    address.IsDefault;
+                var wasDefault = address.IsDefault;
 
 
+                /*
+                 * Soft Delete
+                 */
                 var deleteDto = new UserAddressDto
                 {
                     Id = address.Id,
@@ -1708,6 +1728,7 @@ nationalCode
 
                     PhoneNumber = address.PhoneNumber,
 
+
                     IsActive = false,
 
                     IsDefault = false,
@@ -1716,36 +1737,43 @@ nationalCode
                 };
 
 
-                var updateResult =
+                var deleteResult =
                     await _userAddressService.UpdateAsync(
                         deleteDto,
                         address.Id);
 
 
-                if (!updateResult.Success)
+                if (!deleteResult.Success)
+                {
                     return new ResultDto<bool>
                     {
                         Success = false,
-                        Message = updateResult.Message
+                        Message = deleteResult.Message
                     };
+                }
 
 
 
                 /*
-                 * اگر Default بود،
-                 * یکی دیگر Default شود
+                 * اگر آدرس پیش‌فرض حذف شد،
+                 * یک آدرس فعال دیگر پیش‌فرض شود
                  */
-
                 if (wasDefault)
                 {
-                    var otherAddresses =
+
+                    var otherAddressesResult =
                         await _userAddressService.GetUserAddressesAsync();
 
 
                     var nextAddress =
-         otherAddresses.Data
-             .OrderByDescending(x => x.CreatedAt)
-             .FirstOrDefault();
+                        otherAddressesResult.Data?
+                            .Where(x =>
+                                x.Id != address.Id &&
+                                !x.IsDeleted &&
+                                x.IsActive)
+                            .OrderByDescending(x => x.CreatedAt)
+                            .FirstOrDefault();
+
 
 
                     if (nextAddress != null)
@@ -1774,9 +1802,21 @@ nationalCode
                         };
 
 
-                        await _userAddressService.UpdateAsync(
-                            defaultDto,
-                            nextAddress.Id);
+                        var defaultUpdateResult =
+                            await _userAddressService.UpdateAsync(
+                                defaultDto,
+                                nextAddress.Id);
+
+
+                        if (!defaultUpdateResult.Success)
+                        {
+                            return new ResultDto<bool>
+                            {
+                                Success = false,
+                                Message =
+                                    "خطا در تغییر آدرس پیش‌فرض."
+                            };
+                        }
                     }
                 }
 
@@ -1792,6 +1832,7 @@ nationalCode
 
                     Data = true
                 };
+
             }
             catch (Exception ex)
             {
@@ -1997,9 +2038,14 @@ nationalCode
 
 
                 await _transactionService.CommitAsync();
+                return new ResultDto<UserAddressDto>
+                {
+                    Success = true,
 
+                    Message = "آدرس با موفقیت ویرایش شد.",
 
-                return result;
+                    Data = result.Data
+                };
             }
             catch (Exception ex)
             {
@@ -2101,5 +2147,449 @@ nationalCode
                 };
             }
         }
+
+        public async Task<ResultDto<bool>> ChangePasswordAsync(
+        ChangePasswordDto input,
+        CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                /*
+                 * دریافت شناسه کاربر از JWT Token
+                 */
+                var userId = _currentUserService.GetUserId();
+
+                if (userId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "کاربر وارد نشده است.");
+                }
+
+                if (input == null)
+                {
+                    throw new BusinessException(
+                        "اطلاعات رمز عبور ارسال نشده است.");
+                }
+
+                /*
+                 * اعتبارسنجی رمز جدید
+                 */
+                if (string.IsNullOrWhiteSpace(input.Password))
+                {
+                    throw new BusinessException(
+                        "رمز عبور جدید الزامی است.");
+                }
+
+                if (string.IsNullOrWhiteSpace(
+                    input.ConfirmPassword))
+                {
+                    throw new BusinessException(
+                        "تکرار رمز عبور الزامی است.");
+                }
+
+                if (input.Password != input.ConfirmPassword)
+                {
+                    throw new BusinessException(
+                        "رمز عبور و تکرار آن یکسان نیستند.");
+                }
+
+                /*
+                 * حداقل طول رمز
+                 */
+                if (input.Password.Length < 8)
+                {
+                    throw new BusinessException(
+                        "رمز عبور باید حداقل ۸ کاراکتر باشد.");
+                }
+
+                /*
+                 * دریافت کاربر
+                 */
+                var userResult =
+                    await _userService.GetByIdAsync(
+                        userId.Value);
+
+                if (!userResult.Success ||
+                    userResult.Data == null)
+                {
+                    throw new BusinessException(
+                        "کاربر موردنظر پیدا نشد.");
+                }
+
+                var user = userResult.Data;
+
+                /*
+                 * هش کردن رمز جدید با BCrypt
+                 */
+                user.Password =
+                    BCrypt.Net.BCrypt.HashPassword(
+                        input.Password);
+
+                /*
+                 * ذخیره رمز جدید
+                 */
+                var updateResult =
+                    await _userService.UpdateAsync(
+                        user,
+                        user.Id);
+
+                if (!updateResult.Success)
+                {
+                    throw new BusinessException(
+                        updateResult.Message
+                        ??
+                        "خطا در ذخیره رمز عبور جدید.");
+                }
+
+                /*
+                 * ثبت نهایی تغییرات
+                 */
+                await _transactionService.CommitAsync();
+
+                return new ResultDto<bool>
+                {
+                    Success = true,
+
+                    Message =
+                        "رمز عبور با موفقیت تغییر کرد.",
+
+                    Data = true
+                };
+            }
+            catch (BusinessException)
+            {
+                await _transactionService.RollbackAsync();
+
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                await _transactionService.RollbackAsync();
+
+                throw;
+            }
+            catch (Exception)
+            {
+                await _transactionService.RollbackAsync();
+
+                throw new BusinessException(
+                    "در تغییر رمز عبور خطایی رخ داد.");
+            }
+
+        }
+
+
+        public async Task<ResultDto<UserDto>>
+    UpdateUserEmailAsync(
+        UpdateUserEmailDto input,
+        CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var userId =
+                    _currentUserService.GetUserId();
+
+                if (
+                    !userId.HasValue ||
+                    userId.Value == Guid.Empty
+                )
+                {
+                    throw new BusinessException(
+                        "کاربر معتبر نیست."
+                    );
+                }
+
+                if (input == null)
+                {
+                    throw new BusinessException(
+                        "اطلاعات ایمیل ارسال نشده است."
+                    );
+                }
+
+                var email =
+                    input.Email?.Trim();
+
+                if (
+                    string.IsNullOrWhiteSpace(
+                        email
+                    )
+                )
+                {
+                    throw new BusinessException(
+                        "ایمیل الزامی است."
+                    );
+                }
+
+                /*
+                 * بررسی معتبر بودن فرمت ایمیل
+                 */
+                if (
+                    !System.Net.Mail.MailAddress
+                        .TryCreate(
+                            email,
+                            out _
+                        )
+                )
+                {
+                    throw new BusinessException(
+                        "فرمت ایمیل معتبر نیست."
+                    );
+                }
+
+                /*
+                 * دریافت اطلاعات کاربر
+                 */
+                var userResult =
+                    await _userService
+                        .FirstOrDefaultAsync<SqlUser>(
+                            x =>
+                                x.Id ==
+                                userId.Value
+                        );
+
+                if (
+                    !userResult.Success ||
+                    userResult.Data == null
+                )
+                {
+                    throw new BusinessException(
+                        "کاربر موردنظر یافت نشد."
+                    );
+                }
+
+                var user =
+                    userResult.Data;
+
+                /*
+                 * اگر ایمیل جدید با ایمیل فعلی
+                 * یکسان باشد، نیازی به Update نیست.
+                 */
+                if (
+                    string.Equals(
+                        user.Email?.Trim(),
+                        email,
+                        StringComparison
+                            .OrdinalIgnoreCase
+                    )
+                )
+                {
+                    return new ResultDto<UserDto>
+                    {
+                        Success = true,
+
+                        Message =
+                            "ایمیل جدید با ایمیل فعلی یکسان است.",
+
+                        Data = user
+                    };
+                }
+
+                /*
+                 * ثبت ایمیل جدید
+                 */
+                user.Email = email;
+
+                var updateResult =
+                    await _userService
+                        .UpdateAsync(
+                            user,
+                            user.Id
+                        );
+
+                if (
+                    !updateResult.Success ||
+                    updateResult.Data == null
+                )
+                {
+                    throw new BusinessException(
+                        updateResult.Message
+                        ??
+                        "خطا در تغییر ایمیل."
+                    );
+                }
+
+                await _transactionService
+                    .CommitAsync();
+
+                return new ResultDto<UserDto>
+                {
+                    Success = true,
+
+                    Message =
+                        "ایمیل با موفقیت تغییر کرد.",
+
+                    Data =
+                        updateResult.Data
+                };
+            }
+            catch (BusinessException)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw;
+            }
+            catch (Exception)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw new BusinessException(
+                    "خطایی در تغییر ایمیل رخ داد."
+                );
+            }
+        }
+        public async Task<ResultDto<UserProfileDto>>
+    UpdateUserProfileImageAsync(
+        UpdateUserProfileImageDto input,
+        CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var userId =
+                    _currentUserService.GetUserId();
+
+                if (
+                    !userId.HasValue ||
+                    userId.Value == Guid.Empty
+                )
+                {
+                    throw new BusinessException(
+                        "کاربر معتبر نیست."
+                    );
+                }
+
+                if (input == null)
+                {
+                    throw new BusinessException(
+                        "اطلاعات تصویر پروفایل ارسال نشده است."
+                    );
+                }
+                if (
+                    input.ProfileImage == null ||
+                    input.ProfileImage.Length == 0
+                )
+                {
+                    throw new BusinessException(
+                        "تصویر پروفایل الزامی است."
+                    );
+                }
+                var uploadResult =
+    await _uploadService.UploadImageAsync(
+        input.ProfileImage,
+        $"profile-{userId.Value:N}"
+    );
+
+                if (
+                    !uploadResult.Success ||
+                    uploadResult.Data == null
+                )
+                {
+                    throw new BusinessException(
+                        uploadResult.Message
+                        ??
+                        "خطا در آپلود تصویر پروفایل."
+                    );
+                }
+
+                var profileImageUrl =
+                    uploadResult.Data.Url;
+
+                /*
+                 * دریافت پروفایل کاربر
+                 */
+                var profile =
+                    await _userProfileService
+                        .GetByUserIdAsync(
+                            userId.Value
+                        );
+
+                if (profile == null)
+                {
+                    throw new BusinessException(
+                        "پروفایل کاربر یافت نشد."
+                    );
+                }
+
+                /*
+                 * ذخیره تصویر جدید
+                 */
+                profile.ProfileImage =
+                    profileImageUrl;
+
+                var updateResult =
+                    await _userProfileService
+                        .UpdateAsync(
+                            profile,
+                            profile.Id
+                        );
+
+                if (
+                    !updateResult.Success ||
+                    updateResult.Data == null
+                )
+                {
+                    throw new BusinessException(
+                        updateResult.Message
+                        ??
+                        "خطا در تغییر تصویر پروفایل."
+                    );
+                }
+
+                await _transactionService
+                    .CommitAsync();
+
+                return new ResultDto<
+                    UserProfileDto>
+                {
+                    Success = true,
+
+                    Message =
+                        "تصویر پروفایل با موفقیت تغییر کرد.",
+
+                    Data =
+                        updateResult.Data
+                };
+            }
+            catch (BusinessException)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw;
+            }
+            catch (Exception)
+            {
+                await _transactionService
+                    .RollbackAsync();
+
+                throw new BusinessException(
+                    "خطایی در تغییر تصویر پروفایل رخ داد."
+                );
+            }
+        }
+
+
+
     }
 }

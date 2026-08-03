@@ -32,5 +32,17 @@ namespace Velora.Application.Shared.Services
     UserAddressCrud input,
     CancellationToken cancellationToken = default);
 
+         Task<ResultDto<bool>> ChangePasswordAsync(
+        ChangePasswordDto input,
+        CancellationToken cancellationToken = default);
+        Task<ResultDto<UserDto>>
+    UpdateUserEmailAsync(
+        UpdateUserEmailDto input,
+        CancellationToken cancellationToken = default);
+
+        Task<ResultDto<UserProfileDto>> UpdateUserProfileImageAsync(
+            UpdateUserProfileImageDto input,
+            CancellationToken cancellationToken = default);
+
     }
 }

@@ -12,7 +12,6 @@ namespace Velora.Host.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class UserAuthenticationController : ControllerBase
     {
         private readonly IUserAuthenticationService
@@ -33,6 +32,7 @@ namespace Velora.Host.Controllers
         /// <summary>
         /// ارسال کد یک‌بارمصرف به شماره موبایل
         /// </summary>
+        [AllowAnonymous]
         [HttpPost("RequestOtp")]
         public async Task<IActionResult> RequestOtp(
             [FromBody] RequestOtpDto input,
@@ -89,6 +89,7 @@ namespace Velora.Host.Controllers
         /// <summary>
         /// بررسی و تأیید کد یک‌بارمصرف
         /// </summary>
+        [AllowAnonymous]
         [HttpPost("VerifyOtp")]
         public async Task<IActionResult> VerifyOtp(
             [FromBody] VerifyOtpDto input,
@@ -310,5 +311,112 @@ namespace Velora.Host.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// تغییر رمز عبور کاربر واردشده
+        /// </summary>
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(
+            [FromBody] ChangePasswordDto input,
+            CancellationToken cancellationToken)
+        {
+            if (input == null)
+            {
+                return BadRequest(
+                    new ResultDto<bool>
+                    {
+                        Success = false,
+                        Message =
+                            "اطلاعات تغییر رمز عبور ارسال نشده است."
+                    });
+            }
+
+            var result =
+                await _userAuthenticationService
+                    .ChangePasswordAsync(
+                        input,
+                        cancellationToken);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+    /// <summary>
+    /// تغییر ایمیل کاربر
+    /// </summary>
+    [Authorize]
+        [HttpPut("UpdateUserEmail")]
+        public async Task<IActionResult> UpdateUserEmail(
+        [FromBody] UpdateUserEmailDto input,
+        CancellationToken cancellationToken)
+        {
+            if (input == null)
+            {
+                return BadRequest(
+                    new ResultDto<UserDto>
+                    {
+                        Success = false,
+
+                        Message =
+                            "اطلاعات ایمیل ارسال نشده است."
+                    });
+            }
+
+            var result =
+                await _userAuthenticationService
+                    .UpdateUserEmailAsync(
+                        input,
+                        cancellationToken);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// تغییر تصویر پروفایل کاربر
+        /// </summary>
+        /// <summary>
+        /// تغییر تصویر پروفایل کاربر
+        /// </summary>
+        [Authorize]
+        [HttpPut("UpdateUserProfileImage")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateUserProfileImage(
+            [FromForm] UpdateUserProfileImageDto input,
+            CancellationToken cancellationToken)
+        {
+            if (input == null)
+            {
+                return BadRequest(
+                    new ResultDto<UserProfileDto>
+                    {
+                        Success = false,
+                        Message = "اطلاعات تصویر پروفایل ارسال نشده است."
+                    });
+            }
+
+            var result =
+                await _userAuthenticationService
+                    .UpdateUserProfileImageAsync(
+                        input,
+                        cancellationToken);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
     }
 }
