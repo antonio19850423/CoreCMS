@@ -15,6 +15,8 @@ public partial class CoreCmsContext : DbContext
     {
     }
 
+    public virtual DbSet<BankAccount> BankAccounts { get; set; }
+
     public virtual DbSet<CategoryAttribute> CategoryAttributes { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
@@ -135,6 +137,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<VwBankAccountForm> VwBankAccountForms { get; set; }
+
     public virtual DbSet<VwCategoryAttributeForm> VwCategoryAttributeForms { get; set; }
 
     public virtual DbSet<VwCityForm> VwCityForms { get; set; }
@@ -237,6 +241,17 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<BankAccount>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.SiteSetting).WithMany(p => p.BankAccounts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BankAccounts_SiteSettings");
+        });
+
         modelBuilder.Entity<CategoryAttribute>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -929,6 +944,11 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserRoles__UserI__440B1D61");
+        });
+
+        modelBuilder.Entity<VwBankAccountForm>(entity =>
+        {
+            entity.ToView("VwBankAccountForm", "cms");
         });
 
         modelBuilder.Entity<VwCategoryAttributeForm>(entity =>

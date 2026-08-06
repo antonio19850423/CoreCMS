@@ -748,7 +748,19 @@
                 "en": "Site Setting",
                 "fa": "تنظیمات سایت"
               },
-              "Order": 1
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "SITESETTING_TAB_BANKACCOUNT",
+                  "Name": "Bank Account Management",
+                  "DisplayName": {
+                    "en": "Bank Account Management",
+                    "fa": "‌حساب بانکی"
+                  },
+                  "Order": 1
+                }
+              ]
             }
           ]
         },
@@ -1159,6 +1171,30 @@
               "DisplayName": {
                 "en": "Shipping Method Cities",
                 "fa": "شهرهای روش ارسال"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "BANKACCOUNT_MANAGEMENT_MENU",
+          "Name": "Bank Account Menu",
+          "Route": "administration/bankaccount-management",
+          "DisplayName": {
+            "en": "Bank Account Management",
+            "fa": "حساب بانکی"
+          },
+          "Order": 12,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "BANKACCOUNT_MANAGEMENT_PAGE",
+              "Name": "Bank Account Page",
+              "DisplayName": {
+                "en": "Bank Account Management",
+                "fa": "حساب بانکی"
               },
               "Order": 1
             }

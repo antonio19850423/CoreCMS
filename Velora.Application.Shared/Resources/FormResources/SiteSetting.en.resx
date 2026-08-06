@@ -231,4 +231,19 @@
   <data name="SiteSetting.OtpMaxVerifyAttempts" xml:space="preserve">
     <value>OtpMaxVerifyAttempts </value>
   </data>
+  <data name="SiteSetting.HasDuty" xml:space="preserve">
+    <value>HasDuty</value>
+  </data>
+  <data name="SiteSetting.HasTax" xml:space="preserve">
+    <value>HasTax</value>
+  </data>
+  <data name="SiteSetting.TaxPercentage" xml:space="preserve">
+    <value>TaxPercentage</value>
+  </data>
+  <data name="SiteSetting.DutyPercentage" xml:space="preserve">
+    <value>DutyPercentage</value>
+  </data>
+  <data name="SiteSetting.HasCardToCardPayment" xml:space="preserve">
+    <value>HasCardToCardPayment</value>
+  </data>
 </root>

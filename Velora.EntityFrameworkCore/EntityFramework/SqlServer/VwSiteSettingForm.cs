@@ -116,4 +116,16 @@ public partial class VwSiteSettingForm
     public int? OtpRequestCooldownSeconds { get; set; }
 
     public int? OtpMaxRequestsPerHour { get; set; }
+
+    public bool HasDuty { get; set; }
+
+    public bool HasTax { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? TaxPercentage { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? DutyPercentage { get; set; }
+
+    public bool HasCardToCardPayment { get; set; }
 }

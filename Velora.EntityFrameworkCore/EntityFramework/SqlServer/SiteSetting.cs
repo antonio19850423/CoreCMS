@@ -113,4 +113,19 @@ public partial class SiteSetting
     public int? OtpRequestCooldownSeconds { get; set; }
 
     public int? OtpMaxRequestsPerHour { get; set; }
+
+    public bool HasTax { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? TaxPercentage { get; set; }
+
+    public bool HasDuty { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? DutyPercentage { get; set; }
+
+    public bool HasCardToCardPayment { get; set; }
+
+    [InverseProperty("SiteSetting")]
+    public virtual ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 }

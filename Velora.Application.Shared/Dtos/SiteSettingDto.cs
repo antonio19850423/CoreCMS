@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,7 +75,17 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(1000)]
         public string? DefaultMetaKeywords { get; set; }
+        public bool HasDuty { get; set; }
 
+        public bool HasTax { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal? TaxPercentage { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal? DutyPercentage { get; set; }
+
+        public bool HasCardToCardPayment { get; set; }
         public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }

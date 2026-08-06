@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,6 @@ namespace Velora.Application.Shared.Dtos
         public string? FaxTitle { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = true, MaxLength = 50)]
-
         public string? Fax { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
@@ -82,7 +82,6 @@ namespace Velora.Application.Shared.Dtos
         public string? DefaultMetaDescription { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = true, MaxLength = 1000)]
-
         public string? DefaultMetaKeywords { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 24, GridOrder = 24, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
         public string? SmtpHost { get; set; }
@@ -106,16 +105,28 @@ namespace Velora.Application.Shared.Dtos
         public int? OtpRequestCooldownSeconds { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 33, GridOrder = 33, ShowInGrid = false, ShowInForm = true)]
         public int? OtpMaxRequestsPerHour { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 34, GridOrder = 34, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 34, GridOrder = 34, ShowInGrid = false, ShowInForm = true)]
+        public bool HasDuty { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 35, GridOrder = 35, ShowInGrid = false, ShowInForm = true)]
+        public bool HasTax { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 36, GridOrder = 36, ShowInGrid = false, ShowInForm = true)]
+        public decimal? TaxPercentage { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 37, GridOrder = 37, ShowInGrid = false, ShowInForm = true)]
+        public decimal? DutyPercentage { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 38, GridOrder = 38, ShowInGrid = false, ShowInForm = true)]
+        public bool HasCardToCardPayment { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 39, GridOrder = 39, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 35, GridOrder = 35, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 40, GridOrder = 40, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 36, GridOrder = 36, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 41, GridOrder = 41, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 37, GridOrder = 37, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 42, GridOrder = 42, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 38, GridOrder = 38, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 43, GridOrder = 43, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
 
     }

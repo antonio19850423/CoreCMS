@@ -189,6 +189,9 @@ global using SqlShippingMethodCity = Velora.EntityFrameworkCore.EntityFramework.
 global using SqlShippingMethodCityView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShippingMethodCityForm;
 
 
+global using SqlBankAccount = Velora.EntityFrameworkCore.EntityFramework.SqlServer.BankAccount;
+global using SqlBankAccountView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwBankAccountForm;
+
 
 
 

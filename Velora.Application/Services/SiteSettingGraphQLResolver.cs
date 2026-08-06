@@ -74,7 +74,12 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             OtpMaxVerifyAttempts= x.OtpMaxVerifyAttempts ,
             OtpMaxRequestsPerHour= x.OtpMaxRequestsPerHour ,
             OtpExpirationMinutes= x.OtpExpirationMinutes ,
-            ShouldInsert = x.ShouldInsert
+            ShouldInsert = x.ShouldInsert,
+            DutyPercentage= x.DutyPercentage ,
+            HasCardToCardPayment= x.HasCardToCardPayment ,
+            HasDuty= x.HasDuty ,
+            HasTax= x.HasTax ,
+            TaxPercentage = x.TaxPercentage
         });
     }
 

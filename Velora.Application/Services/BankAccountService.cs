@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -13,14 +15,13 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
-using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
 {
-    public class SiteSettingService : GenericService<SqlSiteSetting, SqlSiteSetting, SiteSettingDto>, ISiteSettingService
+    public class BankAccountService : GenericService<SqlBankAccount, SqlBankAccount, BankAccountDto>, IBankAccountService
     {
-        private readonly ISqlRepository<SqlSiteSetting> _sqlrepository;
+        private readonly ISqlRepository<SqlBankAccount> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -29,11 +30,11 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        private readonly ISiteSettingService _roleSiteSettingService;
+        private readonly IBankAccountService _roleBankAccountService;
         protected readonly ICurrentUserService _currentUserService;
-        public SiteSettingService(
-              ISqlRepository<SqlSiteSetting> sqlRepository,
-              IPosgreSqlRepository<SqlSiteSetting> pgRepository,
+        public BankAccountService(
+              ISqlRepository<SqlBankAccount> sqlRepository,
+              IPosgreSqlRepository<SqlBankAccount> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
@@ -47,82 +48,51 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
-        public async Task<IQueryable<SiteSettingCrud>> GetAllViews()
+        public async Task<IQueryable<BankAccountCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<SqlSiteSettingView, SqlSiteSettingView, SiteSettingCrud>();
+            return await GetAllViewQueryable<SqlBankAccountView, SqlBankAccountView, BankAccountCrud>();
         }
 
-        public async Task<ResultDto<SiteSettingDto>> CreateAsync(SiteSettingCrud input)
+        public async Task<ResultDto<BankAccountDto>> CreateAsync(BankAccountCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<SiteSettingDto>
+                    return new ResultDto<BankAccountDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                var SiteSetting = new SiteSettingDto
+
+
+
+                var BankAccount = new BankAccountDto
                 {
-                    Address = input.Address,
-                    Address2 = input.Address2,
-                    Address2Title = input.Address2Title,
-                    AddressTitle = input.AddressTitle,
-                    DarkLogoAlt = input.DarkLogoAlt,
-                    DarkLogoUrl = input.DarkLogoUrl,
-                    DefaultMetaDescription = input.DefaultMetaDescription,
-                    DefaultMetaKeywords = input.DefaultMetaKeywords,
-                    DefaultMetaTitle = input.DefaultMetaTitle,
-                    DomainName = input.DomainName,
-                    Email = input.Email,
-                    FaviconUrl = input.FaviconUrl,
-                    Fax= input.Fax,
-                    FaxTitle = input.FaxTitle,
                     IsActive = input.IsActive,
-                    LogoAlt = input.LogoAlt,
-                    LogoUrl = input.LogoUrl,
-                    Mobile = input.Mobile,
-                    MobileTitle = input.MobileTitle,
-                    Phone = input.Phone,
-                    Phone2 = input.Phone2,
-                    PhoneTitle = input.PhoneTitle,
-                    Phone2Title = input.Phone2Title,
-                    SiteName = input.SiteName,
-                    SmtpHost = input.SmtpHost,
-                    SmtpPort = input.SmtpPort,
-                    SmtpUserName = input.SmtpUserName,
-                    SmtpPassword = input.SmtpPassword,
-                    SmtpEnableSsl = input.SmtpEnableSsl,
-                    OtpCodeLength = input.OtpCodeLength,
-                    OtpExpirationMinutes = input.OtpExpirationMinutes,
-                    OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
-                    OtpMaxVerifyAttempts = input.OtpMaxVerifyAttempts,
-                    OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
-                    DutyPercentage = input.DutyPercentage,
-                    TaxPercentage = input.TaxPercentage,
-                    HasDuty=input.HasDuty,
-                    HasTax=input.HasTax,
-                    HasCardToCardPayment = input.HasCardToCardPayment,
-
-
+                    SiteSettingId=input.ParentId,
+                    AccountNumber = input.AccountNumber,
+                    AccountOwnerName = input.AccountOwnerName,
+                    BankName = input.BankName,
+                    CardNumber = input.CardNumber,
+                    Description = input.Description,
+                    DisplayOrder = input.DisplayOrder,
+                    IsDefault = input.IsDefault,
+                    ShebaNumber = input.ShebaNumber
                 };
 
-                var result = await CreateAsync(SiteSetting);
-                if (!result.Success)
-                    return result;
-
+                var BankAccountResult = await CreateAsync(BankAccount);
                 await _transactionService.CommitAsync();
-                return result;
+                return BankAccountResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SiteSettingDto>
+                var result = new ResultDto<BankAccountDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -132,14 +102,14 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<SiteSettingDto>> UpdateAsync(SiteSettingCrud input)
+        public async Task<ResultDto<BankAccountDto>> UpdateAsync(BankAccountCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<SiteSettingDto>
+                    return new ResultDto<BankAccountDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
@@ -147,70 +117,37 @@ namespace Velora.Application.Services
                 }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<SiteSettingDto>
+                    return new ResultDto<BankAccountDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
 
-
                 // 1️⃣ به‌روزرسانی کاربر
-                var userUpdateDto = new SiteSettingDto
+                var updateDto = new BankAccountDto
                 {
                     Id = input.Id,
-                    Address = input.Address,
-                    Address2 = input.Address2,
-                    SiteName = input.SiteName,
-                    Phone2Title= input.Phone2Title,
-                    PhoneTitle = input.PhoneTitle,
-                    Address2Title = input.Address2Title,
-                    AddressTitle = input.AddressTitle,
-                    DarkLogoAlt = input.DarkLogoAlt,
-                    DarkLogoUrl = input.DarkLogoUrl,
-                    DefaultMetaDescription = input.DefaultMetaDescription,
-                    DefaultMetaKeywords = input.DefaultMetaKeywords,
-                    DefaultMetaTitle = input.DefaultMetaTitle,
-                    //این قسمت نباید توسط مدیر سایت تغییر کند در صورت نیاز به صورت دستی تغییر خواهد کرد 
-                    //DomainName = input.DomainName,
-                    Email = input.Email,
-                    FaviconUrl = input.FaviconUrl,
-                    Fax= input.Fax,
-                    FaxTitle = input.FaxTitle,
                     IsActive = input.IsActive,
-                    LogoAlt = input.LogoAlt,
-                    LogoUrl = input.LogoUrl,
-                    Mobile= input.Mobile,
-                    MobileTitle = input.MobileTitle,
-                    Phone = input.Phone,
-                    Phone2 = input.Phone2,
-                    SmtpEnableSsl=input.SmtpEnableSsl,
-                    SmtpPassword=input.SmtpPassword,
-                    SmtpUserName=input.SmtpUserName,
-                    SmtpPort=input.SmtpPort,
-                    SmtpHost=input.SmtpHost,
-                    OtpCodeLength = input.OtpCodeLength,
-                    OtpExpirationMinutes = input.OtpExpirationMinutes,
-                    OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
-                    OtpMaxVerifyAttempts = input.OtpMaxVerifyAttempts,
-                    OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
-                    DutyPercentage = input.DutyPercentage,
-                    TaxPercentage = input.TaxPercentage,
-                    HasDuty = input.HasDuty,
-                    HasTax = input.HasTax,
-                    HasCardToCardPayment = input.HasCardToCardPayment,
+                    SiteSettingId = input.ParentId,
+                    AccountNumber = input.AccountNumber,
+                    AccountOwnerName = input.AccountOwnerName,
+                    BankName = input.BankName,
+                    CardNumber = input.CardNumber,
+                    Description = input.Description,
+                    DisplayOrder = input.DisplayOrder,
+                    IsDefault = input.IsDefault,
+                    ShebaNumber = input.ShebaNumber
                 };
 
-                var result = await UpdateAsync(userUpdateDto, input.Id);
-                if (!result.Success)
-                    return result;
+                var BankAccountResult = await UpdateAsync(updateDto, input.Id);
                 await _transactionService.CommitAsync();
-                return result;
+                return BankAccountResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SiteSettingDto>
+                var result = new ResultDto<BankAccountDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -221,25 +158,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdSiteSettings= new List<SiteSettingDto>();
+            var createdBankAccounts= new List<BankAccountDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var SiteSettings = dt.ToModelList<SiteSettingCrud>();
+                var BankAccounts = dt.ToModelList<BankAccountCrud>();
 
-                for (int i = 0; i < SiteSettings.Count; i++)
+                for (int i = 0; i < BankAccounts.Count; i++)
                 {
-                    var SiteSetting = SiteSettings[i];
+                    var BankAccount = BankAccounts[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(SiteSetting);
+                    var createResult = await CreateAsync(BankAccount);
 
                     if (createResult.Success && createResult.Data != null)
                     {
-                        createdSiteSettings.Add(createResult.Data);
+                        createdBankAccounts.Add(createResult.Data);
                     }
                     else
                     {
@@ -271,7 +208,7 @@ namespace Velora.Application.Services
                         : errorFileTitle,
                     Data = new BulkInsertResult
                     {
-                        InsertedCount = createdSiteSettings.Count,
+                        InsertedCount = createdBankAccounts.Count,
                         ErrorCount = errors.Count,
                         ErrorFileUrl = errorFileUrl
                     },
@@ -291,32 +228,32 @@ namespace Velora.Application.Services
         }
 
         public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+bool exportCurrentBankAccount,
+int BankAccountNumber,
+int BankAccountSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
 
             // 2️⃣ Paging و Mapping به DTO
-            List<SiteSettingCrud> data;
+            List<BankAccountCrud> data;
 
-            if (exportCurrentPage)
+            if (exportCurrentBankAccount)
             {
                 data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
+                    .Skip((BankAccountNumber - 1) * BankAccountSize)
+                    .Take(BankAccountSize)
                     .ToList();
             }
             else
             {
                 data = query.ToList();
             }
-            var resource = _mapper.Map<List<SiteSettingCrud>>(data);
+            var resource = _mapper.Map<List<BankAccountCrud>>(data);
 
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
             var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.SiteSetting, // نام مدل DTO
+                LookupEntities.BankAccount, // نام مدل DTO
                 data.Count + 5
             );
 
@@ -325,7 +262,6 @@ int pageSize)
 
             return resultBytes;
         }
-
 
     }
 

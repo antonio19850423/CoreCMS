@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="BankAccount.AccountOwnerName" xml:space="preserve">
+        <value>نام صاحب حساب</value>
+    </data>
+
+	<data name="BankAccount.Description" xml:space="preserve">
+        <value>توضیحات</value>
+    </data>
+
+	<data name="BankAccount.BankName" xml:space="preserve">
+        <value>نام بانک</value>
+    </data>
+
+	<data name="BankAccount.CardNumber" xml:space="preserve">
+        <value>شماره کارت</value>
+    </data>
+
+	<data name="BankAccount.AccountNumber" xml:space="preserve">
+        <value>شماره حساب</value>
+    </data>
+
+	<data name="BankAccount.ShebaNumber" xml:space="preserve">
+        <value>شماره شبا</value>
+    </data>
+
+	<data name="BankAccount.ParentId" xml:space="preserve">
+        <value>سایت</value>
+    </data>
+
+	<data name="BankAccount.IsDefault" xml:space="preserve">
+        <value>حساب پیش‌فرض</value>
+    </data>
+
+	<data name="BankAccount.IsActive" xml:space="preserve">
+        <value>فعال</value>
+    </data>
+
+	<data name="BankAccount.DisplayOrder" xml:space="preserve">
+        <value>ترتیب نمایش</value>
+    </data>
+
+	<data name="BankAccount.CreatedAtPersian" xml:space="preserve">
+        <value>تاریخ ایجاد</value>
+    </data>
+
+	<data name="BankAccount.UpdatedAtPersian" xml:space="preserve">
+        <value>تاریخ بروزرسانی</value>
+    </data>
+
+	<data name="BankAccount.CreatedByName" xml:space="preserve">
+        <value>ایجادکننده</value>
+    </data>
+
+	<data name="BankAccount.UpdatedByName" xml:space="preserve">
+        <value>ویرایشگر</value>
+    </data>
+
+</root>

@@ -281,6 +281,10 @@ namespace Velora.Application.MappingProfiles
             CreateMap<VwProductReviewForm, ProductReviewCrud>().ReverseMap();
             CreateMap<SqlProductReview, ProductReviewDto>().ReverseMap();
 
+            CreateMap<SqlBankAccount, BankAccountCrud>().ReverseMap();
+            CreateMap<VwBankAccountForm, BankAccountCrud>().ReverseMap();
+            CreateMap<SqlBankAccount, BankAccountDto>().ReverseMap();
+
         }
 
 
