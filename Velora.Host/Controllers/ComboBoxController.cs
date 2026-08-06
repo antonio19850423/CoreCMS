@@ -409,7 +409,15 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
-
+        [HttpGet("PaymentProviders")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<int>>> PaymentProviders()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<int>>>
+            {
+                Data = EnumHelper.GetComboItems<PaymentProvider>(),
+                Success = true
+            };
+        }
         [HttpGet("States")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> States()
         {
@@ -454,6 +462,27 @@ namespace Velora.Host.Controllers
             };
 
             return result;
+        }
+        [HttpGet("AllCities")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> AllCities()
+        {
+            var cities = await _cityService.GetAllViews();
+
+
+            var resourceItems = cities
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.CityTitle
+                })
+                .ToList();
+
+
+            return new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
         }
     }
 }

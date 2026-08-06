@@ -168,6 +168,26 @@ global using SqlState = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Sta
 global using SqlStateView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwStateForm;
 
 
+global using SqlProductReview = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductReview;
+global using SqlProductReviewView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductReviewForm;
+
+
+global using SqlProductQuestion = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ProductQuestion;
+global using SqlProductQuestionView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductQuestionForm;
+
+
+
+global using SqlPaymentGateway = Velora.EntityFrameworkCore.EntityFramework.SqlServer.PaymentGateway;
+global using SqlPaymentGatewayView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPaymentGatewayForm;
+
+
+global using SqlShippingMethod = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShippingMethod;
+global using SqlShippingMethodView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShippingMethodForm;
+
+
+global using SqlShippingMethodCity = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShippingMethodCity;
+global using SqlShippingMethodCityView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShippingMethodCityForm;
+
 
 
 

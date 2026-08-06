@@ -40,6 +40,9 @@ namespace Velora.Application.Shared.Constants
         public const string Image = "Image";
         public const string MultiSelectBox = "MultiSelectBox";
         public const string Link = "Link";
+        public const string HiddenText = "HiddenText";
+        public const string Lable = "Lable";
+        
 
 
         // هر نوع کنترل دیگری که نیاز دارید
@@ -99,9 +102,12 @@ namespace Velora.Application.Shared.Constants
         public const string UserAddress = "UserAddress";
         public const string City = "City";
         public const string State = "State";
-
-
-
+        public const string ProductReview = "ProductReview";
+        public const string ProductQuestion = "ProductQuestion";
+        public const string PaymentGateway = "PaymentGateway";
+        public const string ShippingMethod = "ShippingMethod";
+        public const string ShippingMethodCity = "ShippingMethodCity";
+        
         // سایر entityها...
     }
     public static class AppRoles

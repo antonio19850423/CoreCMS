@@ -57,6 +57,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<PageTemplateComponent> PageTemplateComponents { get; set; }
 
+    public virtual DbSet<PaymentGateway> PaymentGateways { get; set; }
+
     public virtual DbSet<Permission> Permissions { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
@@ -72,6 +74,10 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<ProductFile> ProductFiles { get; set; }
 
     public virtual DbSet<ProductInventoryTransaction> ProductInventoryTransactions { get; set; }
+
+    public virtual DbSet<ProductQuestion> ProductQuestions { get; set; }
+
+    public virtual DbSet<ProductReview> ProductReviews { get; set; }
 
     public virtual DbSet<ProductTag> ProductTags { get; set; }
 
@@ -98,6 +104,10 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<SectionItem> SectionItems { get; set; }
 
     public virtual DbSet<SeedHistory> SeedHistories { get; set; }
+
+    public virtual DbSet<ShippingMethod> ShippingMethods { get; set; }
+
+    public virtual DbSet<ShippingMethodCity> ShippingMethodCities { get; set; }
 
     public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
@@ -155,6 +165,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwPageTemplateForm> VwPageTemplateForms { get; set; }
 
+    public virtual DbSet<VwPaymentGatewayForm> VwPaymentGatewayForms { get; set; }
+
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
 
     public virtual DbSet<VwProductAttributeForm> VwProductAttributeForms { get; set; }
@@ -171,6 +183,10 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwProductInventoryTransactionForm> VwProductInventoryTransactionForms { get; set; }
 
+    public virtual DbSet<VwProductQuestionForm> VwProductQuestionForms { get; set; }
+
+    public virtual DbSet<VwProductReviewForm> VwProductReviewForms { get; set; }
+
     public virtual DbSet<VwProductTagForm> VwProductTagForms { get; set; }
 
     public virtual DbSet<VwProductTypeForm> VwProductTypeForms { get; set; }
@@ -186,6 +202,10 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwSectionGroupItemForm> VwSectionGroupItemForms { get; set; }
 
     public virtual DbSet<VwSectionItemForm> VwSectionItemForms { get; set; }
+
+    public virtual DbSet<VwShippingMethodCityForm> VwShippingMethodCityForms { get; set; }
+
+    public virtual DbSet<VwShippingMethodForm> VwShippingMethodForms { get; set; }
 
     public virtual DbSet<VwSiteGlobalSetting> VwSiteGlobalSettings { get; set; }
 
@@ -442,6 +462,13 @@ public partial class CoreCmsContext : DbContext
                 .HasConstraintName("FK_TemplateComponents_Template");
         });
 
+        modelBuilder.Entity<PaymentGateway>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
         modelBuilder.Entity<Permission>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Permissi__3214EC07DFD2A7B1");
@@ -551,6 +578,22 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.Reason).WithMany(p => p.ProductInventoryTransactions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductInventoryTransaction_Reason");
+        });
+
+        modelBuilder.Entity<ProductQuestion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductQ__3214EC070EAD1FDE");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<ProductReview>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductR__3214EC07BC04F2E3");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<ProductTag>(entity =>
@@ -735,6 +778,25 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<SeedHistory>(entity =>
         {
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+        });
+
+        modelBuilder.Entity<ShippingMethod>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsNationwide).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<ShippingMethodCity>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.ShippingMethod).WithMany(p => p.ShippingMethodCities)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShippingMethodCities_ShippingMethods");
         });
 
         modelBuilder.Entity<ShoppingCart>(entity =>
@@ -944,6 +1006,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwPageTemplateForm", "cms");
         });
 
+        modelBuilder.Entity<VwPaymentGatewayForm>(entity =>
+        {
+            entity.ToView("VwPaymentGatewayForm", "cms");
+        });
+
         modelBuilder.Entity<VwPermissionForm>(entity =>
         {
             entity.ToView("VwPermissionForm", "auth");
@@ -984,6 +1051,16 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwProductInventoryTransactionForm", "cms");
         });
 
+        modelBuilder.Entity<VwProductQuestionForm>(entity =>
+        {
+            entity.ToView("VwProductQuestionForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductReviewForm>(entity =>
+        {
+            entity.ToView("VwProductReviewForm", "cms");
+        });
+
         modelBuilder.Entity<VwProductTagForm>(entity =>
         {
             entity.ToView("VwProductTagForm", "cms");
@@ -1022,6 +1099,16 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSectionItemForm>(entity =>
         {
             entity.ToView("VwSectionItemForm", "cms");
+        });
+
+        modelBuilder.Entity<VwShippingMethodCityForm>(entity =>
+        {
+            entity.ToView("VwShippingMethodCityForm", "cms");
+        });
+
+        modelBuilder.Entity<VwShippingMethodForm>(entity =>
+        {
+            entity.ToView("VwShippingMethodForm", "cms");
         });
 
         modelBuilder.Entity<VwSiteGlobalSetting>(entity =>

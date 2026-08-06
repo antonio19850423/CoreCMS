@@ -1007,6 +1007,162 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "COUPON_MANAGEMENT_MENU",
+          "Name": "Coupon Menu",
+          "Route": "administration/coupon-management",
+          "DisplayName": {
+            "en": "Coupon Management",
+            "fa": "کوپن ها"
+          },
+          "Order": 9,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "COUPON_MANAGEMENT_PAGE",
+              "Name": "Coupon Page",
+              "DisplayName": {
+                "en": "Coupon Management",
+                "fa": "کوپن ها"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTREVIEW_MANAGEMENT_MENU",
+          "Name": "Product Review Menu",
+          "Route": "administration/productreview-management",
+          "DisplayName": {
+            "en": "Product Review Management",
+            "fa": "نظرات محصول"
+          },
+          "Order": 10,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTREVIEW_MANAGEMENT_PAGE",
+              "Name": "Product Review Page",
+              "DisplayName": {
+                "en": "Product Review Management",
+                "fa": "نظرات محصول"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTQUESTION_MANAGEMENT_MENU",
+          "Name": "Product Question Menu",
+          "Route": "administration/productquestion-management",
+          "DisplayName": {
+            "en": "Product Question Management",
+            "fa": "پرسش‌های محصول"
+          },
+          "Order": 11,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PRODUCTQUESTION_MANAGEMENT_PAGE",
+              "Name": "Product Question Page",
+              "DisplayName": {
+                "en": "Product Question Management",
+                "fa": "پرسش‌های محصول"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAYMENTGATEWAY_MANAGEMENT_MENU",
+          "Name": "Payment Gateway Menu",
+          "Route": "administration/paymentgateway-management",
+          "DisplayName": {
+            "en": "Payment Gateway Management",
+            "fa": "درگاه پرداخت"
+          },
+          "Order": 12,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "PAYMENTGATEWAY_MANAGEMENT_PAGE",
+              "Name": "Payment Gateway Page",
+              "DisplayName": {
+                "en": "Payment Gateway Management",
+                "fa": "درگاه پرداخت"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SHIPPINGMETHOD_MANAGEMENT_MENU",
+          "Name": "Shipping Method Menu",
+          "Route": "administration/shippingmethod-management",
+          "DisplayName": {
+            "en": "Shipping Method Management",
+            "fa": "روش ارسال"
+          },
+          "Order": 13,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SHIPPINGMETHOD_MANAGEMENT_PAGE",
+              "Name": "Shipping Method Page",
+              "DisplayName": {
+                "en": "Shipping Method Management",
+                "fa": "روش ارسال"
+              },
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "SHIPPINGMETHOD_TAB_SHIPPINGMETHODCITY",
+                  "Name": "Shipping Method City Management",
+                  "DisplayName": {
+                    "en": "Shipping Method City Management",
+                    "fa": "شهرهای روش ارسال"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SHIPPINGMETHODCITY_MANAGEMENT_MENU",
+          "Name": "Shipping Method City Menu",
+          "Route": "administration/shippingmethodcity-management",
+          "DisplayName": {
+            "en": "Shipping Method Cities",
+            "fa": "شهرهای روش ارسال"
+          },
+          "Order": 14,
+          "Roles": [ "DEV" ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "SHIPPINGMETHODCITY_MANAGEMENT_PAGE",
+              "Name": "Shipping Method City Page",
+              "DisplayName": {
+                "en": "Shipping Method Cities",
+                "fa": "شهرهای روش ارسال"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

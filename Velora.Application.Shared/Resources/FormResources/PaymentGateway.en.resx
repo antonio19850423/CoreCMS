@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="PaymentGateway.Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+	<data name="PaymentGateway.ProviderType" xml:space="preserve">
+        <value>Payment Provider Type</value>
+    </data>
+	<data name="PaymentGateway.ProviderTypeTitle" xml:space="preserve">
+        <value>Payment Provider Type Title</value>
+    </data>
+	<data name="PaymentGateway.GatewayCode" xml:space="preserve">
+        <value>Gateway Code</value>
+    </data>
+	<data name="PaymentGateway.LogoUrl" xml:space="preserve">
+        <value>Logo Url</value>
+    </data>
+	<data name="PaymentGateway.CallbackUrl" xml:space="preserve">
+        <value>Callback Url</value>
+    </data>
+	<data name="PaymentGateway.SettingsJson" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+	<data name="PaymentGateway.Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+	<data name="PaymentGateway.DisplayOrder" xml:space="preserve">
+        <value>Display Order</value>
+    </data>
+	<data name="PaymentGateway.IsDefault" xml:space="preserve">
+        <value>Is Default</value>
+    </data>
+	<data name="PaymentGateway.IsActive" xml:space="preserve">
+        <value>Is Active</value>
+    </data>
+	<data name="PaymentGateway.CreatedAtPersian" xml:space="preserve">
+        <value>Created At</value>
+    </data>
+	<data name="PaymentGateway.UpdatedAtPersian" xml:space="preserve">
+        <value>Updated At</value>
+    </data>
+	<data name="PaymentGateway.CreatedByName" xml:space="preserve">
+        <value>Created By</value>
+    </data>
+	<data name="PaymentGateway.UpdatedByName" xml:space="preserve">
+        <value>Updated By</value>
+    </data>
+
+</root>

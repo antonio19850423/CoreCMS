@@ -52,6 +52,11 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.UserAddress, typeof(UserAddressCrud) },
             { LookupEntities.City, typeof(CityCrud) },
             { LookupEntities.State, typeof(StateCrud) },
+            { LookupEntities.ShippingMethod, typeof(ShippingMethodCrud) },
+            { LookupEntities.ShippingMethodCity, typeof(ShippingMethodCityCrud) },
+            { LookupEntities.ProductReview, typeof(ProductReviewCrud) },
+            { LookupEntities.ProductQuestion, typeof(ProductQuestionCrud) },
+            { LookupEntities.PaymentGateway, typeof(PaymentGatewayCrud) },
         };
 
         public static Type? GetModelType(string entityName)

@@ -254,6 +254,33 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlState, StateCrud>().ReverseMap();
             CreateMap<VwStateForm, StateCrud>().ReverseMap();
             CreateMap<SqlState, StateDto>().ReverseMap();
+
+            CreateMap<SqlShippingMethodCity, ShippingMethodCityCrud>().ReverseMap();
+            CreateMap<VwShippingMethodCityForm, ShippingMethodCityCrud>().ReverseMap();
+            CreateMap<SqlShippingMethodCity, ShippingMethodCityDto>().ReverseMap();
+
+
+            CreateMap<SqlShippingMethod, ShippingMethodCrud>().ReverseMap();
+            CreateMap<VwShippingMethodForm, ShippingMethodCrud>().ReverseMap();
+            CreateMap<SqlShippingMethod, ShippingMethodDto>().ReverseMap();
+
+
+
+            CreateMap<SqlPaymentGateway, PaymentGatewayCrud>().ReverseMap();
+            CreateMap<VwPaymentGatewayForm, PaymentGatewayCrud>().ReverseMap();
+            CreateMap<SqlPaymentGateway, PaymentGatewayDto>().ReverseMap();
+
+
+
+            CreateMap<SqlProductQuestion, ProductQuestionCrud>().ReverseMap();
+            CreateMap<VwProductQuestionForm, ProductQuestionCrud>().ReverseMap();
+            CreateMap<SqlProductQuestion, ProductQuestionDto>().ReverseMap();
+
+
+            CreateMap<SqlProductReview, ProductReviewCrud>().ReverseMap();
+            CreateMap<VwProductReviewForm, ProductReviewCrud>().ReverseMap();
+            CreateMap<SqlProductReview, ProductReviewDto>().ReverseMap();
+
         }
 
 
