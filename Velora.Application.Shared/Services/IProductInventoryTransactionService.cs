@@ -18,6 +18,9 @@ namespace Velora.Application.Shared.Services
         Task<Dictionary<Guid, int>> GetInventoryAsync(
             List<Guid> productIds);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<int> GetInventoryAsync(
+            Guid productId,
+            Guid? productVariantId = null);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

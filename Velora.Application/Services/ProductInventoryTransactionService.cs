@@ -289,6 +289,53 @@ namespace Velora.Application.Services
                 x => x.Quantity
             );
         }
+
+        public async Task<int> GetInventoryAsync(
+            Guid productId,
+            Guid? productVariantId = null)
+        {
+            var query = await GetAllQuery();
+
+
+            query = query.Where(x =>
+                x.ProductId == productId);
+
+
+            if (productVariantId.HasValue)
+            {
+                query = query.Where(x =>
+                    x.ProductVariantId == productVariantId.Value);
+            }
+
+
+            var quantity = await query.SumAsync(x =>
+                x.OperationType == 1
+                ? x.ChangeQuantity
+                : -x.ChangeQuantity
+            );
+
+
+            return quantity;
+        }
+        public async Task<int> GetInventoryAsync(Guid productId)
+{
+    var query = await GetAllQuery();
+
+
+    var quantity =
+        await query
+
+        .Where(x => x.ProductId == productId)
+
+        .SumAsync(x =>
+            x.OperationType == 1
+            ? x.ChangeQuantity
+            : -x.ChangeQuantity
+        );
+
+
+    return quantity;
+}
         public async Task<byte[]> ExportAsync(
 bool exportCurrentProductInventoryTransaction,
 int ProductInventoryTransactionNumber,

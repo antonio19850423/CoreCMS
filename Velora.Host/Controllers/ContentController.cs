@@ -163,7 +163,18 @@ namespace Velora.Host.Controllers
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("GetProductDetailAsync")]
+        public async Task<IActionResult> GetProductDetailAsync(
+    string slug)
+        {
+            var result =
+                await _productService
+                    .GetProductDetailAsync(slug);
 
+
+            return Ok(result);
+        }
         [HttpGet]
         [Route("GetProductCategoryTreeAsync")]
         public async Task<IActionResult> GetProductCategoryTreeAsync()

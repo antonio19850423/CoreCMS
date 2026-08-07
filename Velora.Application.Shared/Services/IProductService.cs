@@ -13,6 +13,7 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<ProductDto>> CreateAsync(ProductCrud input);
         Task<ResultDto<ProductDto>> UpdateAsync(ProductCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<ResultDto<ProductDetailViewDto>> GetProductDetailAsync(string? slug);
         Task<ResultDto<ProductListResultDto>> GetProductsAsync(
             int page,
             int pageSize,

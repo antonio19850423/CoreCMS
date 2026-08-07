@@ -697,6 +697,286 @@ int ProductSize)
 
             }
         }
+
+
+        public async Task<ResultDto<ProductDetailViewDto>> GetProductDetailAsync(string? slug)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(slug))
+                {
+                    return new ResultDto<ProductDetailViewDto>
+                    {
+                        Success = false,
+                        Message = "شناسه محصول نامعتبر است"
+                    };
+                }
+
+
+                var product = await Query()
+
+                    .Include(x => x.Category)
+
+                    .Include(x => x.Brand)
+
+
+                    .Include(x => x.ProductFiles)
+
+
+                    .Include(x => x.ProductAttributeValues)
+                        .ThenInclude(x => x.ProductAttribute)
+
+
+                    .Include(x => x.ProductVariants)
+
+
+                    .Include(x => x.ProductTagMappings)
+                        .ThenInclude(x => x.ProductTag)
+
+
+                    .FirstOrDefaultAsync(x =>
+                        x.Slug == slug &&
+                        x.IsPublished==true &&
+                        x.IsActive==true);
+
+
+
+                if (product == null)
+                {
+                    return new ResultDto<ProductDetailViewDto>
+                    {
+                        Success = false,
+                        Message = "محصول پیدا نشد"
+                    };
+                }
+
+
+
+                // ==========================
+                // Inventory
+                // ==========================
+
+                var inventory =
+                    await _productInventoryService
+                        .GetInventoryAsync(product.Id);
+
+                // ======================
+                // Variants
+                // ======================
+
+                var variants = new List<ProductVariantViewDto>();
+
+                foreach (var x in product.ProductVariants.OrderBy(x => x.SortOrder))
+                {
+                    var stock =
+                        await _productInventoryService
+                            .GetInventoryAsync(product.Id, x.Id);
+
+                    variants.Add(new ProductVariantViewDto
+                    {
+                        Id = x.Id,
+                        ProductId = x.ProductId,
+                        Name = x.Name,
+                        Price = x.Price,
+                        ComparePrice = x.ComparePrice,
+                        Sku = x.Sku,
+                        Barcode = x.Barcode,
+                        Image = x.Image,
+                        IsDefault = x.IsDefault,
+                        SortOrder = x.SortOrder,
+                        IsActive = x.IsActive,
+                        Stock = stock
+                    });
+                }
+
+
+                // ==========================
+                // Mapping
+                // ==========================
+
+                var data = new ProductDetailViewDto
+                {
+
+                    Id = product.Id,
+
+
+                    Name = product.Name,
+
+
+                    Slug = product.Slug,
+
+
+                    Summary = product.Summary,
+
+
+                    Description = product.Description,
+
+
+                    MainImage = product.MainImage,
+
+
+                    Thumbnail = product.Thumbnail,
+
+
+
+                    Price =
+                        product.ProductVariants.Count == 1
+                        ?
+                        product.ProductVariants.First().Price
+                        :
+                        product.ProductVariants.Any()
+                        ?
+                        product.ProductVariants.Min(x => x.Price)
+                        :
+                        product.Price ?? 0,
+
+
+
+
+
+                    Category =
+                        product.Category == null
+                        ?
+                        null
+                        :
+                        new CategoryViewDto
+                        {
+                            Id = product.Category.Id,
+
+                            Name = product.Category.Name,
+
+                            Slug = product.Category.Slug
+                        },
+
+
+
+                    Brand =
+                        product.Brand == null
+                        ?
+                        null
+                        :
+                        new BrandViewDto
+                        {
+                            Id = product.Brand.Id,
+
+                            Name = product.Brand.Name,
+
+                            Slug = product.Brand.Slug
+                        },
+
+
+
+                    // ======================
+                    // Gallery
+                    // ======================
+
+                    Gallery =
+                        product.ProductFiles
+
+                        .OrderBy(x => x.SortOrder)
+
+                        .Select(x => new ProductMediaViewDto
+                        {
+                            Id = x.Id,
+
+                            ProductId = x.ProductId,
+
+                            FileUrl = x.FileUrl,
+
+                            ThumbnailUrl = x.ThumbnailUrl,
+
+                            Title = x.Title,
+
+                            Alt = x.Alt,
+
+                            MediaType = x.MediaType,
+
+                            IsMain = x.IsMain,
+
+                            SortOrder = x.SortOrder
+
+                        })
+                        .ToList(),
+
+
+
+                    // ======================
+                    // Attributes
+                    // ======================
+
+                    Attributes =
+                        product.ProductAttributeValues
+
+                        .Select(x => new ProductAttributeViewDto
+                        {
+                            Id = x.Id,
+
+                            Name = x.ProductAttribute.Name,
+
+                            Code = x.ProductAttribute.Code,
+
+                            Value = x.Value
+
+                        })
+                        .ToList(),
+
+
+
+
+                    // ======================
+                    // Variants
+                    // ======================
+
+                    Variants = variants.ToList(),
+
+
+
+
+                    // ======================
+                    // Tags
+                    // ======================
+
+                    Tags =
+                        product.ProductTagMappings
+
+                        .Select(x => new ProductTagViewDto
+                        {
+                            Id = x.ProductTag.Id,
+
+                            Name = x.ProductTag.Name,
+
+                            Slug = x.ProductTag.Slug
+
+                        })
+                        .ToList()
+
+                };
+
+
+
+                return new ResultDto<ProductDetailViewDto>
+                {
+                    Success = true,
+
+                    Data = data
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<ProductDetailViewDto>
+                {
+                    Success = false,
+
+                    Message = "خطا در دریافت اطلاعات محصول",
+
+                    Errors =
+            {
+                ex.Message
+            }
+                };
+            }
+        }
     }
 
 }
