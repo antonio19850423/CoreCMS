@@ -33,6 +33,8 @@ public partial class VwProductReviewForm
 
     public bool IsApproved { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

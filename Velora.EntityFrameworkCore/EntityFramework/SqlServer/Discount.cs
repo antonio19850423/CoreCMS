@@ -37,8 +37,5 @@ public partial class Discount
     public Guid? UpdatedBy { get; set; }
 
     [InverseProperty("Discount")]
-    public virtual ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
-
-    [InverseProperty("Discount")]
     public virtual ICollection<DiscountItem> DiscountItems { get; set; } = new List<DiscountItem>();
 }

@@ -7,20 +7,26 @@
 		<value>1.3</value>
 	</resheader>
 	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
 	</resheader>
 	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
 	</resheader>
 
-	<data name="Coupon.ParentId" xml:space="preserve">
-        <value>Parent Discount Id</value>
+	<data name="Coupon.CouponType" xml:space="preserve">
+        <value>Coupon Type</value>
     </data>
-	<data name="Coupon.ParentName" xml:space="preserve">
-        <value>Parent Discount</value>
+	<data name="Coupon.CouponTypeName" xml:space="preserve">
+        <value>Coupon Type</value>
     </data>
-	<data name="Coupon.Code" xml:space="preserve">
-        <value>Coupon Code</value>
+	<data name="Coupon.CouponValue" xml:space="preserve">
+        <value>Discount Value</value>
+    </data>
+	<data name="Coupon.MinimumOrderAmount" xml:space="preserve">
+        <value>Minimum Order Amount</value>
+    </data>
+	<data name="Coupon.MaximumDiscountAmount" xml:space="preserve">
+        <value>Maximum Discount Amount</value>
     </data>
 	<data name="Coupon.StartDate" xml:space="preserve">
         <value>Start Date</value>
@@ -33,6 +39,12 @@
     </data>
 	<data name="Coupon.EndDatePersian" xml:space="preserve">
         <value>End Date</value>
+    </data>
+	<data name="Coupon.Code" xml:space="preserve">
+        <value>Coupon Code</value>
+    </data>
+	<data name="Coupon.CanCombineWithDiscount" xml:space="preserve">
+        <value>Can Be Combined with General Discount</value>
     </data>
 	<data name="Coupon.IsSingleUsePerUser" xml:space="preserve">
         <value>Single Use Per User</value>

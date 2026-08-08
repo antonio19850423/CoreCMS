@@ -13,6 +13,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -149,6 +150,324 @@ namespace Velora.Application.Services
                 };
                 result.Errors.Add(ex.Message);
                 return result;
+            }
+        }
+
+        public async Task<bool> HasRecentQuestionAsync(
+    Guid productId)
+        {
+            var userId =
+                _currentUserService.GetUserId();
+
+            if (userId == Guid.Empty)
+            {
+                return false;
+            }
+
+
+            var fromDate =
+                DateTime.Now.AddHours(-24);
+
+
+            return await Query()
+                .AnyAsync(x =>
+                    x.ProductId == productId &&
+                    x.UserId == userId &&
+                    x.CreatedAt >= fromDate);
+        }
+        public async Task<ResultDto<ProductQuestionDto>> CreateUserQuestionAsync(
+    CreateProductQuestionDto input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
+            try
+            {
+                // ========================================
+                // Validation
+                // ========================================
+
+                if (input == null)
+                {
+                    throw new BusinessException(
+                        "اطلاعات سؤال ارسال نشده است.");
+                }
+
+
+                // ========================================
+                // ProductId
+                // ========================================
+
+                if (input.ProductId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "محصول انتخاب نشده است.");
+                }
+
+
+                // ========================================
+                // Question
+                // ========================================
+
+                if (string.IsNullOrWhiteSpace(input.Question))
+                {
+                    throw new BusinessException(
+                        "متن سؤال الزامی است.");
+                }
+
+
+                // حذف فاصله‌های ابتدا و انتهای متن
+
+                input.Question =
+                    input.Question.Trim();
+
+
+                // حداقل طول سؤال
+
+                if (input.Question.Length < 3)
+                {
+                    throw new BusinessException(
+                        "متن سؤال باید حداقل ۳ کاراکتر باشد.");
+                }
+
+
+                // حداکثر طول سؤال
+
+                if (input.Question.Length > 1000)
+                {
+                    throw new BusinessException(
+                        "متن سؤال نمی‌تواند بیشتر از ۱۰۰۰ کاراکتر باشد.");
+                }
+
+
+                // ========================================
+                // Authentication
+                // ========================================
+
+                var userId =
+                    _currentUserService.GetUserId();
+
+                if (userId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "کاربر احراز هویت نشده است.");
+                }
+
+
+                // ========================================
+                // Recent Question
+                // ========================================
+
+                var hasRecentQuestion =
+                    await HasRecentQuestionAsync(
+                        input.ProductId);
+
+                if (hasRecentQuestion)
+                {
+                    throw new BusinessException(
+                        "شما در ۲۴ ساعت گذشته برای این محصول سؤال ثبت کرده‌اید.");
+                }
+
+
+                // ========================================
+                // Create Question
+                // ========================================
+
+                var productQuestion =
+                    new ProductQuestionDto
+                    {
+                        ProductId = input.ProductId,
+
+                        Question = input.Question,
+
+                        // از Backend دریافت می‌شود
+                        UserId = userId,
+
+                        // سؤال جدید ابتدا باید تأیید شود
+                        IsApproved = false,
+
+                        // هنوز پاسخی داده نشده
+                        IsAnswered = false,
+
+                        Answer = null,
+
+                        AnsweredBy = null
+                    };
+
+
+                var productQuestionResult =
+                    await CreateAsync(productQuestion);
+
+
+                await _transactionService.CommitAsync();
+
+
+                return productQuestionResult;
+            }
+            catch (BusinessException)
+            {
+                await _transactionService.RollbackAsync();
+
+                throw;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result =
+                    new ResultDto<ProductQuestionDto>
+                    {
+                        Success = false,
+
+                        Message = errorMessage
+                    };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
+
+        public async Task<ResultDto<ProductQuestionListResultDto>>
+    GetUserQuestionsAsync(
+        Guid productId,
+        int page,
+        int pageSize)
+        {
+            try
+            {
+                // ========================================
+                // Validation
+                // ========================================
+
+                if (productId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "محصول انتخاب نشده است.");
+                }
+
+
+                if (page < 1)
+                {
+                    page = 1;
+                }
+
+
+                if (pageSize < 1)
+                {
+                    pageSize = 10;
+                }
+
+
+                if (pageSize > 50)
+                {
+                    pageSize = 50;
+                }
+
+
+                // ========================================
+                // Query
+                // ========================================
+
+                var query =
+                    (await GetAllViews())
+                    .Where(x =>
+                        x.IsApproved &&
+                        x.ProductId == productId);
+
+
+                // ========================================
+                // Sort
+                // ========================================
+
+                query =
+                    query.OrderByDescending(
+                        x => x.CreatedAt);
+
+
+                // ========================================
+                // Total Count
+                // ========================================
+
+                var total =
+                    await query.CountAsync();
+
+
+                // ========================================
+                // Pagination
+                // ========================================
+
+                var questions =
+                    await query
+                        .Skip(
+                            (page - 1) *
+                            pageSize)
+                        .Take(pageSize)
+                        .Select(x =>
+                            new ProductQuestionListDto
+                            {
+                                Id = x.Id,
+
+                                ProductId =
+                                    x.ProductId,
+
+                                Question =
+                                    x.Question,
+
+                                Answer =
+                                    x.Answer,
+
+                                IsAnswered =
+                                    x.IsAnswered,
+
+                                UserName =
+                                    x.UserName,
+
+                                PersianDate =
+                                    x.CreatedAtPersian ?? ""
+                            })
+                        .ToListAsync();
+
+
+                // ========================================
+                // Result
+                // ========================================
+
+                return new ResultDto<ProductQuestionListResultDto>
+                {
+                    Success = true,
+
+                    Data =
+                        new ProductQuestionListResultDto
+                        {
+                            Items = questions,
+
+                            TotalCount = total,
+
+                            Page = page,
+
+                            PageSize = pageSize
+                        }
+                };
+            }
+            catch (BusinessException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<ProductQuestionListResultDto>
+                {
+                    Success = false,
+
+                    Message =
+                        "خطا در دریافت سؤالات کاربران",
+
+                    Errors =
+            {
+                ex.Message
+            }
+                };
             }
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)

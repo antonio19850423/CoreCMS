@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = false, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
         public string Name { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 2, GridOrder = 2, ShowInGrid = false, ShowInForm = true,
             ServiceName = "",
@@ -29,31 +29,33 @@ namespace Velora.Application.Shared.Dtos
             Route = "/api/ComboBox/DiscountTypes")]
         public string DiscountTypeName { get; set; } = null!;
 
-        [Column(TypeName = "decimal(18, 2)")]
+
+
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true)]
         public decimal DiscountValue { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true)]
-        public DateTime StartDate { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 4, GridOrder = 4, ShowInGrid = false, ShowInForm = true)]
+        public DateTime StartDate { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = true)]
         public DateTime EndDate { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = false,MaxLength =19)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder =6, GridOrder = 6, ShowInGrid = true, ShowInForm = false, MaxLength =19)]
         public string? StartDatePersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = false, MaxLength = 19)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false, MaxLength = 19)]
         public string? EndDatePersian { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
     }
 }

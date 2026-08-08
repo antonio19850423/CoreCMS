@@ -15,4 +15,12 @@ namespace Velora.Application.Shared.Enums
         [Display(Name = "مبلغ ثابت")]
         Decrease = 2
     }
+    public enum CouponType
+    {
+        [Display(Name = "درصدی")]
+        Increase = 1,
+
+        [Display(Name = "مبلغ ثابت")]
+        Decrease = 2
+    }
 }

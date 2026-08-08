@@ -13,6 +13,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -149,6 +150,251 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductReviewDto>> CreateUserReviewAsync(
+            CreateProductReviewDto input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
+            try
+            {
+                // ========================================
+                // Validation
+                // ========================================
+
+                if (input == null)
+                {
+                    throw new BusinessException(
+                        "اطلاعات نظر ارسال نشده است.");
+                }
+
+                // ProductId
+                if (input.ProductId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "محصول انتخاب نشده است.");
+                }
+
+                // Rate
+                if (input.Rate < 1 || input.Rate > 5)
+                {
+                    throw new BusinessException(
+                        "امتیاز باید بین ۱ تا ۵ باشد.");
+                }
+
+                // Comment
+                if (string.IsNullOrWhiteSpace(input.Comment))
+                {
+                    throw new BusinessException(
+                        "متن نظر الزامی است.");
+                }
+
+                // حذف فاصله‌های ابتدا و انتهای متن
+                input.Comment = input.Comment.Trim();
+
+                // محدودیت طول نظر
+                if (input.Comment.Length < 3)
+                {
+                    throw new BusinessException(
+                        "متن نظر باید حداقل ۳ کاراکتر باشد.");
+                }
+
+                if (input.Comment.Length > 2000)
+                {
+                    throw new BusinessException(
+                        "متن نظر نمی‌تواند بیشتر از ۲۰۰۰ کاراکتر باشد.");
+                }
+
+
+                // ========================================
+                // Authentication
+                // ========================================
+
+                var userId =
+                    _currentUserService.GetUserId();
+
+                if (userId == Guid.Empty)
+                {
+                    throw new BusinessException(
+                        "کاربر احراز هویت نشده است.");
+                }
+
+
+                // ========================================
+                // Recent Review
+                // ========================================
+
+                var hasRecentReview =
+                    await HasRecentReviewAsync(
+                        input.ProductId);
+
+                if (hasRecentReview)
+                {
+                    throw new BusinessException(
+                        "شما در ۲۴ ساعت گذشته برای این محصول نظر ثبت کرده‌اید.");
+                }
+
+
+                // ========================================
+                // Create Review
+                // ========================================
+
+                var productReview =
+                    new ProductReviewDto
+                    {
+                        Title = string.IsNullOrWhiteSpace(input.Title)
+                            ? null
+                            : input.Title.Trim(),
+
+                        Comment = input.Comment,
+
+                        ProductId = input.ProductId,
+
+                        Rate = input.Rate,
+
+                        // اطلاعات حساس از Frontend گرفته نمی‌شود
+                        UserId = userId,
+
+                        // ابتدا نیاز به تأیید کارشناس دارد
+                        IsApproved = false
+                    };
+
+
+                var productReviewResult =
+                    await CreateAsync(productReview);
+
+
+                await _transactionService.CommitAsync();
+
+
+                return productReviewResult;
+            }
+            catch (BusinessException)
+            {
+                await _transactionService.RollbackAsync();
+
+                throw;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result =
+                    new ResultDto<ProductReviewDto>
+                    {
+                        Success = false,
+                        Message = errorMessage
+                    };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
+        public async Task<bool> HasRecentReviewAsync(Guid productId)
+        {
+            var userId = _currentUserService.GetUserId();
+
+            if (userId == Guid.Empty)
+            {
+                return false;
+            }
+
+            var fromDate = DateTime.Now.AddHours(-24);
+
+            return await Query()
+                .AnyAsync(x =>
+                    x.ProductId == productId &&
+                    x.UserId == userId &&
+                    x.CreatedAt >= fromDate);
+        }
+        public async Task<ResultDto<ProductReviewListResultDto>> GetUserReviewsAsync(
+            Guid productId,
+            int page,
+            int pageSize)
+        {
+            try
+            {
+                var query =
+                    (await GetAllViews())
+                    .Where(x =>
+                        x.IsApproved &&
+                        x.ProductId == productId);
+
+                // ===============================
+                // Sort
+                // ===============================
+
+                query =
+                    query.OrderByDescending(x => x.CreatedAt);
+
+
+                // ===============================
+                // Total Count
+                // ===============================
+
+                var total =
+                    await query.CountAsync();
+
+
+                // ===============================
+                // Pagination
+                // ===============================
+
+                var reviews =
+                    await query
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .Select(x => new CreateProductReviewDto
+                        {
+                            Title = x.Title,
+
+                            Comment = x.Comment,
+
+                            Rate = x.Rate,
+
+                            UserName = x.UserName,
+
+                            PersianDate = x.CreatedAtPersian
+                        })
+                        .ToListAsync();
+
+
+                // ===============================
+                // Result
+                // ===============================
+
+                return new ResultDto<ProductReviewListResultDto>
+                {
+                    Success = true,
+
+                    Data = new ProductReviewListResultDto
+                    {
+                        Items = reviews,
+
+                        TotalCount = total,
+
+                        Page = page,
+
+                        PageSize = pageSize
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<ProductReviewListResultDto>
+                {
+                    Success = false,
+
+                    Message = "خطا در دریافت نظرات کاربران",
+
+                    Errors =
+            {
+                ex.Message
+            }
+                };
+            }
+        }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdProductReviews= new List<ProductReviewDto>();
@@ -219,7 +465,165 @@ namespace Velora.Application.Services
                 };
             }
         }
+        public async Task<ResultDto<ProductRatingSummaryDto>> GetRatingSummaryAsync(
+    Guid productId)
+        {
+            try
+            {
+                // ===============================
+                // Query
+                // ===============================
 
+                var query =
+                    (await GetAllViews())
+                    .Where(x =>
+                        x.ProductId == productId &&
+                        x.IsApproved);
+
+
+                // ===============================
+                // Total Reviews
+                // ===============================
+
+                var totalReviews =
+                    await query.CountAsync();
+
+
+                // ===============================
+                // No Reviews
+                // ===============================
+
+                if (totalReviews == 0)
+                {
+                    return new ResultDto<ProductRatingSummaryDto>
+                    {
+                        Success = true,
+
+                        Data = new ProductRatingSummaryDto
+                        {
+                            AverageRate = 0,
+
+                            TotalReviews = 0,
+
+                            SatisfactionPercentage = 0,
+
+                            FiveStarCount = 0,
+
+                            FourStarCount = 0,
+
+                            ThreeStarCount = 0,
+
+                            TwoStarCount = 0,
+
+                            OneStarCount = 0
+                        }
+                    };
+                }
+
+
+                // ===============================
+                // Average
+                // ===============================
+
+                var averageRate =
+                    await query.AverageAsync(
+                        x => (decimal)x.Rate);
+
+
+                // ===============================
+                // Rating Distribution
+                // ===============================
+
+                var fiveStarCount =
+                    await query.CountAsync(
+                        x => x.Rate == 5);
+
+                var fourStarCount =
+                    await query.CountAsync(
+                        x => x.Rate == 4);
+
+                var threeStarCount =
+                    await query.CountAsync(
+                        x => x.Rate == 3);
+
+                var twoStarCount =
+                    await query.CountAsync(
+                        x => x.Rate == 2);
+
+                var oneStarCount =
+                    await query.CountAsync(
+                        x => x.Rate == 1);
+
+
+                // ===============================
+                // Satisfaction
+                // ===============================
+
+                var satisfiedReviews =
+                    fiveStarCount +
+                    fourStarCount;
+
+
+                var satisfactionPercentage =
+                    (int)Math.Round(
+                        satisfiedReviews * 100m /
+                        totalReviews);
+
+
+                // ===============================
+                // Result
+                // ===============================
+
+                return new ResultDto<ProductRatingSummaryDto>
+                {
+                    Success = true,
+
+                    Data = new ProductRatingSummaryDto
+                    {
+                        AverageRate =
+                            Math.Round(
+                                averageRate,
+                                1),
+
+                        TotalReviews =
+                            totalReviews,
+
+                        SatisfactionPercentage =
+                            satisfactionPercentage,
+
+                        FiveStarCount =
+                            fiveStarCount,
+
+                        FourStarCount =
+                            fourStarCount,
+
+                        ThreeStarCount =
+                            threeStarCount,
+
+                        TwoStarCount =
+                            twoStarCount,
+
+                        OneStarCount =
+                            oneStarCount
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<ProductRatingSummaryDto>
+                {
+                    Success = false,
+
+                    Message =
+                        "خطا در دریافت امتیاز محصول",
+
+                    Errors =
+                {
+                    ex.Message
+                }
+                };
+            }
+        }
         public async Task<byte[]> ExportAsync(
 bool exportCurrentProductReview,
 int ProductReviewNumber,

@@ -68,8 +68,28 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                if (input.StartDate >= input.EndDate)
+                {
+                    return new ResultDto<DiscountDto>
+                    {
+                        Success = false,
+                        Message = "تاریخ پایان باید بعد از تاریخ شروع باشد."
+                    };
+                }
 
+                var hasOverlap = await HasDateOverlapAsync(
+                    input.StartDate,
+                    input.EndDate
+                );
 
+                if (hasOverlap)
+                {
+                    return new ResultDto<DiscountDto>
+                    {
+                        Success = false,
+                        Message = "بازه زمانی این تخفیف با یک تخفیف فعال دیگر تداخل دارد."
+                    };
+                }
 
                 var Discount = new DiscountDto
                 {
@@ -122,7 +142,29 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                if (input.StartDate >= input.EndDate)
+                {
+                    return new ResultDto<DiscountDto>
+                    {
+                        Success = false,
+                        Message = "تاریخ پایان باید بعد از تاریخ شروع باشد."
+                    };
+                }
 
+                var hasOverlap = await HasDateOverlapAsync(
+                    input.StartDate,
+                    input.EndDate,
+                    input.Id
+                );
+
+                if (hasOverlap)
+                {
+                    return new ResultDto<DiscountDto>
+                    {
+                        Success = false,
+                        Message = "بازه زمانی این تخفیف با یک تخفیف فعال دیگر تداخل دارد."
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new DiscountDto
                 {
@@ -261,7 +303,21 @@ int DiscountSize)
             return resultBytes;
         }
 
+        private async Task<bool> HasDateOverlapAsync(
+    DateTime startDate,
+    DateTime endDate,
+    Guid? excludeId = null)
+        {
+            return await Query()
+                .AnyAsync(x =>
+                    x.IsActive &&
+                    (!excludeId.HasValue || x.Id != excludeId.Value) &&
 
+                    // بررسی تداخل دو بازه زمانی
+                    x.StartDate <= endDate &&
+                    x.EndDate >= startDate
+                );
+        }
     }
 
 }

@@ -51,6 +51,8 @@ namespace Velora.Application.Shared.Dtos
         public string? CreatedByName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = false)]
+        public DateTime CreatedAt { get; set; }
 
     }
 }

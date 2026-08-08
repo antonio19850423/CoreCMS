@@ -51,6 +51,7 @@ public class ProductVariantGqlResolver : IProductVariantGqlResolver
             CreatedByName=x.CreatedByName ??"",
             UpdatedAtPersian= x.UpdatedAtPersian ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
+            ProductName=x.ProductName??""
         });
     }
 

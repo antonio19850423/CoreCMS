@@ -15,6 +15,7 @@ using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
@@ -66,9 +67,21 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                if (await IsCouponCodeDuplicateAsync(input.Code))
+                {
+                    return new ResultDto<CouponDto>
+                    {
+                        Success = false,
+                        Message = "کد کوپن تکراری است."
+                    };
+                }
                 var Coupon = new CouponDto
                 {
-                    DiscountId=input.ParentId.Value,
+                    CouponType = input.CouponType,
+                    CanCombineWithDiscount = input.CanCombineWithDiscount,
+                    CouponValue = input.CouponValue,
+                    MaximumDiscountAmount = input.MaximumDiscountAmount,
+                    MinimumOrderAmount = input.MinimumOrderAmount,
                     Code = input.Code,
                     EndDate=input.EndDate,
                     IsActive=input.IsActive,
@@ -120,12 +133,23 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
+                if (await IsCouponCodeDuplicateAsync(input.Code, input.Id))
+                {
+                    return new ResultDto<CouponDto>
+                    {
+                        Success = false,
+                        Message = "کد کوپن تکراری است."
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new CouponDto
                 {
                     Id = input.Id,
-                    DiscountId = input.ParentId.Value,
+                    CouponType = input.CouponType,
+                    CanCombineWithDiscount = input.CanCombineWithDiscount,
+                    CouponValue = input.CouponValue,
+                    MaximumDiscountAmount = input.MaximumDiscountAmount,
+                    MinimumOrderAmount = input.MinimumOrderAmount,
                     Code = input.Code,
                     EndDate = input.EndDate,
                     IsActive = input.IsActive,
@@ -224,7 +248,15 @@ namespace Velora.Application.Services
                 };
             }
         }
-
+        private async Task<bool> IsCouponCodeDuplicateAsync(
+    string code,
+    Guid? id = null)
+        {
+            return await Query().AnyAsync(x =>
+                x.Code == code &&
+                (!id.HasValue || x.Id != id.Value)
+            );
+        }
         public async Task<byte[]> ExportAsync(
 bool exportCurrentCoupon,
 int CouponNumber,

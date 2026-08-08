@@ -1,61 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
 
-    <data name="Coupon.ParentId" xml:space="preserve">
-        <value>شناسه تخفیف والد</value>
+	<data name="Coupon.CouponType" xml:space="preserve">
+        <value>نوع کوپن تخفیف</value>
     </data>
-    <data name="Coupon.ParentName" xml:space="preserve">
-        <value>تخفیف والد</value>
+	<data name="Coupon.CouponTypeName" xml:space="preserve">
+        <value>نوع کوپن تخفیف</value>
     </data>
-    <data name="Coupon.Code" xml:space="preserve">
+	<data name="Coupon.CouponValue" xml:space="preserve">
+        <value>مقدار تخفیف</value>
+    </data>
+	<data name="Coupon.MinimumOrderAmount" xml:space="preserve">
+        <value>حداقل مبلغ سفارش</value>
+    </data>
+	<data name="Coupon.MaximumDiscountAmount" xml:space="preserve">
+        <value>حداکثر مبلغ تخفیف</value>
+    </data>
+	<data name="Coupon.StartDate" xml:space="preserve">
+        <value>تاریخ شروع اعتبار</value>
+    </data>
+	<data name="Coupon.StartDatePersian" xml:space="preserve">
+        <value>تاریخ شروع اعتبار</value>
+    </data>
+	<data name="Coupon.EndDate" xml:space="preserve">
+        <value>تاریخ پایان اعتبار</value>
+    </data>
+	<data name="Coupon.EndDatePersian" xml:space="preserve">
+        <value>تاریخ پایان اعتبار</value>
+    </data>
+	<data name="Coupon.Code" xml:space="preserve">
         <value>کد تخفیف</value>
     </data>
-    <data name="Coupon.StartDate" xml:space="preserve">
-        <value>تاریخ شروع</value>
+	<data name="Coupon.CanCombineWithDiscount" xml:space="preserve">
+        <value>امکان استفاده همزمان با تخفیف عمومی</value>
     </data>
-    <data name="Coupon.StartDatePersian" xml:space="preserve">
-        <value>تاریخ شروع</value>
+	<data name="Coupon.IsSingleUsePerUser" xml:space="preserve">
+        <value>هر کاربر فقط یک‌بار مجاز به استفاده است</value>
     </data>
-    <data name="Coupon.EndDate" xml:space="preserve">
-        <value>تاریخ پایان</value>
+	<data name="Coupon.UsageLimit" xml:space="preserve">
+        <value>سقف تعداد استفاده</value>
     </data>
-    <data name="Coupon.EndDatePersian" xml:space="preserve">
-        <value>تاریخ پایان</value>
+	<data name="Coupon.UsedCount" xml:space="preserve">
+        <value>تعداد دفعات استفاده‌شده</value>
     </data>
-    <data name="Coupon.IsSingleUsePerUser" xml:space="preserve">
-        <value>یک‌بار مصرف برای هر کاربر</value>
-    </data>
-    <data name="Coupon.UsageLimit" xml:space="preserve">
-        <value>محدودیت استفاده</value>
-    </data>
-    <data name="Coupon.UsedCount" xml:space="preserve">
-        <value>تعداد استفاده</value>
-    </data>
-    <data name="Coupon.IsActive" xml:space="preserve">
+	<data name="Coupon.IsActive" xml:space="preserve">
         <value>فعال</value>
     </data>
-    <data name="Coupon.CreatedAtPersian" xml:space="preserve">
+	<data name="Coupon.CreatedAtPersian" xml:space="preserve">
         <value>تاریخ ایجاد</value>
     </data>
-    <data name="Coupon.UpdatedAtPersian" xml:space="preserve">
+	<data name="Coupon.UpdatedAtPersian" xml:space="preserve">
         <value>تاریخ بروزرسانی</value>
     </data>
-    <data name="Coupon.CreatedByName" xml:space="preserve">
+	<data name="Coupon.CreatedByName" xml:space="preserve">
         <value>ایجادکننده</value>
     </data>
-    <data name="Coupon.UpdatedByName" xml:space="preserve">
+	<data name="Coupon.UpdatedByName" xml:space="preserve">
         <value>ویرایشگر</value>
     </data>
 </root>

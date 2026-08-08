@@ -12,8 +12,6 @@ public partial class Coupon
     [Key]
     public Guid Id { get; set; }
 
-    public Guid DiscountId { get; set; }
-
     [StringLength(100)]
     public string Code { get; set; } = null!;
 
@@ -22,10 +20,6 @@ public partial class Coupon
     public int UsedCount { get; set; }
 
     public bool IsSingleUsePerUser { get; set; }
-
-    public DateTime StartDate { get; set; }
-
-    public DateTime EndDate { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -39,10 +33,23 @@ public partial class Coupon
 
     public Guid? UpdatedBy { get; set; }
 
+    public bool? CanCombineWithDiscount { get; set; }
+
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    public byte CouponType { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal CouponValue { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? MinimumOrderAmount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? MaximumDiscountAmount { get; set; }
+
     [InverseProperty("Coupon")]
     public virtual ICollection<CouponUsage> CouponUsages { get; set; } = new List<CouponUsage>();
-
-    [ForeignKey("DiscountId")]
-    [InverseProperty("Coupons")]
-    public virtual Discount Discount { get; set; } = null!;
 }

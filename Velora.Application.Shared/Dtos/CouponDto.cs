@@ -9,12 +9,10 @@ using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public class CouponDto
+    public  class CouponDto
     {
         [Key]
         public Guid Id { get; set; }
-
-        public Guid DiscountId { get; set; }
 
         [StringLength(100)]
         public string Code { get; set; } = null!;
@@ -24,10 +22,6 @@ namespace Velora.Application.Shared.Dtos
         public int UsedCount { get; set; }
 
         public bool IsSingleUsePerUser { get; set; }
-
-        public DateTime StartDate { get; set; }
-
-        public DateTime EndDate { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -40,6 +34,23 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+
+        public bool? CanCombineWithDiscount { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public byte CouponType { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal CouponValue { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? MinimumOrderAmount { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? MaximumDiscountAmount { get; set; }
 
     }
 }

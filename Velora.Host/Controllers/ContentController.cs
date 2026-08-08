@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Velora.Application.Services;
 using Velora.Application.Shared;
 using Velora.Application.Shared.Attributes;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Services;
 
 namespace Velora.Host.Controllers
@@ -20,11 +22,13 @@ namespace Velora.Host.Controllers
         private readonly IProductService _productService;
         private readonly IProductCategoryService _productCategoryService;
         private readonly IProductBrandService _productBrandService;
+        private readonly IProductReviewService _productReviewService;
+        private readonly IProductQuestionService _productQuestionService;
         
 
 
 
-        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService)
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService)
         {
 
             _contentService = ContentService;
@@ -33,6 +37,8 @@ namespace Velora.Host.Controllers
             _productService= productService;
             _productCategoryService= productCategoryService;
             _productBrandService= productBrandService;
+            _productReviewService = productReviewService;
+            _productQuestionService= productQuestionService;
         }
 
 
@@ -235,6 +241,136 @@ namespace Velora.Host.Controllers
                 Success = true,
                 Data = data
             });
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [Route("AddProductReviewsync")]
+        public async Task<IActionResult> AddProductReviewsync([FromBody] CreateProductReviewDto input)
+        {
+            if (input == null)
+            {
+                return BadRequest(
+                    new ResultDto<ProductReviewDto>
+                    {
+                        Success = false,
+                        Message = "اطلاعات نظر ارسال نشده است."
+                    });
+            }
+
+            try
+            {
+                var result =
+                    await _productReviewService.CreateUserReviewAsync(input);
+
+                if (!result.Success)
+                    return BadRequest(result);
+
+                return Ok(new ResultDto<ProductReviewDto>
+                {
+                    Success = true,
+                    Message = "نظر شما با موفقیت ثبت شد. پس از بررسی کارشناسان، نمایش داده خواهد شد."
+                });
+            }
+            catch (BusinessException ex)
+            {
+                return BadRequest(
+                    new ResultDto<ProductReviewDto>
+                    {
+                        Success = false,
+                        Message = ex.Message
+                    });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRatingSummaryAsync")]
+        public async Task<IActionResult> GetRatingSummaryAsync(Guid productId)
+        {
+            var result =
+                await _productReviewService
+                .GetRatingSummaryAsync(productId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("GetUserReviewsAsync")]
+        public async Task<IActionResult> GetUserReviewsAsync(Guid productId,int page = 1,int pageSize = 12)
+        {
+            var result =
+                await _productReviewService
+                .GetUserReviewsAsync(productId,page,pageSize);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("AddProductQuestionAsync")]
+        public async Task<IActionResult> AddProductQuestionAsync([FromBody] CreateProductQuestionDto input)
+        {
+            if (input == null)
+            {
+                return BadRequest(
+                    new ResultDto<ProductQuestionDto>
+                    {
+                        Success = false,
+
+                        Message =
+                            "اطلاعات سؤال ارسال نشده است."
+                    });
+            }
+
+
+            try
+            {
+                var result =
+                    await _productQuestionService
+                        .CreateUserQuestionAsync(input);
+
+
+                if (!result.Success)
+                {
+                    return BadRequest(result);
+                }
+
+
+                return Ok(
+                    new ResultDto<ProductQuestionDto>
+                    {
+                        Success = true,
+
+                        Message =
+                            "سؤال شما با موفقیت ثبت شد. پس از بررسی کارشناسان، نمایش داده خواهد شد."
+                    });
+            }
+            catch (BusinessException ex)
+            {
+                return BadRequest(
+                    new ResultDto<ProductQuestionDto>
+                    {
+                        Success = false,
+
+                        Message = ex.Message
+                    });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetUserQuestionsAsync")]
+        public async Task<IActionResult> GetUserQuestionsAsync(
+    Guid productId,
+    int page = 1,
+    int pageSize = 10)
+        {
+            var result =
+                await _productQuestionService
+                    .GetUserQuestionsAsync(
+                        productId,
+                        page,
+                        pageSize);
+
+
+            return Ok(result);
         }
     }
 }

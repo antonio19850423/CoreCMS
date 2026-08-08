@@ -950,23 +950,13 @@
               "Children": [
                 {
                   "Type": "TAB",
-                  "Code": "PAGE_TAB_DISCOUNTITEM",
+                  "Code": "DISCOUNT_TAB_DISCOUNTITEM",
                   "Name": "Discount Item Management",
                   "DisplayName": {
                     "en": "Discount Item Management",
                     "fa": "تخفیف عمومی"
                   },
                   "Order": 1
-                },
-                {
-                  "Type": "TAB",
-                  "Code": "PAGE_TAB_COUPON",
-                  "Name": "Coupon Management",
-                  "DisplayName": {
-                    "en": "Coupon Management",
-                    "fa": "کوپن ها"
-                  },
-                  "Order": 2
                 }
               ]
             }
@@ -991,30 +981,6 @@
               "DisplayName": {
                 "en": "Discount Item Management",
                 "fa": "تخفیف عمومی"
-              },
-              "Order": 1
-            }
-          ]
-        },
-        {
-          "Type": "MENU",
-          "Code": "COUPON_MANAGEMENT_MENU",
-          "Name": "Coupon Menu",
-          "Route": "administration/coupon-management",
-          "DisplayName": {
-            "en": "Coupon Management",
-            "fa": "کوپن ها"
-          },
-          "Order": 9,
-          "Roles": [ "DEV" ],
-          "Children": [
-            {
-              "Type": "PAGE",
-              "Code": "COUPON_MANAGEMENT_PAGE",
-              "Name": "Coupon Page",
-              "DisplayName": {
-                "en": "Coupon Management",
-                "fa": "کوپن ها"
               },
               "Order": 1
             }

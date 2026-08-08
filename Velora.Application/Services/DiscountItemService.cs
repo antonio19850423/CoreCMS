@@ -15,6 +15,7 @@ using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
@@ -66,18 +67,45 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                var DiscountItem = new DiscountItemDto
-                {
-                    DiscountId=input.ParentId.Value,
-                    ProductId=input.ProductId,  
-                    ProductBrandId=input.ProductBrandId,
-                    ProductCategoryId=input.ProductCategoryId,
-                    ProductVariantId=input.ProductVariantId,
-                    SortOrder=input.SortOrder,
+                var validationMessage = await ValidateDiscountItemAsync(
+    input.ParentId.Value,
+    input.ProductVariantId,
+    input.ProductId,
+    input.ProductBrandId,
+    input.ProductCategoryId);
 
+                if (validationMessage != null)
+                {
+                    return new ResultDto<DiscountItemDto>
+                    {
+                        Success = false,
+                        Message = validationMessage
+                    };
+                }
+                var discountItem = new DiscountItemDto
+                {
+                    DiscountId = input.ParentId.Value,
+
+                    ProductId = input.ProductId == Guid.Empty
+              ? null
+              : input.ProductId,
+
+                    ProductBrandId = input.ProductBrandId == Guid.Empty
+              ? null
+              : input.ProductBrandId,
+
+                    ProductCategoryId = input.ProductCategoryId == Guid.Empty
+              ? null
+              : input.ProductCategoryId,
+
+                    ProductVariantId = input.ProductVariantId == Guid.Empty
+              ? null
+              : input.ProductVariantId,
+
+                    SortOrder = input.SortOrder,
                 };
 
-                var result = await CreateAsync(DiscountItem);
+                var result = await CreateAsync(discountItem);
                 if (!result.Success)
                     return result;
 
@@ -118,20 +146,46 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var validationMessage = await ValidateDiscountItemAsync(
+    input.ParentId.Value,
+    input.ProductVariantId,
+    input.ProductId,
+    input.ProductBrandId,
+    input.ProductCategoryId,
+    input.Id);
 
+                if (validationMessage != null)
+                {
+                    return new ResultDto<DiscountItemDto>
+                    {
+                        Success = false,
+                        Message = validationMessage
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new DiscountItemDto
                 {
                     Id = input.Id,
                     DiscountId = input.ParentId.Value,
-                    ProductId = input.ProductId,
-                    ProductBrandId = input.ProductBrandId,
-                    ProductCategoryId = input.ProductCategoryId,
-                    ProductVariantId = input.ProductVariantId,
+
+                    ProductId = input.ProductId == Guid.Empty
+                    ? null
+                    : input.ProductId,
+
+                    ProductBrandId = input.ProductBrandId == Guid.Empty
+                    ? null
+                    : input.ProductBrandId,
+
+                    ProductCategoryId = input.ProductCategoryId == Guid.Empty
+                    ? null
+                    : input.ProductCategoryId,
+
+                    ProductVariantId = input.ProductVariantId == Guid.Empty
+                    ? null
+                    : input.ProductVariantId,
+
                     SortOrder = input.SortOrder,
-
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
                     return result;
@@ -220,6 +274,150 @@ namespace Velora.Application.Services
                 };
             }
         }
+
+private async Task<string?> ValidateDiscountItemAsync(
+    Guid discountId,
+    Guid? productVariantId,
+    Guid? productId,
+    Guid? productBrandId,
+    Guid? productCategoryId,
+    Guid? excludeId = null)
+        {
+            // =========================================================
+            // 1. Guid.Empty را مثل null در نظر می‌گیریم
+            // =========================================================
+
+            productVariantId = productVariantId == Guid.Empty
+                ? null
+                : productVariantId;
+
+            productId = productId == Guid.Empty
+                ? null
+                : productId;
+
+            productBrandId = productBrandId == Guid.Empty
+                ? null
+                : productBrandId;
+
+            productCategoryId = productCategoryId == Guid.Empty
+                ? null
+                : productCategoryId;
+
+
+            // =========================================================
+            // 2. فقط یکی از Targetها باید انتخاب شده باشد
+            // =========================================================
+
+            var selectedTargets = new[]
+            {
+        productVariantId.HasValue,
+        productId.HasValue,
+        productBrandId.HasValue,
+        productCategoryId.HasValue
+    };
+
+            var selectedCount = selectedTargets.Count(x => x);
+
+
+            // هیچ Targetی انتخاب نشده
+            if (selectedCount == 0)
+            {
+                return "یکی از واریانت، محصول، برند یا دسته‌بندی باید انتخاب شود.";
+            }
+
+
+            // بیشتر از یک Target انتخاب شده
+            if (selectedCount > 1)
+            {
+                return "در هر آیتم تخفیف فقط یکی از واریانت، محصول، برند یا دسته‌بندی می‌تواند انتخاب شود.";
+            }
+
+
+            // =========================================================
+            // 3. فقط آیتم‌های همین Discount بررسی شوند
+            // =========================================================
+
+            var query = Query()
+                .Where(x =>
+                    x.DiscountId == discountId &&
+                    (!excludeId.HasValue || x.Id != excludeId.Value));
+
+
+            // =========================================================
+            // 4. Product Variant
+            // =========================================================
+
+            if (productVariantId.HasValue)
+            {
+                var exists = await query.AnyAsync(x =>
+                    x.ProductVariantId == productVariantId.Value);
+
+                if (exists)
+                {
+                    return "این واریانت قبلاً برای این تخفیف ثبت شده است.";
+                }
+
+                return null;
+            }
+
+
+            // =========================================================
+            // 5. Product
+            // =========================================================
+
+            if (productId.HasValue)
+            {
+                var exists = await query.AnyAsync(x =>
+                    x.ProductId == productId.Value);
+
+                if (exists)
+                {
+                    return "این محصول قبلاً برای این تخفیف ثبت شده است.";
+                }
+
+                return null;
+            }
+
+
+            // =========================================================
+            // 6. Brand
+            // =========================================================
+
+            if (productBrandId.HasValue)
+            {
+                var exists = await query.AnyAsync(x =>
+                    x.ProductBrandId == productBrandId.Value);
+
+                if (exists)
+                {
+                    return "این برند قبلاً برای این تخفیف ثبت شده است.";
+                }
+
+                return null;
+            }
+
+
+            // =========================================================
+            // 7. Category
+            // =========================================================
+
+            if (productCategoryId.HasValue)
+            {
+                var exists = await query.AnyAsync(x =>
+                    x.ProductCategoryId == productCategoryId.Value);
+
+                if (exists)
+                {
+                    return "این دسته‌بندی قبلاً برای این تخفیف ثبت شده است.";
+                }
+
+                return null;
+            }
+
+
+            return null;
+        }
+
 
         public async Task<byte[]> ExportAsync(
 bool exportCurrentDiscountItem,

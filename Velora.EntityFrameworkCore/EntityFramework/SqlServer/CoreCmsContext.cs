@@ -345,10 +345,6 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Discount).WithMany(p => p.Coupons)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Coupon_Discount");
         });
 
         modelBuilder.Entity<CouponUsage>(entity =>

@@ -16,7 +16,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, ShowInTreeView = false, EntityName = LookupEntities.Discount, ServiceName = "discountView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/Discounts", SelectDisplayFields = "[\"label\",\"name\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.Discount, ServiceName = "discountView", LinkedFieldCode = "ParentName", Route = "/api/ComboBox/Discounts", SelectDisplayFields = "[\"label\",\"name\"]")]
         public Guid? ParentId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = false, ShowInTreeView = false, EntityName = LookupEntities.Discount, ServiceName = "discountView", LinkedFieldCode = "ParentId", Route = "/api/ComboBox/Discounts", SelectDisplayFields = "[\"label\",\"name\"]")]
         public string? ParentName { get; set; }
@@ -70,7 +70,7 @@ namespace Velora.Application.Shared.Dtos
           ServiceName = "productVariantView",
           LinkedFieldCode = "ProductVariantName",
           Route = "/api/ComboBox/ProductVariants",
-          SelectDisplayFields = "[\"name\",\"price\"]")]
+           SelectDisplayFields = "[\"productName\",\"name\",\"price\"]")]
         public Guid? ProductVariantId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = false,
@@ -78,7 +78,7 @@ namespace Velora.Application.Shared.Dtos
            ServiceName = "productVariantView",
            LinkedFieldCode = "ProductVariantId",
            Route = "/api/ComboBox/ProductVariants",
-           SelectDisplayFields = "[\"name\",\"price\"]")]
+           SelectDisplayFields = "[\"productName\",\"name\",\"price\"]")]
         public string? ProductVariantName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }

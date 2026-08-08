@@ -48,4 +48,7 @@ public partial class VwProductVariantForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    [StringLength(200)]
+    public string? ProductName { get; set; }
 }

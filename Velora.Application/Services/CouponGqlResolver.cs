@@ -26,7 +26,7 @@ public class CouponGqlResolver : ICouponGqlResolver
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [GraphQLName("CouponView")]
+    [GraphQLName("couponView")]
     [UsePaging(IncludeTotalCount = true)]
     [UseFiltering]
     [UseSorting]
@@ -37,7 +37,6 @@ public class CouponGqlResolver : ICouponGqlResolver
         return query.Select(x => new CouponCrud
         {
             Id = x.Id,
-            ParentId = x.ParentId,
             UsedCount = x.UsedCount,
             UsageLimit = x.UsageLimit,
             StartDate = x.StartDate,
@@ -48,10 +47,15 @@ public class CouponGqlResolver : ICouponGqlResolver
             CreatedAtPersian = x.CreatedAtPersian??"",
             CreatedByName=x.CreatedByName ?? "",
             EndDatePersian=x.EndDatePersian??"",
-            ParentName = x.ParentName ??"",
             StartDatePersian= x.StartDatePersian??"",
             UpdatedAtPersian=x.UpdatedAtPersian??"",
             UpdatedByName=x.UpdatedByName?? "",
+            MinimumOrderAmount = x.MinimumOrderAmount,
+            MaximumDiscountAmount = x.MaximumDiscountAmount,
+            CouponValue = x.CouponValue,
+            CouponType = x.CouponType,
+            CanCombineWithDiscount = x.CanCombineWithDiscount,
+            CouponTypeName=x.CouponTypeName??"",
             ShouldInsert = x.ShouldInsert
         });
     }

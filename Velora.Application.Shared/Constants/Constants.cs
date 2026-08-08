@@ -42,7 +42,7 @@ namespace Velora.Application.Shared.Constants
         public const string Link = "Link";
         public const string HiddenText = "HiddenText";
         public const string Lable = "Lable";
-        
+        public const string Currency = "Currency";
 
 
         // هر نوع کنترل دیگری که نیاز دارید

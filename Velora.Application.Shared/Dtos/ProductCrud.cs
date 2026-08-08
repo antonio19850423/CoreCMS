@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 200, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 200, IsRequired = true,ShowInSelectBox =true)]
         public string Name { get; set; } = null!;
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)]
@@ -80,7 +80,7 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = true)]
         public string? Sku { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true, MaxLength = 250, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = true, MaxLength = 250, IsRequired = true, ShowInSelectBox = true)]
         public string Slug { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.MultiSelectBox, IsRequired = false, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ProductTag, ServiceName = "productTagView", LinkedFieldCode = "ProductTagNames", Route = "", SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string? ProductTagIds { get; set; }

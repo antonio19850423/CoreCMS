@@ -31,6 +31,8 @@ public partial class VwProductQuestionForm
 
     public bool IsAnswered { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
     public Guid? UserId { get; set; }
 
     [StringLength(201)]

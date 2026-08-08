@@ -25,7 +25,7 @@ public class DiscountGqlResolver : IDiscountGqlResolver
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [GraphQLName("DiscountView")]
+    [GraphQLName("discountView")]
     [UsePaging(IncludeTotalCount = true)]
     [UseFiltering]
     [UseSorting]
@@ -49,7 +49,7 @@ public class DiscountGqlResolver : IDiscountGqlResolver
             CreatedAtPersian= x.CreatedAtPersian??"",
             CreatedByName= x.CreatedByName ?? "",
             UpdatedAtPersian=x.UpdatedAtPersian??"",
-            UpdatedByName= x.UpdatedByName ?? ""
+            UpdatedByName= x.UpdatedByName ?? "",
         });
     }
 
