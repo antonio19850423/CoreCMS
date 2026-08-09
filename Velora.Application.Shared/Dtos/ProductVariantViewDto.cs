@@ -30,5 +30,18 @@ namespace Velora.Application.Shared.Dtos
 
         public bool IsActive { get; set; }
         public int Stock { get; set; }
+        public bool HasDiscount { get; set; }
+
+        public Guid? DiscountId { get; set; }
+
+        public Guid? DiscountItemId { get; set; }
+
+        public byte? DiscountType { get; set; }
+
+        public decimal? DiscountValue { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? FinalPrice { get; set; }
     }
 }

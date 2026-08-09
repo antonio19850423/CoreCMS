@@ -266,7 +266,154 @@ namespace Velora.Application.Services
                 };
             }
         }
+        public async Task<List<ActiveDiscountDto>> GetActiveDiscountsAsync()
+        {
+            var now = DateTime.Now;
 
+            var discounts = await Query()
+                .AsNoTracking()
+                .Where(x =>
+                    x.IsActive &&
+                    x.StartDate <= now &&
+                    x.EndDate >= now)
+                .Include(x => x.DiscountItems)
+                .ToListAsync();
+
+            return discounts
+                .Select(x => new ActiveDiscountDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    DiscountType = x.DiscountType,
+                    DiscountValue = x.DiscountValue,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+
+                    Items = x.DiscountItems
+                        .Select(item => new ActiveDiscountItemDto
+                        {
+                            Id = item.Id,
+                            DiscountId = item.DiscountId,
+
+                            ProductId = item.ProductId,
+                            ProductVariantId = item.ProductVariantId,
+                            ProductBrandId = item.ProductBrandId,
+                            ProductCategoryId = item.ProductCategoryId,
+
+                            SortOrder = item.SortOrder
+                        })
+                        .ToList()
+                })
+                .ToList();
+        }
+        public DiscountCalculationResultDto CalculateDiscount(
+            DiscountCalculationInput input,
+            IReadOnlyList<ActiveDiscountDto> activeDiscounts)
+        {
+            var candidates = activeDiscounts
+                .SelectMany(discount =>
+                    discount.Items.Select(item => new
+                    {
+                        Discount = discount,
+                        Item = item
+                    }))
+                .Where(x =>
+                    (x.Item.ProductVariantId.HasValue &&
+                     x.Item.ProductVariantId == input.ProductVariantId)
+
+                    ||
+
+                    (x.Item.ProductId.HasValue &&
+                     x.Item.ProductId == input.ProductId)
+
+                    ||
+
+                    (x.Item.ProductBrandId.HasValue &&
+                     x.Item.ProductBrandId == input.ProductBrandId)
+
+                    ||
+
+                    (x.Item.ProductCategoryId.HasValue &&
+                     x.Item.ProductCategoryId == input.ProductCategoryId)
+                )
+                .ToList();
+
+            if (!candidates.Any())
+            {
+                return new DiscountCalculationResultDto
+                {
+                    HasDiscount = false,
+                    OriginalPrice = input.Price,
+                    FinalPrice = input.Price
+                };
+            }
+
+            // =========================================================
+            // اولویت تخفیف
+            //
+            // Variant  = 4
+            // Product  = 3
+            // Brand    = 2
+            // Category = 1
+            // =========================================================
+
+            var selected = candidates
+                .OrderByDescending(x =>
+                    x.Item.ProductVariantId.HasValue ? 4 :
+                    x.Item.ProductId.HasValue ? 3 :
+                    x.Item.ProductBrandId.HasValue ? 2 :
+                    x.Item.ProductCategoryId.HasValue ? 1 : 0)
+                .ThenBy(x => x.Item.SortOrder)
+                .First();
+
+            var discount = selected.Discount;
+
+            decimal discountAmount;
+
+            // =========================================================
+            // محاسبه مقدار تخفیف
+            // =========================================================
+
+            if (discount.DiscountType == 1)
+            {
+                // درصدی
+                discountAmount =
+                    input.Price * discount.DiscountValue / 100m;
+            }
+            else
+            {
+                // مبلغ ثابت
+                discountAmount =
+                    discount.DiscountValue;
+            }
+
+            // تخفیف نباید بیشتر از قیمت محصول باشد
+            discountAmount = Math.Min(
+                discountAmount,
+                input.Price);
+
+            var finalPrice =
+                input.Price - discountAmount;
+
+            return new DiscountCalculationResultDto
+            {
+                HasDiscount = true,
+
+                DiscountId = discount.Id,
+
+                DiscountItemId = selected.Item.Id,
+
+                DiscountType = discount.DiscountType,
+
+                DiscountValue = discount.DiscountValue,
+
+                OriginalPrice = input.Price,
+
+                DiscountAmount = discountAmount,
+
+                FinalPrice = finalPrice
+            };
+        }
         public async Task<byte[]> ExportAsync(
 bool exportCurrentDiscount,
 int DiscountNumber,

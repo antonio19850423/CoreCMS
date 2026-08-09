@@ -38,7 +38,19 @@ namespace Velora.Application.Shared.Dtos
 
         public decimal? OldPrice { get; set; }
 
+        public bool HasDiscount { get; set; }
 
+        public Guid? DiscountId { get; set; }
+
+        public Guid? DiscountItemId { get; set; }
+
+        public byte? DiscountType { get; set; }
+
+        public decimal? DiscountValue { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? FinalPrice { get; set; }
 
         public List<ProductMediaViewDto> Gallery { get; set; }
             = new();
@@ -55,6 +67,7 @@ namespace Velora.Application.Shared.Dtos
 
         public List<ProductTagViewDto> Tags { get; set; }
             = new();
+
 
     }
 }

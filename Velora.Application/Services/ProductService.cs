@@ -35,7 +35,7 @@ namespace Velora.Application.Services
         protected readonly IProductTagService _ProductTagService;
         protected readonly IProductTagMappingService _productTagMappingService;
         protected readonly IProductInventoryTransactionService _productInventoryService;
-        
+        protected readonly IDiscountService _discountService;
 
         public ProductService(
               ISqlRepository<SqlProduct> sqlRepository,
@@ -43,7 +43,7 @@ namespace Velora.Application.Services
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService)
+              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService, IDiscountService discountService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -57,6 +57,7 @@ namespace Velora.Application.Services
             _ProductTagService = ProductTagService;
             _productTagMappingService = productTagMappingService;
             _productInventoryService = productInventoryService;
+            _discountService = discountService;
         }
         public async Task<IQueryable<ProductCrud>> GetAllViews()
         {
@@ -520,6 +521,9 @@ int ProductSize)
                     .ToListAsync();
 
 
+                var activeDiscounts =
+    await _discountService.GetActiveDiscountsAsync();
+
 
 
 
@@ -543,119 +547,84 @@ int ProductSize)
 
 
 
-
-
-
                 // ===============================
                 // Mapping
                 // ===============================
 
-                var data =
-                    products.Select(x =>
-                    {
+                var data = products.Select(product =>
+                {
+                    var price =
+                        product.ProductVariants.Count == 1
+                            ? product.ProductVariants.First().Price
+                            : product.ProductVariants.Any()
+                                ? product.ProductVariants.Min(v => v.Price)
+                                : product.Price ?? 0;
 
-                        inventories.TryGetValue(
-                            x.Id,
-                            out var inventory);
-
-
-
-                        return new ProductListViewDto
+                    var discount = _discountService.CalculateDiscount(
+                        new DiscountCalculationInput
                         {
+                            ProductId = product.Id,
+                            ProductVariantId = product.ProductVariants.Count == 1
+                                ? product.ProductVariants.First().Id
+                                : null,
+                            ProductBrandId = product.BrandId,
+                            ProductCategoryId = product.CategoryId,
+                            Price = price
+                        },
+                        activeDiscounts);
 
-                            Id = x.Id,
+                    inventories.TryGetValue(product.Id, out var inventory);
 
+                    return new ProductListViewDto
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Slug = product.Slug,
+                        Summary = product.Summary,
 
-                            Name = x.Name,
+                        Price = price,
 
+                        // اطلاعات تخفیف
+                        HasDiscount = discount.HasDiscount,
+                        DiscountId = discount.DiscountId,
+                        DiscountItemId = discount.DiscountItemId,
+                        DiscountType = discount.DiscountType,
+                        DiscountValue = discount.DiscountValue,
+                        DiscountAmount = discount.DiscountAmount,
+                        FinalPrice = discount.FinalPrice,
 
-                            Slug = x.Slug,
+                        MainImage = product.MainImage,
+                        Thumbnail = product.Thumbnail,
 
+                        CategoryName = product.Category?.Name,
+                        CategorySlug = product.Category?.Slug,
 
-                            Summary = x.Summary,
+                        BrandName = product.Brand?.Name,
+                        BrandSlug = product.Brand?.Slug,
 
+                        Inventory = inventory,
 
-                            Price =
-    x.ProductVariants.Count == 1
-        ? x.ProductVariants.First().Price
-        : x.ProductVariants.Any()
-            ? x.ProductVariants.Min(v => v.Price)
-            : x.Price ?? 0,
+                        CreatedAt = product.CreatedAt,
 
+                        HasVariant = product.ProductVariants.Count > 1,
 
+                        DefaultVariantId = product.ProductVariants.Count == 1
+                            ? product.ProductVariants.First().Id
+                            : null,
 
-                            MainImage = x.MainImage,
-
-
-                            Thumbnail = x.Thumbnail,
-
-
-
-                            CategoryName =
-                                x.Category?.Name,
-
-
-                            CategorySlug =
-                                x.Category?.Slug,
-
-
-
-                            BrandName =
-                                x.Brand?.Name,
-
-
-                            BrandSlug =
-                                x.Brand?.Slug,
-
-
-
-                            Inventory = inventory,
-
-
-
-                            CreatedAt =
-                                x.CreatedAt,
-
-
-                            HasVariant =
-    x.ProductVariants.Count > 1,
-
-
-                            DefaultVariantId =
-    x.ProductVariants.Count == 1
-        ? x.ProductVariants.First().Id
-        : null,
-
-
-                            Gallery =
-                                x.ProductFiles
-
-                                .OrderBy(f => f.SortOrder)
-
-                                .Select(m =>
-                                    new ProductMediaViewDto
-                                    {
-                                        Id = m.Id,
-
-                                        FileUrl = m.FileUrl,
-
-                                        ThumbnailUrl =
-                                            m.ThumbnailUrl,
-
-                                        IsMain =
-                                            m.IsMain,
-
-                                        SortOrder =
-                                            m.SortOrder
-
-                                    })
-                                .ToList(),
-
-                        };
-
-                    })
-
-                    .ToList();
+                        Gallery = product.ProductFiles
+                            .OrderBy(f => f.SortOrder)
+                            .Select(m => new ProductMediaViewDto
+                            {
+                                Id = m.Id,
+                                FileUrl = m.FileUrl,
+                                ThumbnailUrl = m.ThumbnailUrl,
+                                IsMain = m.IsMain,
+                                SortOrder = m.SortOrder
+                            })
+                            .ToList()
+                    };
+                }).ToList();
 
 
 
@@ -712,34 +681,26 @@ int ProductSize)
                     };
                 }
 
-
                 var product = await Query()
 
                     .Include(x => x.Category)
 
                     .Include(x => x.Brand)
 
-
                     .Include(x => x.ProductFiles)
-
 
                     .Include(x => x.ProductAttributeValues)
                         .ThenInclude(x => x.ProductAttribute)
 
-
                     .Include(x => x.ProductVariants)
-
 
                     .Include(x => x.ProductTagMappings)
                         .ThenInclude(x => x.ProductTag)
 
-
                     .FirstOrDefaultAsync(x =>
                         x.Slug == slug &&
-                        x.IsPublished==true &&
-                        x.IsActive==true);
-
-
+                        x.IsPublished == true &&
+                        x.IsActive == true);
 
                 if (product == null)
                 {
@@ -751,18 +712,62 @@ int ProductSize)
                 }
 
 
+                // =========================================================
+                // Active Discounts
+                // =========================================================
 
-                // ==========================
+                var activeDiscounts =
+                    await _discountService.GetActiveDiscountsAsync();
+
+
+                // =========================================================
+                // Product Base Price
+                // =========================================================
+
+                var productBasePrice =
+                    product.ProductVariants.Count == 1
+                        ? product.ProductVariants.First().Price
+                        : product.ProductVariants.Any()
+                            ? product.ProductVariants.Min(x => x.Price)
+                            : product.Price ?? 0;
+
+
+                // =========================================================
+                // Product Discount
+                // =========================================================
+
+                var productDiscount =
+                    _discountService.CalculateDiscount(
+                        new DiscountCalculationInput
+                        {
+                            ProductId = product.Id,
+
+                            ProductVariantId =
+                                product.ProductVariants.Count == 1
+                                    ? product.ProductVariants.First().Id
+                                    : null,
+
+                            ProductBrandId = product.BrandId,
+
+                            ProductCategoryId = product.CategoryId,
+
+                            Price = productBasePrice
+                        },
+                        activeDiscounts);
+
+
+                // =========================================================
                 // Inventory
-                // ==========================
+                // =========================================================
 
                 var inventory =
                     await _productInventoryService
                         .GetInventoryAsync(product.Id);
 
-                // ======================
+
+                // =========================================================
                 // Variants
-                // ======================
+                // =========================================================
 
                 var variants = new List<ProductVariantViewDto>();
 
@@ -772,103 +777,160 @@ int ProductSize)
                         await _productInventoryService
                             .GetInventoryAsync(product.Id, x.Id);
 
+
+                    // ==========================================
+                    // Variant Discount
+                    // ==========================================
+
+                    var variantDiscount =
+                        _discountService.CalculateDiscount(
+                            new DiscountCalculationInput
+                            {
+                                ProductId = product.Id,
+
+                                ProductVariantId = x.Id,
+
+                                ProductBrandId = product.BrandId,
+
+                                ProductCategoryId = product.CategoryId,
+
+                                Price = x.Price
+                            },
+                            activeDiscounts);
+
+
                     variants.Add(new ProductVariantViewDto
                     {
                         Id = x.Id,
+
                         ProductId = x.ProductId,
+
                         Name = x.Name,
+
                         Price = x.Price,
+
                         ComparePrice = x.ComparePrice,
+
                         Sku = x.Sku,
+
                         Barcode = x.Barcode,
+
                         Image = x.Image,
+
                         IsDefault = x.IsDefault,
+
                         SortOrder = x.SortOrder,
+
                         IsActive = x.IsActive,
-                        Stock = stock
+
+                        Stock = stock,
+
+
+                        // ==========================================
+                        // Discount
+                        // ==========================================
+
+                        HasDiscount = variantDiscount.HasDiscount,
+
+                        DiscountId = variantDiscount.DiscountId,
+
+                        DiscountItemId = variantDiscount.DiscountItemId,
+
+                        DiscountType = variantDiscount.DiscountType,
+
+                        DiscountValue = variantDiscount.DiscountValue,
+
+                        DiscountAmount = variantDiscount.DiscountAmount,
+
+                        FinalPrice = variantDiscount.FinalPrice
                     });
                 }
 
 
-                // ==========================
+                // =========================================================
                 // Mapping
-                // ==========================
+                // =========================================================
 
                 var data = new ProductDetailViewDto
                 {
-
                     Id = product.Id,
-
 
                     Name = product.Name,
 
-
                     Slug = product.Slug,
-
 
                     Summary = product.Summary,
 
-
                     Description = product.Description,
 
-
                     MainImage = product.MainImage,
-
 
                     Thumbnail = product.Thumbnail,
 
 
+                    // =====================================================
+                    // Price
+                    // =====================================================
 
-                    Price =
-                        product.ProductVariants.Count == 1
-                        ?
-                        product.ProductVariants.First().Price
-                        :
-                        product.ProductVariants.Any()
-                        ?
-                        product.ProductVariants.Min(x => x.Price)
-                        :
-                        product.Price ?? 0,
+                    Price = productBasePrice,
 
 
+                    // =====================================================
+                    // Discount
+                    // =====================================================
+
+                    HasDiscount = productDiscount.HasDiscount,
+
+                    DiscountId = productDiscount.DiscountId,
+
+                    DiscountItemId = productDiscount.DiscountItemId,
+
+                    DiscountType = productDiscount.DiscountType,
+
+                    DiscountValue = productDiscount.DiscountValue,
+
+                    DiscountAmount = productDiscount.DiscountAmount,
+
+                    FinalPrice = productDiscount.FinalPrice,
 
 
+                    // =====================================================
+                    // Category
+                    // =====================================================
 
                     Category =
                         product.Category == null
-                        ?
-                        null
-                        :
-                        new CategoryViewDto
-                        {
-                            Id = product.Category.Id,
+                            ? null
+                            : new CategoryViewDto
+                            {
+                                Id = product.Category.Id,
 
-                            Name = product.Category.Name,
+                                Name = product.Category.Name,
 
-                            Slug = product.Category.Slug
-                        },
+                                Slug = product.Category.Slug
+                            },
 
 
+                    // =====================================================
+                    // Brand
+                    // =====================================================
 
                     Brand =
                         product.Brand == null
-                        ?
-                        null
-                        :
-                        new BrandViewDto
-                        {
-                            Id = product.Brand.Id,
+                            ? null
+                            : new BrandViewDto
+                            {
+                                Id = product.Brand.Id,
 
-                            Name = product.Brand.Name,
+                                Name = product.Brand.Name,
 
-                            Slug = product.Brand.Slug
-                        },
+                                Slug = product.Brand.Slug
+                            },
 
 
-
-                    // ======================
+                    // =====================================================
                     // Gallery
-                    // ======================
+                    // =====================================================
 
                     Gallery =
                         product.ProductFiles
@@ -899,10 +961,9 @@ int ProductSize)
                         .ToList(),
 
 
-
-                    // ======================
+                    // =====================================================
                     // Attributes
-                    // ======================
+                    // =====================================================
 
                     Attributes =
                         product.ProductAttributeValues
@@ -921,20 +982,16 @@ int ProductSize)
                         .ToList(),
 
 
-
-
-                    // ======================
+                    // =====================================================
                     // Variants
-                    // ======================
+                    // =====================================================
 
-                    Variants = variants.ToList(),
-
-
+                    Variants = variants,
 
 
-                    // ======================
+                    // =====================================================
                     // Tags
-                    // ======================
+                    // =====================================================
 
                     Tags =
                         product.ProductTagMappings
@@ -949,9 +1006,7 @@ int ProductSize)
 
                         })
                         .ToList()
-
                 };
-
 
 
                 return new ResultDto<ProductDetailViewDto>
@@ -960,7 +1015,6 @@ int ProductSize)
 
                     Data = data
                 };
-
             }
             catch (Exception ex)
             {
