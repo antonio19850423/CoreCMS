@@ -125,5 +125,16 @@ namespace Velora.Application.Services
 
             return value;
         }
+
+        public void Restore(
+    string key,
+    string value,
+    int expireDays = 30)
+        {
+            Set(
+                key,
+                value,
+                expireDays);
+        }
     }
 }

@@ -11,6 +11,7 @@ using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 namespace Velora.Application.Services
 {
     using Microsoft.EntityFrameworkCore;
+    using Velora.Application.Shared.Infrastructure;
     using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
     public class ShoppingCartService : IShoppingCartService, IBaseService
@@ -31,7 +32,7 @@ namespace Velora.Application.Services
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
         private readonly ITransactionService _transactionService;
-
+        private readonly ICookieService _cookieService;
         public ShoppingCartService(
             IGenericService<
                 ShoppingCart,
@@ -43,13 +44,14 @@ namespace Velora.Application.Services
                 ShoppingCartItem,
                 ShoppingCartItemDto> shoppingCartItemService,
 
-            IMapper mapper, IProductService productService, ITransactionService transactionService)
+            IMapper mapper, IProductService productService, ITransactionService transactionService, ICookieService cookieService)
         {
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
             _mapper = mapper;
             _productService = productService;
             _transactionService = transactionService;
+            _cookieService = cookieService;
         }
 
 
@@ -461,29 +463,87 @@ namespace Velora.Application.Services
 
 
 
-        public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-            Guid? userId,
-            string cartToken)
+public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
+    Guid? userId,
+    string? cartToken)
         {
+            // ============================================
+            // 1. ابتدا Cart کاربر را بر اساس UserId پیدا کن
+            // ============================================
 
-            var guestCart =
-                await _shoppingCartService
-                .Query()
-                .Include(x => x.ShoppingCartItems)
-                .FirstOrDefaultAsync(x =>
-                    x.CartToken == cartToken);
+            ShoppingCart? userCart = null;
+
+            if (userId.HasValue)
+            {
+                userCart =
+                    await _shoppingCartService
+                    .Query()
+                    .Include(x => x.ShoppingCartItems)
+                    .FirstOrDefaultAsync(x =>
+                        x.UserId == userId);
+            }
 
 
+            // ============================================
+            // اگر Cart کاربر وجود دارد
+            // ============================================
+
+            if (userCart != null)
+            {
+                // همان CartToken موجود در دیتابیس
+                // دوباره در Cookie قرار بگیرد
+
+                if (!string.IsNullOrWhiteSpace(userCart.CartToken))
+                {
+                    _cookieService.Set(
+                        CookieKeys.CartToken,
+                        userCart.CartToken,
+                        30);
+                }
+
+
+                return await GetCartAsync(
+                    userId,
+                    userCart.CartToken);
+            }
+
+
+            // ============================================
+            // 2. اگر Cart کاربر وجود نداشت
+            //    بر اساس CartToken سبد مهمان را پیدا کن
+            // ============================================
+
+            ShoppingCart? guestCart = null;
+
+            if (!string.IsNullOrWhiteSpace(cartToken))
+            {
+                guestCart =
+                    await _shoppingCartService
+                    .Query()
+                    .Include(x => x.ShoppingCartItems)
+                    .FirstOrDefaultAsync(x =>
+                        x.CartToken == cartToken);
+            }
+
+
+            // ============================================
+            // سبد مهمان هم وجود ندارد
+            // ============================================
 
             if (guestCart == null)
-                return await GetCartAsync(userId, null);
+            {
+                return await GetCartAsync(
+                    userId,
+                    null);
+            }
 
 
+            // ============================================
+            // 3. سبد مهمان را به کاربر متصل کن
+            // ============================================
 
             guestCart.UserId = userId;
-
             guestCart.UpdateAt = DateTime.Now;
-
 
 
             await _shoppingCartService
@@ -493,11 +553,27 @@ namespace Velora.Application.Services
 
 
             await _transactionService.CommitAsync();
+
+
+            // ============================================
+            // 4. همان CartToken را دوباره در Cookie قرار بده
+            // ============================================
+
+            if (!string.IsNullOrWhiteSpace(guestCart.CartToken))
+            {
+                _cookieService.Set(
+                    CookieKeys.CartToken,
+                    guestCart.CartToken,
+                    30);
+            }
+
+
             return await GetCartAsync(
                 userId,
-                cartToken);
-
+                guestCart.CartToken);
         }
+
+
 
 
 

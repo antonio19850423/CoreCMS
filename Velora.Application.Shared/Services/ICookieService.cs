@@ -45,5 +45,10 @@ namespace Velora.Application.Shared.Services
             string key,
             Func<string> generator,
             int expireDays = 30);
+
+         void Restore(
+    string key,
+    string value,
+    int expireDays = 30);
     }
 }

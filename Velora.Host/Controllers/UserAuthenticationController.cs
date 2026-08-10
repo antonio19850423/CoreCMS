@@ -19,14 +19,20 @@ namespace Velora.Host.Controllers
         private readonly ICaptchaService
         _captchaService;
         private readonly IUserAddressService _userAddressService;
+        private readonly ICookieService _cookieService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IShoppingCartService _shoppingCartService;
         public UserAuthenticationController(
             IUserAuthenticationService
-                userAuthenticationService, ICaptchaService captchaService, IUserAddressService userAddressService)
+                userAuthenticationService, ICaptchaService captchaService, IUserAddressService userAddressService, ICookieService cookieService, ICurrentUserService currentUserService, IShoppingCartService shoppingCartService)
         {
             _userAuthenticationService =
                 userAuthenticationService;
             _captchaService = captchaService;
             _userAddressService = userAddressService;
+            _cookieService = cookieService;
+            _currentUserService = currentUserService;
+            _shoppingCartService = shoppingCartService;
         }
 
         /// <summary>
@@ -111,9 +117,20 @@ namespace Velora.Host.Controllers
                     .VerifyOtpAsync(
                         input,
                         cancellationToken);
-
+        
             if (!result.Success)
                 return BadRequest(result);
+            var userId = result.Data.User.Id;
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString());
+                await _shoppingCartService
+                .MergeAsync(
+                    userId,
+                    cartToken
+                );
 
             return Ok(result);
         }
