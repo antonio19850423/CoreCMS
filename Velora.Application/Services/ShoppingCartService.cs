@@ -33,6 +33,10 @@ namespace Velora.Application.Services
         private readonly IProductService _productService;
         private readonly ITransactionService _transactionService;
         private readonly ICookieService _cookieService;
+        private readonly IDiscountService _discountService;
+        private readonly IProductInventoryTransactionService _productInventoryTransactionService;
+        private readonly IProductTypeService _productTypeService;
+
         public ShoppingCartService(
             IGenericService<
                 ShoppingCart,
@@ -44,7 +48,7 @@ namespace Velora.Application.Services
                 ShoppingCartItem,
                 ShoppingCartItemDto> shoppingCartItemService,
 
-            IMapper mapper, IProductService productService, ITransactionService transactionService, ICookieService cookieService)
+            IMapper mapper, IProductService productService, ITransactionService transactionService, ICookieService cookieService, IDiscountService discountService, IProductInventoryTransactionService productInventoryTransactionService, IProductTypeService productTypeService)
         {
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
@@ -52,6 +56,9 @@ namespace Velora.Application.Services
             _productService = productService;
             _transactionService = transactionService;
             _cookieService = cookieService;
+            _discountService = discountService;
+            _productInventoryTransactionService = productInventoryTransactionService;
+            _productTypeService = productTypeService;
         }
 
 
@@ -63,78 +70,119 @@ namespace Velora.Application.Services
         {
             try
             {
-
                 var cartQuery =
                     _shoppingCartService
-                    .Query()
-                    .Include(x => x.ShoppingCartItems)
-                        .ThenInclude(x => x.Product)
-                    .Include(x => x.ShoppingCartItems)
-                        .ThenInclude(x => x.Variant);
-
-
+                        .Query()
+                        .Include(x => x.ShoppingCartItems)
+                            .ThenInclude(x => x.Product)
+                                .ThenInclude(x => x.Brand)
+                        .Include(x => x.ShoppingCartItems)
+                            .ThenInclude(x => x.Product)
+                                .ThenInclude(x => x.Category)
+                        .Include(x => x.ShoppingCartItems)
+                            .ThenInclude(x => x.Variant);
 
                 var cart =
-                    await cartQuery
-                    .FirstOrDefaultAsync(x =>
+                    await cartQuery.FirstOrDefaultAsync(x =>
                         (userId.HasValue &&
                          x.UserId == userId)
-
                         ||
-
-                        (!string.IsNullOrEmpty(cartToken)
-                         &&
+                        (!string.IsNullOrEmpty(cartToken) &&
                          x.CartToken == cartToken));
-
-
 
                 if (cart == null)
                 {
                     return new ResultDto<ShoppingCartViewDto>
                     {
                         Success = true,
-
                         Data = new ShoppingCartViewDto
                         {
-                            Items = new()
+                            Items = new(),
+                            IsAllDownloadable = false
                         }
                     };
                 }
 
 
+                // ==========================================
+                // دریافت تخفیف‌های فعال
+                // ==========================================
 
-                var dto = new ShoppingCartViewDto
+                var activeDiscounts =
+                    await _discountService.GetActiveDiscountsAsync();
+
+
+                // ==========================================
+                // دریافت ID نوع محصول دانلودی
+                // ==========================================
+
+                var downloadableProductTypeId =
+                    await _productTypeService.GetIdByCodeAsync(Velora.Application.Shared.Constants.ProductTypes.Download);
+
+
+                var items =
+                    new List<ShoppingCartItemViewDto>();
+
+
+                // ==========================================
+                // ساخت آیتم‌های سبد
+                // ==========================================
+
+                foreach (var item in cart.ShoppingCartItems)
                 {
-                    Id = cart.Id,
+                    // قیمت واقعی آیتم
+                    var unitPrice =
+                        item.Variant != null
+                            ? item.Variant.Price
+                            : item.Product.Price ?? 0;
 
-                    CartToken = cart.CartToken,
 
-                    Items =
-                        cart.ShoppingCartItems
-                        .Select(item => new ShoppingCartItemViewDto
+                    // محاسبه تخفیف
+                    var discount =
+                        _discountService.CalculateDiscount(
+                            new DiscountCalculationInput
+                            {
+                                ProductId =
+                                    item.ProductId,
+
+                                ProductVariantId =
+                                    item.VariantId,
+
+                                ProductBrandId =
+                                    item.Product.BrandId,
+
+                                ProductCategoryId =
+                                    item.Product.CategoryId,
+
+                                Price =
+                                    unitPrice
+                            },
+                            activeDiscounts);
+
+
+                    items.Add(
+                        new ShoppingCartItemViewDto
                         {
-
-                            Id = item.Id,
+                            Id =
+                                item.Id,
 
                             ShoppingCartId =
                                 item.ShoppingCartId,
 
-
                             ProductId =
                                 item.ProductId,
 
+                            ProductTypeId =
+                                item.Product.ProductTypeId,
 
                             VariantId =
                                 item.VariantId,
 
-
                             ProductName =
                                 item.Product.Name,
 
-
                             VariantName =
                                 item.Variant?.Name,
-
 
                             ImageUrl =
                                 item.Variant?.Image
@@ -143,18 +191,64 @@ namespace Velora.Application.Services
                                 ??
                                 item.Product.Thumbnail,
 
-
                             UnitPrice =
-                                item.UnitPrice,
-
+                                unitPrice,
 
                             Quantity =
                                 item.Quantity,
 
-                        })
-                        .ToList()
-                };
+                            DiscountId =
+                                discount.DiscountId,
 
+                            Discount =
+                                discount.DiscountAmount,
+
+                            DiscountType =
+                                discount.DiscountType,
+
+                            DiscountValue =
+                                discount.DiscountValue,
+
+                            DiscountAmount =
+                                discount.DiscountAmount,
+
+                            FinalPrice =
+                                discount.FinalPrice
+                        });
+                }
+
+
+                // ==========================================
+                // آیا تمام محصولات دانلودی هستند؟
+                // ==========================================
+
+                var isAllDownloadable =
+                    items.Count > 0 &&
+                    downloadableProductTypeId.HasValue &&
+                    items.All(x =>
+                        x.ProductTypeId ==
+                        downloadableProductTypeId.Value);
+
+
+                // ==========================================
+                // ساخت DTO نهایی
+                // ==========================================
+
+                var dto =
+                    new ShoppingCartViewDto
+                    {
+                        Id =
+                            cart.Id,
+
+                        CartToken =
+                            cart.CartToken,
+
+                        Items =
+                            items,
+
+                        IsAllDownloadable =
+                            isAllDownloadable
+                    };
 
 
                 return new ResultDto<ShoppingCartViewDto>
@@ -162,15 +256,21 @@ namespace Velora.Application.Services
                     Success = true,
                     Data = dto
                 };
-
-
             }
             catch (Exception ex)
             {
                 return new ResultDto<ShoppingCartViewDto>
                 {
                     Success = false,
-                    Message = ex.Message
+
+                    Message =
+                        ex.Message,
+
+                    Errors =
+                        new List<string>
+                        {
+                    ex.Message
+                        }
                 };
             }
         }
@@ -188,17 +288,109 @@ namespace Velora.Application.Services
         {
             try
             {
+                // ==========================================
+                // 1. دریافت یا ایجاد سبد
+                // ==========================================
 
-                var cartResult =
+                var cart =
                     await GetOrCreateCartAsync(
                         userId,
                         cartToken);
-               
 
 
-                var cart = cartResult;
+                // ==========================================
+                // 2. دریافت محصول
+                // ==========================================
+
+                var product =
+                    await _productService
+                    .Query()
+                    .Include(x => x.ProductVariants)
+                    .FirstOrDefaultAsync(x =>
+                        x.Id == input.ProductId);
+
+                if (product == null)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "محصول یافت نشد"
+                    };
+                }
 
 
+                // ==========================================
+                // 3. قیمت فعلی محصول
+                // ==========================================
+
+                decimal unitPrice =
+                    product.Price ?? 0;
+
+
+                // ==========================================
+                // 4. اگر Variant انتخاب شده
+                // ==========================================
+
+                ProductVariant? variant = null;
+
+                if (input.VariantId.HasValue)
+                {
+                    variant =
+                        product.ProductVariants
+                        .FirstOrDefault(x =>
+                            x.Id == input.VariantId.Value);
+
+                    if (variant == null)
+                    {
+                        return new ResultDto<ShoppingCartViewDto>
+                        {
+                            Success = false,
+                            Message = "واریانت انتخاب شده یافت نشد"
+                        };
+                    }
+
+                    unitPrice = variant.Price;
+                }
+
+
+                // ==========================================
+                // 5. دریافت موجودی واقعی از Inventory
+                // ==========================================
+
+                var productIds =
+                    new List<Guid>
+                    {
+                product.Id
+                    };
+
+
+                var inventories =
+                    await _productInventoryTransactionService
+                        .GetInventoryAsync(productIds);
+
+
+                inventories.TryGetValue(
+                    product.Id,
+                    out var stock);
+
+
+                // ==========================================
+                // 6. بررسی موجودی
+                // ==========================================
+
+                if (stock <= 0)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "این محصول در حال حاضر موجود نیست."
+                    };
+                }
+
+
+                // ==========================================
+                // 7. پیدا کردن آیتم موجود در سبد
+                // ==========================================
 
                 var item =
                     await _shoppingCartItemService
@@ -211,164 +403,459 @@ namespace Velora.Application.Services
                         x.VariantId == input.VariantId);
 
 
+                // ==========================================
+                // 8. محاسبه تعداد نهایی
+                // ==========================================
+
+                var finalQuantity =
+                    item != null
+                        ? item.Quantity + input.Quantity
+                        : input.Quantity;
+
+
+                // ==========================================
+                // 9. بررسی موجودی بر اساس تعداد نهایی
+                // ==========================================
+
+                if (finalQuantity > stock)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message =
+                            $"تعداد انتخاب شده بیشتر از موجودی انبار است. موجودی فعلی: {stock} عدد"
+                    };
+                }
+
+
+                // ==========================================
+                // 10. دریافت تخفیف فعال
+                // ==========================================
+
+                var activeDiscounts =
+                    await _discountService
+                        .GetActiveDiscountsAsync();
+
+
+                // ==========================================
+                // 11. محاسبه تخفیف
+                // ==========================================
+
+                var discount =
+                    _discountService.CalculateDiscount(
+                        new DiscountCalculationInput
+                        {
+                            ProductId =
+                                product.Id,
+
+                            ProductVariantId =
+                                input.VariantId,
+
+                            ProductBrandId =
+                                product.BrandId,
+
+                            ProductCategoryId =
+                                product.CategoryId,
+
+                            Price =
+                                unitPrice
+                        },
+                        activeDiscounts);
+
+
+                // ==========================================
+                // 12. اگر آیتم قبلاً وجود دارد
+                // ==========================================
 
                 if (item != null)
                 {
+                    item.Quantity =
+                        finalQuantity;
 
-                    item.Quantity += input.Quantity;
+                    item.UnitPrice =
+                        unitPrice;
 
-                    item.UpdatedAt = DateTime.Now;
+                    item.ProductTypeId =
+                        product.ProductTypeId;
+
+                    item.DiscountId =
+                        discount.DiscountId;
+
+                    item.DiscountItemId =
+                        discount.DiscountItemId;
+
+                    item.DiscountType =
+                        discount.DiscountType;
+
+                    item.DiscountValue =
+                        discount.DiscountValue;
+
+                    item.DiscountAmount =
+                        discount.DiscountAmount;
+
+                    item.FinalUnitPrice = discount.FinalPrice ?? unitPrice;
+
+                    item.UpdatedAt =
+                        DateTime.Now;
 
 
                     await _shoppingCartItemService
                         .UpdateAsync(
                             item,
                             item.Id);
-
                 }
+
+                // ==========================================
+                // 13. ایجاد آیتم جدید
+                // ==========================================
+
                 else
                 {
-                    var product =
-                        await _productService
-                        .Query()
-                        .Include(x => x.ProductVariants)
-                        .FirstOrDefaultAsync(x =>
-                            x.Id == input.ProductId);
-
-
-                    if (product == null)
-                    {
-                        return new ResultDto<ShoppingCartViewDto>
+                    var newItem =
+                        new ShoppingCartItem
                         {
-                            Success = false,
-                            Message = "محصول یافت نشد"
+                            Id =
+                                Guid.NewGuid(),
+
+                            ShoppingCartId =
+                                cart.Id,
+
+                            ProductId =
+                                input.ProductId,
+
+                            VariantId =
+                                input.VariantId,
+
+                            Quantity =
+                                input.Quantity,
+
+                            UnitPrice =
+                                unitPrice,
+
+                            ProductTypeId =
+                                product.ProductTypeId,
+
+                            DiscountId =
+                                discount.DiscountId,
+
+                            DiscountItemId =
+                                discount.DiscountItemId,
+
+                            DiscountType =
+                                discount.DiscountType,
+
+                            DiscountValue =
+                                discount.DiscountValue,
+
+                            DiscountAmount =
+                                discount.DiscountAmount,
+
+                            FinalUnitPrice = discount.FinalPrice ?? unitPrice
                         };
-                    }
-
-
-                    decimal unitPrice = product.Price ?? 0;
-
-
-                    if (input.VariantId.HasValue)
-                    {
-                        var variant =
-                            product.ProductVariants
-                            .FirstOrDefault(x =>
-                                x.Id == input.VariantId.Value);
-
-
-                        if (variant == null)
-                        {
-                            return new ResultDto<ShoppingCartViewDto>
-                            {
-                                Success = false,
-                                Message = "واریانت انتخاب شده یافت نشد"
-                            };
-                        }
-
-
-                        unitPrice = variant.Price;
-                    }
-
-
-
-                    var newItem = new ShoppingCartItem
-                    {
-                        Id = Guid.NewGuid(),
-
-                        ShoppingCartId =
-                            cart.Id,
-
-                        ProductId =
-                            input.ProductId,
-
-                        VariantId =
-                            input.VariantId,
-
-                        Quantity =
-                            input.Quantity,
-
-                        UnitPrice =
-                            unitPrice
-                    };
 
 
                     await _shoppingCartItemService
                         .CreateAsync(
-                            _mapper.Map<ShoppingCartItemDto>(newItem));
+                            _mapper.Map<ShoppingCartItemDto>(
+                                newItem));
                 }
 
+
+                // ==========================================
+                // 14. Commit
+                // ==========================================
+
                 await _transactionService.CommitAsync();
+
+
+                // ==========================================
+                // 15. دریافت مجدد سبد
+                // ==========================================
 
                 return await GetCartAsync(
                     userId,
                     cartToken);
-
             }
             catch (Exception ex)
             {
                 return new ResultDto<ShoppingCartViewDto>
                 {
                     Success = false,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    Errors = new List<string>
+            {
+                ex.Message
+            }
                 };
             }
         }
 
 
-
-
-
-
-
-
-
         public async Task<ResultDto<ShoppingCartViewDto>> UpdateQuantityAsync(
-            Guid? userId,
-            string? cartToken,
-            Guid itemId,
-            int quantity)
+           Guid? userId,
+           string? cartToken,
+           Guid itemId,
+           int quantity)
         {
+            try
+            {
+                // ============================================
+                // اعتبارسنجی تعداد
+                // ============================================
 
-            var item =
+                if (quantity <= 0)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "تعداد محصول باید بیشتر از صفر باشد."
+                    };
+                }
+
+
+                // ============================================
+                // دریافت آیتم سبد
+                // ============================================
+
+                var item =
+                    await _shoppingCartItemService
+                    .Query()
+                    .FirstOrDefaultAsync(x =>
+                        x.Id == itemId);
+
+                if (item == null)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "آیتم پیدا نشد"
+                    };
+                }
+
+
+                // ============================================
+                // دریافت محصول و واریانت‌ها
+                // ============================================
+
+                var product =
+                    await _productService
+                    .Query()
+                    .Include(x => x.ProductVariants)
+                    .FirstOrDefaultAsync(x =>
+                        x.Id == item.ProductId);
+
+                if (product == null)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "محصول یافت نشد"
+                    };
+                }
+
+
+                // ============================================
+                // تعیین قیمت
+                // ============================================
+
+                decimal unitPrice =
+                    product.Price ?? 0;
+
+
+                if (item.VariantId.HasValue)
+                {
+                    var variant =
+                        product.ProductVariants
+                        .FirstOrDefault(x =>
+                            x.Id == item.VariantId.Value);
+
+                    if (variant == null)
+                    {
+                        return new ResultDto<ShoppingCartViewDto>
+                        {
+                            Success = false,
+                            Message = "واریانت انتخاب شده یافت نشد"
+                        };
+                    }
+
+                    unitPrice = variant.Price;
+                }
+
+
+                // ============================================
+                // بررسی موجودی
+                // ============================================
+
+                var productIds =
+                    new List<Guid>
+                    {
+                product.Id
+                    };
+
+
+                var inventories =
+                    await _productInventoryTransactionService
+                        .GetInventoryAsync(productIds);
+
+
+                inventories.TryGetValue(
+                    product.Id,
+                    out var inventory);
+
+
+                // ============================================
+                // اگر موجودی وجود ندارد
+                // ============================================
+
+                if (inventory == null || inventory <= 0)
+                {
+                    // حذف آیتم از سبد
+                    await _shoppingCartItemService
+                        .DeleteAsync(item.Id);
+
+                    await _transactionService.CommitAsync();
+
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message = "این محصول در حال حاضر موجودی ندارد."
+                    };
+                }
+
+
+                // ============================================
+                // موجودی برای تعداد درخواستی کافی نیست
+                // ============================================
+
+                if (inventory < quantity)
+                {
+                    return new ResultDto<ShoppingCartViewDto>
+                    {
+                        Success = false,
+                        Message =
+                            $"موجودی محصول کافی نیست. حداکثر تعداد قابل سفارش: {inventory}"
+                    };
+                }
+
+
+                // ============================================
+                // دریافت تخفیف‌های فعال
+                // ============================================
+
+                var activeDiscounts =
+                    await _discountService
+                        .GetActiveDiscountsAsync();
+
+
+                // ============================================
+                // محاسبه مجدد تخفیف
+                // ============================================
+
+                var discount =
+                    _discountService.CalculateDiscount(
+                        new DiscountCalculationInput
+                        {
+                            ProductId =
+                                product.Id,
+
+                            ProductVariantId =
+                                item.VariantId,
+
+                            ProductBrandId =
+                                product.BrandId,
+
+                            ProductCategoryId =
+                                product.CategoryId,
+
+                            Price =
+                                unitPrice
+                        },
+                        activeDiscounts);
+
+
+                // ============================================
+                // بروزرسانی ShoppingCartItem
+                // ============================================
+
                 await _shoppingCartItemService
-                .Query()
-                .FirstOrDefaultAsync(x => x.Id == itemId);
+                    .Query()
+                    .Where(x =>
+                        x.Id == itemId)
+                    .ExecuteUpdateAsync(x =>
+                        x.SetProperty(
+                            p => p.Quantity,
+                            quantity)
+
+                        // نوع محصول
+                        .SetProperty(
+                            p => p.ProductTypeId,
+                            product.ProductTypeId)
+
+                        // قیمت فعلی
+                        .SetProperty(
+                            p => p.UnitPrice,
+                            unitPrice)
+
+                        // اطلاعات تخفیف
+                        .SetProperty(
+                            p => p.DiscountId,
+                            discount.DiscountId)
+
+                        .SetProperty(
+                            p => p.DiscountItemId,
+                            discount.DiscountItemId)
+
+                        .SetProperty(
+                            p => p.DiscountType,
+                            discount.DiscountType)
+
+                        .SetProperty(
+                            p => p.DiscountValue,
+                            discount.DiscountValue)
+
+                        .SetProperty(
+                            p => p.DiscountAmount,
+                            discount.DiscountAmount)
+
+                        // قیمت نهایی هر واحد
+                        .SetProperty(
+                            p => p.FinalUnitPrice,
+                            discount.FinalPrice)
+
+                        // تاریخ بروزرسانی
+                        .SetProperty(
+                            p => p.UpdatedAt,
+                            DateTime.Now)
+                    );
 
 
+                // ============================================
+                // Commit
+                // ============================================
 
-            if (item == null)
+                await _transactionService.CommitAsync();
+
+
+                // ============================================
+                // دریافت مجدد سبد
+                // ============================================
+
+                return await GetCartAsync(
+                    userId,
+                    cartToken);
+            }
+            catch (Exception ex)
             {
                 return new ResultDto<ShoppingCartViewDto>
                 {
                     Success = false,
-                    Message = "آیتم پیدا نشد"
+                    Message = ex.Message,
+                    Errors = new List<string>
+            {
+                ex.Message
+            }
                 };
             }
-
-
-            item.Quantity = quantity;
-
-
-
-            await _shoppingCartItemService
-                .Query()
-                .Where(x => x.Id == itemId)
-                .ExecuteUpdateAsync(x =>
-                    x.SetProperty(
-                        p => p.Quantity,
-                        quantity)
-                     .SetProperty(
-                        p => p.UpdatedAt,
-                        DateTime.UtcNow)
-                );
-
-            await _transactionService.CommitAsync();
-
-            return await GetCartAsync(
-                userId,
-                cartToken);
-
         }
 
 

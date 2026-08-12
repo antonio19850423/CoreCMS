@@ -13,22 +13,22 @@ namespace Velora.Application.Shared.Dtos
     public class BankAccountCrud : BulkInsert
     {
         public Guid Id { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = true,MaxLength =200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,MaxLength =200)]
         public string AccountOwnerName { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = false, ShowInForm = true, MaxLength = 1000)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 1000)]
         public string? Description { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true, MaxLength = 100)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
         public string BankName { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 4, GridOrder = 4, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, MaxLength = 50)]
         public string? CardNumber { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = true, MaxLength = 100)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
         public string? AccountNumber { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 50)]
         public string? ShebaNumber { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = false)]
         public Guid ParentId { get; set; }

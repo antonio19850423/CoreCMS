@@ -59,6 +59,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<PageTemplateComponent> PageTemplateComponents { get; set; }
 
+    public virtual DbSet<Payment> Payments { get; set; }
+
     public virtual DbSet<PaymentGateway> PaymentGateways { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
@@ -471,6 +473,12 @@ public partial class CoreCmsContext : DbContext
             entity.HasOne(d => d.PageTemplate).WithMany(p => p.PageTemplateComponents)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TemplateComponents_Template");
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<PaymentGateway>(entity =>

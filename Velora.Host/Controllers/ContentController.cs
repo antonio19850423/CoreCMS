@@ -16,6 +16,7 @@ namespace Velora.Host.Controllers
     public class ContentController : ControllerBase
     {
         private readonly IContentService _contentService;
+        private readonly IBankAccountService _bankAccountService;
         private readonly ITransactionService _transactionService;
         private readonly IPageService _pageService;
         private readonly IContactService _contactService;
@@ -24,11 +25,13 @@ namespace Velora.Host.Controllers
         private readonly IProductBrandService _productBrandService;
         private readonly IProductReviewService _productReviewService;
         private readonly IProductQuestionService _productQuestionService;
+        private readonly IShippingMethodService _shippingMethodService;
+        private readonly IShippingMethodCityService _shippingMethodCityService;
         
 
 
 
-        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService)
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService, IBankAccountService bankAccountService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService)
         {
 
             _contentService = ContentService;
@@ -39,6 +42,9 @@ namespace Velora.Host.Controllers
             _productBrandService= productBrandService;
             _productReviewService = productReviewService;
             _productQuestionService= productQuestionService;
+            _bankAccountService= bankAccountService;
+            _shippingMethodService= shippingMethodService;
+            _shippingMethodCityService= shippingMethodCityService;
         }
 
 
@@ -56,7 +62,19 @@ namespace Velora.Host.Controllers
             try
             {
                 var footerData = await _pageService.GetFooterAsync();
+
                 var siteData = await _contentService.GetSiteInfoAsync();
+
+                var bankAccounts = new List<BankAccountCrud>();
+
+                if (siteData.Data.HasCardToCardPayment)
+                {
+                    var bankAccountsQuery =
+                        await _bankAccountService
+                            .GetBankAccountsBySiteInfoId(siteData.Data.Id);
+
+                    bankAccounts = bankAccountsQuery.ToList();
+                }
 
                 if (!footerData.Success || !siteData.Success)
                 {
@@ -72,15 +90,73 @@ namespace Velora.Host.Controllers
                     };
                 }
 
+                // دریافت روش‌های ارسال
+                var shippingMethodsQuery =
+                    await _shippingMethodService.GetAllViews();
+
+                var shippingCitiesQuery =
+                    await _shippingMethodCityService.GetAllViews();
+
+                var shippingMethods =
+                     shippingMethodsQuery
+                        .Where(x => x.IsActive)
+                        .ToList();
+
+                var shippingCities =
+                     shippingCitiesQuery
+                        .Where(x => x.IsActive)
+                        .ToList();
+
+                // تبدیل به DTO نهایی
+                var shippingMethodsDto =
+                    shippingMethods
+                        .Select(method => new ShippingMethodViewDto
+                        {
+                            Id = method.Id,
+
+                            Name = method.Name,
+
+                            Description = method.Description,
+
+                            Price = method.Price,
+
+                            EstimatedDays = method.EstimatedDays,
+
+                            IsNationwide = method.IsNationwide,
+
+                            IsDefault = method.IsDefault,
+
+                            Cities = method.IsNationwide
+                                ? new List<ShippingMethodCityViewDto>()
+                                : shippingCities
+                                    .Where(x => x.ParentId == method.Id)
+                                    .Select(city => new ShippingMethodCityViewDto
+                                    {
+                                        CityId = city.CityId,
+
+                                        CityTitle = city.CityTitle,
+
+                                        ParentId = city.ParentId
+                                    })
+                                    .ToList()
+                        })
+                        .ToList();
+
                 var result = new SiteInfoDto
                 {
                     Footer = footerData.Data,
-                    Settings = siteData.Data
+
+                    Settings = siteData.Data,
+
+                    BankAccounts = bankAccounts,
+
+                    Shippings = shippingMethodsDto
                 };
 
                 return new ResultDto<SiteInfoDto>
                 {
                     Data = result,
+
                     Success = true
                 };
             }
@@ -89,8 +165,13 @@ namespace Velora.Host.Controllers
                 return new ResultDto<SiteInfoDto>
                 {
                     Success = false,
+
                     Message = ex.Message,
-                    Errors = new List<string> { ex.Message }
+
+                    Errors = new List<string>
+            {
+                ex.Message
+            }
                 };
             }
         }

@@ -22,6 +22,6 @@ namespace Velora.Application.Shared.Dtos
 
         public decimal DiscountAmount { get; set; }
 
-        public decimal FinalPrice { get; set; }
+        public decimal? FinalPrice { get; set; }
     }
 }

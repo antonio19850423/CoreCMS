@@ -35,7 +35,8 @@
         "IsPublished": true,
         "SeoTitle": "خرید عطر زنانه Élan Bloom Eau de Parfum",
         "SeoDescription": "خرید عطر زنانه Maison Élan Bloom با رایحه ماندگار و طراحی لوکس",
-        "InitialStock": 25
+        "InitialStock": 25,
+        "IsActive": true
       },
       "Files": [
         {
@@ -121,7 +122,8 @@
         "IsPublished": true,
         "SeoTitle": "خرید ست کت و شلوار زنانه Atelier Classic",
         "SeoDescription": "ست کت و شلوار رسمی زنانه Atelier Nova با طراحی مدرن",
-        "InitialStock": 15
+        "InitialStock": 15,
+        "IsActive": true
       },
       "Files": [
         {
@@ -207,7 +209,8 @@
         "IsPublished": true,
         "SeoTitle": "خرید عطر مردانه Noir Intense",
         "SeoDescription": "عطر مردانه Maison Élan Noir Intense با رایحه خاص و ماندگار",
-        "InitialStock": 30
+        "InitialStock": 30,
+        "IsActive": true
       },
       "Files": [
         {
@@ -295,7 +298,8 @@
         "IsPublished": true,
         "SeoTitle": "خرید شلوار مردانه Urban Gray",
         "SeoDescription": "شلوار مردانه رسمی Atelier Nova با طراحی خاص",
-        "InitialStock": 40
+        "InitialStock": 40,
+        "IsActive": true
       },
       "Files": [
         {
@@ -383,7 +387,8 @@
         "IsPublished": true,
         "SeoTitle": "خرید ست گردنبند و گوشواره Aurelia",
         "SeoDescription": "ست طلای زنانه Aurelia با طراحی خاص",
-        "InitialStock": 8
+        "InitialStock": 8,
+        "IsActive": true
       },
       "Files": [
         {

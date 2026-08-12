@@ -9,6 +9,8 @@ namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 [Keyless]
 public partial class VwSiteGlobalSetting
 {
+    public Guid Id { get; set; }
+
     [StringLength(200)]
     public string SiteName { get; set; } = null!;
 
@@ -79,4 +81,16 @@ public partial class VwSiteGlobalSetting
 
     [StringLength(100)]
     public string? DefaultTheme { get; set; }
+
+    public bool HasTax { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? TaxPercentage { get; set; }
+
+    public bool HasDuty { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal? DutyPercentage { get; set; }
+
+    public bool HasCardToCardPayment { get; set; }
 }

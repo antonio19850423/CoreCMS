@@ -11,6 +11,7 @@ namespace Velora.Application.Shared.Dtos
         public T Value { get; set; }
         public string Label { get; set; }
         public string Code { get; set; }
+        public string Image { get; set; }
         public List<ComboBoxItemDto<T>> Children { get; set; } = new();
     }
 

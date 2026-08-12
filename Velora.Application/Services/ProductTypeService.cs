@@ -14,6 +14,7 @@ using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+using MongoDB.Driver.Linq;
 
 namespace Velora.Application.Services
 {
@@ -201,7 +202,18 @@ namespace Velora.Application.Services
                 };
             }
         }
+        public async Task<Guid?> GetIdByCodeAsync(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+                return null;
 
+            var productType =  Query()
+                .FirstOrDefault(x =>
+                    x.Code == code &&
+                    x.IsActive);
+
+            return productType?.Id;
+        }
         public async Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

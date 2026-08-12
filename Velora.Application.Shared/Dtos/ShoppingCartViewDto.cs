@@ -13,32 +13,32 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-
-        /// <summary>
-        /// شناسه سبد مهمان
-        /// برای کاربر بدون لاگین
-        /// </summary>
         public string? CartToken { get; set; }
-
 
 
         public List<ShoppingCartItemViewDto> Items { get; set; }
             = new();
 
-
-
-        /// <summary>
-        /// تعداد کل محصولات
-        /// </summary>
         public int TotalQuantity =>
             Items.Sum(x => x.Quantity);
 
-
+        /// <summary>
+        /// مبلغ کالاها قبل از تخفیف
+        /// </summary>
+        public decimal Subtotal =>
+            Items.Sum(x => x.UnitPrice * x.Quantity);
 
         /// <summary>
-        /// مبلغ کل سبد
+        /// مجموع تخفیف
+        /// </summary>
+        public decimal TotalDiscount =>
+            Items.Sum(x => x.Discount * x.Quantity);
+
+        /// <summary>
+        /// مبلغ نهایی پس از تخفیف
         /// </summary>
         public decimal TotalAmount =>
             Items.Sum(x => x.TotalPrice);
+        public bool IsAllDownloadable { get; set; }
     }
 }

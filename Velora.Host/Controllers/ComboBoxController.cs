@@ -32,8 +32,9 @@ namespace Velora.Host.Controllers
         private readonly IProductVariantService _productVariantService;
         private readonly ICityService _cityService;
         private readonly IStateService _stateService;
+        private readonly IPaymentGatewayService _paymentGatewayService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductService productService, IProductVariantService productVariantService, ICityService cityService, IStateService stateService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductService productService, IProductVariantService productVariantService, ICityService cityService, IStateService stateService, IPaymentGatewayService paymentGatewayService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -52,6 +53,7 @@ namespace Velora.Host.Controllers
             _productVariantService = productVariantService;
             _cityService = cityService;
             _stateService = stateService;
+            _paymentGatewayService = paymentGatewayService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -492,6 +494,28 @@ namespace Velora.Host.Controllers
                 {
                     Value = r.Id,
                     Label = r.CityTitle
+                })
+                .ToList();
+
+
+            return new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = resourceItems,
+                Success = true
+            };
+        }
+        [HttpGet("OnlinePaymentGateways")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> OnlinePaymentGateways()
+        {
+            var cities = await _paymentGatewayService.GetAllViews();
+
+
+            var resourceItems = cities
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Name,
+                    Image=r.LogoUrl
                 })
                 .ToList();
 

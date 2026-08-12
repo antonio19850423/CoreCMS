@@ -15,8 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
 
         public Guid Id { get; set; }
-
-        [StringLength(100)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
         public string Name { get; set; } = null!;
 
 
@@ -30,7 +29,7 @@ namespace Velora.Application.Shared.Dtos
         LinkedFieldCode = "ProviderType",
         Route = "/api/ComboBox/PaymentProviders")]
         public string ProviderTypeTitle { get; set; } = null!;
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = false, MaxLength = 50)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 50)]
         public string GatewayCode { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
         public string? LogoUrl { get; set; }

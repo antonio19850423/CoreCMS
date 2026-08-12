@@ -54,7 +54,15 @@ namespace Velora.Application.Services
         {
             return await GetAllViewQueryable<SqlBankAccountView, SqlBankAccountView, BankAccountCrud>();
         }
+        public async Task<IQueryable<BankAccountCrud>> GetBankAccountsBySiteInfoId(Guid siteInfoId)
+        {
+            var result = await GetAllViewQueryable<
+                SqlBankAccountView,
+                SqlBankAccountView,
+                BankAccountCrud>();
 
+            return  result.Where(c => c.ParentId == siteInfoId);
+        }
         public async Task<ResultDto<BankAccountDto>> CreateAsync(BankAccountCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

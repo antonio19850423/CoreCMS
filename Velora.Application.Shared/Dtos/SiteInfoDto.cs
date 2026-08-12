@@ -11,9 +11,11 @@ namespace Velora.Application.Shared.Dtos
         //public HeaderDto Header { get; set; }
 
         public FooterDto Footer { get; set; }
-
+        public List<BankAccountCrud> BankAccounts { get; set; }
+        
         //public MenuDto Menu { get; set; }
 
         public SqlSiteGlobalSetting Settings { get; set; }
+        public List<ShippingMethodViewDto> Shippings { get; set; } = new();
     }
 }

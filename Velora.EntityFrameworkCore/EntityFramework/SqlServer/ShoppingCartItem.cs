@@ -30,6 +30,23 @@ public partial class ShoppingCartItem
 
     public DateTime? UpdatedAt { get; set; }
 
+    public Guid? DiscountId { get; set; }
+
+    public Guid? DiscountItemId { get; set; }
+
+    public int? DiscountType { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DiscountValue { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal DiscountAmount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal FinalUnitPrice { get; set; }
+
+    public Guid? ProductTypeId { get; set; }
+
     [ForeignKey("ProductId")]
     [InverseProperty("ShoppingCartItems")]
     public virtual Product Product { get; set; } = null!;

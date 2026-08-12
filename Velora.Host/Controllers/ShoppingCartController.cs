@@ -82,8 +82,8 @@ namespace Velora.Api.Controllers
                     userId,
                     cartToken,
                     input);
-
-
+            if (!result.Success)
+                return BadRequest(result);
 
             return Ok(result);
         }
@@ -117,7 +117,8 @@ namespace Velora.Api.Controllers
                     quantity
                 );
 
-
+            if (!result.Success)
+                return BadRequest(result);
             return Ok(result);
         }
 
@@ -151,7 +152,8 @@ namespace Velora.Api.Controllers
                     cartToken,
                     itemId
                 );
-
+            if (!result.Success)
+                return BadRequest(result);
 
             return Ok(result);
         }

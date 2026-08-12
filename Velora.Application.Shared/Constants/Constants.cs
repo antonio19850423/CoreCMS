@@ -143,4 +143,10 @@ namespace Velora.Application.Shared.Constants
         public const string DEV = "DEV";
         public const string ADMIN = "ADMIN";
     }
+    public static class ProductTypes
+    {
+        public const string Simple = "Simple";
+        public const string Physical = "Physical";
+        public const string Download = "Download";
+    }
 }

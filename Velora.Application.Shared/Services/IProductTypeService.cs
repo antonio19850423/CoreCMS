@@ -13,6 +13,7 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<ProductTypeDto>> CreateAsync(ProductTypeCrud input);
         Task<ResultDto<ProductTypeDto>> UpdateAsync(ProductTypeCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<Guid?> GetIdByCodeAsync(string code);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,
