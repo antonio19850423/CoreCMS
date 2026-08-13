@@ -18,13 +18,17 @@ namespace Velora.Api.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICookieService _cookieService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly ICouponService _couponService;
+        private readonly ICouponUsageService _couponUsageService;
         
         public ShoppingCartController(
-            IShoppingCartService shoppingCartService, ICookieService cookieService, ICurrentUserService currentUserService)
+            IShoppingCartService shoppingCartService, ICookieService cookieService, ICurrentUserService currentUserService, ICouponService couponService, ICouponUsageService couponUsageService)
         {
             _shoppingCartService = shoppingCartService;
             _cookieService = cookieService;
             _currentUserService = currentUserService;
+            _couponService = couponService;
+            _couponUsageService = couponUsageService;
         }
 
 
@@ -255,5 +259,45 @@ namespace Velora.Api.Controllers
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// دریافت کوپن بر اساس کد
+        /// </summary>
+        /// <summary>
+        /// اعمال کد تخفیف روی سبد خرید
+        /// </summary>
+        [HttpPost]
+        [Route("ApplyCouponAsync")]
+        public async Task<IActionResult> ApplyCouponAsync(
+    [FromBody] ApplyCouponRequestDto request)
+        {
+            var result = await _couponUsageService.ApplyCouponAsync(
+                request.ShoppingCartId,
+                request.CouponCode);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+
+
+        /// <summary>
+        /// حذف کد تخفیف از سبد خرید
+        /// </summary>
+        [HttpPost]
+        [Route("RemoveCouponAsync")]
+        public async Task<IActionResult> RemoveCouponAsync(
+            [FromBody] RemoveCouponRequestDto request)
+        {
+            var result = await _couponUsageService.RemoveCouponAsync(
+                request.ShoppingCartId);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

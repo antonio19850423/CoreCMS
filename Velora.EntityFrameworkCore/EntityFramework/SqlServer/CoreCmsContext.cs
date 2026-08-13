@@ -155,6 +155,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwCouponForm> VwCouponForms { get; set; }
 
+    public virtual DbSet<VwCouponUsageForm> VwCouponUsageForms { get; set; }
+
     public virtual DbSet<VwDiscountForm> VwDiscountForms { get; set; }
 
     public virtual DbSet<VwDiscountItemForm> VwDiscountItemForms { get; set; }
@@ -212,6 +214,10 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwShippingMethodCityForm> VwShippingMethodCityForms { get; set; }
 
     public virtual DbSet<VwShippingMethodForm> VwShippingMethodForms { get; set; }
+
+    public virtual DbSet<VwShoppingCartForm> VwShoppingCartForms { get; set; }
+
+    public virtual DbSet<VwShoppingCartItemForm> VwShoppingCartItemForms { get; set; }
 
     public virtual DbSet<VwSiteGlobalSetting> VwSiteGlobalSettings { get; set; }
 
@@ -990,6 +996,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwCouponForm", "cms");
         });
 
+        modelBuilder.Entity<VwCouponUsageForm>(entity =>
+        {
+            entity.ToView("VwCouponUsageForm", "cms");
+        });
+
         modelBuilder.Entity<VwDiscountForm>(entity =>
         {
             entity.ToView("VwDiscountForm", "cms");
@@ -1133,6 +1144,16 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwShippingMethodForm>(entity =>
         {
             entity.ToView("VwShippingMethodForm", "cms");
+        });
+
+        modelBuilder.Entity<VwShoppingCartForm>(entity =>
+        {
+            entity.ToView("VwShoppingCartForm", "cms");
+        });
+
+        modelBuilder.Entity<VwShoppingCartItemForm>(entity =>
+        {
+            entity.ToView("VwShoppingCartItemForm", "cms");
         });
 
         modelBuilder.Entity<VwSiteGlobalSetting>(entity =>

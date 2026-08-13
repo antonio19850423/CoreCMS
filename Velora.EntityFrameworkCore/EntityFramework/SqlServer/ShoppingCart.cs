@@ -66,6 +66,9 @@ public partial class ShoppingCart
 
     public DateTime? PaidAt { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? CouponDiscountAmount { get; set; }
+
     [InverseProperty("ShoppingCart")]
     public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }

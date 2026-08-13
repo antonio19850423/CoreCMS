@@ -19,9 +19,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
-    public class CouponService : GenericService<SqlCoupon, SqlCoupon, CouponDto>, ICouponService
+    public class ShoppingCartItemService : GenericService<SqlShoppingCartItem, SqlShoppingCartItem, ShoppingCartItemDto>, IShoppingCartItemService
     {
-        private readonly ISqlRepository<SqlCoupon> _sqlrepository;
+        private readonly ISqlRepository<SqlShoppingCartItem> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -30,11 +30,11 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        private readonly ICouponService _roleCouponService;
+        private readonly IShoppingCartItemService _roleShoppingCartItemService;
         protected readonly ICurrentUserService _currentUserService;
-        public CouponService(
-              ISqlRepository<SqlCoupon> sqlRepository,
-              IPosgreSqlRepository<SqlCoupon> pgRepository,
+        public ShoppingCartItemService(
+              ISqlRepository<SqlShoppingCartItem> sqlRepository,
+              IPosgreSqlRepository<SqlShoppingCartItem> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
@@ -50,49 +50,43 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService= currentUserService;
         }
-        public async Task<IQueryable<CouponCrud>> GetAllViews()
+        public async Task<IQueryable<ShoppingCartItemCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<VwCouponForm, VwCouponForm, CouponCrud>();
+            return await GetAllViewQueryable<VwShoppingCartItemForm, VwShoppingCartItemForm, ShoppingCartItemCrud>();
         }
-        public async Task<ResultDto<CouponDto>> CreateAsync(CouponCrud input)
+        public async Task<ResultDto<ShoppingCartItemDto>> CreateAsync(ShoppingCartItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<ShoppingCartItemDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                if (await IsCouponCodeDuplicateAsync(input.Code))
+                var ShoppingCartItem = new ShoppingCartItemDto
                 {
-                    return new ResultDto<CouponDto>
-                    {
-                        Success = false,
-                        Message = "کد کوپن تکراری است."
-                    };
-                }
-                var Coupon = new CouponDto
-                {
-                    CouponType = input.CouponType,
-                    CanCombineWithDiscount = input.CanCombineWithDiscount,
-                    CouponValue = input.CouponValue,
-                    MaximumDiscountAmount = input.MaximumDiscountAmount,
-                    MinimumOrderAmount = input.MinimumOrderAmount,
-                    Code = input.Code,
-                    EndDate=input.EndDate,
-                    IsActive=input.IsActive,
-                    IsSingleUsePerUser=input.IsSingleUsePerUser,
-                    StartDate=input.StartDate,
-                    UsageLimit=input.UsageLimit,
-                    UsedCount=input.UsedCount,
+
+                    DiscountAmount = input.DiscountAmount,
+                    DiscountId = input.DiscountId,
+                    DiscountItemId = input.DiscountItemId,
+                    DiscountType = input.DiscountType,
+                    DiscountValue = input.DiscountValue,
+                    FinalUnitPrice = input.FinalUnitPrice,
+                    ProductId = input.ProductId,
+                    ProductTypeId = input.ProductTypeId,
+                    Quantity = input.Quantity,
+                    ShoppingCartId = input.ShoppingCartId,
+                    UnitPrice = input.UnitPrice,
+                    VariantId = input.VariantId,
+
 
                 };
 
-                var result = await CreateAsync(Coupon);
+                var result = await CreateAsync(ShoppingCartItem);
                 if (!result.Success)
                     return result;
 
@@ -102,7 +96,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<CouponDto>
+                var result = new ResultDto<ShoppingCartItemDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -112,14 +106,14 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<CouponDto>> UpdateAsync(CouponCrud input)
+        public async Task<ResultDto<ShoppingCartItemDto>> UpdateAsync(ShoppingCartItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<ShoppingCartItemDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
@@ -127,36 +121,29 @@ namespace Velora.Application.Services
                 }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<ShoppingCartItemDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                if (await IsCouponCodeDuplicateAsync(input.Code, input.Id))
-                {
-                    return new ResultDto<CouponDto>
-                    {
-                        Success = false,
-                        Message = "کد کوپن تکراری است."
-                    };
-                }
+
                 // 1️⃣ به‌روزرسانی کاربر
-                var userUpdateDto = new CouponDto
+                var userUpdateDto = new ShoppingCartItemDto
                 {
                     Id = input.Id,
-                    CouponType = input.CouponType,
-                    CanCombineWithDiscount = input.CanCombineWithDiscount,
-                    CouponValue = input.CouponValue,
-                    MaximumDiscountAmount = input.MaximumDiscountAmount,
-                    MinimumOrderAmount = input.MinimumOrderAmount,
-                    Code = input.Code,
-                    EndDate = input.EndDate,
-                    IsActive = input.IsActive,
-                    IsSingleUsePerUser = input.IsSingleUsePerUser,
-                    StartDate = input.StartDate,
-                    UsageLimit = input.UsageLimit,
-                    UsedCount = input.UsedCount,
+                    DiscountAmount = input.DiscountAmount,
+                    DiscountId = input.DiscountId,
+                    DiscountItemId = input.DiscountItemId,
+                    DiscountType = input.DiscountType,
+                    DiscountValue = input.DiscountValue,
+                    FinalUnitPrice = input.FinalUnitPrice,
+                    ProductId = input.ProductId,
+                    ProductTypeId = input.ProductTypeId,
+                    Quantity = input.Quantity,
+                    ShoppingCartId = input.ShoppingCartId,
+                    UnitPrice = input.UnitPrice,
+                    VariantId = input.VariantId,
 
                 };
 
@@ -169,7 +156,7 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<CouponDto>
+                var result = new ResultDto<ShoppingCartItemDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -180,25 +167,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdCoupons= new List<CouponDto>();
+            var createdShoppingCartItems= new List<ShoppingCartItemDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var Coupons = dt.ToModelList<CouponCrud>();
+                var ShoppingCartItems = dt.ToModelList<ShoppingCartItemCrud>();
 
-                for (int i = 0; i < Coupons.Count; i++)
+                for (int i = 0; i < ShoppingCartItems.Count; i++)
                 {
-                    var Coupon = Coupons[i];
+                    var ShoppingCartItem = ShoppingCartItems[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(Coupon);
+                    var createResult = await CreateAsync(ShoppingCartItem);
 
                     if (createResult.Success && createResult.Data != null)
                     {
-                        createdCoupons.Add(createResult.Data);
+                        createdShoppingCartItems.Add(createResult.Data);
                     }
                     else
                     {
@@ -230,7 +217,7 @@ namespace Velora.Application.Services
                         : errorFileTitle,
                     Data = new BulkInsertResult
                     {
-                        InsertedCount = createdCoupons.Count,
+                        InsertedCount = createdShoppingCartItems.Count,
                         ErrorCount = errors.Count,
                         ErrorFileUrl = errorFileUrl
                     },
@@ -248,44 +235,36 @@ namespace Velora.Application.Services
                 };
             }
         }
-        private async Task<bool> IsCouponCodeDuplicateAsync(
-    string code,
-    Guid? id = null)
-        {
-            return await Query().AnyAsync(x =>
-                x.Code == code &&
-                (!id.HasValue || x.Id != id.Value)
-            );
-        }
+
 
 
         public async Task<byte[]> ExportAsync(
-bool exportCurrentCoupon,
-int CouponNumber,
-int CouponSize)
+bool exportCurrentShoppingCartItem,
+int ShoppingCartItemNumber,
+int ShoppingCartItemSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
 
             // 2️⃣ Paging و Mapping به DTO
-            List<CouponCrud> data;
+            List<ShoppingCartItemCrud> data;
 
-            if (exportCurrentCoupon)
+            if (exportCurrentShoppingCartItem)
             {
                 data = query
-                    .Skip((CouponNumber - 1) * CouponSize)
-                    .Take(CouponSize)
+                    .Skip((ShoppingCartItemNumber - 1) * ShoppingCartItemSize)
+                    .Take(ShoppingCartItemSize)
                     .ToList();
             }
             else
             {
                 data = query.ToList();
             }
-            var resource = _mapper.Map<List<CouponCrud>>(data);
+            var resource = _mapper.Map<List<ShoppingCartItemCrud>>(data);
 
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
             var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.Coupon, // نام مدل DTO
+                LookupEntities.ShoppingCartItem, // نام مدل DTO
                 data.Count + 5
             );
 
@@ -295,16 +274,7 @@ int CouponSize)
             return resultBytes;
         }
 
-        public async Task<SqlCoupon?> GetByCodeAsync(string couponCode)
-        {
-            if (string.IsNullOrWhiteSpace(couponCode))
-                return null;
 
-            couponCode = couponCode.Trim();
-
-            return await Query()
-                .FirstOrDefaultAsync(x => x.Code == couponCode);
-        }
 
     }
 

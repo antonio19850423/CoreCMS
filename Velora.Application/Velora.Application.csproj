@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\ShoppingCartService3.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Services\CmsConfigurationGraphQLResolver.cs" />
   </ItemGroup>
 

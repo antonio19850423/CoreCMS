@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+
+	<data name="CouponUsage.CouponTypeName" xml:space="preserve">
+        <value>نوع کوپن تخفیف</value>
+    </data>
+	<data name="CouponUsage.CouponValue" xml:space="preserve">
+        <value>مقدار تخفیف</value>
+    </data>
+	<data name="CouponUsage.Code" xml:space="preserve">
+        <value>کد تخفیف</value>
+    </data>
+	<data name="CouponUsage.ParentId" xml:space="preserve">
+        <value>شناسه کوپن</value>
+    </data>
+	<data name="CouponUsage.OrderId" xml:space="preserve">
+        <value>شناسه سفارش</value>
+    </data>
+	<data name="CouponUsage.UsedAt" xml:space="preserve">
+        <value>زمان استفاده</value>
+    </data>
+	<data name="CouponUsage.UserId" xml:space="preserve">
+        <value>شناسه کاربر</value>
+    </data>
+	<data name="CouponUsage.CouponDiscountAmount" xml:space="preserve">
+        <value>مبلغ تخفیف اعمال‌شده</value>
+    </data>
+	<data name="CouponUsage.FinalAmount" xml:space="preserve">
+        <value>مبلغ نهایی سفارش</value>
+    </data>
+	<data name="CouponUsage.UsedAtPersian" xml:space="preserve">
+        <value>تاریخ استفاده</value>
+    </data>
+	<data name="CouponUsage.UsedByName" xml:space="preserve">
+        <value>استفاده‌کننده</value>
+    </data>
+</root>

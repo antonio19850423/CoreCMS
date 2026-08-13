@@ -40,5 +40,10 @@ namespace Velora.Application.Shared.Dtos
         public decimal TotalAmount =>
             Items.Sum(x => x.TotalPrice);
         public bool IsAllDownloadable { get; set; }
+        public Guid? CouponId { get; set; }
+
+        public string? CouponCode { get; set; }
+
+        public decimal CouponDiscountAmount { get; set; }
     }
 }

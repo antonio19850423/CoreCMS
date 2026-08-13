@@ -1006,6 +1006,44 @@
                 "en": "Coupon Management",
                 "fa": "کوپن ها"
               },
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "COUPON_TAB_COUPONUSAGE",
+                  "Name": "Coupon Usage Management",
+                  "DisplayName": {
+                    "en": "Coupon Usage Management",
+                    "fa": "استفاده از کوپن ها"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "COUPONUSAGE_MANAGEMENT_MENU",
+          "Name": "Coupon Usage Menu",
+          "Route": "administration/couponusage-management",
+          "DisplayName": {
+            "en": "Coupon Usage",
+            "fa": "استفاده از کوپن ها"
+          },
+          "Order": 10,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "COUPONUSAGE_MANAGEMENT_PAGE",
+              "Name": "Coupon Usage Page",
+              "DisplayName": {
+                "en": "Coupon Usage",
+                "fa": "استفاده از کوپن ها"
+              },
               "Order": 1
             }
           ]
@@ -1019,7 +1057,7 @@
             "en": "Product Review Management",
             "fa": "نظرات محصول"
           },
-          "Order": 10,
+          "Order": 11,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -1043,7 +1081,7 @@
             "en": "Product Question Management",
             "fa": "پرسش‌های محصول"
           },
-          "Order": 11,
+          "Order": 12,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -1067,7 +1105,7 @@
             "en": "Payment Gateway Management",
             "fa": "درگاه پرداخت"
           },
-          "Order": 12,
+          "Order": 13,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -1091,7 +1129,7 @@
             "en": "Shipping Method Management",
             "fa": "روش ارسال"
           },
-          "Order": 13,
+          "Order": 14,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -1127,7 +1165,7 @@
             "en": "Shipping Method Cities",
             "fa": "شهرهای روش ارسال"
           },
-          "Order": 14,
+          "Order": 15,
           "Roles": [ "DEV" ],
           "Children": [
             {
@@ -1151,7 +1189,7 @@
             "en": "Bank Account Management",
             "fa": "حساب بانکی"
           },
-          "Order": 12,
+          "Order": 16,
           "Roles": [ "DEV" ],
           "Children": [
             {

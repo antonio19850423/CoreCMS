@@ -285,6 +285,21 @@ namespace Velora.Application.MappingProfiles
             CreateMap<VwBankAccountForm, BankAccountCrud>().ReverseMap();
             CreateMap<SqlBankAccount, BankAccountDto>().ReverseMap();
 
+
+            CreateMap<SqlCouponUsage, CouponUsageCrud>().ReverseMap();
+            CreateMap<VwCouponUsageForm, CouponUsageCrud>().ReverseMap();
+            CreateMap<SqlCouponUsage, CouponUsageDto>().ReverseMap();
+
+
+            CreateMap<SqlShoppingCart, ShoppingCartCrud>().ReverseMap();
+            CreateMap<VwShoppingCartForm, ShoppingCartCrud>().ReverseMap();
+            CreateMap<SqlShoppingCart, ShoppingCartDto>().ReverseMap();
+
+
+            CreateMap<SqlShoppingCartItem, ShoppingCartItemCrud>().ReverseMap();
+            CreateMap<VwShoppingCartItemForm, ShoppingCartItemCrud>().ReverseMap();
+            CreateMap<SqlShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
+
         }
 
 

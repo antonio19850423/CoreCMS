@@ -9,7 +9,7 @@ using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public class ShoppingCartItemDto
+    public  class ShoppingCartItemDto
     {
         [Key]
         public Guid Id { get; set; }
@@ -45,6 +45,5 @@ namespace Velora.Application.Shared.Dtos
         public decimal FinalUnitPrice { get; set; }
 
         public Guid? ProductTypeId { get; set; }
-
     }
 }

@@ -4,11 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Velora.Application.Shared.Dtos;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Services
 {
-    public interface IShoppingCartService:IBaseService
+    public interface IShoppingCartService : IGenericService<SqlShoppingCart, SqlShoppingCart, ShoppingCartDto>, IBaseService
     {
+        Task<IQueryable<ShoppingCartCrud>> GetAllViews();
+        Task<ResultDto<ShoppingCartDto>> CreateAsync(ShoppingCartCrud input);
+        Task<ResultDto<ShoppingCartDto>> UpdateAsync(ShoppingCartCrud input);
+        Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
+        Task<byte[]> ExportAsync(
+bool exportCurrentPage,
+int pageNumber,
+int pageSize);
         /// <summary>
         /// دریافت سبد خرید کاربر یا مهمان
         /// </summary>
@@ -73,6 +82,15 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<int>> GetCountAsync(
             Guid? userId,
             string? cartToken);
+
+        Task<SqlShoppingCart?> GetByIdAsync(Guid shoppingCartId);
+        Task<bool> CartHasDiscountAsync(Guid shoppingCartId);
+        Task<decimal> GetCartAmountForCouponAsync(
+    Guid shoppingCartId);
+        Task ApplyCouponToCart(
+           ShoppingCart cart,
+           Coupon coupon,
+           decimal discountAmount);
     }
 
 }

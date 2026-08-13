@@ -193,5 +193,13 @@ global using SqlBankAccount = Velora.EntityFrameworkCore.EntityFramework.SqlServ
 global using SqlBankAccountView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwBankAccountForm;
 
 
+global using SqlCouponUsage = Velora.EntityFrameworkCore.EntityFramework.SqlServer.CouponUsage;
+global using SqlCouponUsageView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCouponUsageForm;
+
+global using SqlShoppingCart = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCart;
+global using SqlShoppingCartView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShoppingCartForm;
+
+global using SqlShoppingCartItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCartItem;
+global using SqlShoppingCartItemView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShoppingCartItemForm;
 
 

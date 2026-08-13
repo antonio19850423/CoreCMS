@@ -108,7 +108,9 @@ namespace Velora.Application.Shared.Constants
         public const string ShippingMethod = "ShippingMethod";
         public const string ShippingMethodCity = "ShippingMethodCity";
         public const string BankAccount = "BankAccount";
-        
+        public const string CouponUsage = "CouponUsage";
+        public const string ShoppingCart = "ShoppingCart";
+        public const string ShoppingCartItem = "ShoppingCartItem";
 
         // سایر entityها...
     }

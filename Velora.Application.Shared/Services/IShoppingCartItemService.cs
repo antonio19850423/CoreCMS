@@ -8,13 +8,12 @@ using Velora.Application.Shared.Dtos;
 
 namespace Velora.Application.Shared.Services
 {
-    public interface ICouponService : IGenericService<SqlCoupon, SqlCoupon, CouponDto>, IBaseService
+    public interface IShoppingCartItemService : IGenericService<SqlShoppingCartItem, SqlShoppingCartItem, ShoppingCartItemDto>, IBaseService
     {
-        Task<IQueryable<CouponCrud>> GetAllViews();
-        Task<ResultDto<CouponDto>> CreateAsync(CouponCrud input);
-        Task<ResultDto<CouponDto>> UpdateAsync(CouponCrud input);
+        Task<IQueryable<ShoppingCartItemCrud>> GetAllViews();
+        Task<ResultDto<ShoppingCartItemDto>> CreateAsync(ShoppingCartItemCrud input);
+        Task<ResultDto<ShoppingCartItemDto>> UpdateAsync(ShoppingCartItemCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
-        Task<SqlCoupon?> GetByCodeAsync(string couponCode);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

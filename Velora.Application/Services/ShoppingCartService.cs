@@ -1,68 +1,310 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Enums;
+using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
+using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
+using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using Velora.Application.Shared.Infrastructure;
-    using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
-
-    public class ShoppingCartService : IShoppingCartService, IBaseService
+    public class ShoppingCartService : GenericService<SqlShoppingCart, SqlShoppingCart, ShoppingCartDto>, IShoppingCartService
     {
-
-        private readonly IGenericService<
-            ShoppingCart,
-            ShoppingCart,
-            ShoppingCartDto> _shoppingCartService;
-
-
-        private readonly IGenericService<
-            ShoppingCartItem,
-            ShoppingCartItem,
-            ShoppingCartItemDto> _shoppingCartItemService;
-
-
+        private readonly ISqlRepository<SqlShoppingCart> _sqlrepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IProductService _productService;
         private readonly ITransactionService _transactionService;
+        private readonly IModelValidationService _modelValidationService;
+        protected readonly Lazy<ILocalizationMessageService> _messageService;
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _config;
+        private readonly Lazy<IExcelTemplateService> _excelTemplateService;
+        private readonly IShoppingCartService _roleShoppingCartService;
+        protected readonly ICurrentUserService _currentUserService;
+        private readonly IProductService _productService;
         private readonly ICookieService _cookieService;
         private readonly IDiscountService _discountService;
         private readonly IProductInventoryTransactionService _productInventoryTransactionService;
         private readonly IProductTypeService _productTypeService;
-
+        private readonly IShoppingCartItemService _shoppingCartItemService;
+        
         public ShoppingCartService(
-            IGenericService<
-                ShoppingCart,
-                ShoppingCart,
-                ShoppingCartDto> shoppingCartService,
-
-            IGenericService<
-                ShoppingCartItem,
-                ShoppingCartItem,
-                ShoppingCartItemDto> shoppingCartItemService,
-
-            IMapper mapper, IProductService productService, ITransactionService transactionService, ICookieService cookieService, IDiscountService discountService, IProductInventoryTransactionService productInventoryTransactionService, IProductTypeService productTypeService)
+              ISqlRepository<SqlShoppingCart> sqlRepository,
+              IPosgreSqlRepository<SqlShoppingCart> pgRepository,
+              IMapper mapper,
+              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
+              IProductService productService,
+              ICookieService cookieService,
+              IDiscountService discountService,
+              IProductInventoryTransactionService productInventoryTransactionService,
+              IProductTypeService productTypeService,
+              IShoppingCartItemService shoppingCartItemService,
+              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
+              ICurrentUserService currentUserService)
+              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
-            _shoppingCartService = shoppingCartService;
-            _shoppingCartItemService = shoppingCartItemService;
             _mapper = mapper;
-            _productService = productService;
             _transactionService = transactionService;
-            _cookieService = cookieService;
+            _messageService = messageService;
+            _modelValidationService = modelValidationService;
+            _env = env;
+            _config = config;
+            _excelTemplateService = excelTemplateService;
+            _currentUserService = currentUserService;
+            _productService = productService;
+            _productTypeService = productTypeService;
             _discountService = discountService;
             _productInventoryTransactionService = productInventoryTransactionService;
-            _productTypeService = productTypeService;
+            _cookieService= cookieService;
+            _shoppingCartItemService = shoppingCartItemService;
+        }
+        public async Task<IQueryable<ShoppingCartCrud>> GetAllViews()
+        {
+            return await GetAllViewQueryable<VwShoppingCartForm, VwShoppingCartForm, ShoppingCartCrud>();
+        }
+        public async Task<ResultDto<ShoppingCartDto>> CreateAsync(ShoppingCartCrud input)
+        {
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            try
+            {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var ShoppingCart = new ShoppingCartDto
+                {
+                    AddressId = input.AddressId,
+                    CartToken = input.CartToken,
+                    CouponCode = input.CouponCode,
+                    CouponDiscountAmount = input.CouponDiscountAmount,
+                    CouponId = input.CouponId,
+                    Description = input.Description,
+                    ExpireAt = input.ExpireAt,
+                    FinalAmount = input.FinalAmount,
+                    OrderCode = input.OrderCode,
+                    OrderedAt = input.OrderedAt,
+                    PaidAt = input.PaidAt,
+                    PaymentMethod = input.PaymentMethod,
+                    ReceiverFirstName = input.ReceiverFirstName,
+                    ReceiverLastName = input.ReceiverLastName,
+                     ReceiverNationalCode = input.ReceiverNationalCode,
+                     ReceiverPhone = input.ReceiverPhone,
+                     ShippingMethodId = input.ShippingMethodId,
+                     ShippingPrice = input.ShippingPrice,
+                     Status = input.Status,
+                     UserId = input.UserId,
+
+
+                };
+
+                var result = await CreateAsync(ShoppingCart);
+                if (!result.Success)
+                    return result;
+
+                await _transactionService.CommitAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+                var result = new ResultDto<ShoppingCartDto>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                };
+                result.Errors.Add(ex.Message);
+                return result;
+            }
         }
 
+        public async Task<ResultDto<ShoppingCartDto>> UpdateAsync(ShoppingCartCrud input)
+        {
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            try
+            {
+                if (input.Id == null)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
+                    };
+                }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
 
+                // 1️⃣ به‌روزرسانی کاربر
+                var userUpdateDto = new ShoppingCartDto
+                {
+                    Id = input.Id,
+                    AddressId = input.AddressId,
+                    CartToken = input.CartToken,
+                    CouponCode = input.CouponCode,
+                    CouponDiscountAmount = input.CouponDiscountAmount,
+                    CouponId = input.CouponId,
+                    Description = input.Description,
+                    ExpireAt = input.ExpireAt,
+                    FinalAmount = input.FinalAmount,
+                    OrderCode = input.OrderCode,
+                    OrderedAt = input.OrderedAt,
+                    PaidAt = input.PaidAt,
+                    PaymentMethod = input.PaymentMethod,
+                    ReceiverFirstName = input.ReceiverFirstName,
+                    ReceiverLastName = input.ReceiverLastName,
+                    ReceiverNationalCode = input.ReceiverNationalCode,
+                    ReceiverPhone = input.ReceiverPhone,
+                    ShippingMethodId = input.ShippingMethodId,
+                    ShippingPrice = input.ShippingPrice,
+                    Status = input.Status,
+                    UserId = input.UserId,
 
+                };
+
+                var result = await UpdateAsync(userUpdateDto, input.Id);
+                if (!result.Success)
+                    return result;
+                await _transactionService.CommitAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+                var result = new ResultDto<ShoppingCartDto>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                };
+                result.Errors.Add(ex.Message);
+                return result;
+            }
+        }
+        public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
+        {
+            var createdShoppingCarts = new List<ShoppingCartDto>();
+            var errors = new List<string>();
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
+            try
+            {
+                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var ShoppingCarts = dt.ToModelList<ShoppingCartCrud>();
+
+                for (int i = 0; i < ShoppingCarts.Count; i++)
+                {
+                    var ShoppingCart = ShoppingCarts[i];
+                    var context = rowContexts[i];
+
+                    var createResult = await CreateAsync(ShoppingCart);
+
+                    if (createResult.Success && createResult.Data != null)
+                    {
+                        createdShoppingCarts.Add(createResult.Data);
+                    }
+                    else
+                    {
+                        string errorMsg =
+                            createResult.Errors != null && createResult.Errors.Any()
+                                ? string.Join("; ", createResult.Errors)
+                                : !string.IsNullOrWhiteSpace(createResult.Message)
+                                    ? createResult.Message
+                                    : "Unknown error";
+
+                        dt.SetRowError(context.DataTableRowIndex, errorMsg);
+                        errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
+                    }
+                }
+
+                await _transactionService.CommitAsync();
+
+                string? errorFileUrl = null;
+                if (errors.Any())
+                {
+                    errorFileUrl = dt.SaveErrorExcel(_env.WebRootPath!, _config);
+                }
+
+                return new ResultDto<BulkInsertResult>
+                {
+                    Success = errors.Count == 0,
+                    Message = errors.Count == 0
+                        ? successMessage
+                        : errorFileTitle,
+                    Data = new BulkInsertResult
+                    {
+                        InsertedCount = createdShoppingCarts.Count,
+                        ErrorCount = errors.Count,
+                        ErrorFileUrl = errorFileUrl
+                    },
+                    Errors = errors
+                };
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+                return new ResultDto<BulkInsertResult>
+                {
+                    Success = false,
+                    Message = errorFileTitle,
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+        public async Task<byte[]> ExportAsync(
+bool exportCurrentShoppingCart,
+int ShoppingCartNumber,
+int ShoppingCartSize)
+        {
+            // 1️⃣ گرفتن همه داده‌ها از query
+            var query = await GetAllViews(); // IQueryable<Resource>
+
+            // 2️⃣ Paging و Mapping به DTO
+            List<ShoppingCartCrud> data;
+
+            if (exportCurrentShoppingCart)
+            {
+                data = query
+                    .Skip((ShoppingCartNumber - 1) * ShoppingCartSize)
+                    .Take(ShoppingCartSize)
+                    .ToList();
+            }
+            else
+            {
+                data = query.ToList();
+            }
+            var resource = _mapper.Map<List<ShoppingCartCrud>>(data);
+
+            // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
+                LookupEntities.ShoppingCart, // نام مدل DTO
+                data.Count + 5
+            );
+
+            // 4️⃣ پر کردن داده‌ها در Template با Extension Method
+            var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
+
+            return resultBytes;
+        }
 
         public async Task<ResultDto<ShoppingCartViewDto>> GetCartAsync(
             Guid? userId,
@@ -71,8 +313,7 @@ namespace Velora.Application.Services
             try
             {
                 var cartQuery =
-                    _shoppingCartService
-                        .Query()
+                    Query()
                         .Include(x => x.ShoppingCartItems)
                             .ThenInclude(x => x.Product)
                                 .ThenInclude(x => x.Brand)
@@ -82,13 +323,14 @@ namespace Velora.Application.Services
                         .Include(x => x.ShoppingCartItems)
                             .ThenInclude(x => x.Variant);
 
-                var cart =
-                    await cartQuery.FirstOrDefaultAsync(x =>
-                        (userId.HasValue &&
-                         x.UserId == userId)
-                        ||
-                        (!string.IsNullOrEmpty(cartToken) &&
-                         x.CartToken == cartToken));
+                var cart = await cartQuery.FirstOrDefaultAsync(x =>
+                                (
+                                    (userId.HasValue && x.UserId == userId)
+                                    ||
+                                    (!string.IsNullOrEmpty(cartToken) && x.CartToken == cartToken)
+                                )
+                                &&
+                                x.Status == (int)ShoppingCartStatus.Cart);
 
                 if (cart == null)
                 {
@@ -247,7 +489,12 @@ namespace Velora.Application.Services
                             items,
 
                         IsAllDownloadable =
-                            isAllDownloadable
+                            isAllDownloadable,
+                        CouponId = cart.CouponId,
+
+                        CouponCode = cart.CouponCode,
+
+                        CouponDiscountAmount = cart.CouponDiscountAmount ?? 0
                     };
 
 
@@ -274,12 +521,6 @@ namespace Velora.Application.Services
                 };
             }
         }
-
-
-
-
-
-
 
         public async Task<ResultDto<ShoppingCartViewDto>> AddAsync(
             Guid? userId,
@@ -590,7 +831,6 @@ namespace Velora.Application.Services
             }
         }
 
-
         public async Task<ResultDto<ShoppingCartViewDto>> UpdateQuantityAsync(
            Guid? userId,
            string? cartToken,
@@ -858,14 +1098,6 @@ namespace Velora.Application.Services
             }
         }
 
-
-
-
-
-
-
-
-
         public async Task<ResultDto<ShoppingCartViewDto>> RemoveAsync(
             Guid? userId,
             string? cartToken,
@@ -894,14 +1126,6 @@ namespace Velora.Application.Services
                 cartToken);
 
         }
-
-
-
-
-
-
-
-
 
         public async Task<ResultDto<bool>> ClearAsync(
             Guid? userId,
@@ -942,17 +1166,9 @@ namespace Velora.Application.Services
 
         }
 
-
-
-
-
-
-
-
-
-public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-    Guid? userId,
-    string? cartToken)
+        public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
+            Guid? userId,
+            string? cartToken)
         {
             // ============================================
             // 1. ابتدا Cart کاربر را بر اساس UserId پیدا کن
@@ -963,8 +1179,7 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             if (userId.HasValue)
             {
                 userCart =
-                    await _shoppingCartService
-                    .Query()
+                    await Query()
                     .Include(x => x.ShoppingCartItems)
                     .FirstOrDefaultAsync(x =>
                         x.UserId == userId);
@@ -1005,8 +1220,7 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             if (!string.IsNullOrWhiteSpace(cartToken))
             {
                 guestCart =
-                    await _shoppingCartService
-                    .Query()
+                    await Query()
                     .Include(x => x.ShoppingCartItems)
                     .FirstOrDefaultAsync(x =>
                         x.CartToken == cartToken);
@@ -1033,8 +1247,7 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             guestCart.UpdateAt = DateTime.Now;
 
 
-            await _shoppingCartService
-                .UpdateAsync(
+            await UpdateAsync(
                     _mapper.Map<ShoppingCartDto>(guestCart),
                     guestCart.Id);
 
@@ -1060,16 +1273,6 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 guestCart.CartToken);
         }
 
-
-
-
-
-
-
-
-
-
-
         public async Task<ResultDto<int>> GetCountAsync(
             Guid? userId,
             string? cartToken)
@@ -1094,14 +1297,6 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             };
 
         }
-
-
-
-
-
-
-
-
 
         private async Task<ShoppingCart> GetOrCreateCartAsync(
        Guid? userId,
@@ -1146,8 +1341,7 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             };
 
 
-            await _shoppingCartService
-                .CreateAsync(
+            await CreateAsync(
                     _mapper.Map<ShoppingCartDto>(entity));
 
 
@@ -1155,19 +1349,12 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             return entity;
         }
 
-
-
-
-
-
-
         private async Task<ShoppingCart?> GetCartEntityAsync(
             Guid? userId,
             string? cartToken)
         {
 
-            return await _shoppingCartService
-                .Query()
+            return await Query()
                 .Include(x => x.ShoppingCartItems)
                 .FirstOrDefaultAsync(x =>
                     (userId.HasValue &&
@@ -1178,6 +1365,44 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                     (!string.IsNullOrEmpty(cartToken)
                      &&
                      x.CartToken == cartToken));
+
+        }
+
+        public async Task<SqlShoppingCart?> GetByIdAsync(Guid shoppingCartId)
+        {
+            if (shoppingCartId == Guid.Empty)
+                return null;
+
+            return await Query()
+                .FirstOrDefaultAsync(x => x.Id == shoppingCartId);
+        }
+        public async Task<bool> CartHasDiscountAsync(Guid shoppingCartId)
+        {
+            return await _shoppingCartItemService
+                .Query()
+                .AnyAsync(x =>
+                    x.ShoppingCartId == shoppingCartId &&
+                    x.DiscountAmount > 0);
+        }
+        public async Task<decimal> GetCartAmountForCouponAsync(
+    Guid shoppingCartId)
+        {
+            return await _shoppingCartItemService
+                .Query()
+                .Where(x => x.ShoppingCartId == shoppingCartId)
+                .SumAsync(x => x.FinalUnitPrice * x.Quantity);
+        }
+        public async Task ApplyCouponToCart(
+    ShoppingCart cart,
+    Coupon coupon,
+    decimal discountAmount)
+        {
+            cart.CouponId = coupon.Id;
+            cart.CouponCode = coupon.Code;
+            cart.CouponDiscountAmount = discountAmount;
+            await UpdateAsync(
+             _mapper.Map<ShoppingCartDto>(cart),
+             cart.Id);
 
         }
 
