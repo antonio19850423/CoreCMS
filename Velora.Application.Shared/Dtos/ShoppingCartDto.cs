@@ -71,6 +71,10 @@ namespace Velora.Application.Shared.Dtos
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? CouponDiscountAmount { get; set; }
 
+        [StringLength(1000)]
+        public string? AddressText { get; set; }
 
+        [StringLength(200)]
+        public string? ShippingMethodName { get; set; }
     }
 }

@@ -173,6 +173,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwPageTemplateForm> VwPageTemplateForms { get; set; }
 
+    public virtual DbSet<VwPaymentForm> VwPaymentForms { get; set; }
+
     public virtual DbSet<VwPaymentGatewayForm> VwPaymentGatewayForms { get; set; }
 
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
@@ -1039,6 +1041,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwPageTemplateForm>(entity =>
         {
             entity.ToView("VwPageTemplateForm", "cms");
+        });
+
+        modelBuilder.Entity<VwPaymentForm>(entity =>
+        {
+            entity.ToView("VwPaymentForm", "cms");
         });
 
         modelBuilder.Entity<VwPaymentGatewayForm>(entity =>

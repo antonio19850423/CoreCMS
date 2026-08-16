@@ -78,5 +78,10 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(201)]
         public string? CreatedByName { get; set; }
+        [StringLength(1000)]
+        public string? AddressText { get; set; }
+
+        [StringLength(200)]
+        public string? ShippingMethodName { get; set; }
     }
 }

@@ -66,6 +66,12 @@ public partial class VwShoppingCartForm
 
     public Guid? UserId { get; set; }
 
+    [StringLength(200)]
+    public string? ShippingMethodName { get; set; }
+
+    [StringLength(1000)]
+    public string? AddressText { get; set; }
+
     [StringLength(19)]
     public string? PaidAtPersian { get; set; }
 

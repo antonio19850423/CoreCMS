@@ -69,6 +69,12 @@ public partial class ShoppingCart
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? CouponDiscountAmount { get; set; }
 
+    [StringLength(1000)]
+    public string? AddressText { get; set; }
+
+    [StringLength(200)]
+    public string? ShippingMethodName { get; set; }
+
     [InverseProperty("ShoppingCart")]
     public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }
