@@ -43,4 +43,7 @@ public partial class Payment
     public Guid? CreatedBy { get; set; }
 
     public Guid? UpdatedBy { get; set; }
+
+    [InverseProperty("Payment")]
+    public virtual ICollection<PaymentStatusLog> PaymentStatusLogs { get; set; } = new List<PaymentStatusLog>();
 }

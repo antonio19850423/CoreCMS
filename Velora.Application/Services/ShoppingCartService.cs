@@ -1470,7 +1470,7 @@ int ShoppingCartSize)
     //            // 3. جلوگیری از ثبت مجدد سفارش
     //            // ============================================
 
-    //            if (cart.Status != (int)ShoppingCartStatus.Cart)
+    //            if (cart.Status == (int)ShoppingCartStatus.ConvertedToOrder)
     //            {
     //                return new ResultDto<ShoppingCartDto>
     //                {
@@ -1785,5 +1785,30 @@ int ShoppingCartSize)
     //            return result;
     //        }
     //    }
+
+        private async Task<string> GenerateUniqueOrderCodeAsync()
+        {
+            const string characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+            while (true)
+            {
+                var code = new char[7];
+
+                for (var i = 0; i < code.Length; i++)
+                {
+                    code[i] = characters[Random.Shared.Next(characters.Length)];
+                }
+
+                var orderCode = new string(code);
+
+                var exists = await Query()
+                    .AnyAsync(x => x.OrderCode == orderCode);
+
+                if (!exists)
+                {
+                    return orderCode;
+                }
+            }
+        }
     }
 }

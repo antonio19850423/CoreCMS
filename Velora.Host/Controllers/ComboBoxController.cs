@@ -526,5 +526,14 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
+        [HttpGet("PaymentStatuses")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<int>>> PaymentStatuses()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<int>>>
+            {
+                Data = EnumHelper.GetComboItems<PaymentStatus>(),
+                Success = true
+            };
+        }
     }
 }

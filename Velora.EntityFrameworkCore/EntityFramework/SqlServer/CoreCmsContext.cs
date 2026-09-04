@@ -63,6 +63,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<PaymentGateway> PaymentGateways { get; set; }
 
+    public virtual DbSet<PaymentStatusLog> PaymentStatusLogs { get; set; }
+
     public virtual DbSet<Permission> Permissions { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
@@ -176,6 +178,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwPaymentForm> VwPaymentForms { get; set; }
 
     public virtual DbSet<VwPaymentGatewayForm> VwPaymentGatewayForms { get; set; }
+
+    public virtual DbSet<VwPaymentStatusLogForm> VwPaymentStatusLogForms { get; set; }
 
     public virtual DbSet<VwPermissionForm> VwPermissionForms { get; set; }
 
@@ -494,6 +498,17 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<PaymentStatusLog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PaymentS__3214EC07F667FE19");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Payment).WithMany(p => p.PaymentStatusLogs)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PaymentStatusLogs_Payment");
         });
 
         modelBuilder.Entity<Permission>(entity =>
@@ -1051,6 +1066,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwPaymentGatewayForm>(entity =>
         {
             entity.ToView("VwPaymentGatewayForm", "cms");
+        });
+
+        modelBuilder.Entity<VwPaymentStatusLogForm>(entity =>
+        {
+            entity.ToView("VwPaymentStatusLogForm", "cms");
         });
 
         modelBuilder.Entity<VwPermissionForm>(entity =>

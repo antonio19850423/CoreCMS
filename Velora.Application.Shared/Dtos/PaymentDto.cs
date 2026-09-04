@@ -9,7 +9,7 @@ using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public class PaymentDto
+    public  class PaymentDto
     {
         [Key]
         public Guid Id { get; set; }
@@ -45,5 +45,6 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+
     }
 }
