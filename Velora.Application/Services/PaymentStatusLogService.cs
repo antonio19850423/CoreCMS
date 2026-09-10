@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
@@ -14,14 +17,12 @@ using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
-using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
-using Microsoft.EntityFrameworkCore;
 
 namespace Velora.Application.Services
 {
-    public class ShoppingCartItemService : GenericService<SqlShoppingCartItem, SqlShoppingCartItem, ShoppingCartItemDto>, IShoppingCartItemService
+    public class PaymentStatusLogService : GenericService<SqlPaymentStatusLog, SqlPaymentStatusLog, PaymentStatusLogDto>, IPaymentStatusLogService
     {
-        private readonly ISqlRepository<SqlShoppingCartItem> _sqlrepository;
+        private readonly ISqlRepository<SqlPaymentStatusLog> _sqlrepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
@@ -30,15 +31,17 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        private readonly IShoppingCartItemService _roleShoppingCartItemService;
+        private readonly IPaymentStatusLogService _rolePaymentStatusLogService;
         protected readonly ICurrentUserService _currentUserService;
-        public ShoppingCartItemService(
-              ISqlRepository<SqlShoppingCartItem> sqlRepository,
-              IPosgreSqlRepository<SqlShoppingCartItem> pgRepository,
+        protected readonly IDiscountService _discountService;
+
+        public PaymentStatusLogService(
+              ISqlRepository<SqlPaymentStatusLog> sqlRepository,
+              IPosgreSqlRepository<SqlPaymentStatusLog> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, IDiscountService discountService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -48,55 +51,49 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
+            _discountService = discountService;
         }
-        public async Task<IQueryable<ShoppingCartItemCrud>> GetAllViews()
+        public async Task<IQueryable<PaymentStatusLogCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<VwShoppingCartItemForm, VwShoppingCartItemForm, ShoppingCartItemCrud>();
+            return await GetAllViewQueryable<SqlPaymentStatusLogView, SqlPaymentStatusLogView, PaymentStatusLogCrud>();
         }
-        public async Task<ResultDto<ShoppingCartItemDto>> CreateAsync(ShoppingCartItemCrud input)
+
+        public async Task<ResultDto<PaymentStatusLogDto>> CreateAsync(PaymentStatusLogCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ShoppingCartItemDto>
+                    return new ResultDto<PaymentStatusLogDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                var ShoppingCartItem = new ShoppingCartItemDto
-                {
 
-                    DiscountAmount = input.DiscountAmount??0,
-                    DiscountId = input.DiscountId,
-                    DiscountItemId = input.DiscountItemId,
-                    DiscountType = input.DiscountType,
-                    DiscountValue = input.DiscountValue,
-                    FinalUnitPrice = input.FinalUnitPrice ?? 0,
-                    ProductId = input.ProductId.Value,
-                    ProductTypeId = input.ProductTypeId,
-                    Quantity = input.Quantity ?? 0,
-                    ShoppingCartId = input.ShoppingCartId.Value,
-                    UnitPrice = input.UnitPrice ?? 0,
-                    VariantId = input.VariantId,
-                    
+
+
+                var PaymentStatusLog = new PaymentStatusLogDto
+                {
+                    Description=input.Description,
+                    NewStatus = input.NewStatus,
+                    OldStatus = input.OldStatus,
+                    PaymentId=input.ParentId,
 
                 };
 
-                var result = await CreateAsync(ShoppingCartItem);
-                if (!result.Success)
-                    return result;
-
+                var PaymentStatusLogResult = await CreateAsync(PaymentStatusLog);
+                if (!PaymentStatusLogResult.Success)
+                    return PaymentStatusLogResult;
                 await _transactionService.CommitAsync();
-                return result;
+                return PaymentStatusLogResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ShoppingCartItemDto>
+                var result = new ResultDto<PaymentStatusLogDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -106,14 +103,14 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<ShoppingCartItemDto>> UpdateAsync(ShoppingCartItemCrud input)
+        public async Task<ResultDto<PaymentStatusLogDto>> UpdateAsync(PaymentStatusLogCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ShoppingCartItemDto>
+                    return new ResultDto<PaymentStatusLogDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
@@ -121,7 +118,7 @@ namespace Velora.Application.Services
                 }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ShoppingCartItemDto>
+                    return new ResultDto<PaymentStatusLogDto>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
@@ -129,34 +126,26 @@ namespace Velora.Application.Services
                     };
 
                 // 1️⃣ به‌روزرسانی کاربر
-                var userUpdateDto = new ShoppingCartItemDto
+                var updateDto = new PaymentStatusLogDto
                 {
-                    Id = input.Id.Value,
-                    DiscountAmount = input.DiscountAmount ?? 0,
-                    DiscountId = input.DiscountId,
-                    DiscountItemId = input.DiscountItemId,
-                    DiscountType = input.DiscountType,
-                    DiscountValue = input.DiscountValue,
-                    FinalUnitPrice = input.FinalUnitPrice ?? 0,
-                    ProductId = input.ProductId.Value,
-                    ProductTypeId = input.ProductTypeId,
-                    Quantity = input.Quantity ?? 0,
-                    ShoppingCartId = input.ShoppingCartId.Value,
-                    UnitPrice = input.UnitPrice ?? 0,
-                    VariantId = input.VariantId,
+                    Id = input.Id,
+                    Description = input.Description,
+                    NewStatus = input.NewStatus,
+                    OldStatus = input.OldStatus,
+                    PaymentId = input.ParentId,
 
                 };
 
-                var result = await UpdateAsync(userUpdateDto, input.Id);
-                if (!result.Success)
-                    return result;
+                var PaymentStatusLogResult = await UpdateAsync(updateDto, input.Id);
+                if (!PaymentStatusLogResult.Success)
+                    return PaymentStatusLogResult;
                 await _transactionService.CommitAsync();
-                return result;
+                return PaymentStatusLogResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ShoppingCartItemDto>
+                var result = new ResultDto<PaymentStatusLogDto>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -167,25 +156,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdShoppingCartItems= new List<ShoppingCartItemDto>();
+            var createdPaymentStatusLogs= new List<PaymentStatusLogDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
-                var ShoppingCartItems = dt.ToModelList<ShoppingCartItemCrud>();
+                var PaymentStatusLogs = dt.ToModelList<PaymentStatusLogCrud>();
 
-                for (int i = 0; i < ShoppingCartItems.Count; i++)
+                for (int i = 0; i < PaymentStatusLogs.Count; i++)
                 {
-                    var ShoppingCartItem = ShoppingCartItems[i];
+                    var PaymentStatusLog = PaymentStatusLogs[i];
                     var context = rowContexts[i];
 
-                    var createResult = await CreateAsync(ShoppingCartItem);
+                    var createResult = await CreateAsync(PaymentStatusLog);
 
                     if (createResult.Success && createResult.Data != null)
                     {
-                        createdShoppingCartItems.Add(createResult.Data);
+                        createdPaymentStatusLogs.Add(createResult.Data);
                     }
                     else
                     {
@@ -217,7 +206,7 @@ namespace Velora.Application.Services
                         : errorFileTitle,
                     Data = new BulkInsertResult
                     {
-                        InsertedCount = createdShoppingCartItems.Count,
+                        InsertedCount = createdPaymentStatusLogs.Count,
                         ErrorCount = errors.Count,
                         ErrorFileUrl = errorFileUrl
                     },
@@ -236,35 +225,33 @@ namespace Velora.Application.Services
             }
         }
 
-
-
         public async Task<byte[]> ExportAsync(
-bool exportCurrentShoppingCartItem,
-int ShoppingCartItemNumber,
-int ShoppingCartItemSize)
+bool exportCurrentPaymentStatusLog,
+int PaymentStatusLogNumber,
+int PaymentStatusLogSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
 
             // 2️⃣ Paging و Mapping به DTO
-            List<ShoppingCartItemCrud> data;
+            List<PaymentStatusLogCrud> data;
 
-            if (exportCurrentShoppingCartItem)
+            if (exportCurrentPaymentStatusLog)
             {
                 data = query
-                    .Skip((ShoppingCartItemNumber - 1) * ShoppingCartItemSize)
-                    .Take(ShoppingCartItemSize)
+                    .Skip((PaymentStatusLogNumber - 1) * PaymentStatusLogSize)
+                    .Take(PaymentStatusLogSize)
                     .ToList();
             }
             else
             {
                 data = query.ToList();
             }
-            var resource = _mapper.Map<List<ShoppingCartItemCrud>>(data);
+            var resource = _mapper.Map<List<PaymentStatusLogCrud>>(data);
 
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
             var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ShoppingCartItem, // نام مدل DTO
+                LookupEntities.PaymentStatusLog, // نام مدل DTO
                 data.Count + 5
             );
 
@@ -273,9 +260,6 @@ int ShoppingCartItemSize)
 
             return resultBytes;
         }
-
-
-
     }
 
 }

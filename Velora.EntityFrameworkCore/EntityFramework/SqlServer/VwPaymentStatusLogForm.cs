@@ -13,7 +13,13 @@ public partial class VwPaymentStatusLogForm
 
     public int NewStatus { get; set; }
 
+    [StringLength(16)]
+    public string? NewStatusTitle { get; set; }
+
     public int? OldStatus { get; set; }
+
+    [StringLength(16)]
+    public string? OldStatusTitle { get; set; }
 
     public Guid ParentId { get; set; }
 

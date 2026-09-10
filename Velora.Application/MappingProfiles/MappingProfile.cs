@@ -300,6 +300,17 @@ namespace Velora.Application.MappingProfiles
             CreateMap<VwShoppingCartItemForm, ShoppingCartItemCrud>().ReverseMap();
             CreateMap<SqlShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
 
+
+
+            CreateMap<SqlPayment, PaymentCrud>().ReverseMap();
+            CreateMap<VwPaymentForm, PaymentCrud>().ReverseMap();
+            CreateMap<SqlPayment, PaymentDto>().ReverseMap();
+
+
+            CreateMap<SqlPaymentStatusLog, PaymentStatusLogCrud>().ReverseMap();
+            CreateMap<VwPaymentStatusLogForm, PaymentStatusLogCrud>().ReverseMap();
+            CreateMap<SqlPaymentStatusLog, PaymentStatusLogDto>().ReverseMap();
+
         }
 
 

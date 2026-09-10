@@ -228,3 +228,10 @@ global using SqlShoppingCartView = Velora.EntityFrameworkCore.EntityFramework.Sq
 
 global using SqlShoppingCartItem = Velora.EntityFrameworkCore.EntityFramework.SqlServer.ShoppingCartItem;
 global using SqlShoppingCartItemView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwShoppingCartItemForm;
+
+global using SqlPayment = Velora.EntityFrameworkCore.EntityFramework.SqlServer.Payment;
+global using SqlPaymentView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPaymentForm;
+
+
+global using SqlPaymentStatusLog = Velora.EntityFrameworkCore.EntityFramework.SqlServer.PaymentStatusLog;
+global using SqlPaymentStatusLogView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwPaymentStatusLogForm;

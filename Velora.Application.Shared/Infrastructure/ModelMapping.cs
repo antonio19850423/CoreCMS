@@ -61,6 +61,9 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.CouponUsage, typeof(CouponUsageCrud) },
             { LookupEntities.ShoppingCart, typeof(ShoppingCartCrud) },
             { LookupEntities.ShoppingCartItem, typeof(ShoppingCartItem) },
+            { LookupEntities.Payment, typeof(Payment) },
+            { LookupEntities.PaymentStatusLog, typeof(PaymentStatusLog) },
+
         };
 
         public static Type? GetModelType(string entityName)

@@ -1203,6 +1203,106 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAYMENT_MANAGEMENT_MENU",
+          "Name": "Payment Menu",
+          "Route": "administration/payment-management",
+          "DisplayName": {
+            "en": "Payment Management",
+            "fa": "مدیریت پرداخت‌ها"
+          },
+          "Order": 13,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "PAYMENT_MANAGEMENT_REPORT",
+              "Name": "Payment Report",
+              "DisplayName": {
+                "en": "Payment Management Report",
+                "fa": "گزارش پرداخت‌ها"
+              },
+              "Order": 1,
+              "Children": [
+                {
+                  "Type": "TAB",
+                  "Code": "PAYMENT_TAB_PAYMENTSTATUSLOG",
+                  "Name": "Payment Status Log Management",
+                  "DisplayName": {
+                    "en": "Payment Status Log Management",
+                    "fa": "گزارش وضعیت پرداخت‌ها"
+                  },
+                  "Order": 1
+                },
+                {
+                  "Type": "TAB",
+                  "Code": "PAYMENT_TAB_SHOPPINGCARTITEM",
+                  "Name": "Shopping Cart Item Management",
+                  "DisplayName": {
+                    "en": "Shopping Cart Item Management",
+                    "fa": "گزارش وضعیت پرداخت‌ها"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PAYMENTSTATUSLOG_MANAGEMENT_MENU",
+          "Name": "Payment Status Log Menu",
+          "Route": "administration/paymentstatuslog-management",
+          "DisplayName": {
+            "en": "Payment Status Log Management",
+            "fa": "گزارش وضعیت پرداخت‌ها"
+          },
+          "Order": 14,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "PAYMENTSTATUSLOG_MANAGEMENT_REPORT",
+              "Name": "Payment Status Log Report",
+              "DisplayName": {
+                "en": "Payment Status Log Report",
+                "fa": "گزارش اقلام سفارش"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "SHOPPINGCARTITEM_MANAGEMENT_MENU",
+          "Name": "Shopping Cart Item Menu",
+          "Route": "administration/shoppingcartitem-management",
+          "DisplayName": {
+            "en": "Shopping Cart Item Management",
+            "fa": "اقلام سبد خرید"
+          },
+          "Order": 15,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "SHOPPINGCARTITEM_MANAGEMENT_REPORT",
+              "Name": "Shopping Cart Item Report",
+              "DisplayName": {
+                "en": "Shopping Cart Item Report",
+                "fa": "گزارش اقلام سبد خرید"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

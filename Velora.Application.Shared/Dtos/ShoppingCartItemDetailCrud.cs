@@ -11,13 +11,13 @@ using Velora.Application.Shared.Constants;
 
 namespace Velora.Application.Shared.Dtos
 {
-    public class ShoppingCartItemCrud : BulkInsert
+    public class ShoppingCartItemDetailCrud : BulkInsert
     {
-        // ================================
-        // Display Fields
-        // ================================
+// ================================
+// Display Fields
+// ================================
 
-        [ResourceColumn(FieldType = FieldTypes.Lable, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 16)]
+[ResourceColumn(FieldType = FieldTypes.Lable, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 16)]
         public string? OrderCode { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Lable, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 16)]
@@ -94,6 +94,6 @@ namespace Velora.Application.Shared.Dtos
         [StringLength(19)]
         public string? UpdatedAtPersian { get; set; }
 
-    }
+}
 
 }

@@ -74,6 +74,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Resources\FormResources\Payment.en.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Payment.en.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Languages.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -187,6 +192,10 @@
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\FormResources\CategoryAttribute.fa.resx">
 	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\Payment.en.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Payment.en.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\FormResources\ProductAttribute.en.resx">
 	    <SubType>Designer</SubType>

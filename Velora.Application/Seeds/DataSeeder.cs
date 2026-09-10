@@ -389,8 +389,9 @@ namespace Velora.Application.Seeds
 		new ResourceTypeDto { Code = "PAGE", Name = "Page", DisplayName = "Page" },
 		new ResourceTypeDto { Code = "ACTION", Name = "Action", DisplayName = "Action" },
 		new ResourceTypeDto { Code = "FIELD", Name = "Field", DisplayName = "Field" },
-		new ResourceTypeDto { Code = "TAB", Name = "Tab", DisplayName = "Tab" }
-	};
+		new ResourceTypeDto { Code = "TAB", Name = "Tab", DisplayName = "Tab" },
+        new ResourceTypeDto { Code = "REPORT", Name = "Report", DisplayName = "Report" }
+    };
 			var resourceTypesDict = new Dictionary<string, Guid>();
 
 			foreach (var type in resourceTypes)

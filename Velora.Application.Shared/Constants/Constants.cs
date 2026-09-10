@@ -112,6 +112,9 @@ namespace Velora.Application.Shared.Constants
         public const string ShoppingCart = "ShoppingCart";
         public const string ShoppingCartItem = "ShoppingCartItem";
         public const string PaymentStatus = "PaymentStatus";
+        public const string Payment = "Payment";
+        public const string PaymentStatusLog = "PaymentStatusLog";
+        
 
         // سایر entityها...
     }
