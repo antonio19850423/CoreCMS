@@ -32,13 +32,17 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductInventoryTransactionService _roleProductInventoryTransactionService;
         protected readonly ICurrentUserService _currentUserService;
+        protected readonly IPaymentService _paymentService;
+        protected readonly IShoppingCartItemService _shoppingCartItemService;
+        
+
         public ProductInventoryTransactionService(
               ISqlRepository<SqlProductInventoryTransaction> sqlRepository,
               IPosgreSqlRepository<SqlProductInventoryTransaction> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, IPaymentService paymentService, IShoppingCartItemService shoppingCartItemService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -49,6 +53,8 @@ namespace Velora.Application.Services
             _config = config;
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
+            _paymentService = paymentService;
+            _shoppingCartItemService = shoppingCartItemService;
         }
         public async Task<IQueryable<ProductInventoryTransactionCrud>> GetAllViews()
         {
@@ -294,28 +300,99 @@ namespace Velora.Application.Services
             Guid productId,
             Guid? productVariantId = null)
         {
-            var query = await GetAllQuery();
+            // =========================
+            // Physical Inventory
+            // =========================
 
+            var inventoryQuery =
+                await GetAllQuery();
 
-            query = query.Where(x =>
-                x.ProductId == productId);
-
+            inventoryQuery =
+                inventoryQuery.Where(x =>
+                    x.ProductId == productId);
 
             if (productVariantId.HasValue)
             {
-                query = query.Where(x =>
-                    x.ProductVariantId == productVariantId.Value);
+                inventoryQuery =
+                    inventoryQuery.Where(x =>
+                        x.ProductVariantId == productVariantId.Value);
+            }
+            else
+            {
+                inventoryQuery =
+                    inventoryQuery.Where(x =>
+                        !x.ProductVariantId.HasValue);
+            }
+
+            var physicalStock =
+                await inventoryQuery.SumAsync(x =>
+                    x.OperationType == 1
+                        ? x.ChangeQuantity
+                        : -x.ChangeQuantity);
+
+
+            // =========================
+            // Pending Reserved Inventory
+            // =========================
+
+            var pendingDate =
+                DateTime.Now.AddDays(-3);
+
+            var pendingCartIds =
+                await _paymentService
+                    .Query()
+                    .Where(x =>
+                        x.PaymentStatus ==
+                            (int)PaymentStatus.Pending
+                        &&
+                        x.CreatedAt >= pendingDate
+                        &&
+                        x.ShoppingCartId.HasValue)
+                    .Select(x =>
+                        x.ShoppingCartId!.Value)
+                    .Distinct()
+                    .ToListAsync();
+
+            var pendingReservedStock = 0;
+
+            if (pendingCartIds.Any())
+            {
+                var cartItemsQuery =
+                    _shoppingCartItemService
+                        .Query()
+                        .Where(x =>
+                            pendingCartIds.Contains(
+                                x.ShoppingCartId)
+                            &&
+                            x.ProductId == productId);
+
+                if (productVariantId.HasValue)
+                {
+                    cartItemsQuery =
+                        cartItemsQuery.Where(x =>
+                            x.VariantId ==
+                            productVariantId.Value);
+                }
+                else
+                {
+                    cartItemsQuery =
+                        cartItemsQuery.Where(x =>
+                            !x.VariantId.HasValue);
+                }
+
+                pendingReservedStock =
+                    await cartItemsQuery
+                        .SumAsync(x => x.Quantity);
             }
 
 
-            var quantity = await query.SumAsync(x =>
-                x.OperationType == 1
-                ? x.ChangeQuantity
-                : -x.ChangeQuantity
-            );
+            // =========================
+            // Available Inventory
+            // =========================
 
-
-            return quantity;
+            return Math.Max(
+                0,
+                physicalStock - pendingReservedStock);
         }
         public async Task<int> GetInventoryAsync(Guid productId)
 {

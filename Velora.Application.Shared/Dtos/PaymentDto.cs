@@ -46,5 +46,6 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid? UpdatedBy { get; set; }
 
+
     }
 }

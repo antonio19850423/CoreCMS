@@ -62,5 +62,41 @@ namespace Velora.Application.Shared.Dtos
         /// </summary>
         public decimal TotalPrice =>
             FinalUnitPrice * Quantity;
+
+        /// <summary>
+        /// قیمت ثبت‌شده در سبد هنگام آخرین محاسبه
+        /// </summary>
+        public decimal CartUnitPrice { get; set; }
+
+        /// <summary>
+        /// مبلغ تخفیف ثبت‌شده در سبد هنگام آخرین محاسبه
+        /// </summary>
+        public decimal CartDiscountAmount { get; set; }
+
+        /// <summary>
+        /// قیمت نهایی ثبت‌شده در سبد هنگام آخرین محاسبه
+        /// </summary>
+        public decimal CartFinalUnitPrice { get; set; }
+
+        /// <summary>
+        /// آیا قیمت محصول تغییر کرده است؟
+        /// </summary>
+        public bool HasPriceChanged { get; set; }
+
+        /// <summary>
+        /// آیا تخفیف محصول تغییر کرده است؟
+        /// </summary>
+        public bool HasDiscountChanged { get; set; }
+
+        /// <summary>
+        /// آیا قیمت یا تخفیف تغییر کرده است؟
+        /// </summary>
+        public bool HasAnyPriceChange =>
+            HasPriceChanged || HasDiscountChanged;
+        public int? CurrentStock { get; set; }
+
+        public bool IsOutOfStock { get; set; }
+        public bool IsQuantityAvailable { get; set; }
+        
     }
 }

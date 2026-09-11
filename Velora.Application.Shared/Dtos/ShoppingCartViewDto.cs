@@ -45,5 +45,7 @@ namespace Velora.Application.Shared.Dtos
         public string? CouponCode { get; set; }
 
         public decimal CouponDiscountAmount { get; set; }
+
+
     }
 }
