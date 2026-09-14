@@ -131,7 +131,7 @@ namespace Velora.Host.Controllers
                     userId,
                     cartToken
                 );
-
+            _cookieService.Remove(CookieKeys.CartToken);
             return Ok(result);
         }
 

@@ -31,5 +31,10 @@ int pageSize);
     Guid couponId,
     Guid orderId,
     Guid? userId);
+
+        Task<(bool IsValid, string? Message)> ValidateCouponAsync(
+CouponDto coupon,
+Guid shoppingCartId,
+Guid? userId);
     }
 }

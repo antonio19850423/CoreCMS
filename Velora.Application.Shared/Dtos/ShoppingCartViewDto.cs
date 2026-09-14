@@ -23,28 +23,36 @@ namespace Velora.Application.Shared.Dtos
             Items.Sum(x => x.Quantity);
 
         /// <summary>
-        /// مبلغ کالاها قبل از تخفیف
+        /// مبلغ کالاهای موجود و قابل تأمین قبل از تخفیف
         /// </summary>
         public decimal Subtotal =>
-            Items.Sum(x => x.UnitPrice * x.Quantity);
+            Items
+                .Where(x => !x.IsOutOfStock && x.IsQuantityAvailable)
+                .Sum(x => x.UnitPrice * x.Quantity);
 
         /// <summary>
-        /// مجموع تخفیف
+        /// مجموع تخفیف کالاهای موجود و قابل تأمین
         /// </summary>
         public decimal TotalDiscount =>
-            Items.Sum(x => x.Discount * x.Quantity);
+            Items
+                .Where(x => !x.IsOutOfStock && x.IsQuantityAvailable)
+                .Sum(x => x.Discount * x.Quantity);
 
         /// <summary>
-        /// مبلغ نهایی پس از تخفیف
+        /// مبلغ نهایی کالاهای موجود و قابل تأمین پس از تخفیف
         /// </summary>
         public decimal TotalAmount =>
-            Items.Sum(x => x.TotalPrice);
+            Items
+                .Where(x => !x.IsOutOfStock && x.IsQuantityAvailable)
+                .Sum(x => x.TotalPrice);
         public bool IsAllDownloadable { get; set; }
         public Guid? CouponId { get; set; }
 
         public string? CouponCode { get; set; }
 
         public decimal CouponDiscountAmount { get; set; }
+
+        public string? CouponMessage { get; set; }
 
 
     }

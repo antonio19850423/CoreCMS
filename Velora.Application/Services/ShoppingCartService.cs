@@ -39,8 +39,8 @@ namespace Velora.Application.Services
         private readonly IProductTypeService _productTypeService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IPaymentService _paymentService;
-        
-
+        private readonly Lazy<ICouponUsageService> _couponUsageService;
+        private readonly Lazy<ICouponService> _couponService;
 
         public ShoppingCartService(
               ISqlRepository<SqlShoppingCart> sqlRepository,
@@ -54,7 +54,7 @@ namespace Velora.Application.Services
               IProductTypeService productTypeService,
               IShoppingCartItemService shoppingCartItemService,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IPaymentService paymentService)
+              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService    )
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -72,6 +72,8 @@ namespace Velora.Application.Services
             _cookieService = cookieService;
             _shoppingCartItemService = shoppingCartItemService;
             _paymentService = paymentService;
+            _couponUsageService = couponUsageService;
+            _couponService = couponService;
         }
         public async Task<IQueryable<ShoppingCartCrud>> GetAllViews()
         {
@@ -314,8 +316,8 @@ int ShoppingCartSize)
         }
 
         public async Task<ResultDto<ShoppingCartViewDto>> GetCartAsync(
-            Guid? userId,
-            string? cartToken)
+          Guid? userId,
+          string? cartToken)
         {
             try
             {
@@ -330,14 +332,31 @@ int ShoppingCartSize)
                         .Include(x => x.ShoppingCartItems)
                             .ThenInclude(x => x.Variant);
 
-                var cart = await cartQuery.FirstOrDefaultAsync(x =>
-                                (
-                                    (userId.HasValue && x.UserId == userId)
-                                    ||
-                                    (!string.IsNullOrEmpty(cartToken) && x.CartToken == cartToken)
-                                )
-                                &&
-                                x.Status == (int)ShoppingCartStatus.Cart);
+                ShoppingCart? cart = null;
+
+                // ==========================================
+                // پیدا کردن سبد خرید
+                // ==========================================
+
+                if (userId.HasValue)
+                {
+                    // کاربر لاگین کرده است.
+                    // در این حالت فقط UserId ملاک مالکیت سبد است.
+                    cart =
+                        await cartQuery.FirstOrDefaultAsync(x =>
+                            x.UserId == userId.Value &&
+                            x.Status == (int)ShoppingCartStatus.Cart);
+                }
+                else if (!string.IsNullOrEmpty(cartToken))
+                {
+                    // کاربر Guest است.
+                    // در این حالت CartToken فقط برای سبدهای بدون UserId استفاده می‌شود.
+                    cart =
+                        await cartQuery.FirstOrDefaultAsync(x =>
+                            x.CartToken == cartToken &&
+                            x.UserId == null &&
+                            x.Status == (int)ShoppingCartStatus.Cart);
+                }
 
                 if (cart == null)
                 {
@@ -352,6 +371,57 @@ int ShoppingCartSize)
                     };
                 }
 
+                // ==========================================
+                // اعتبارسنجی کوپن
+                // ==========================================
+
+                string? couponMessage = null;
+                var couponChanged = false;
+
+                if (cart.CouponId.HasValue)
+                {
+                    var coupon =
+                        await _couponService.Value.GetByIdAsync(
+                            cart.CouponId.Value);
+
+                    if (coupon == null)
+                    {
+                        cart.CouponId = null;
+                        cart.CouponCode = null;
+                        cart.CouponDiscountAmount = 0;
+
+                        couponMessage =
+                            "کد تخفیف دیگر معتبر نیست.";
+
+                        couponChanged = true;
+                    }
+                    else
+                    {
+                        var validation =
+                            await _couponUsageService.Value.ValidateCouponAsync(
+                                coupon.Data,
+                                cart.Id,
+                                userId);
+
+                        if (!validation.IsValid)
+                        {
+                            cart.CouponId = null;
+                            cart.CouponCode = null;
+                            cart.CouponDiscountAmount = 0;
+
+                            await _couponUsageService.Value.RemoveIfExistsAsync(
+                                coupon.Data.Id,
+                                cart.Id,
+                                cart.UserId);
+
+                            couponMessage =
+                                validation.Message
+                                ?? "کد تخفیف دیگر معتبر نیست.";
+
+                            couponChanged = true;
+                        }
+                    }
+                }
 
                 // ==========================================
                 // دریافت تخفیف‌های فعال
@@ -360,18 +430,16 @@ int ShoppingCartSize)
                 var activeDiscounts =
                     await _discountService.GetActiveDiscountsAsync();
 
-
                 // ==========================================
                 // دریافت ID نوع محصول دانلودی
                 // ==========================================
 
                 var downloadableProductTypeId =
-                    await _productTypeService.GetIdByCodeAsync(Velora.Application.Shared.Constants.ProductTypes.Download);
-
+                    await _productTypeService.GetIdByCodeAsync(
+                        Velora.Application.Shared.Constants.ProductTypes.Download);
 
                 var items =
                     new List<ShoppingCartItemViewDto>();
-
 
                 // ==========================================
                 // ساخت آیتم‌های سبد
@@ -379,14 +447,11 @@ int ShoppingCartSize)
 
                 foreach (var item in cart.ShoppingCartItems)
                 {
-                    // قیمت واقعی آیتم
                     var unitPrice =
                         item.Variant != null
                             ? item.Variant.Price
                             : item.Product.Price ?? 0;
 
-
-                    // محاسبه تخفیف
                     var discount =
                         _discountService.CalculateDiscount(
                             new DiscountCalculationInput
@@ -408,21 +473,24 @@ int ShoppingCartSize)
                             },
                             activeDiscounts);
 
-                    var hasPriceChanged = item.UnitPrice != unitPrice;
+                    var hasPriceChanged =
+                        item.UnitPrice != unitPrice;
 
                     var hasDiscountChanged =
                         item.DiscountAmount != discount.DiscountAmount
                         || item.FinalUnitPrice != discount.FinalPrice;
+
                     var currentStock =
-    await _productInventoryTransactionService.GetInventoryAsync(
-        item.ProductId,
-        item.VariantId);
+                        await _productInventoryTransactionService.GetInventoryAsync(
+                            item.ProductId,
+                            item.VariantId);
 
                     var isOutOfStock =
                         currentStock <= 0;
 
                     var isQuantityAvailable =
                         currentStock >= item.Quantity;
+
                     items.Add(
                         new ShoppingCartItemViewDto
                         {
@@ -477,6 +545,7 @@ int ShoppingCartSize)
 
                             FinalPrice =
                                 discount.FinalPrice,
+
                             CartUnitPrice =
                                 item.UnitPrice,
 
@@ -491,17 +560,17 @@ int ShoppingCartSize)
 
                             HasDiscountChanged =
                                 hasDiscountChanged,
+
                             CurrentStock =
-    currentStock,
+                                currentStock,
 
                             IsOutOfStock =
-    isOutOfStock,
+                                isOutOfStock,
 
                             IsQuantityAvailable =
-    isQuantityAvailable,
+                                isQuantityAvailable
                         });
                 }
-
 
                 // ==========================================
                 // آیا تمام محصولات دانلودی هستند؟
@@ -514,6 +583,14 @@ int ShoppingCartSize)
                         x.ProductTypeId ==
                         downloadableProductTypeId.Value);
 
+                // ==========================================
+                // ذخیره تغییرات کوپن
+                // ==========================================
+
+                if (couponChanged)
+                {
+                    await _transactionService.CommitAsync();
+                }
 
                 // ==========================================
                 // ساخت DTO نهایی
@@ -533,13 +610,19 @@ int ShoppingCartSize)
 
                         IsAllDownloadable =
                             isAllDownloadable,
-                        CouponId = cart.CouponId,
 
-                        CouponCode = cart.CouponCode,
+                        CouponId =
+                            cart.CouponId,
 
-                        CouponDiscountAmount = cart.CouponDiscountAmount ?? 0
+                        CouponCode =
+                            cart.CouponCode,
+
+                        CouponDiscountAmount =
+                            cart.CouponDiscountAmount ?? 0,
+
+                        CouponMessage =
+                            couponMessage
                     };
-
 
                 return new ResultDto<ShoppingCartViewDto>
                 {
@@ -1209,12 +1292,15 @@ int ShoppingCartSize)
 
         }
 
-        public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-            Guid? userId,
-            string? cartToken)
+
+
+
+public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
+    Guid? userId,
+    string? cartToken)
         {
             // ============================================
-            // 1. ابتدا Cart کاربر را بر اساس UserId پیدا کن
+            // 1. ShoppingCart کاربر
             // ============================================
 
             ShoppingCart? userCart = null;
@@ -1223,20 +1309,86 @@ int ShoppingCartSize)
             {
                 userCart =
                     await Query()
-                    .Include(x => x.ShoppingCartItems)
-                    .FirstOrDefaultAsync(x =>
-                        x.UserId == userId);
+                        .Include(x => x.ShoppingCartItems)
+                        .FirstOrDefaultAsync(x =>
+                            x.UserId == userId.Value &&
+                            x.Status == (int)ShoppingCartStatus.Cart);
             }
 
+            // ============================================
+            // 2. ShoppingCart مهمان
+            // ============================================
+
+            ShoppingCart? guestCart = null;
+
+            if (!string.IsNullOrWhiteSpace(cartToken))
+            {
+                guestCart =
+                    await Query()
+                        .Include(x => x.ShoppingCartItems)
+                        .FirstOrDefaultAsync(x =>
+                            x.CartToken == cartToken &&
+                            x.UserId == null &&
+                            x.Status == (int)ShoppingCartStatus.Cart);
+            }
 
             // ============================================
-            // اگر Cart کاربر وجود دارد
+            // 3. اگر User Cart وجود دارد
             // ============================================
 
             if (userCart != null)
             {
-                // همان CartToken موجود در دیتابیس
-                // دوباره در Cookie قرار بگیرد
+                if (guestCart != null)
+                {
+                    foreach (var guestItem in guestCart.ShoppingCartItems.ToList())
+                    {
+                        var userItem =
+                            userCart.ShoppingCartItems
+                                .FirstOrDefault(x =>
+                                    x.ProductId == guestItem.ProductId &&
+                                    x.VariantId == guestItem.VariantId);
+
+                        // ============================================
+                        // Item مشابه
+                        // ============================================
+
+                        if (userItem != null)
+                        {
+                            userItem.Quantity =
+                                userItem.Quantity + guestItem.Quantity;
+
+                            userItem.UpdatedAt = DateTime.Now;
+
+                            await _shoppingCartItemService.UpdateAsync(
+                                _mapper.Map<ShoppingCartItemDto>(userItem),
+                                userItem.Id);
+
+                            await _shoppingCartItemService.DeleteAsync(
+                                guestItem.Id);
+                        }
+                        else
+                        {
+                            guestItem.ShoppingCartId = userCart.Id;
+
+                            await _shoppingCartItemService.UpdateAsync(
+                                _mapper.Map<ShoppingCartItemDto>(guestItem),
+                                guestItem.Id);
+                        }
+                    }
+
+                    userCart.UpdateAt = DateTime.Now;
+
+                    // ابتدا تغییر ShoppingCartItem ها ذخیره شود
+                    await _transactionService.CommitAsync();
+
+                    // ============================================
+                    // حالا Guest Cart خالی است
+                    // ============================================
+
+                    await DeleteAsync(guestCart.Id);
+
+                    await _transactionService.CommitAsync();
+                }
 
                 if (!string.IsNullOrWhiteSpace(userCart.CartToken))
                 {
@@ -1246,32 +1398,14 @@ int ShoppingCartSize)
                         30);
                 }
 
-
                 return await GetCartAsync(
                     userId,
                     userCart.CartToken);
             }
 
-
             // ============================================
-            // 2. اگر Cart کاربر وجود نداشت
-            //    بر اساس CartToken سبد مهمان را پیدا کن
-            // ============================================
-
-            ShoppingCart? guestCart = null;
-
-            if (!string.IsNullOrWhiteSpace(cartToken))
-            {
-                guestCart =
-                    await Query()
-                    .Include(x => x.ShoppingCartItems)
-                    .FirstOrDefaultAsync(x =>
-                        x.CartToken == cartToken);
-            }
-
-
-            // ============================================
-            // سبد مهمان هم وجود ندارد
+            // 4. User Cart وجود ندارد
+            // Guest Cart مستقیماً تبدیل به User Cart می‌شود
             // ============================================
 
             if (guestCart == null)
@@ -1281,26 +1415,14 @@ int ShoppingCartSize)
                     null);
             }
 
-
-            // ============================================
-            // 3. سبد مهمان را به کاربر متصل کن
-            // ============================================
-
             guestCart.UserId = userId;
             guestCart.UpdateAt = DateTime.Now;
 
-
             await UpdateAsync(
-                    _mapper.Map<ShoppingCartDto>(guestCart),
-                    guestCart.Id);
-
+                _mapper.Map<ShoppingCartDto>(guestCart),
+                guestCart.Id);
 
             await _transactionService.CommitAsync();
-
-
-            // ============================================
-            // 4. همان CartToken را دوباره در Cookie قرار بده
-            // ============================================
 
             if (!string.IsNullOrWhiteSpace(guestCart.CartToken))
             {
@@ -1310,11 +1432,16 @@ int ShoppingCartSize)
                     30);
             }
 
-
             return await GetCartAsync(
                 userId,
                 guestCart.CartToken);
         }
+
+
+
+
+
+
 
         public async Task<ResultDto<int>> GetCountAsync(
             Guid? userId,

@@ -442,7 +442,6 @@ namespace Velora.Application.Services
                 // 17. اعمال کوپن روی ShoppingCart
                 // -------------------------------------------------------
               await  _shoppingCartService.ApplyCouponToCart(cart, coupon, discountAmount);
-              await  CreateIfNotExistsAsync(coupon.Id, cart.Id, cart.UserId);
                 await   _transactionService.CommitAsync();
 
 
@@ -816,6 +815,93 @@ int CouponUsageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<(bool IsValid, string? Message)> ValidateCouponAsync(
+CouponDto coupon,
+Guid shoppingCartId,
+Guid? userId)
+        {
+            if (!coupon.IsActive)
+                return (false, "این کد تخفیف فعال نیست.");
+
+            var now = DateTime.UtcNow;
+
+            if (coupon.StartDate.HasValue &&
+                coupon.StartDate.Value > now)
+            {
+                return (false, "زمان استفاده از این کد تخفیف هنوز شروع نشده است.");
+            }
+
+            if (coupon.EndDate.HasValue &&
+                coupon.EndDate.Value < now)
+            {
+                return (false, "مهلت استفاده از این کد تخفیف به پایان رسیده است.");
+            }
+
+            if (coupon.CanCombineWithDiscount != true)
+            {
+                var hasDiscount =
+                    await _shoppingCartService
+                        .CartHasDiscountAsync(shoppingCartId);
+
+                if (hasDiscount)
+                {
+                    return (
+                        false,
+                        "این کوپن با تخفیف محصولات قابل استفاده همزمان نیست.");
+                }
+            }
+
+            var totalUsageCount =
+                await Query()
+                    .CountAsync(x => x.CouponId == coupon.Id);
+
+            if (coupon.UsageLimit.HasValue &&
+                totalUsageCount > coupon.UsageLimit.Value)
+            {
+                return (
+                    false,
+                    "ظرفیت استفاده از این کد تخفیف تکمیل شده است.");
+            }
+
+            if (coupon.IsSingleUsePerUser)
+            {
+                var userAlreadyUsed =
+                    await Query()
+                        .AnyAsync(x =>
+                            x.CouponId == coupon.Id &&
+                            x.UserId == userId);
+
+                if (userAlreadyUsed)
+                {
+                    return (
+                        false,
+                        "شما قبلاً از این کد تخفیف استفاده کرده‌اید.");
+                }
+            }
+
+            var cartAmount =
+                await _shoppingCartService
+                    .GetCartAmountForCouponAsync(shoppingCartId);
+
+            if (cartAmount <= 0)
+            {
+                return (
+                    false,
+                    "مبلغ سبد خرید برای اعمال کد تخفیف معتبر نیست.");
+            }
+
+            if (coupon.MinimumOrderAmount.HasValue &&
+                cartAmount < coupon.MinimumOrderAmount.Value)
+            {
+                return (
+                    false,
+                    $"حداقل مبلغ سفارش برای استفاده از این کد تخفیف " +
+                    $"{coupon.MinimumOrderAmount.Value:N0} تومان باشد.");
+            }
+
+            return (true, null);
         }
 
     }
