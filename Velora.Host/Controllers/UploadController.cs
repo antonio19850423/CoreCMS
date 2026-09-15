@@ -22,5 +22,25 @@ namespace Velora.Host.Controllers
             var result = await _uploadService.UploadImageAsync(request.File,request.Name);
             return StatusCode(result.StatusCode,result);
             }
+        [HttpDelete("image")]
+        public async Task<IActionResult> DeleteImage([FromQuery] string url)
+        {
+            var result = await _uploadService.DeleteImageAsync(url);
+
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpPost("replace")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ReplaceImage(
+           [FromForm] ReplaceImageRequestDto request)
+        {
+            var result = await _uploadService.ReplaceImageAsync(
+                request.File,
+                request.Name,
+                request.OldUrl
+            );
+
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

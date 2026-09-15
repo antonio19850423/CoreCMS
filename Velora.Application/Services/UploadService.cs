@@ -105,5 +105,80 @@ namespace Velora.Application.Services
                 }
             }
 
+
+        public async Task<ResultDto<bool>> DeleteImageAsync(string url)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(url))
+                {
+                    return new ResultDto<bool>
+                    {
+                        Success = false,
+                        StatusCode = 400,
+                        Message = "آدرس فایل ارسال نشده است."
+                    };
+                }
+
+
+                var fileName = System.IO.Path.GetFileName(url);
+
+
+                var uploadsRoot = System.IO.Path.Combine(
+                    _env.WebRootPath ?? System.IO.Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"),
+                    "uploads",
+                    "images"
+                );
+
+
+                var filePath = System.IO.Path.Combine(
+                    uploadsRoot,
+                    fileName
+                );
+
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+
+
+                return new ResultDto<bool>
+                {
+                    Success = true,
+                    StatusCode = 200,
+                    Data = true,
+                    Message = "فایل حذف شد."
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    StatusCode = 500,
+                    Message = ex.Message
+                };
+            }
         }
+        public async Task<ResultDto<UploadResultDto?>> ReplaceImageAsync(
+    IFormFile file,
+    string name,
+    string? oldUrl)
+        {
+
+            // اول فایل قبلی را حذف کن
+            if (!string.IsNullOrWhiteSpace(oldUrl))
+            {
+                await DeleteImageAsync(oldUrl);
+            }
+
+
+            // بعد فایل جدید را آپلود کن
+            return await UploadImageAsync(file, name);
+
+        }
+
+    }
     }

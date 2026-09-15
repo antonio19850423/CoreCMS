@@ -11,5 +11,10 @@ namespace Velora.Application.Shared.Services
     public interface IUploadService:IBaseService {
 
         Task<ResultDto<UploadResultDto?>> UploadImageAsync(IFormFile file,string name);
+        Task<ResultDto<bool>> DeleteImageAsync(string url);
+        Task<ResultDto<UploadResultDto?>> ReplaceImageAsync(
+    IFormFile file,
+    string name,
+    string? oldUrl);
         }
     }

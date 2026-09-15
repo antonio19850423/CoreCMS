@@ -91,6 +91,11 @@ int pageSize);
            ShoppingCart cart,
            Coupon coupon,
            decimal discountAmount);
+        Task<ResultDto<ShoppingCartDto>> CreateOrderAsync(
+            Guid? userId,
+            string? cartToken,
+            CreateOrderRequestDto input,
+            CancellationToken cancellationToken);
     }
 
 }

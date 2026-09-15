@@ -299,5 +299,40 @@ namespace Velora.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// ایجاد سفارش از روی سبد خرید
+        /// </summary>
+        [HttpPost]
+        [Route("CreateOrderAsync")]
+        public async Task<IActionResult> CreateOrderAsync(
+            [FromBody] CreateOrderRequestDto request)
+        {
+            var userId = _currentUserService.GetUserId();
+
+            var cartToken =
+                _cookieService
+                .GetOrCreate(
+                    CookieKeys.CartToken,
+                    () => Guid.NewGuid().ToString()
+                );
+
+
+            var result =
+                await _shoppingCartService
+                .CreateOrderAsync(
+                    userId,
+                    cartToken,
+                    request,
+                    HttpContext.RequestAborted
+                );
+
+
+            if (!result.Success)
+                return BadRequest(result);
+
+
+            return Ok(result);
+        }
     }
 }

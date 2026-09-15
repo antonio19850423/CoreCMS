@@ -41,6 +41,10 @@ namespace Velora.Application.Services
         private readonly IPaymentService _paymentService;
         private readonly Lazy<ICouponUsageService> _couponUsageService;
         private readonly Lazy<ICouponService> _couponService;
+        private readonly IUserAddressService _addressService;
+        private readonly IShippingMethodService _shippingMethodService;
+        private readonly IShippingMethodCityService _shippingMethodCityService;
+        
 
         public ShoppingCartService(
               ISqlRepository<SqlShoppingCart> sqlRepository,
@@ -54,7 +58,7 @@ namespace Velora.Application.Services
               IProductTypeService productTypeService,
               IShoppingCartItemService shoppingCartItemService,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService    )
+              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService, IUserAddressService addressService , IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -74,6 +78,9 @@ namespace Velora.Application.Services
             _paymentService = paymentService;
             _couponUsageService = couponUsageService;
             _couponService = couponService;
+            _addressService = addressService;
+            _shippingMethodService = shippingMethodService;
+            _shippingMethodCityService = shippingMethodCityService;
         }
         public async Task<IQueryable<ShoppingCartCrud>> GetAllViews()
         {
@@ -1576,9 +1583,10 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
 
         }
         public async Task<ResultDto<ShoppingCartDto>> CreateOrderAsync(
-    Guid? userId,
-    string? cartToken,
-    CreateOrderRequestDto input)
+            Guid? userId,
+            string? cartToken,
+            CreateOrderRequestDto input,
+            CancellationToken cancellationToken)
         {
             var (successMessage, errorMessage) =
                 await _messageService.Value.GetSaveMessagesAsync();
@@ -1589,12 +1597,13 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 // 1. دریافت سبد خرید
                 // ============================================
 
-                var cartQuery =
-                    Query()
-                        .Include(x => x.ShoppingCartItems);
-
                 var cart =
-                    await cartQuery.FirstOrDefaultAsync(x =>
+                    await Query()
+                    .Include(x => x.ShoppingCartItems)
+                        .ThenInclude(x => x.Product)
+                    .Include(x => x.ShoppingCartItems)
+                        .ThenInclude(x => x.Variant)
+                    .FirstOrDefaultAsync(x =>
                         (
                             (userId.HasValue &&
                              x.UserId == userId)
@@ -1605,125 +1614,151 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                              x.CartToken == cartToken)
                         )
                         &&
-                        x.Status == (int)ShoppingCartStatus.Cart
-                    );
+                        x.Status == (int)ShoppingCartStatus.Cart,
+                        cancellationToken);
+
+
 
                 if (cart == null)
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = "سبد خرید پیدا نشد."
+                        Message =
+                            "سبد خرید پیدا نشد."
                     };
                 }
+
 
 
                 // ============================================
                 // 2. بررسی خالی نبودن سبد
                 // ============================================
 
-                if (cart.ShoppingCartItems == null ||
-                    !cart.ShoppingCartItems.Any())
+                if (!cart.ShoppingCartItems.Any())
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = "سبد خرید شما خالی است."
+                        Message =
+                            "سبد خرید شما خالی است."
                     };
                 }
 
 
+
                 // ============================================
-                // 3. جلوگیری از ثبت مجدد سفارش
+                // 3. اعتبارسنجی آدرس
                 // ============================================
 
-                if (cart.Status == (int)ShoppingCartStatus.ConvertedToOrder)
+                var addressValidation =
+                    await ValidateAddressAsync(
+                        userId,
+                        input.AddressId);
+
+
+                if (!addressValidation.Success)
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = "این سبد خرید قبلاً به سفارش تبدیل شده است."
+                        Message =
+                            addressValidation.Message
                     };
                 }
 
 
+
                 // ============================================
-                // 4. اعتبارسنجی روش پرداخت
+                // 4. اعتبارسنجی روش ارسال
                 // ============================================
 
-                if (!Enum.IsDefined(
-                        typeof(PaymentMethod),
-                        input.PaymentMethod))
+                var shippingValidation =
+                    await ValidateShippingAsync(
+                        input.ShippingMethodId,
+                        input.AddressId);
+
+
+                if (!shippingValidation.Success)
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = "روش پرداخت نامعتبر است."
+                        Message =
+                            shippingValidation.Message
                     };
                 }
+
 
 
                 // ============================================
                 // 5. اعتبارسنجی اطلاعات گیرنده
                 // ============================================
 
-                if (string.IsNullOrWhiteSpace(input.ReceiverFirstName))
+                var receiverValidation =
+                    ValidateReceiver(input);
+
+
+                if (!receiverValidation.Success)
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = "نام گیرنده الزامی است."
+                        Message =
+                            receiverValidation.Message
                     };
                 }
 
-                if (string.IsNullOrWhiteSpace(input.ReceiverLastName))
-                {
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = "نام خانوادگی گیرنده الزامی است."
-                    };
-                }
-
-                if (string.IsNullOrWhiteSpace(input.ReceiverPhone))
-                {
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = "شماره تماس گیرنده الزامی است."
-                    };
-                }
-
-                if (string.IsNullOrWhiteSpace(input.ReceiverNationalCode))
-                {
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = "کد ملی گیرنده الزامی است."
-                    };
-                }
-
-                if (input.AddressId == Guid.Empty)
-                {
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = "آدرس ارسال الزامی است."
-                    };
-                }
-
-                if (input.ShippingMethodId == Guid.Empty)
-                {
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = "روش حمل و نقل الزامی است."
-                    };
-                }
 
 
                 // ============================================
-                // 6. محاسبه مبلغ فعلی کالاها
+                // 6. اعتبارسنجی پرداخت
+                // ============================================
+
+                var paymentValidation =
+                    ValidatePayment(input);
+
+
+                if (!paymentValidation.Success)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            paymentValidation.Message
+                    };
+                }
+
+
+
+                // ============================================
+                // 7. اعتبارسنجی کالاها
+                // قیمت
+                // تخفیف
+                // موجودی
+                // ============================================
+
+                var cartItemsValidation =
+                    await ValidateCartItemsAsync(
+                        cart,
+                        userId,
+                        cancellationToken);
+
+
+                if (!cartItemsValidation.Success)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            cartItemsValidation.Message
+                    };
+                }
+
+
+
+                // ============================================
+                // 8. محاسبه مبلغ کالاها
                 // ============================================
 
                 var productsAmount =
@@ -1731,228 +1766,479 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                         x.FinalUnitPrice * x.Quantity);
 
 
+
                 // ============================================
-                // 7. تخفیف کوپن
+                // 9. مبلغ کوپن
                 // ============================================
 
                 var couponDiscountAmount =
                     cart.CouponDiscountAmount ?? 0;
 
 
-                // جلوگیری از منفی شدن مبلغ کوپن
                 couponDiscountAmount =
                     Math.Max(
                         0,
                         Math.Min(
                             couponDiscountAmount,
-                            productsAmount
-                        )
-                    );
+                            productsAmount));
 
-
-                // ============================================
-                // 8. مبلغ بعد از کوپن
-                // ============================================
-
-                var amountAfterCoupon =
-                    Math.Max(
-                        0,
-                        productsAmount - couponDiscountAmount
-                    );
 
 
                 // ============================================
-                // 9. هزینه حمل و نقل
+                // 10. هزینه ارسال
                 // ============================================
 
-                // فعلاً چون سرویس محاسبه Shipping را در کد
-                // ارسالی نداریم، از مقدار موجود ShoppingCart
-                // استفاده نمی‌کنیم و اینجا باید سرویس Shipping
-                // قیمت واقعی را تعیین کند.
+                var shipping =
+                    await _shippingMethodService.Query()
+                    .FirstOrDefaultAsync(x =>
+                        x.Id == input.ShippingMethodId &&
+                        x.IsActive,
+                        cancellationToken);
 
-                decimal shippingPrice = 0;
+
+
+                if (shipping == null)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            "روش ارسال معتبر نیست."
+                    };
+                }
+
+
+                var shippingPrice =
+                    shipping.Price;
+
 
 
                 // ============================================
-                // 10. مبلغ نهایی
+                // 11. مبلغ نهایی
                 // ============================================
 
                 var finalAmount =
-                    amountAfterCoupon + shippingPrice;
+                    productsAmount -
+                    couponDiscountAmount +
+                    shippingPrice;
+
 
 
                 // ============================================
-                // 11. تولید OrderCode یکتا
+                // 12. بررسی مبلغ نهایی ذخیره شده
                 // ============================================
+
+                if (cart.FinalAmount > 0 &&
+                    cart.FinalAmount != finalAmount)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            "مبلغ سفارش تغییر کرده است. لطفاً سبد خرید را بروزرسانی کنید."
+                    };
+                }
+
+
+
+                // ============================================
+                // 13. ثبت نهایی سفارش
+                // فعلاً کامنت
+                // بعداً Stored Procedure
+                // ============================================
+
+
+                /*
 
                 var orderCode =
                     await GenerateUniqueOrderCodeAsync();
 
 
-                // ============================================
-                // 12. بروزرسانی ShoppingCart
-                // ============================================
+                cart.OrderCode =
+                    orderCode;
 
-                cart.OrderCode = orderCode;
 
-                cart.OrderedAt = DateTime.Now;
+                cart.OrderedAt =
+                    DateTime.Now;
 
-                cart.ReceiverFirstName =
-                    input.ReceiverFirstName;
 
-                cart.ReceiverLastName =
-                    input.ReceiverLastName;
+                cart.Status =
+                    (int)ShoppingCartStatus.ConvertedToOrder;
 
-                cart.ReceiverNationalCode =
-                    input.ReceiverNationalCode;
-
-                cart.ReceiverPhone =
-                    input.ReceiverPhone;
-
-                cart.AddressId =
-                    input.AddressId;
-
-                cart.ShippingMethodId =
-                    input.ShippingMethodId;
-
-                cart.ShippingPrice =
-                    shippingPrice;
-
-                cart.Description =
-                    input.Description;
-
-                cart.PaymentMethod =
-                    input.PaymentMethod;
-
-                cart.CouponDiscountAmount =
-                    couponDiscountAmount;
 
                 cart.FinalAmount =
                     finalAmount;
 
 
-                // تبدیل Cart به Order
-                cart.Status =
-                    (int)ShoppingCartStatus.ConvertedToOrder;
+                await UpdateAsync(
+                    _mapper.Map<ShoppingCartDto>(cart),
+                    cart.Id);
 
 
-                cart.UpdateAt =
-                    DateTime.Now;
+                */
 
-
-                // ============================================
-                // 13. ذخیره ShoppingCart
-                // ============================================
-
-                var cartResult =
-                    await UpdateAsync(
-                        _mapper.Map<ShoppingCartDto>(cart),
-                        cart.Id
-                    );
-
-                if (!cartResult.Success)
-                {
-                    await _transactionService.RollbackAsync();
-
-                    return cartResult;
-                }
 
 
                 // ============================================
-                // 14. ایجاد Payment
-                // ============================================
-
-                var payment =
-                    new PaymentDto
-                    {
-                        Id = Guid.NewGuid(),
-
-                        ShoppingCartId = cart.Id,
-
-                        PaymentMethod =
-                            input.PaymentMethod,
-
-                        Amount =
-                            finalAmount,
-
-                        PaymentStatus =
-                            (int)PaymentStatus.Pending,
-
-                        GatewayId = null,
-
-                        GatewayTransactionId = null,
-
-                        GatewayTrackingCode = null,
-
-                        BankAccountId = null,
-
-                        ReceiptFile = null,
-
-                        PaidAt = null,
-
-                        CreatedAt = DateTime.Now,
-
-                        UpdatedAt = null
-                    };
-
-
-                var paymentResult =
-                    await _paymentService.CreateAsync(payment);
-
-                if (!paymentResult.Success)
-                {
-                    await _transactionService.RollbackAsync();
-
-                    return new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message =
-                            paymentResult.Message
-                            ?? "ایجاد پرداخت ناموفق بود.",
-                        Errors =
-                            paymentResult.Errors
-                    };
-                }
-
-
-                // ============================================
-                // 15. Commit نهایی
-                // ============================================
-
-                await _transactionService.CommitAsync();
-
-
-                // ============================================
-                // 16. خروجی
+                // خروجی موقت
                 // ============================================
 
                 return new ResultDto<ShoppingCartDto>
                 {
                     Success = true,
 
-                    Message = successMessage,
+                    Message =
+                        "اعتبارسنجی سفارش با موفقیت انجام شد.",
 
                     Data =
                         _mapper.Map<ShoppingCartDto>(cart)
                 };
+
+
             }
             catch (Exception ex)
             {
-                await _transactionService.RollbackAsync();
+                return new ResultDto<ShoppingCartDto>
+                {
+                    Success = false,
+                    Message =
+                        errorMessage,
 
-                var result =
-                    new ResultDto<ShoppingCartDto>
-                    {
-                        Success = false,
-                        Message = errorMessage
-                    };
-
-                result.Errors.Add(ex.Message);
-
-                return result;
+                    Errors =
+            {
+                ex.Message
+            }
+                };
             }
         }
+        private async Task<ResultDto<bool>> ValidateAddressAsync(
+    Guid? userId,
+    Guid addressId)
+        {
+            var address =
+                await _addressService.Query()
+                .FirstOrDefaultAsync(x =>
+                    x.Id == addressId &&
+                    x.UserId == userId);
 
+
+            if (address == null)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message = "آدرس انتخاب شده معتبر نیست."
+                };
+            }
+
+
+            return new ResultDto<bool>
+            {
+                Success = true,
+                Data = true
+            };
+        }
+        private async Task<ResultDto<bool>> ValidateShippingAsync(
+            Guid shippingMethodId,
+            Guid addressId)
+        {
+            var address =
+                await _addressService.Query()
+                .FirstOrDefaultAsync(x =>
+                    x.Id == addressId);
+
+
+            if (address == null)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message = "آدرس پیدا نشد."
+                };
+            }
+
+            var shipping =
+                await _shippingMethodService.Query()
+                .FirstOrDefaultAsync(x =>
+                    x.Id == shippingMethodId &&
+                    x.IsActive);
+
+            if (shipping == null)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message = "روش ارسال انتخاب شده معتبر نیست."
+                };
+            }
+
+
+            // اگر سراسری نیست، باید شهر بررسی شود
+            if (!shipping.IsNationwide)
+            {
+                var available =
+                    await _shippingMethodCityService.Query()
+                    .AnyAsync(x =>
+                        x.ShippingMethodId == shippingMethodId &&
+                        x.CityId == address.CityId);
+
+
+                if (!available)
+                {
+                    return new ResultDto<bool>
+                    {
+                        Success = false,
+                        Message =
+                        "این روش ارسال برای شهر انتخاب شده فعال نیست."
+                    };
+                }
+            }
+
+
+            return new ResultDto<bool>
+            {
+                Success = true,
+                Data = true
+            };
+        }
+        private ResultDto<bool> ValidateReceiver(
+           CreateOrderRequestDto input)
+        {
+            if (string.IsNullOrWhiteSpace(input.ReceiverFirstName))
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "نام گیرنده الزامی است."
+                };
+            }
+
+
+            if (string.IsNullOrWhiteSpace(input.ReceiverLastName))
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "نام خانوادگی گیرنده الزامی است."
+                };
+            }
+
+
+            if (string.IsNullOrWhiteSpace(input.ReceiverPhone))
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "شماره تماس گیرنده الزامی است."
+                };
+            }
+
+
+            if (string.IsNullOrWhiteSpace(input.ReceiverNationalCode))
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "کد ملی گیرنده الزامی است."
+                };
+            }
+
+
+            return new ResultDto<bool>
+            {
+                Success = true,
+                Data = true
+            };
+        }
+
+        private ResultDto<bool> ValidatePayment(CreateOrderRequestDto input)
+        {
+            if (!Enum.IsDefined(
+                typeof(PaymentMethod),
+                input.PaymentMethod))
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "روش پرداخت نامعتبر است."
+                };
+            }
+
+
+            if (input.PaymentMethod == (int)PaymentMethod.CardToCard)
+            {
+                if (string.IsNullOrWhiteSpace(input.ReceiptUrl))
+                {
+                    return new ResultDto<bool>
+                    {
+                        Success = false,
+                        Message =
+                            "ارسال رسید پرداخت برای پرداخت کارت به کارت الزامی است."
+                    };
+                }
+            }
+
+
+            return new ResultDto<bool>
+            {
+                Success = true,
+                Data = true
+            };
+        }
+
+        private async Task<ResultDto<bool>> ValidateCartItemsAsync(
+    ShoppingCart cart,
+    Guid? userId,
+    CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var activeDiscounts =
+                    await _discountService.GetActiveDiscountsAsync();
+
+
+                foreach (var item in cart.ShoppingCartItems)
+                {
+                    // ============================================
+                    // 1. بررسی وجود محصول
+                    // ============================================
+
+                    if (item.Product == null)
+                    {
+                        return new ResultDto<bool>
+                        {
+                            Success = false,
+                            Message =
+                                "یکی از محصولات سبد خرید دیگر موجود نیست."
+                        };
+                    }
+
+
+                    // ============================================
+                    // 2. قیمت فعلی محصول
+                    // ============================================
+
+                    var currentPrice =
+                        item.Variant != null
+                            ? item.Variant.Price
+                            : item.Product.Price ?? 0;
+
+
+
+                    if (currentPrice != item.UnitPrice)
+                    {
+                        return new ResultDto<bool>
+                        {
+                            Success = false,
+                            Message =
+                                $"قیمت محصول {item.Product.Name} تغییر کرده است. لطفاً سبد خرید را بروزرسانی کنید."
+                        };
+                    }
+
+
+
+                    // ============================================
+                    // 3. محاسبه تخفیف فعلی
+                    // ============================================
+
+                    var discount =
+                        _discountService.CalculateDiscount(
+                            new DiscountCalculationInput
+                            {
+                                ProductId =
+                                    item.ProductId,
+
+                                ProductVariantId =
+                                    item.VariantId,
+
+                                ProductBrandId =
+                                    item.Product.BrandId,
+
+                                ProductCategoryId =
+                                    item.Product.CategoryId,
+
+                                Price =
+                                    currentPrice
+                            },
+                            activeDiscounts);
+
+
+
+                    if (item.DiscountAmount != discount.DiscountAmount ||
+                        item.FinalUnitPrice != discount.FinalPrice)
+                    {
+                        return new ResultDto<bool>
+                        {
+                            Success = false,
+                            Message =
+                                $"تخفیف محصول {item.Product.Name} تغییر کرده است. لطفاً سبد خرید را بروزرسانی کنید."
+                        };
+                    }
+
+
+
+                    // ============================================
+                    // 4. بررسی موجودی
+                    // ============================================
+
+                    var inventory =
+                        await _productInventoryTransactionService
+                            .GetInventoryAsync(
+                                item.ProductId,
+                                item.VariantId);
+
+
+
+                    if (inventory <= 0)
+                    {
+                        return new ResultDto<bool>
+                        {
+                            Success = false,
+                            Message =
+                                $"محصول {item.Product.Name} ناموجود شده است."
+                        };
+                    }
+
+
+
+                    if (inventory < item.Quantity)
+                    {
+                        return new ResultDto<bool>
+                        {
+                            Success = false,
+                            Message =
+                                $"تعداد موجودی محصول {item.Product.Name} کمتر از مقدار انتخابی است."
+                        };
+                    }
+                }
+
+
+
+                // ============================================
+                // همه موارد صحیح است
+                // ============================================
+
+                return new ResultDto<bool>
+                {
+                    Success = true,
+                    Data = true
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
         private async Task<string> GenerateUniqueOrderCodeAsync()
         {
             const string characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";

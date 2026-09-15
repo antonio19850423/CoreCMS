@@ -25,6 +25,6 @@ namespace Velora.Application.Shared.Dtos
         public int PaymentMethod { get; set; }
 
         public string? Description { get; set; }
-        public string ReceiptFile { get; set; }
+        public string ReceiptUrl { get; set; }
     }
 }
