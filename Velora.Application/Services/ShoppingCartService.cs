@@ -44,7 +44,8 @@ namespace Velora.Application.Services
         private readonly IUserAddressService _addressService;
         private readonly IShippingMethodService _shippingMethodService;
         private readonly IShippingMethodCityService _shippingMethodCityService;
-        
+        private readonly IContentService _contentService;
+
 
         public ShoppingCartService(
               ISqlRepository<SqlShoppingCart> sqlRepository,
@@ -58,7 +59,7 @@ namespace Velora.Application.Services
               IProductTypeService productTypeService,
               IShoppingCartItemService shoppingCartItemService,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService, IUserAddressService addressService , IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService)
+              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService, IUserAddressService addressService , IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, IContentService contentService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -81,6 +82,7 @@ namespace Velora.Application.Services
             _addressService = addressService;
             _shippingMethodService = shippingMethodService;
             _shippingMethodCityService = shippingMethodCityService;
+            _contentService = contentService;
         }
         public async Task<IQueryable<ShoppingCartCrud>> GetAllViews()
         {
@@ -1709,7 +1711,20 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                     };
                 }
 
+                var couponValidation =
+    await ValidateCouponAsync(
+        cart,
+        userId);
 
+                if (!couponValidation.Success)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            couponValidation.Message
+                    };
+                }
 
                 // ============================================
                 // 6. اعتبارسنجی پرداخت
@@ -1755,7 +1770,16 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                     };
                 }
 
+                var siteData = await _contentService.GetSiteInfoAsync();
+                var taxPercentage =
+    siteData?.Data.HasTax == true
+        ? siteData.Data.TaxPercentage ?? 0
+        : 0;
 
+                var dutyPercentage =
+                    siteData?.Data.HasDuty == true
+                        ? siteData.Data.DutyPercentage ?? 0
+                        : 0;
 
                 // ============================================
                 // 8. محاسبه مبلغ کالاها
@@ -1782,7 +1806,27 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                             couponDiscountAmount,
                             productsAmount));
 
+                // ============================================
+                // 10. مبلغ بعد از تخفیف
+                // ============================================
 
+                var amountAfterCoupon =
+                    Math.Max(
+                        0,
+                        productsAmount - couponDiscountAmount);
+                // ============================================
+                // 11. محاسبه مالیات و عوارض
+                // ============================================
+
+                var taxAmount =
+                    taxPercentage > 0
+                        ? (amountAfterCoupon * taxPercentage) / 100
+                        : 0;
+
+                var dutyAmount =
+                    dutyPercentage > 0
+                        ? (amountAfterCoupon * dutyPercentage) / 100
+                        : 0;
 
                 // ============================================
                 // 10. هزینه ارسال
@@ -1818,18 +1862,20 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 // ============================================
 
                 var finalAmount =
-                    productsAmount -
-                    couponDiscountAmount +
+                    amountAfterCoupon +
+                    taxAmount +
+                    dutyAmount +
                     shippingPrice;
-
-
 
                 // ============================================
                 // 12. بررسی مبلغ نهایی ذخیره شده
                 // ============================================
 
-                if (cart.FinalAmount > 0 &&
-                    cart.FinalAmount != finalAmount)
+                // ============================================
+                // 12. بررسی مبلغ نهایی ارسالی از فرانت
+                // ============================================
+
+                if (Math.Abs(input.FinalAmount - finalAmount) > 10)
                 {
                     return new ResultDto<ShoppingCartDto>
                     {
@@ -2090,7 +2136,56 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 Data = true
             };
         }
+        private async Task<ResultDto<bool>> ValidateCouponAsync(
+            ShoppingCart cart,
+            Guid? userId)
+        {
+            if (!cart.CouponId.HasValue)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = true,
+                    Data = true
+                };
+            }
 
+            var coupon =
+                await _couponService.Value.GetByIdAsync(
+                    cart.CouponId.Value);
+
+            if (coupon == null)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        "کد تخفیف دیگر معتبر نیست. لطفاً آن را حذف کنید."
+                };
+            }
+
+            var validation =
+                await _couponUsageService.Value.ValidateCouponAsync(
+                    coupon.Data,
+                    cart.Id,
+                    userId);
+
+            if (!validation.IsValid)
+            {
+                return new ResultDto<bool>
+                {
+                    Success = false,
+                    Message =
+                        validation.Message
+                        ?? "کد تخفیف دیگر معتبر نیست. لطفاً آن را حذف کنید."
+                };
+            }
+
+            return new ResultDto<bool>
+            {
+                Success = true,
+                Data = true
+            };
+        }
         private async Task<ResultDto<bool>> ValidateCartItemsAsync(
     ShoppingCart cart,
     Guid? userId,

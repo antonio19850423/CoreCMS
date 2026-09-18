@@ -26,5 +26,6 @@ namespace Velora.Application.Shared.Dtos
 
         public string? Description { get; set; }
         public string ReceiptUrl { get; set; }
+        public decimal FinalAmount { get; set; }
     }
 }
