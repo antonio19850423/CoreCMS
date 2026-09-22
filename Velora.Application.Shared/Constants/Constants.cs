@@ -115,7 +115,6 @@ namespace Velora.Application.Shared.Constants
         public const string Payment = "Payment";
         public const string PaymentStatusLog = "PaymentStatusLog";
         
-
         // سایر entityها...
     }
     public static class AppRoles

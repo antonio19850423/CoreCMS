@@ -11,6 +11,7 @@ namespace Velora.Application.Shared.Services
         Guid? GetUserId();
         List<string> GetRoles();
         string GetUserName();
+        List<string> GetRoleCodes();
     }
 
 }

@@ -535,5 +535,16 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
+        [HttpGet("OrderStatuses")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<int>>> OrderStatuses()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<int>>>
+            {
+                Data = EnumHelper.GetComboItems<OrderStatus>(),
+                Success = true
+            };
+        }
+
+        
     }
 }

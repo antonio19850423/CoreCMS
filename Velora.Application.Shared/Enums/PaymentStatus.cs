@@ -21,4 +21,6 @@ namespace Velora.Application.Shared.Enums
         [Display(Name = "لغو شده")]
         Cancelled = 4
     }
+
+
 }

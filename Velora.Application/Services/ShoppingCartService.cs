@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -59,7 +60,7 @@ namespace Velora.Application.Services
               IProductTypeService productTypeService,
               IShoppingCartItemService shoppingCartItemService,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService, IUserAddressService addressService , IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, IContentService contentService)
+              ICurrentUserService currentUserService, IPaymentService paymentService, Lazy<ICouponUsageService> couponUsageService, Lazy<ICouponService> couponService, IUserAddressService addressService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, IContentService contentService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -125,6 +126,7 @@ namespace Velora.Application.Services
                     UserId = input.UserId,
                     AddressText = input.AddressText,
                     ShippingMethodName = input.ShippingMethodName,
+                    OrderStatus = input.OrderStatus,
 
                 };
 
@@ -196,6 +198,7 @@ namespace Velora.Application.Services
                     UserId = input.UserId,
                     ShippingMethodName = input.ShippingMethodName,
                     AddressText = input.AddressText,
+                    OrderStatus = input.OrderStatus,
 
                 };
 
@@ -1304,9 +1307,9 @@ int ShoppingCartSize)
 
 
 
-public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
-    Guid? userId,
-    string? cartToken)
+        public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
+            Guid? userId,
+            string? cartToken)
         {
             // ============================================
             // 1. ShoppingCart کاربر
@@ -1516,7 +1519,8 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
 
                 Status = 1,
 
-                ExpireAt = DateTime.Now.AddDays(30)
+                ExpireAt = DateTime.Now.AddDays(30),
+                CreateAt = DateTime.Now,
             };
 
 
@@ -1528,23 +1532,27 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
             return entity;
         }
 
-        private async Task<ShoppingCart?> GetCartEntityAsync(
+
+        public async Task<ShoppingCart?> GetCartEntityAsync(
             Guid? userId,
             string? cartToken)
         {
-
             return await Query()
                 .Include(x => x.ShoppingCartItems)
                 .FirstOrDefaultAsync(x =>
-                    (userId.HasValue &&
-                     x.UserId == userId)
-
+                    (
+                        userId.HasValue &&
+                        x.UserId == userId.Value &&
+                        x.Status == (int)ShoppingCartStatus.Cart
+                    )
                     ||
-
-                    (!string.IsNullOrEmpty(cartToken)
-                     &&
-                     x.CartToken == cartToken));
-
+                    (
+                        !string.IsNullOrEmpty(cartToken) &&
+                        x.CartToken == cartToken &&
+                        x.UserId == null &&
+                        x.Status == (int)ShoppingCartStatus.Cart
+                    )
+                );
         }
 
         public async Task<SqlShoppingCart?> GetByIdAsync(Guid shoppingCartId)
@@ -1600,26 +1608,23 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 // ============================================
 
                 var cart =
-                    await Query()
-                    .Include(x => x.ShoppingCartItems)
-                        .ThenInclude(x => x.Product)
-                    .Include(x => x.ShoppingCartItems)
-                        .ThenInclude(x => x.Variant)
-                    .FirstOrDefaultAsync(x =>
-                        (
-                            (userId.HasValue &&
-                             x.UserId == userId)
-
-                            ||
-
-                            (!string.IsNullOrWhiteSpace(cartToken) &&
-                             x.CartToken == cartToken)
-                        )
-                        &&
-                        x.Status == (int)ShoppingCartStatus.Cart,
-                        cancellationToken);
-
-
+              await Query()
+                  .Include(x => x.ShoppingCartItems)
+                      .ThenInclude(x => x.Product)
+                  .Include(x => x.ShoppingCartItems)
+                      .ThenInclude(x => x.Variant)
+                  .FirstOrDefaultAsync(x =>
+                      x.Status == (int)ShoppingCartStatus.Cart
+                      &&
+                      !string.IsNullOrWhiteSpace(x.CartToken)
+                      &&
+                      x.CartToken == cartToken
+                      &&
+                      (
+                          !userId.HasValue
+                          || x.UserId == userId.Value
+                      ),
+                  cancellationToken);
 
                 if (cart == null)
                 {
@@ -1628,6 +1633,26 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                         Success = false,
                         Message =
                             "سبد خرید پیدا نشد."
+                    };
+                }
+
+                if (cart.Status == (int)ShoppingCartStatus.ConvertedToOrder)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            "این سفارش قبلاً ثبت شده است. از بخش پیگیری سفارش آن را دنبال کنید."
+                    };
+                }
+
+                if (cart.Status != (int)ShoppingCartStatus.Cart)
+                {
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message =
+                            "وضعیت سبد خرید معتبر نیست."
                     };
                 }
 
@@ -1712,9 +1737,9 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 }
 
                 var couponValidation =
-    await ValidateCouponAsync(
-        cart,
-        userId);
+                    await ValidateCouponAsync(
+                        cart,
+                        userId);
 
                 if (!couponValidation.Success)
                 {
@@ -1771,10 +1796,11 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                 }
 
                 var siteData = await _contentService.GetSiteInfoAsync();
+
                 var taxPercentage =
-    siteData?.Data.HasTax == true
-        ? siteData.Data.TaxPercentage ?? 0
-        : 0;
+                    siteData?.Data.HasTax == true
+                        ? siteData.Data.TaxPercentage ?? 0
+                        : 0;
 
                 var dutyPercentage =
                     siteData?.Data.HasDuty == true
@@ -1814,6 +1840,7 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                     Math.Max(
                         0,
                         productsAmount - couponDiscountAmount);
+
                 // ============================================
                 // 11. محاسبه مالیات و عوارض
                 // ============================================
@@ -1885,65 +1912,146 @@ public async Task<ResultDto<ShoppingCartViewDto>> MergeAsync(
                     };
                 }
 
+                // ============================================
+                // 16. ثبت نهایی سفارش با Stored Procedure
+                // ============================================
+
+                var orderResult =
+                    await ExecuteStoredProcedureAsync<ConvertToOrderResultDto>(
+                        "dbo.ShoppingCart_ConvertToOrder",
+
+                        new SqlParameter(
+                            "@ShoppingCartId",
+                            cart.Id),
+
+                        new SqlParameter(
+                            "@ReceiverFirstName",
+                            input.ReceiverFirstName),
+
+                        new SqlParameter(
+                            "@ReceiverLastName",
+                            input.ReceiverLastName),
+
+                        new SqlParameter(
+                            "@ReceiverNationalCode",
+                            input.ReceiverNationalCode),
+
+                        new SqlParameter(
+                            "@ReceiverPhone",
+                            input.ReceiverPhone),
+
+                        new SqlParameter(
+                            "@PaymentMethod",
+                            input.PaymentMethod),
+
+                        new SqlParameter(
+                            "@ShippingMethodId",
+                            input.ShippingMethodId),
+
+                        new SqlParameter(
+                            "@AddressId",
+                            input.AddressId),
+
+                        new SqlParameter(
+                            "@PaymentStatus",
+                            (int)PaymentStatus.Pending),
+
+                        new SqlParameter(
+                            "@FinalAmount",
+                            finalAmount),
+
+                        new SqlParameter(
+                            "@ReceiptFile",
+                            (object?)input.ReceiptUrl ?? DBNull.Value)
+                    );
+
+                // ============================================
+                // 17. بررسی نتیجه Stored Procedure
+                // ============================================
+
+                if (orderResult == null)
+                {
+                    await _transactionService.RollbackAsync();
+
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = "در ثبت سفارش مشکلی پیش آمد. لطفاً مجدداً تلاش کنید."
+                    };
+                }
 
 
                 // ============================================
-                // 13. ثبت نهایی سفارش
-                // فعلاً کامنت
-                // بعداً Stored Procedure
+                // 18. بررسی موفقیت Stored Procedure
                 // ============================================
 
+                if (!orderResult.Success)
+                {
+                    await _transactionService.RollbackAsync();
 
-                /*
-
-                var orderCode =
-                    await GenerateUniqueOrderCodeAsync();
-
-
-                cart.OrderCode =
-                    orderCode;
-
-
-                cart.OrderedAt =
-                    DateTime.Now;
-
-
-                cart.Status =
-                    (int)ShoppingCartStatus.ConvertedToOrder;
-
-
-                cart.FinalAmount =
-                    finalAmount;
-
-
-                await UpdateAsync(
-                    _mapper.Map<ShoppingCartDto>(cart),
-                    cart.Id);
-
-
-                */
-
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = orderResult.Message
+                    };
+                }
 
 
                 // ============================================
-                // خروجی موقت
+                // 19. دریافت سفارش ثبت‌شده
+                // ============================================
+
+                var createdCart =
+                    await Query()
+                    .Include(x => x.ShoppingCartItems)
+                        .ThenInclude(x => x.Product)
+                    .Include(x => x.ShoppingCartItems)
+                        .ThenInclude(x => x.Variant)
+                    .FirstOrDefaultAsync(
+                        x => x.Id == cart.Id,
+                        cancellationToken);
+
+
+                // ============================================
+                // 20. بررسی دریافت سفارش
+                // ============================================
+
+                if (createdCart == null)
+                {
+                    await _transactionService.RollbackAsync();
+
+                    return new ResultDto<ShoppingCartDto>
+                    {
+                        Success = false,
+                        Message = "سفارش ثبت شد اما اطلاعات سفارش قابل دریافت نیست."
+                    };
+                }
+
+
+                // ============================================
+                // 21. Commit نهایی Transaction
+                // ============================================
+
+                await _transactionService.CommitAsync();
+
+
+                // ============================================
+                // 22. خروجی موفق
                 // ============================================
 
                 return new ResultDto<ShoppingCartDto>
                 {
                     Success = true,
 
-                    Message =
-                        "اعتبارسنجی سفارش با موفقیت انجام شد.",
+                    Message = orderResult.Message,
 
-                    Data =
-                        _mapper.Map<ShoppingCartDto>(cart)
+                    Data = _mapper.Map<ShoppingCartDto>(createdCart)
                 };
-
-
             }
             catch (Exception ex)
             {
+                await _transactionService.RollbackAsync();
+
                 return new ResultDto<ShoppingCartDto>
                 {
                     Success = false,

@@ -22,5 +22,10 @@ namespace Velora.Application.Shared.Repositories
             params Expression<Func<TEntity, object>>[] includes) where TResult : class;
         Task<bool> AnyRelatedAsync<TEntity>(Guid id) where TEntity : class;
 
+        Task<TResult?> ExecuteStoredProcedureAsync<TResult>(
+            string storedProcedureName,
+            params object[] parameters)
+            where TResult : class;
+
     }
 }

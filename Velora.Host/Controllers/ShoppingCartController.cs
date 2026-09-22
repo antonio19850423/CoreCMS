@@ -310,13 +310,24 @@ namespace Velora.Api.Controllers
         {
             var userId = _currentUserService.GetUserId();
 
-            var cartToken =
-                _cookieService
-                .GetOrCreate(
-                    CookieKeys.CartToken,
-                    () => Guid.NewGuid().ToString()
-                );
+            var cartToken = _cookieService.GetOrCreate(
+           CookieKeys.CartToken,
+           () => Guid.NewGuid().ToString()
+       );
 
+            var cart = await _shoppingCartService.GetCartEntityAsync(
+                userId,
+                cartToken
+            );
+            if (cart == null)
+            {
+                cartToken = Guid.NewGuid().ToString();
+
+                _cookieService.Set(
+                    CookieKeys.CartToken,
+                    cartToken,
+                    30);
+            }
 
             var result =
                 await _shoppingCartService

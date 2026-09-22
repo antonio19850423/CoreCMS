@@ -96,6 +96,9 @@ int pageSize);
             string? cartToken,
             CreateOrderRequestDto input,
             CancellationToken cancellationToken);
+        Task<ShoppingCart?> GetCartEntityAsync(
+            Guid? userId,
+            string? cartToken);
     }
 
 }

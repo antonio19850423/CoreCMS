@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -477,6 +479,19 @@ namespace Velora.Application.Services
             }
 
             return result;
+        }
+
+        // 🔹 ExecuteStoredProcedureAsync
+        public async Task<TResult?> ExecuteStoredProcedureAsync<TResult>(
+            string storedProcedureName,
+            params object[] parameters)
+            where TResult : class
+        {
+            var repository = GetSqlRepository();
+
+            return await repository.ExecuteStoredProcedureAsync<TResult>(
+                storedProcedureName,
+                parameters);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -15,6 +16,7 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -33,14 +35,16 @@ namespace Velora.Application.Services
         private readonly IPaymentService _rolePaymentService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IDiscountService _discountService;
-
+        protected readonly IPaymentStatusLogService _paymentStatusLogService;
+        protected readonly IRoleService _roleService;
+        protected readonly Lazy<IShoppingCartService> _shoppingCartService;
         public PaymentService(
               ISqlRepository<SqlPayment> sqlRepository,
               IPosgreSqlRepository<SqlPayment> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IDiscountService discountService)
+              ICurrentUserService currentUserService, IDiscountService discountService, IPaymentStatusLogService paymentStatusLogService, Lazy<IShoppingCartService> shoppingCartService, IRoleService roleService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -52,6 +56,9 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
             _discountService = discountService;
+            _paymentStatusLogService = paymentStatusLogService;
+            _shoppingCartService = shoppingCartService;
+            _roleService = roleService;
         }
         public async Task<IQueryable<PaymentCrud>> GetAllViews()
         {
@@ -109,57 +116,163 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<PaymentDto>> UpdateAsync(PaymentCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
             try
             {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
                 if (input.Id == null)
                 {
                     return new ResultDto<PaymentDto>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
+
                 if (!validation.Success)
+                {
                     return new ResultDto<PaymentDto>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.ValidationFailed,
+                            "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                }
 
-                // 1️⃣ به‌روزرسانی کاربر
+                var currentPayment =  Query().FirstOrDefault(c=>c.Id == input.Id);
+
+                if (currentPayment == null)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "پرداخت مورد نظر پیدا نشد."
+                    };
+                }
+                var shoppingCart = await _shoppingCartService.Value.GetByIdAsync(currentPayment.ShoppingCartId);
+
+                if (!shoppingCart.Success && shoppingCart.Data == null)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "سبد خرید / سفارش مورد نظر پیدا نشد."
+                    };
+                }
+                var oldOrderStatus = shoppingCart.Data.OrderStatus;
+                var newOrderStatus = input.OrderStatus;
+
+                var orderStatusChanged = oldOrderStatus != newOrderStatus;
+
+
+                var shoppingCartInput = _mapper.Map<SqlShoppingCart>(shoppingCart.Data);
+
+                shoppingCartInput.OrderStatus = newOrderStatus.Value;
+
+                var shoppingCartResult =
+                    await _shoppingCartService.Value.UpdateAsync(shoppingCartInput, shoppingCartInput.Id);
+
+                if (!shoppingCartResult.Success)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = shoppingCartResult.Message,
+                        Errors = shoppingCartResult.Errors
+                    };
+                }
+                // وضعیت واقعی قبل از تغییر
+                var oldStatus = currentPayment.PaymentStatus;
+
+                // وضعیت جدید
+                var newStatus = input.PaymentStatus.Value;
+
+                // آیا وضعیت پرداخت تغییر کرده؟
+                var paymentStatusChanged = oldStatus != newStatus;
+
+
+
                 var updateDto = new PaymentDto
                 {
                     Id = input.Id,
-                    Amount = input.PaymentAmount.Value,
-                    BankAccountId = input.BankAccountId,
-                    GatewayId = input.GatewayId,
+                    PaymentMethod = currentPayment.PaymentMethod,
                     GatewayTrackingCode = input.GatewayTrackingCode,
                     GatewayTransactionId = input.GatewayTransactionId,
                     PaidAt = DateTime.Now,
-                    PaymentMethod = input.PaymentMethod.Value,
-                    PaymentStatus = input.PaymentStatus.Value,
+                    PaymentStatus = newStatus,
                     ReceiptFile = input.ReceiptFile,
-                    ShoppingCartId = input.ShoppingCartId
+                    ShoppingCartId= currentPayment.ShoppingCartId,
+                    Description = input.Description,
+                    
                 };
 
-                var PaymentResult = await UpdateAsync(updateDto, input.Id);
-                if (!PaymentResult.Success)
-                    return PaymentResult;
+                var paymentResult = await UpdateAsync(updateDto, input.Id);
+
+                if (!paymentResult.Success)
+                    return paymentResult;
+
+                // فقط در صورت تغییر وضعیت، لاگ ثبت شود
+                if (paymentStatusChanged)
+                {
+                    var paymentStatusLog = new PaymentStatusLogDto
+                    {
+                        PaymentId = currentPayment.Id,
+                        OldStatus = oldStatus,
+                        NewStatus = newStatus,
+                        Description = input.Description
+                    };
+
+                    var logResult =
+                        await _paymentStatusLogService.CreateAsync(paymentStatusLog);
+
+                    if (!logResult.Success)
+                    {
+                        await _transactionService.RollbackAsync();
+                        return new ResultDto<PaymentDto>
+                        {
+                            Success = false,
+                            Message = logResult.Message,
+                            Errors = logResult.Errors
+                        };
+                    }
+                }
+
                 await _transactionService.CommitAsync();
-                return PaymentResult;
+                // ارسال پیامک
+                /// ارسال پیامک بعد از paymentStatusChanged / orderStatusChanged
+                /// برای کاربر در آینده انجام شود 
+                return paymentResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
+
                 var result = new ResultDto<PaymentDto>
                 {
                     Success = false,
                     Message = errorMessage,
                 };
+
                 result.Errors.Add(ex.Message);
+
                 return result;
             }
         }

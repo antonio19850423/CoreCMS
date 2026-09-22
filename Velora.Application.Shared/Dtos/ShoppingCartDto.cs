@@ -76,5 +76,6 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(200)]
         public string? ShippingMethodName { get; set; }
+        public int? OrderStatus { get; set; }
     }
 }

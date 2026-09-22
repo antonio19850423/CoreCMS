@@ -45,7 +45,13 @@ namespace Velora.Application.Shared.Dtos
         public Guid? CreatedBy { get; set; }
 
         public Guid? UpdatedBy { get; set; }
+        public int? OrderStatus { get; set; }
 
+        [StringLength(13)]
+        public string OrderStatusTitle { get; set; } = null!;
 
+        public Guid? PaymentId { get; set; }
+        [StringLength(500)]
+        public string? Description { get; set; }
     }
 }

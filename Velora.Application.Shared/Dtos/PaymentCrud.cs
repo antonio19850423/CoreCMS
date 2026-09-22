@@ -169,11 +169,11 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
             IsRequired = true,
-            FormOrder = 16,
-            GridOrder = 16,
+            FormOrder = 17,
+            GridOrder = 17,
             ShowInGrid = false,
             ShowInForm = true,
-            EntityName = LookupEntities.PaymentStatus,
+            EntityName = LookupEntities.Payment,
             Route = "/api/ComboBox/PaymentStatuses",
             LinkedFieldCode = "PaymentStatusTitle")]
         public int? PaymentStatus { get; set; }
@@ -185,37 +185,60 @@ namespace Velora.Application.Shared.Dtos
             GridOrder = 17,
             ShowInGrid = true,
             ShowInForm = false,
-            EntityName = LookupEntities.PaymentStatus,
+            EntityName = LookupEntities.Payment,
             Route = "/api/ComboBox/PaymentStatuses",
             LinkedFieldCode = "PaymentStatus")]
         public string PaymentStatusTitle { get; set; } = null!;
+        public string? PaidAtPersian { get; set; }
+        [ResourceColumn(
+            FieldType = FieldTypes.Autocomplete,
+            IsRequired = false,
+            FormOrder = 18,
+            GridOrder = 18,
+            ShowInGrid = false,
+            ShowInForm = true,
+            EntityName = LookupEntities.Payment,
+            Route = "/api/ComboBox/OrderStatuses",
+            LinkedFieldCode = "OrderStatusTitle")]
+        public int? OrderStatus { get; set; }
 
+        [ResourceColumn(
+            FieldType = FieldTypes.Autocomplete,
+            IsRequired = false,
+            FormOrder = 18,
+            GridOrder = 18,
+            ShowInGrid = true,
+            ShowInForm = false,
+            EntityName = LookupEntities.Payment,
+            Route = "/api/ComboBox/OrderStatuses",
+            LinkedFieldCode = "OrderStatus")]
+        public string OrderStatusTitle { get; set; } = null!;
         // =========================
         // Payment Receipt / Gateway
         // =========================
 
         [ResourceColumn(
             FieldType = FieldTypes.Image,
-            FormOrder = 18,
-            GridOrder = 18,
+            FormOrder = 19,
+            GridOrder = 19,
             ShowInGrid = true,
             ShowInForm = true,
-            MaxLength = 16)]
+            MaxLength = 500)]
         public string? ReceiptFile { get; set; }
 
         [ResourceColumn(
-            FieldType = FieldTypes.Lable,
-            FormOrder = 19,
-            GridOrder = 19,
+            FieldType = FieldTypes.Text,
+            FormOrder = 20,
+            GridOrder = 20,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 200)]
         public string? GatewayTrackingCode { get; set; }
 
         [ResourceColumn(
-            FieldType = FieldTypes.Lable,
-            FormOrder = 20,
-            GridOrder = 20,
+            FieldType = FieldTypes.Text,
+            FormOrder = 21,
+            GridOrder = 21,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 200)]
@@ -226,12 +249,12 @@ namespace Velora.Application.Shared.Dtos
         // =========================
 
         [ResourceColumn(
-            FieldType = FieldTypes.Lable,
-            FormOrder = 21,
-            GridOrder = 21,
+            FieldType = FieldTypes.Textarea,
+            FormOrder = 22,
+            GridOrder = 22,
             ShowInGrid = true,
             ShowInForm = true,
-            MaxLength = 1000)]
+            MaxLength = 500)]
         public string? Description { get; set; }
 
         // =========================
@@ -267,7 +290,13 @@ namespace Velora.Application.Shared.Dtos
         public Guid? UpdatedBy { get; set; }
 
         public int? PaymentMethod { get; set; }
+        [ResourceColumn(
+    FieldType = FieldTypes.HiddenText,
+    FormOrder = 23,
+    GridOrder = 23,
+    ShowInGrid = false,
+    ShowInForm = false)]
+        public Guid? PaymentId { get; set; }
 
-        public string? PaidAtPersian { get; set; }
     }
 }

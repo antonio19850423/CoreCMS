@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -244,7 +245,77 @@ public class EfCoreRepository<TEntity> : ISqlRepository<TEntity> , IPosgreSqlRep
     }
 
 
+    public async Task<TResult?> ExecuteStoredProcedureAsync<TResult>(
+        string storedProcedureName,
+        params object[] parameters)
+        where TResult : class
+    {
+        await using var command =
+            _context.Database.GetDbConnection().CreateCommand();
 
+        command.CommandText = storedProcedureName;
+        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+        // پارامترهای Stored Procedure
+        foreach (var parameter in parameters)
+        {
+            command.Parameters.Add(parameter);
+        }
+
+        // اگر EF Core روی همین Connection تراکنش فعال دارد،
+        // حتماً Transaction را به Command متصل کن.
+        var currentTransaction = _context.Database.CurrentTransaction;
+
+        if (currentTransaction != null)
+        {
+            command.Transaction = currentTransaction.GetDbTransaction();
+        }
+
+        // باز کردن Connection در صورت بسته بودن
+        if (command.Connection!.State != System.Data.ConnectionState.Open)
+        {
+            await command.Connection.OpenAsync();
+        }
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        // اگر SP هیچ نتیجه‌ای برنگرداند
+        if (!await reader.ReadAsync())
+        {
+            return null;
+        }
+
+        var result = Activator.CreateInstance<TResult>();
+
+        // Success
+        var successIndex = reader.GetOrdinal("Success");
+
+        typeof(TResult).GetProperty("Success")?.SetValue(
+            result,
+            reader.IsDBNull(successIndex)
+                ? false
+                : Convert.ToBoolean(reader.GetValue(successIndex)));
+
+        // OrderCode
+        var orderCodeIndex = reader.GetOrdinal("OrderCode");
+
+        typeof(TResult).GetProperty("OrderCode")?.SetValue(
+            result,
+            reader.IsDBNull(orderCodeIndex)
+                ? null
+                : reader.GetValue(orderCodeIndex).ToString());
+
+        // Message
+        var messageIndex = reader.GetOrdinal("Message");
+
+        typeof(TResult).GetProperty("Message")?.SetValue(
+            result,
+            reader.IsDBNull(messageIndex)
+                ? null
+                : reader.GetValue(messageIndex).ToString());
+
+        return result;
+    }
 
     //public void Dispose()
     //{

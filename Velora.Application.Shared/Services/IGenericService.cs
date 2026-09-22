@@ -33,5 +33,9 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<TDto?>> UpdateAsync<TDtoParam>(TDtoParam updatedDto,params object[] idies) where TDtoParam : class;
         Task<ResultDto<bool>> DeleteAsync(Guid id);
         Task<ResultDto<TDto?>> FirstOrDefaultAsync<TPredicateEntity>(Expression<Func<TPredicateEntity,bool>> predicate) where TPredicateEntity : class;
+        Task<TResult?> ExecuteStoredProcedureAsync<TResult>(
+            string storedProcedureName,
+            params object[] parameters)
+            where TResult : class;
         }
     }

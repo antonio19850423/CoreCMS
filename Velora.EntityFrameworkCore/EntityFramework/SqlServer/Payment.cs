@@ -44,6 +44,9 @@ public partial class Payment
 
     public Guid? UpdatedBy { get; set; }
 
+    [StringLength(500)]
+    public string? Description { get; set; }
+
     [InverseProperty("Payment")]
     public virtual ICollection<PaymentStatusLog> PaymentStatusLogs { get; set; } = new List<PaymentStatusLog>();
 }

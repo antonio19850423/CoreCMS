@@ -75,6 +75,8 @@ public partial class ShoppingCart
     [StringLength(200)]
     public string? ShippingMethodName { get; set; }
 
+    public int? OrderStatus { get; set; }
+
     [InverseProperty("ShoppingCart")]
     public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }

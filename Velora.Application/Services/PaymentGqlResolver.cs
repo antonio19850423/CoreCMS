@@ -73,7 +73,10 @@ public class PaymentGqlResolver : IPaymentGqlResolver
             UpdatedAt= x.UpdatedAt ,
             UpdatedBy= x.UpdatedBy ,
             UserFullName= x.UserFullName ??"",
-            UserId = x.UserId
+            UserId = x.UserId,
+            OrderStatus= x.OrderStatus,
+            OrderStatusTitle= x.OrderStatusTitle ??"",
+            PaymentId= x.PaymentId ,
             
         });
     }

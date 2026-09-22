@@ -9,7 +9,7 @@ namespace Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 [Keyless]
 public partial class VwPaymentForm
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
     [StringLength(1000)]
     public string? AddressText { get; set; }
@@ -22,7 +22,7 @@ public partial class VwPaymentForm
 
     public Guid? CouponId { get; set; }
 
-    [StringLength(2000)]
+    [StringLength(500)]
     public string? Description { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
@@ -67,6 +67,8 @@ public partial class VwPaymentForm
     [StringLength(201)]
     public string? CreatedByName { get; set; }
 
+    public Guid? PaymentId { get; set; }
+
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? PaymentAmount { get; set; }
 
@@ -107,4 +109,9 @@ public partial class VwPaymentForm
     public DateTime? UpdatedAt { get; set; }
 
     public Guid? UpdatedBy { get; set; }
+
+    public int? OrderStatus { get; set; }
+
+    [StringLength(13)]
+    public string OrderStatusTitle { get; set; } = null!;
 }

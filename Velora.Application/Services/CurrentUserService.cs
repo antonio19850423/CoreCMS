@@ -24,7 +24,13 @@ namespace Velora.Application.Services
                         .FirstOrDefault(c => c.Type == "UserGuid");
             return claim != null ? Guid.Parse(claim.Value) : null;
         }
-
+        public List<string> GetRoleCodes()
+        {
+            return _httpContextAccessor.HttpContext?.User.Claims
+                .Where(c => c.Type == "ROLECODE")
+                .Select(c => c.Value)
+                .ToList() ?? new List<string>();
+        }
         public List<string> GetRoles()
         {
 
