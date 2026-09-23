@@ -77,6 +77,8 @@ public class PaymentGqlResolver : IPaymentGqlResolver
             OrderStatus= x.OrderStatus,
             OrderStatusTitle= x.OrderStatusTitle ??"",
             PaymentId= x.PaymentId ,
+            DutyAmount=x.DutyAmount ,
+            TaxAmount=x.TaxAmount ,
             
         });
     }

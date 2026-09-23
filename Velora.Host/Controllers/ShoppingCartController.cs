@@ -345,5 +345,40 @@ namespace Velora.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// دریافت لیست سفارش‌های کاربر لاگین شده
+        /// </summary>
+        [HttpGet]
+        [Route("MyOrders")]
+        public async Task<IActionResult> MyOrders()
+        {
+            var userId = _currentUserService.GetUserId();
+
+            var result = await _shoppingCartService
+                .MyOrdersQuery();
+
+            result = result.Where(x => x.UserId == userId);
+
+            return Ok(result);
+        }
+        /// <summary>
+        /// دریافت جزئیات سفارش‌های کاربر لاگین شده
+        /// </summary>
+        [HttpGet]
+        [Route("MyOrderDetail/{orderCode}")]
+        public async Task<IActionResult> MyOrderDetail(string orderCode)
+        {
+            var userId = _currentUserService.GetUserId();
+
+            var result = await _shoppingCartService
+                .MyOrderDetailQuery();
+
+            result = result.Where(x =>
+                x.UserId == userId &&
+                x.OrderCode == orderCode);
+
+            return Ok(result);
+        }
     }
 }

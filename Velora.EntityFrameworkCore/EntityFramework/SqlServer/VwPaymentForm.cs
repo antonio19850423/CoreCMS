@@ -72,6 +72,12 @@ public partial class VwPaymentForm
     [Column(TypeName = "decimal(18, 2)")]
     public decimal? PaymentAmount { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? TaxAmount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DutyAmount { get; set; }
+
     public Guid? BankAccountId { get; set; }
 
     public DateTime? CreatedAt { get; set; }

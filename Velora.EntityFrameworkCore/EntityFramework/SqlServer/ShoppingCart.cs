@@ -77,6 +77,12 @@ public partial class ShoppingCart
 
     public int? OrderStatus { get; set; }
 
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? TaxAmount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DutyAmount { get; set; }
+
     [InverseProperty("ShoppingCart")]
     public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 }

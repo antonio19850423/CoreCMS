@@ -47,6 +47,15 @@ public partial class ShoppingCartItem
 
     public Guid? ProductTypeId { get; set; }
 
+    [StringLength(200)]
+    public string? ProductName { get; set; }
+
+    [StringLength(300)]
+    public string? ProductImage { get; set; }
+
+    [StringLength(150)]
+    public string? VariantName { get; set; }
+
     [ForeignKey("ProductId")]
     [InverseProperty("ShoppingCartItems")]
     public virtual Product Product { get; set; } = null!;

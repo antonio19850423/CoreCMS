@@ -183,4 +183,10 @@
   <data name="Payment.PaymentId" xml:space="preserve">
     <value>کد انحصاری پرداخت </value>
   </data>
+  <data name="Payment.TaxAmount" xml:space="preserve">
+    <value>مالیات</value>
+  </data>
+  <data name="Payment.DutyAmount" xml:space="preserve">
+    <value>عوارض</value>
+  </data>
 </root>

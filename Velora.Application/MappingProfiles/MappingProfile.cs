@@ -311,6 +311,10 @@ namespace Velora.Application.MappingProfiles
             CreateMap<VwPaymentStatusLogForm, PaymentStatusLogCrud>().ReverseMap();
             CreateMap<SqlPaymentStatusLog, PaymentStatusLogDto>().ReverseMap();
 
+
+            CreateMap<SqlMyOrder, MyOrdersQuery>().ReverseMap();
+            CreateMap<SqlMyOrderDetail, MyOrderDetailQuery>().ReverseMap();
+
         }
 
 

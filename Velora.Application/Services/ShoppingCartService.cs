@@ -1608,23 +1608,23 @@ int ShoppingCartSize)
                 // ============================================
 
                 var cart =
-              await Query()
-                  .Include(x => x.ShoppingCartItems)
-                      .ThenInclude(x => x.Product)
-                  .Include(x => x.ShoppingCartItems)
-                      .ThenInclude(x => x.Variant)
-                  .FirstOrDefaultAsync(x =>
-                      x.Status == (int)ShoppingCartStatus.Cart
-                      &&
-                      !string.IsNullOrWhiteSpace(x.CartToken)
-                      &&
-                      x.CartToken == cartToken
-                      &&
-                      (
-                          !userId.HasValue
-                          || x.UserId == userId.Value
-                      ),
-                  cancellationToken);
+                 await Query()
+                     .Include(x => x.ShoppingCartItems)
+                         .ThenInclude(x => x.Product)
+                     .Include(x => x.ShoppingCartItems)
+                         .ThenInclude(x => x.Variant)
+                     .FirstOrDefaultAsync(x =>
+                         x.Status == (int)ShoppingCartStatus.Cart
+                         &&
+                         (
+                             userId.HasValue
+                                 ? x.UserId == userId.Value
+                                 : (
+                                     x.UserId == null
+                                     && x.CartToken == cartToken
+                                 )
+                         ),
+                     cancellationToken);
 
                 if (cart == null)
                 {
@@ -1959,6 +1959,13 @@ int ShoppingCartSize)
                         new SqlParameter(
                             "@FinalAmount",
                             finalAmount),
+                               new SqlParameter(
+                            "@TaxAmount",
+                            taxAmount),
+
+                        new SqlParameter(
+                            "@DutyAmount",
+                            dutyAmount),
 
                         new SqlParameter(
                             "@ReceiptFile",
@@ -1992,7 +1999,8 @@ int ShoppingCartSize)
                     return new ResultDto<ShoppingCartDto>
                     {
                         Success = false,
-                        Message = orderResult.Message
+                        Message = orderResult.Message,
+                        
                     };
                 }
 
@@ -2034,6 +2042,9 @@ int ShoppingCartSize)
 
                 await _transactionService.CommitAsync();
 
+                var data = _mapper.Map<ShoppingCartDto>(createdCart);
+
+                data.OrderCode = createdCart.OrderCode;
 
                 // ============================================
                 // 22. خروجی موفق
@@ -2045,7 +2056,7 @@ int ShoppingCartSize)
 
                     Message = orderResult.Message,
 
-                    Data = _mapper.Map<ShoppingCartDto>(createdCart)
+                    Data = data
                 };
             }
             catch (Exception ex)
@@ -2465,6 +2476,15 @@ int ShoppingCartSize)
                     return orderCode;
                 }
             }
+        }
+
+        public async Task<IQueryable<MyOrdersQuery>> MyOrdersQuery()
+        {
+            return await GetAllViewQueryable<SqlMyOrder, SqlMyOrder, MyOrdersQuery>();
+        }
+        public async Task<IQueryable<MyOrderDetailQuery>> MyOrderDetailQuery()
+        {
+            return await GetAllViewQueryable<SqlMyOrderDetail, SqlMyOrderDetail, MyOrderDetailQuery>();
         }
     }
 }

@@ -106,11 +106,26 @@ namespace Velora.Application.Shared.Dtos
             ShowInGrid = true,
             ShowInForm = true)]
         public decimal FinalAmount { get; set; }
+        [ResourceColumn(
+            FieldType = FieldTypes.Currency,
+            FormOrder = 10,
+            GridOrder = 10,
+            ShowInGrid = true,
+            ShowInForm = true)]
+        public decimal? TaxAmount { get; set; }
+
+        [ResourceColumn(
+            FieldType = FieldTypes.Currency,
+            FormOrder = 11,
+            GridOrder = 11,
+            ShowInGrid = true,
+            ShowInForm = true)]
+        public decimal? DutyAmount { get; set; }
 
         [ResourceColumn(
             FieldType = FieldTypes.Lable,
-            FormOrder = 10,
-            GridOrder = 10,
+            FormOrder = 12,
+            GridOrder = 12,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 100)]
@@ -118,8 +133,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Currency,
-            FormOrder = 11,
-            GridOrder = 11,
+            FormOrder = 13,
+            GridOrder = 13,
             ShowInGrid = true,
             ShowInForm = true)]
         public decimal? CouponDiscountAmount { get; set; }
@@ -130,8 +145,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Lable,
-            FormOrder = 12,
-            GridOrder = 12,
+            FormOrder = 14,
+            GridOrder = 14,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 200)]
@@ -139,8 +154,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Currency,
-            FormOrder = 13,
-            GridOrder = 13,
+            FormOrder = 15,
+            GridOrder = 15,
             ShowInGrid = true,
             ShowInForm = true)]
         public decimal ShippingPrice { get; set; }
@@ -151,16 +166,16 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Currency,
-            FormOrder = 14,
-            GridOrder = 14,
+            FormOrder = 16,
+            GridOrder = 16,
             ShowInGrid = true,
             ShowInForm = true)]
         public decimal? PaymentAmount { get; set; }
 
         [ResourceColumn(
             FieldType = FieldTypes.Lable,
-            FormOrder = 15,
-            GridOrder = 15,
+            FormOrder = 17,
+            GridOrder = 17,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 13)]
@@ -169,8 +184,8 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
             IsRequired = true,
-            FormOrder = 17,
-            GridOrder = 17,
+            FormOrder = 18,
+            GridOrder = 18,
             ShowInGrid = false,
             ShowInForm = true,
             EntityName = LookupEntities.Payment,
@@ -181,8 +196,8 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
             IsRequired = false,
-            FormOrder = 17,
-            GridOrder = 17,
+            FormOrder = 19,
+            GridOrder = 19,
             ShowInGrid = true,
             ShowInForm = false,
             EntityName = LookupEntities.Payment,
@@ -193,8 +208,8 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
             IsRequired = false,
-            FormOrder = 18,
-            GridOrder = 18,
+            FormOrder = 20,
+            GridOrder = 20,
             ShowInGrid = false,
             ShowInForm = true,
             EntityName = LookupEntities.Payment,
@@ -205,8 +220,8 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
             IsRequired = false,
-            FormOrder = 18,
-            GridOrder = 18,
+            FormOrder = 21,
+            GridOrder = 21,
             ShowInGrid = true,
             ShowInForm = false,
             EntityName = LookupEntities.Payment,
@@ -219,8 +234,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Image,
-            FormOrder = 19,
-            GridOrder = 19,
+            FormOrder = 22,
+            GridOrder = 22,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 500)]
@@ -228,8 +243,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Text,
-            FormOrder = 20,
-            GridOrder = 20,
+            FormOrder = 23,
+            GridOrder = 23,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 200)]
@@ -237,8 +252,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Text,
-            FormOrder = 21,
-            GridOrder = 21,
+            FormOrder = 24,
+            GridOrder = 24,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 200)]
@@ -250,8 +265,8 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(
             FieldType = FieldTypes.Textarea,
-            FormOrder = 22,
-            GridOrder = 22,
+            FormOrder = 25,
+            GridOrder = 25,
             ShowInGrid = true,
             ShowInForm = true,
             MaxLength = 500)]
@@ -292,11 +307,13 @@ namespace Velora.Application.Shared.Dtos
         public int? PaymentMethod { get; set; }
         [ResourceColumn(
     FieldType = FieldTypes.HiddenText,
-    FormOrder = 23,
-    GridOrder = 23,
+    FormOrder = 26,
+    GridOrder = 26,
     ShowInGrid = false,
     ShowInForm = false)]
         public Guid? PaymentId { get; set; }
+
+
 
     }
 }

@@ -99,6 +99,9 @@ int pageSize);
         Task<ShoppingCart?> GetCartEntityAsync(
             Guid? userId,
             string? cartToken);
+
+        Task<IQueryable<MyOrdersQuery>> MyOrdersQuery();
+        Task<IQueryable<MyOrderDetailQuery>> MyOrderDetailQuery();
     }
 
 }

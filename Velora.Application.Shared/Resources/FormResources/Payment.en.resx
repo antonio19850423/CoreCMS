@@ -183,4 +183,10 @@
   <data name="Payment.PaymentId" xml:space="preserve">
     <value>PaymentId</value>
   </data>
+  <data name="Payment.TaxAmount" xml:space="preserve">
+    <value>tax Amount</value>
+  </data>
+  <data name="Payment.DutyAmount" xml:space="preserve">
+    <value>Duty Amount</value>
+  </data>
 </root>

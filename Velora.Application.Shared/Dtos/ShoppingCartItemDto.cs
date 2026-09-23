@@ -45,6 +45,14 @@ namespace Velora.Application.Shared.Dtos
         public decimal FinalUnitPrice { get; set; }
 
         public Guid? ProductTypeId { get; set; }
+        [StringLength(200)]
+        public string? ProductName { get; set; }
+
+        [StringLength(300)]
+        public string? ProductImage { get; set; }
+
+        [StringLength(150)]
+        public string? VariantName { get; set; }
 
     }
 }

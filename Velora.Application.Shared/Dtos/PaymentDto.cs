@@ -53,5 +53,11 @@ namespace Velora.Application.Shared.Dtos
         public Guid? PaymentId { get; set; }
         [StringLength(500)]
         public string? Description { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? TaxAmount { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? DutyAmount { get; set; }
     }
 }

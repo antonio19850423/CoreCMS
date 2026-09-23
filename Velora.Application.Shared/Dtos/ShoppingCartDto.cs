@@ -77,5 +77,10 @@ namespace Velora.Application.Shared.Dtos
         [StringLength(200)]
         public string? ShippingMethodName { get; set; }
         public int? OrderStatus { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? TaxAmount { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? DutyAmount { get; set; }
     }
 }
