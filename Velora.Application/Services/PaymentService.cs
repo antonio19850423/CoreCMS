@@ -70,6 +70,18 @@ namespace Velora.Application.Services
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<PaymentDto>
@@ -278,12 +290,25 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
+
             var createdPayments= new List<PaymentDto>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<BulkInsertResult>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
                 var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var Payments = dt.ToModelList<PaymentCrud>();
 

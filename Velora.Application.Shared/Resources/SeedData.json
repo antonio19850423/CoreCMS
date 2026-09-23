@@ -1219,12 +1219,12 @@
           ],
           "Children": [
             {
-              "Type": "REPORT",
-              "Code": "PAYMENT_MANAGEMENT_REPORT",
+              "Type": "PAGE",
+              "Code": "PAYMENT_MANAGEMENT_PAGE",
               "Name": "Payment Report",
               "DisplayName": {
-                "en": "Payment Management Report",
-                "fa": "گزارش پرداخت‌ها"
+                "en": "Payment Management Page",
+                "fa": "مدیریت پرداخت‌ها"
               },
               "Order": 1,
               "Children": [
@@ -1234,7 +1234,7 @@
                   "Name": "Payment Status Log Management",
                   "DisplayName": {
                     "en": "Payment Status Log Management",
-                    "fa": "گزارش وضعیت پرداخت‌ها"
+                    "fa": "وضعیت پرداخت‌ها"
                   },
                   "Order": 1
                 },
@@ -1244,7 +1244,7 @@
                   "Name": "Shopping Cart Item Management",
                   "DisplayName": {
                     "en": "Shopping Cart Item Management",
-                    "fa": "گزارش وضعیت پرداخت‌ها"
+                    "fa": "اقلام سفارش"
                   },
                   "Order": 1
                 }
@@ -1259,7 +1259,7 @@
           "Route": "administration/paymentstatuslog-management",
           "DisplayName": {
             "en": "Payment Status Log Management",
-            "fa": "گزارش وضعیت پرداخت‌ها"
+            "fa": "وضعیت پرداخت‌ها"
           },
           "Order": 14,
           "Roles": [
@@ -1267,12 +1267,12 @@
           ],
           "Children": [
             {
-              "Type": "REPORT",
+              "Type": "PAGE",
               "Code": "PAYMENTSTATUSLOG_MANAGEMENT_REPORT",
-              "Name": "Payment Status Log Report",
+              "Name": "Payment Status Log Page",
               "DisplayName": {
-                "en": "Payment Status Log Report",
-                "fa": "گزارش اقلام سفارش"
+                "en": "Payment Status Log Page",
+                "fa": "وضعیت پرداخت‌ها"
               },
               "Order": 1
             }
@@ -1293,11 +1293,11 @@
           ],
           "Children": [
             {
-              "Type": "REPORT",
+              "Type": "PAGE",
               "Code": "SHOPPINGCARTITEM_MANAGEMENT_REPORT",
-              "Name": "Shopping Cart Item Report",
+              "Name": "Shopping Cart Item Page",
               "DisplayName": {
-                "en": "Shopping Cart Item Report",
+                "en": "Shopping Cart Item Page",
                 "fa": "گزارش اقلام سبد خرید"
               },
               "Order": 1

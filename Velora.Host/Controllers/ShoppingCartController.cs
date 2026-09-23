@@ -358,7 +358,7 @@ namespace Velora.Api.Controllers
             var result = await _shoppingCartService
                 .MyOrdersQuery();
 
-            result = result.Where(x => x.UserId == userId);
+            result = result.Where(x => x.UserId == userId).OrderByDescending(c=>c.OrderedAt);
 
             return Ok(result);
         }
