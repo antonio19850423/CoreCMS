@@ -239,3 +239,8 @@ global using SqlPaymentStatusLogView = Velora.EntityFrameworkCore.EntityFramewor
 
 global using SqlMyOrder = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwMyOrder;
 global using SqlMyOrderDetail = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwMyOrderDetail;
+
+global using SqlCustomerManagement = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwCustomerManagement;
+global using SqlInventoryManagement = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwInventoryManagement;
+global using SqlOrderManagement = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwOrderManagement;
+global using SqlProductSalesManagement = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductSalesManagement;

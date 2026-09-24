@@ -193,6 +193,12 @@
 	  <EmbeddedResource Update="Resources\FormResources\CategoryAttribute.fa.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\CustomerManagement.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\OrderManagement.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\FormResources\Payment.en.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Payment.en.Designer.cs</LastGenOutput>
@@ -201,6 +207,9 @@
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\FormResources\ProductAttribute.fa.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\FormResources\ProductSalesManagement.fa.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\FormResources\ProductTag.en.resx">

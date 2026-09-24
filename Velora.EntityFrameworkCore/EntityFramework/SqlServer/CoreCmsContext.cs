@@ -159,9 +159,13 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<VwCouponUsageForm> VwCouponUsageForms { get; set; }
 
+    public virtual DbSet<VwCustomerManagement> VwCustomerManagements { get; set; }
+
     public virtual DbSet<VwDiscountForm> VwDiscountForms { get; set; }
 
     public virtual DbSet<VwDiscountItemForm> VwDiscountItemForms { get; set; }
+
+    public virtual DbSet<VwInventoryManagement> VwInventoryManagements { get; set; }
 
     public virtual DbSet<VwInventoryTransactionReasonForm> VwInventoryTransactionReasonForms { get; set; }
 
@@ -172,6 +176,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwMyOrder> VwMyOrders { get; set; }
 
     public virtual DbSet<VwMyOrderDetail> VwMyOrderDetails { get; set; }
+
+    public virtual DbSet<VwOrderManagement> VwOrderManagements { get; set; }
 
     public virtual DbSet<VwPageForm> VwPageForms { get; set; }
 
@@ -204,6 +210,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwProductQuestionForm> VwProductQuestionForms { get; set; }
 
     public virtual DbSet<VwProductReviewForm> VwProductReviewForms { get; set; }
+
+    public virtual DbSet<VwProductSalesManagement> VwProductSalesManagements { get; set; }
 
     public virtual DbSet<VwProductTagForm> VwProductTagForms { get; set; }
 
@@ -255,7 +263,7 @@ public partial class CoreCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=2000;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-JLBIAKI\\AFE;Database=CoreCMS;User Id=sa;Password=77723588;TrustServerCertificate=True;Connect Timeout=180;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1022,6 +1030,11 @@ public partial class CoreCmsContext : DbContext
             entity.ToView("VwCouponUsageForm", "cms");
         });
 
+        modelBuilder.Entity<VwCustomerManagement>(entity =>
+        {
+            entity.ToView("VwCustomerManagement", "cms");
+        });
+
         modelBuilder.Entity<VwDiscountForm>(entity =>
         {
             entity.ToView("VwDiscountForm", "cms");
@@ -1030,6 +1043,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwDiscountItemForm>(entity =>
         {
             entity.ToView("VwDiscountItemForm", "cms");
+        });
+
+        modelBuilder.Entity<VwInventoryManagement>(entity =>
+        {
+            entity.ToView("VwInventoryManagement", "cms");
         });
 
         modelBuilder.Entity<VwInventoryTransactionReasonForm>(entity =>
@@ -1055,6 +1073,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwMyOrderDetail>(entity =>
         {
             entity.ToView("VwMyOrderDetail", "cms");
+        });
+
+        modelBuilder.Entity<VwOrderManagement>(entity =>
+        {
+            entity.ToView("VwOrderManagement", "cms");
         });
 
         modelBuilder.Entity<VwPageForm>(entity =>
@@ -1135,6 +1158,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwProductReviewForm>(entity =>
         {
             entity.ToView("VwProductReviewForm", "cms");
+        });
+
+        modelBuilder.Entity<VwProductSalesManagement>(entity =>
+        {
+            entity.ToView("VwProductSalesManagement", "cms");
         });
 
         modelBuilder.Entity<VwProductTagForm>(entity =>

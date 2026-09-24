@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+
+	<data name="InventoryManagement.ProductName" xml:space="preserve">
+        <value>Product Name</value>
+    </data>
+	<data name="InventoryManagement.VariantName" xml:space="preserve">
+        <value>Product Variant</value>
+    </data>
+	<data name="InventoryManagement.Sku" xml:space="preserve">
+        <value>SKU</value>
+    </data>
+	<data name="InventoryManagement.Barcode" xml:space="preserve">
+        <value>Barcode</value>
+    </data>
+	<data name="InventoryManagement.Price" xml:space="preserve">
+        <value>Price</value>
+    </data>
+	<data name="InventoryManagement.InventoryInQuantity" xml:space="preserve">
+        <value>Incoming Quantity</value>
+    </data>
+	<data name="InventoryManagement.ReservedQuantity" xml:space="preserve">
+        <value>Reserved Quantity</value>
+    </data>
+	<data name="InventoryManagement.PaidQuantity" xml:space="preserve">
+        <value>Paid Quantity</value>
+    </data>
+	<data name="InventoryManagement.CurrentQuantity" xml:space="preserve">
+        <value>Current Quantity</value>
+    </data>
+	<data name="InventoryManagement.LowStockThreshold" xml:space="preserve">
+        <value>Low Stock Threshold</value>
+    </data>
+	<data name="InventoryManagement.LowStockQuantity" xml:space="preserve">
+        <value>Low Stock Quantity</value>
+    </data>
+	<data name="InventoryManagement.IsOutOfStock" xml:space="preserve">
+        <value>Out of Stock</value>
+    </data>
+	<data name="InventoryManagement.IsLowStock" xml:space="preserve">
+        <value>Low Stock</value>
+    </data>
+	<data name="InventoryManagement.IsInStock" xml:space="preserve">
+        <value>In Stock</value>
+    </data>
+	<data name="InventoryManagement.InventoryStatusPriority" xml:space="preserve">
+        <value>Inventory Status Priority</value>
+    </data>
+	<data name="InventoryManagement.InventoryStatusTitle" xml:space="preserve">
+        <value>Inventory Status</value>
+    </data>
+	<data name="InventoryManagement.InventoryValue" xml:space="preserve">
+        <value>Inventory Value</value>
+    </data>
+	<data name="InventoryManagement.ProductIsActive" xml:space="preserve">
+        <value>Product Is Active</value>
+    </data>
+	<data name="InventoryManagement.VariantIsActive" xml:space="preserve">
+        <value>Variant Is Active</value>
+    </data>
+</root>

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+	</resheader>
+
+	<data name="OrderManagement.OrderCode" xml:space="preserve">
+        <value>کد سفارش</value>
+    </data>
+	<data name="OrderManagement.OrderedAt" xml:space="preserve">
+        <value>تاریخ سفارش</value>
+    </data>
+	<data name="OrderManagement.OrderedAtPersian" xml:space="preserve">
+        <value>تاریخ سفارش</value>
+    </data>
+	<data name="OrderManagement.OrderStatus" xml:space="preserve">
+        <value>وضعیت سفارش</value>
+    </data>
+	<data name="OrderManagement.OrderStatusTitle" xml:space="preserve">
+        <value>وضعیت سفارش</value>
+    </data>
+	<data name="OrderManagement.BuyerName" xml:space="preserve">
+        <value>نام خریدار</value>
+    </data>
+	<data name="OrderManagement.ReceiverFirstName" xml:space="preserve">
+        <value>نام گیرنده</value>
+    </data>
+	<data name="OrderManagement.ReceiverLastName" xml:space="preserve">
+        <value>نام خانوادگی گیرنده</value>
+    </data>
+	<data name="OrderManagement.ReceiverFullName" xml:space="preserve">
+        <value>نام و نام خانوادگی گیرنده</value>
+    </data>
+	<data name="OrderManagement.ReceiverNationalCode" xml:space="preserve">
+        <value>کد ملی گیرنده</value>
+    </data>
+	<data name="OrderManagement.ReceiverPhone" xml:space="preserve">
+        <value>شماره تماس گیرنده</value>
+    </data>
+	<data name="OrderManagement.AddressText" xml:space="preserve">
+        <value>آدرس تحویل</value>
+    </data>
+	<data name="OrderManagement.ShippingMethodName" xml:space="preserve">
+        <value>روش ارسال</value>
+    </data>
+	<data name="OrderManagement.ShippingPrice" xml:space="preserve">
+        <value>هزینه ارسال</value>
+    </data>
+	<data name="OrderManagement.CouponCode" xml:space="preserve">
+        <value>کد تخفیف</value>
+    </data>
+	<data name="OrderManagement.CouponDiscountAmount" xml:space="preserve">
+        <value>مبلغ تخفیف کوپن</value>
+    </data>
+	<data name="OrderManagement.TaxAmount" xml:space="preserve">
+        <value>مبلغ مالیات</value>
+    </data>
+	<data name="OrderManagement.DutyAmount" xml:space="preserve">
+        <value>مبلغ عوارض</value>
+    </data>
+	<data name="OrderManagement.FinalAmount" xml:space="preserve">
+        <value>مبلغ نهایی سفارش</value>
+    </data>
+	<data name="OrderManagement.HasPayment" xml:space="preserve">
+        <value>دارای پرداخت</value>
+    </data>
+	<data name="OrderManagement.PaymentMethod" xml:space="preserve">
+        <value>روش پرداخت</value>
+    </data>
+	<data name="OrderManagement.PaymentMethodTitle" xml:space="preserve">
+        <value>روش پرداخت</value>
+    </data>
+	<data name="OrderManagement.PaymentStatusTitle" xml:space="preserve">
+        <value>وضعیت پرداخت</value>
+    </data>
+	<data name="OrderManagement.PaymentAmount" xml:space="preserve">
+        <value>مبلغ پرداخت</value>
+    </data>
+	<data name="OrderManagement.GatewayTrackingCode" xml:space="preserve">
+        <value>کد پیگیری درگاه</value>
+    </data>
+	<data name="OrderManagement.PaidAt" xml:space="preserve">
+        <value>تاریخ پرداخت</value>
+    </data>
+	<data name="OrderManagement.PaidAtPersian" xml:space="preserve">
+        <value>تاریخ پرداخت</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusOldStatus" xml:space="preserve">
+        <value>وضعیت قبلی پرداخت</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusNewStatus" xml:space="preserve">
+        <value>وضعیت جدید پرداخت</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusChangeAt" xml:space="preserve">
+        <value>تاریخ آخرین تغییر وضعیت</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusChangeAtPersian" xml:space="preserve">
+        <value>تاریخ آخرین تغییر وضعیت</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusChangedBy" xml:space="preserve">
+        <value>تغییر داده شده توسط</value>
+    </data>
+	<data name="OrderManagement.LastPaymentStatusDescription" xml:space="preserve">
+        <value>توضیحات وضعیت پرداخت</value>
+    </data>
+</root>

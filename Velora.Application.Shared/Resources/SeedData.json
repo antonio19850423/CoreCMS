@@ -1303,6 +1303,110 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "ORDERMANAGEMENT_MANAGEMENT_MENU",
+          "Name": "Order Management Menu",
+          "Route": "administration/order-management",
+          "DisplayName": {
+            "en": "Order Management",
+            "fa": "مدیریت سفارش‌ها"
+          },
+          "Order": 16,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "ORDERMANAGEMENT_MANAGEMENT_REPORT",
+              "Name": "Order Management Menu",
+              "DisplayName": {
+                "en": "Order Management",
+                "fa": "مدیریت سفارش‌ها"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "INVENTORYMANAGEMENT_MANAGEMENT_MENU",
+          "Name": "Inventory Management Menu",
+          "Route": "administration/inventory-management",
+          "DisplayName": {
+            "en": "Inventory Management",
+            "fa": "مدیریت موجودی"
+          },
+          "Order": 17,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "INVENTORYMANAGEMENT_MANAGEMENT_REPORT",
+              "Name": "Inventory Management Menu",
+              "DisplayName": {
+                "en": "Inventory Management",
+                "fa": "مدیریت موجودی"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "PRODUCTSALESMANAGEMENT_MANAGEMENT_MENU",
+          "Name": "Product Sales Management Menu",
+          "Route": "administration/product-sales-management",
+          "DisplayName": {
+            "en": "Product Sales Management",
+            "fa": "مدیریت فروش کالاها"
+          },
+          "Order": 18,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "PRODUCTSALESMANAGEMENT_MANAGEMENT_REPORT",
+              "Name": "Product Sales Management Menu",
+              "DisplayName": {
+                "en": "Product Sales Management",
+                "fa": "مدیریت فروش کالاها"
+              },
+              "Order": 1
+            }
+          ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "CUSTOMERMANAGEMENT_MANAGEMENT_MENU",
+          "Name": "Customer Management Menu",
+          "Route": "administration/customer-management",
+          "DisplayName": {
+            "en": "Customer Management",
+            "fa": "مدیریت مشتریان"
+          },
+          "Order": 19,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "REPORT",
+              "Code": "CUSTOMERMANAGEMENT_MANAGEMENT_REPORT",
+              "Name": "Customer Management Menu",
+              "DisplayName": {
+                "en": "Customer Management",
+                "fa": "مدیریت مشتریان"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

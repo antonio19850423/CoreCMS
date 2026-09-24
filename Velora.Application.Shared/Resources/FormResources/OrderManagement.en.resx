@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5a561934e089</value>
+    </resheader>
+
+    <data name="OrderManagement.OrderCode" xml:space="preserve">
+        <value>Order Code</value>
+    </data>
+    <data name="OrderManagement.OrderedAt" xml:space="preserve">
+        <value>Order Date</value>
+    </data>
+    <data name="OrderManagement.OrderedAtPersian" xml:space="preserve">
+        <value>Order Date</value>
+    </data>
+    <data name="OrderManagement.OrderStatus" xml:space="preserve">
+        <value>Order Status</value>
+    </data>
+    <data name="OrderManagement.OrderStatusTitle" xml:space="preserve">
+        <value>Order Status</value>
+    </data>
+    <data name="OrderManagement.BuyerName" xml:space="preserve">
+        <value>Buyer Name</value>
+    </data>
+    <data name="OrderManagement.ReceiverFirstName" xml:space="preserve">
+        <value>Receiver First Name</value>
+    </data>
+    <data name="OrderManagement.ReceiverLastName" xml:space="preserve">
+        <value>Receiver Last Name</value>
+    </data>
+    <data name="OrderManagement.ReceiverFullName" xml:space="preserve">
+        <value>Receiver Full Name</value>
+    </data>
+    <data name="OrderManagement.ReceiverNationalCode" xml:space="preserve">
+        <value>Receiver National ID</value>
+    </data>
+    <data name="OrderManagement.ReceiverPhone" xml:space="preserve">
+        <value>Receiver Phone</value>
+    </data>
+    <data name="OrderManagement.AddressText" xml:space="preserve">
+        <value>Delivery Address</value>
+    </data>
+    <data name="OrderManagement.ShippingMethodName" xml:space="preserve">
+        <value>Shipping Method</value>
+    </data>
+    <data name="OrderManagement.ShippingPrice" xml:space="preserve">
+        <value>Shipping Cost</value>
+    </data>
+    <data name="OrderManagement.CouponCode" xml:space="preserve">
+        <value>Coupon Code</value>
+    </data>
+    <data name="OrderManagement.CouponDiscountAmount" xml:space="preserve">
+        <value>Coupon Discount Amount</value>
+    </data>
+    <data name="OrderManagement.TaxAmount" xml:space="preserve">
+        <value>Tax Amount</value>
+    </data>
+    <data name="OrderManagement.DutyAmount" xml:space="preserve">
+        <value>Duty Amount</value>
+    </data>
+    <data name="OrderManagement.FinalAmount" xml:space="preserve">
+        <value>Final Order Amount</value>
+    </data>
+    <data name="OrderManagement.HasPayment" xml:space="preserve">
+        <value>Has Payment</value>
+    </data>
+    <data name="OrderManagement.PaymentMethod" xml:space="preserve">
+        <value>Payment Method</value>
+    </data>
+    <data name="OrderManagement.PaymentMethodTitle" xml:space="preserve">
+        <value>Payment Method</value>
+    </data>
+    <data name="OrderManagement.PaymentStatusTitle" xml:space="preserve">
+        <value>Payment Status</value>
+    </data>
+    <data name="OrderManagement.PaymentAmount" xml:space="preserve">
+        <value>Payment Amount</value>
+    </data>
+    <data name="OrderManagement.GatewayTrackingCode" xml:space="preserve">
+        <value>Gateway Tracking Code</value>
+    </data>
+    <data name="OrderManagement.PaidAt" xml:space="preserve">
+        <value>Payment Date</value>
+    </data>
+    <data name="OrderManagement.PaidAtPersian" xml:space="preserve">
+        <value>Payment Date</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusOldStatus" xml:space="preserve">
+        <value>Previous Payment Status</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusNewStatus" xml:space="preserve">
+        <value>New Payment Status</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusChangeAt" xml:space="preserve">
+        <value>Last Status Change Date</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusChangeAtPersian" xml:space="preserve">
+        <value>Last Status Change Date</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusChangedBy" xml:space="preserve">
+        <value>Status Changed By</value>
+    </data>
+    <data name="OrderManagement.LastPaymentStatusDescription" xml:space="preserve">
+        <value>Payment Status Description</value>
+    </data>
+</root>

@@ -315,6 +315,11 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlMyOrder, MyOrdersQuery>().ReverseMap();
             CreateMap<SqlMyOrderDetail, MyOrderDetailQuery>().ReverseMap();
 
+            CreateMap<SqlInventoryManagement, InventoryManagementCrud>().ReverseMap();
+            CreateMap<SqlCustomerManagement, CustomerManagementCrud>().ReverseMap();
+            CreateMap<SqlOrderManagement, OrderManagementCrud>().ReverseMap();
+            CreateMap<SqlProductSalesManagement, ProductSalesManagementCrud>().ReverseMap();
+
         }
 
 
