@@ -180,40 +180,24 @@ public partial class Section
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;
 
-    [ForeignKey("Link1TargetId")]
-    [InverseProperty("SectionLink1Targets")]
-    public virtual Page? Link1Target { get; set; }
-
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SectionLink1Types")]
     public virtual LinkType? Link1Type { get; set; }
-
-    [ForeignKey("Link2TargetId")]
-    [InverseProperty("SectionLink2Targets")]
-    public virtual Page? Link2Target { get; set; }
 
     [ForeignKey("Link2TypeId")]
     [InverseProperty("SectionLink2Types")]
     public virtual LinkType? Link2Type { get; set; }
 
-    [ForeignKey("Link3TargetId")]
-    [InverseProperty("SectionLink3Targets")]
-    public virtual Page? Link3Target { get; set; }
-
     [ForeignKey("Link3TypeId")]
     [InverseProperty("SectionLink3Types")]
     public virtual LinkType? Link3Type { get; set; }
-
-    [ForeignKey("Link4TargetId")]
-    [InverseProperty("SectionLink4Targets")]
-    public virtual Page? Link4Target { get; set; }
 
     [ForeignKey("Link4TypeId")]
     [InverseProperty("SectionLink4Types")]
     public virtual LinkType? Link4Type { get; set; }
 
     [ForeignKey("PageId")]
-    [InverseProperty("SectionPages")]
+    [InverseProperty("Sections")]
     public virtual Page Page { get; set; } = null!;
 
     [InverseProperty("Section")]

@@ -59,18 +59,6 @@ namespace Velora.Application.Services
 
             var query = await GetAllViewQueryable<SqlLinkTypeView, SqlLinkTypeView, LinkTypeCrud>();
 
-            if (configResult.Data == null)
-                return query;
-
-            var config = configResult.Data;
-
-            query = query.Where(c =>
-                              (!config.EnableBlog || (c.Code != "ARTICLE"))
-                              &&
-                              (!config.EnableShop || c.Code != "PRODUCT")
-                              &&
-                              (!config.EnableNews || c.Code != "NEWS")
-                              );
             return query;
         }
         public async Task<ResultDto<LinkTypeDto>> CreateAsync(LinkTypeCrud input)

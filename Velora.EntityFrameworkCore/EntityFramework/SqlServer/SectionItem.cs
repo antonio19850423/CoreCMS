@@ -149,33 +149,17 @@ public partial class SectionItem
 
     public bool? Link4OpenInNewTab { get; set; }
 
-    [ForeignKey("Link1TargetId")]
-    [InverseProperty("SectionItemLink1Targets")]
-    public virtual Page? Link1Target { get; set; }
-
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SectionItemLink1Types")]
     public virtual LinkType? Link1Type { get; set; }
-
-    [ForeignKey("Link2TargetId")]
-    [InverseProperty("SectionItemLink2Targets")]
-    public virtual Page? Link2Target { get; set; }
 
     [ForeignKey("Link2TypeId")]
     [InverseProperty("SectionItemLink2Types")]
     public virtual LinkType? Link2Type { get; set; }
 
-    [ForeignKey("Link3TargetId")]
-    [InverseProperty("SectionItemLink3Targets")]
-    public virtual Page? Link3Target { get; set; }
-
     [ForeignKey("Link3TypeId")]
     [InverseProperty("SectionItemLink3Types")]
     public virtual LinkType? Link3Type { get; set; }
-
-    [ForeignKey("Link4TargetId")]
-    [InverseProperty("SectionItemLink4Targets")]
-    public virtual Page? Link4Target { get; set; }
 
     [ForeignKey("Link4TypeId")]
     [InverseProperty("SectionItemLink4Types")]

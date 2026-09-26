@@ -46,10 +46,6 @@ public partial class Menu
     [InverseProperty("Parent")]
     public virtual ICollection<Menu> InverseParent { get; set; } = new List<Menu>();
 
-    [ForeignKey("Link1TargetId")]
-    [InverseProperty("Menus")]
-    public virtual Page? Link1Target { get; set; }
-
     [ForeignKey("ParentId")]
     [InverseProperty("InverseParent")]
     public virtual Menu? Parent { get; set; }

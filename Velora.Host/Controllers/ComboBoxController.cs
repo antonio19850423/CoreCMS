@@ -23,18 +23,21 @@ namespace Velora.Host.Controllers
         private readonly IPageService _pageService;
         private readonly ISiteMenuService _siteMenuService;
         private readonly IContentCategoryService _contentCategoryService;
+        private readonly IContentItemService _contentItemService;
         private readonly IProductCategoryService _productCategoryService;
         private readonly IProductAttributeService _productAttributeService;
         private readonly IProductBrandService _productBrandService;
         private readonly IProductTypeService _productTypeService;
         private readonly IInventoryTransactionReasonService _inventoryTransactionReasonService;
         private readonly IProductService _productService;
+        private readonly ICmsConfigurationService _cmsConfigurationService;
+        
         private readonly IProductVariantService _productVariantService;
         private readonly ICityService _cityService;
         private readonly IStateService _stateService;
         private readonly IPaymentGatewayService _paymentGatewayService;
 
-        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductService productService, IProductVariantService productVariantService, ICityService cityService, IStateService stateService, IPaymentGatewayService paymentGatewayService)
+        public ComboBoxController(IRoleService roleService, IResourceTypeService ResourceTypeService, IResourceService resourceService, ISectionGroupItemService sectionGroupItemService, ILinkTypeService linkTypeService, IPageService pageService, ISiteMenuService siteMenuService, IContentCategoryService contentCategoryService, IProductCategoryService productCategoryService, IProductAttributeService productAttributeService, IProductBrandService productBrandService, IProductTypeService productTypeService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductService productService, IProductVariantService productVariantService, ICityService cityService, IStateService stateService, IPaymentGatewayService paymentGatewayService, IContentItemService contentItemService, ICmsConfigurationService cmsConfigurationService)
             {
             _roleService = roleService;
             _resourceTypeService=ResourceTypeService;
@@ -54,6 +57,8 @@ namespace Velora.Host.Controllers
             _cityService = cityService;
             _stateService = stateService;
             _paymentGatewayService = paymentGatewayService;
+            _contentItemService = contentItemService;
+            _cmsConfigurationService = cmsConfigurationService;
             }
         [HttpGet("roles")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetRoles()
@@ -148,29 +153,62 @@ namespace Velora.Host.Controllers
 
             return result;
         }
+
         [HttpGet("LinkTypes")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> LinkTypes()
         {
-
             var linkTypes = await _linkTypeService.GetAllViews();
 
-            var resourceItems = linkTypes
-                .Select(r => new ComboBoxItemDto<Guid>
-                {
-                    Value = r.Id,
-                    Label = r.Name,
-                    Code=r.Code
-                })
-                .ToList(); 
+            var configurations = await _cmsConfigurationService.GetAllAsync();
 
-            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            var configuration = configurations.Data
+                .FirstOrDefault(c => c.IsActive);
+
+            var enableShop = configuration != null && configuration.EnableShop;
+            var enableBlog = configuration != null && configuration.EnableBlog;
+            var enableNews = configuration != null && configuration.EnableNews;
+
+            var resultItems = linkTypes
+                .Where(x =>
+                    // همیشه فعال
+                    x.Code == "PAGE" ||
+                    x.Code == "EXTERNAL" ||
+
+                    // Shop
+                    (enableShop &&
+                        (
+                            x.Code == "PRODUCT" ||
+                            x.Code == "BRAND" ||
+                            x.Code == "CATEGORY"
+                        )
+                    ) ||
+
+                    // Blog
+                    (enableBlog &&
+                        x.Code == "ARTICLE"
+                    ) ||
+
+                    // News
+                    (enableNews &&
+                        x.Code == "NEWS"
+                    )
+                )
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new ComboBoxItemDto<Guid>
+                {
+                    Value = x.Id,
+                    Label = x.Name,
+                    Code = x.Code
+                })
+                .ToList();
+
+            return new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
             {
-                Data = resourceItems,
+                Data = resultItems,
                 Success = true
             };
-
-            return result;
         }
+
 
         [HttpGet("Pages")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> Pages()
@@ -544,7 +582,54 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
+        [HttpGet("News")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> News()
+        {
+            var news = await _contentItemService.GetAllViews();
 
-        
+            var contentItems = news
+                .Where(c => c.ContentType == "0")
+                .OrderByDescending(c => c.PublishedAt)
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Title
+                });
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = contentItems,
+                Success = true
+            };
+
+            return result;
+        }
+
+        [HttpGet("Articles")]
+        public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> Articles()
+        {
+            var articles = await _contentItemService.GetAllViews();
+
+            var contentItems = articles
+                .Where(c => c.ContentType == "1")
+                .OrderByDescending(c => c.PublishedAt)
+                .Select(r => new ComboBoxItemDto<Guid>
+                {
+                    Value = r.Id,
+                    Label = r.Title
+                });
+
+            var result = new ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>
+            {
+                Data = contentItems,
+                Success = true
+            };
+
+            return result;
+        }
+
+
+
+
     }
 }

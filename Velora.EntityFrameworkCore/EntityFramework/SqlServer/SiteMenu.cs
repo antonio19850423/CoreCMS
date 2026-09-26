@@ -52,10 +52,6 @@ public partial class SiteMenu
     [InverseProperty("Parent")]
     public virtual ICollection<SiteMenu> InverseParent { get; set; } = new List<SiteMenu>();
 
-    [ForeignKey("Link1TargetId")]
-    [InverseProperty("SiteMenus")]
-    public virtual Page? Link1Target { get; set; }
-
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SiteMenus")]
     public virtual LinkType? Link1Type { get; set; }
