@@ -31,13 +31,14 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly ISiteMenuService _roleSiteMenuService;
         protected readonly ICurrentUserService _currentUserService;
+        protected readonly ILinkResolverService _linkResolverService;
         public SiteMenuService(
               ISqlRepository<SqlSiteMenu> sqlRepository,
               IPosgreSqlRepository<SqlSiteMenu> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, ILinkResolverService linkResolverService  )
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -47,7 +48,8 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
+            _linkResolverService = linkResolverService;
         }
         public async Task<IQueryable<SiteMenuCrud>> GetAllViews()
         {
@@ -66,6 +68,7 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
                 var SiteMenu = new SiteMenuDto
                 {
                  Icon = input.Icon,
@@ -76,7 +79,7 @@ namespace Velora.Application.Services
                  Link1TargetId = input.Link1TargetId,
                  Link1Text=input.Link1Text,
                  Link1TypeId = input.Link1TypeId,
-                 Link1Url = input.Link1Url,
+                 Link1Url = link1Url,
                  ParentId = input.ParentId,
                  SortOrder = input.SortOrder,
                 };
@@ -122,7 +125,7 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
+                var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SiteMenuDto
                 {
@@ -135,7 +138,7 @@ namespace Velora.Application.Services
                     Link1TargetId = input.Link1TargetId,
                     Link1Text = input.Link1Text,
                     Link1TypeId = input.Link1TypeId,
-                    Link1Url = input.Link1Url,
+                    Link1Url = link1Url,
                     ParentId = input.ParentId,
                     SortOrder = input.SortOrder,
                 };

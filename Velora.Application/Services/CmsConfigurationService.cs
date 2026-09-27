@@ -80,6 +80,9 @@ namespace Velora.Application.Services
                  EnableDynamicPages = input.EnableDynamicPages,
                  EnableFaq = input.EnableFaq,
                  EnablePrivacy = input.EnablePrivacy,
+                 EnableProductBrandsMenu = input.EnableProductBrandsMenu,
+                 EnableProductCategoriesMenu = input.EnableProductCategoriesMenu,
+                 EnableProductSearchMenu = input.EnableProductSearchMenu,
                 };
 
                 var result = await CreateAsync(CmsConfiguration);
@@ -140,7 +143,9 @@ namespace Velora.Application.Services
                     EnableDynamicPages = input.EnableDynamicPages,
                     EnableFaq = input.EnableFaq,
                     EnablePrivacy = input.EnablePrivacy,
-
+                    EnableProductBrandsMenu = input.EnableProductBrandsMenu,
+                    EnableProductCategoriesMenu = input.EnableProductCategoriesMenu,
+                    EnableProductSearchMenu = input.EnableProductSearchMenu,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

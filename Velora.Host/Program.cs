@@ -267,6 +267,7 @@ using (var scope = app.Services.CreateScope())
     {
         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
         await seeder.SeedAllAsync();
+        await seeder.SeedMenusDataAsync();
     }
 }
 

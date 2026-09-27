@@ -36,6 +36,7 @@ namespace Velora.Application.Seeds
         public const string Seed_Core_LinkTypes = "Seed_Core_LinkTypes";
         public const string SeedCmsNewsAndArticlePagesAsync = "SeedCmsNewsAndArticlePagesAsync";
         public const string Seed_Products = "Seed_Products";
+        public const string Seed_Menus = "Seed_Menus";
 
     }
 
@@ -82,7 +83,8 @@ namespace Velora.Application.Seeds
         private readonly IProductAttributeValueService _productAttributeValueService;
         private readonly IInventoryTransactionReasonService _inventoryTransactionReasonService;
         private readonly IProductInventoryTransactionService _productInventoryTransactionService;
-
+        private readonly ISiteMenuService _siteMenuService;
+        
 
 
         public DataSeeder(
@@ -108,7 +110,7 @@ namespace Velora.Application.Seeds
         IProductBrandService productBrandService,
         IProductCategoryService productCategoryService,
         IProductFileService productFileService,
-        IProductVariantService productVariantService, IProductTypeService productTypeService, IProductAttributeService productAttributeService, IProductTagService productTagService, IProductAttributeValueService productAttributeValueService, IProductTagMappingService productTagMappingService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductInventoryTransactionService productInventoryTransactionService)
+        IProductVariantService productVariantService, IProductTypeService productTypeService, IProductAttributeService productAttributeService, IProductTagService productTagService, IProductAttributeValueService productAttributeValueService, IProductTagMappingService productTagMappingService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductInventoryTransactionService productInventoryTransactionService, ISiteMenuService siteMenuService)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
             _dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -155,6 +157,7 @@ namespace Velora.Application.Seeds
             _productAttributeValueService = productAttributeValueService;
             _inventoryTransactionReasonService = inventoryTransactionReasonService;
             _productInventoryTransactionService = productInventoryTransactionService;
+            _siteMenuService= siteMenuService;
 
         }
 
@@ -258,7 +261,466 @@ namespace Velora.Application.Seeds
 
             await _transactionService.CommitAsync();
         }
+        public async Task SeedMenusDataAsync()
+        {
+            if (!await ShouldRunSeederAsync(SeederNames.Seed_Menus))
+                return;
 
+           await SeedMenusAsync();
+            await _seedHistoryService.CreateAsync(new()
+            {
+                Name = SeederNames.Seed_Menus,
+                CreatedAt = DateTime.Now
+            });
+            await _transactionService.CommitAsync();
+        }
+        private async Task SeedMenusAsync()
+        {
+            var configurations = await _cmsConfigurationService.GetAllViews();
+
+            var configuration = await configurations
+                .FirstOrDefaultAsync(x => x.IsActive);
+
+            if (configuration == null)
+                throw new Exception("Active CMS configuration not found.");
+
+            var siteMenus = await _siteMenuService.GetAllViews();
+            var existingMenus = await siteMenus.ToListAsync();
+
+            var linkTypes = await _linkTypeService.GetAllViews();
+
+            var productLinkTypeId = await GetLinkTypeIdAsync(linkTypes, "PRODUCT");
+            var categoryLinkTypeId = await GetLinkTypeIdAsync(linkTypes, "CATEGORY");
+            var brandLinkTypeId = await GetLinkTypeIdAsync(linkTypes, "BRAND");
+            var newsLinkTypeId = await GetLinkTypeIdAsync(linkTypes, "NEWS");
+            var articleLinkTypeId = await GetLinkTypeIdAsync(linkTypes, "ARTICLE");
+            // =========================================================
+            // Fixed Pages
+            // =========================================================
+
+            var pageLinkTypeId = await GetLinkTypeIdAsync(
+                linkTypes,
+                "PAGE");
+
+            // Home
+            var homePageId = await GetPageIdBySlugAsync("home");
+
+            if (homePageId.HasValue)
+            {
+                await EnsureMenuAsync(
+                    existingMenus,
+                    text: "خانه",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: homePageId,
+                    parentId: null,
+                    sortOrder: 0,
+                    enabled: true);
+            }
+
+            // About Us
+            var aboutPageId = await GetPageIdBySlugAsync("about");
+
+            if (aboutPageId.HasValue)
+            {
+                await EnsureMenuAsync(
+                    existingMenus,
+                    text: "درباره ما",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: aboutPageId,
+                    parentId: null,
+                    sortOrder: 4,
+                    enabled: true);
+            }
+
+            // Contact Us
+            var contactPageId = await GetPageIdBySlugAsync("contact");
+
+            if (contactPageId.HasValue)
+            {
+                await EnsureMenuAsync(
+                    existingMenus,
+                    text: "تماس با ما",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: contactPageId,
+                    parentId: null,
+                    sortOrder: 5,
+                    enabled: true);
+            }
+            // FAQ
+            if (configuration.EnableFaq == true)
+            {
+                var faqPageId = await GetPageIdBySlugAsync("faq");
+
+                if (faqPageId.HasValue)
+                {
+                    await EnsureMenuAsync(
+                        existingMenus,
+                        text: "سؤالات متداول",
+                        linkTypeId: pageLinkTypeId,
+                        targetId: faqPageId,
+                        parentId: null,
+                        sortOrder: 6,
+                        enabled: true);
+                }
+            }
+
+            // Privacy
+            if (configuration.EnablePrivacy == true)
+            {
+                var privacyPageId = await GetPageIdBySlugAsync("privacy-policy");
+
+                if (privacyPageId.HasValue)
+                {
+                    await EnsureMenuAsync(
+                        existingMenus,
+                        text: "حریم خصوصی",
+                        linkTypeId: pageLinkTypeId,
+                        targetId: privacyPageId,
+                        parentId: null,
+                        sortOrder: 7,
+                        enabled: true);
+                }
+            }
+            // =========================================================
+            // Products
+            // =========================================================
+
+            Guid? productsMenuId = null;
+
+            if (configuration.EnableShop)
+            {
+                productsMenuId = await EnsureMenuAsync(
+                    existingMenus,
+                    text: "محصولات",
+                    linkTypeId: productLinkTypeId,
+                    targetId: null,
+                    parentId: null,
+                    sortOrder: 1,
+                    enabled: true);
+            }
+            else
+            {
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "محصولات",
+                    linkTypeId: productLinkTypeId,
+                    targetId: null,
+                    parentId: null);
+            }
+
+            // =========================================================
+            // Product Categories
+            // =========================================================
+
+            if (configuration.EnableShop &&
+                configuration.EnableProductCategoriesMenu == true &&
+                productsMenuId.HasValue)
+            {
+                var categoriesMenuId = await EnsureMenuAsync(
+                    existingMenus,
+                    text: "دسته‌بندی محصولات",
+                    linkTypeId: null,
+                    targetId: null,
+                    parentId: productsMenuId,
+                    sortOrder: 1,
+                    enabled: true);
+
+                if (categoriesMenuId.HasValue)
+                {
+                    var categories = await _productCategoryService
+                        .GetAllViews();
+
+                    var activeCategories = await categories
+                        .Where(x => x.IsActive)
+                        .OrderBy(x => x.SortOrder)
+                        .ToListAsync();
+
+                    foreach (var category in activeCategories)
+                    {
+                        await EnsureMenuAsync(
+                            existingMenus,
+                            text: category.Name,
+                            linkTypeId: categoryLinkTypeId,
+                            targetId: category.Id,
+                            parentId: categoriesMenuId,
+                            sortOrder: category.SortOrder,
+                            enabled: true);
+                    }
+                }
+            }
+            else if (productsMenuId.HasValue)
+            {
+                var categoriesMenu = existingMenus.FirstOrDefault(x =>
+                    x.ParentId == productsMenuId.Value &&
+                    x.Link1Text == "دسته‌بندی محصولات" &&
+                    x.Link1TypeId == null &&
+                    x.Link1TargetId == null);
+
+                if (categoriesMenu != null)
+                {
+                    await DisableMenuAsync(
+                        existingMenus,
+                        categoriesMenu.Link1Text,
+                        null,
+                        null,
+                        productsMenuId);
+
+                    await DisableChildMenusAsync(
+                        existingMenus,
+                        categoriesMenu.Id,
+                        categoryLinkTypeId);
+                }
+            }
+
+            // =========================================================
+            // Product Brands
+            // =========================================================
+
+            if (configuration.EnableShop &&
+                configuration.EnableProductBrandsMenu == true &&
+                productsMenuId.HasValue)
+            {
+                var brandsMenuId = await EnsureMenuAsync(
+                    existingMenus,
+                    text: "برندها",
+                    linkTypeId: null,
+                    targetId: null,
+                    parentId: productsMenuId,
+                    sortOrder: 2,
+                    enabled: true);
+
+                if (brandsMenuId.HasValue)
+                {
+                    var brands = await _productBrandService.GetAllViews();
+
+                    var activeBrands = await brands
+                        .Where(x => x.IsActive.Value)
+                        .OrderBy(x => x.SortOrder)
+                        .ToListAsync();
+
+                    foreach (var brand in activeBrands)
+                    {
+                        await EnsureMenuAsync(
+                            existingMenus,
+                            text: brand.Name,
+                            linkTypeId: brandLinkTypeId,
+                            targetId: brand.Id,
+                            parentId: brandsMenuId,
+                            sortOrder: brand.SortOrder ?? 0,
+                            enabled: true);
+                    }
+                }
+            }
+            else if (productsMenuId.HasValue)
+            {
+                var brandsMenu = existingMenus.FirstOrDefault(x =>
+                    x.ParentId == productsMenuId.Value &&
+                    x.Link1Text == "برندها" &&
+                    x.Link1TypeId == null &&
+                    x.Link1TargetId == null);
+
+                if (brandsMenu != null)
+                {
+                    await DisableMenuAsync(
+                        existingMenus,
+                        brandsMenu.Link1Text,
+                        null,
+                        null,
+                        productsMenuId);
+
+                    await DisableChildMenusAsync(
+                        existingMenus,
+                        brandsMenu.Id,
+                        brandLinkTypeId);
+                }
+            }
+            // =========================================================
+            // News
+            // =========================================================
+
+            if (configuration.EnableNews)
+            {
+                await EnsureMenuAsync(
+                    existingMenus,
+                    text: "اخبار",
+                    linkTypeId: newsLinkTypeId,
+                    targetId: null,
+                    parentId: null,
+                    sortOrder: 2,
+                    enabled: true);
+            }
+            else
+            {
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "اخبار",
+                    linkTypeId: newsLinkTypeId,
+                    targetId: null,
+                    parentId: null);
+            }
+
+            // =========================================================
+            // Articles
+            // =========================================================
+
+            if (configuration.EnableBlog)
+            {
+                await EnsureMenuAsync(
+                    existingMenus,
+                    text: "مقالات",
+                    linkTypeId: articleLinkTypeId,
+                    targetId: null,
+                    parentId: null,
+                    sortOrder: 3,
+                    enabled: true);
+            }
+            else
+            {
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "مقالات",
+                    linkTypeId: articleLinkTypeId,
+                    targetId: null,
+                    parentId: null);
+            }
+        }
+        private async Task<Guid?> GetPageIdBySlugAsync(string slug)
+        {
+            var pages = await _pageService.GetAllViews();
+
+            return await pages
+                .Where(x => x.Slug == slug)
+                .Select(x => (Guid?)x.Id)
+                .FirstOrDefaultAsync();
+        }
+        private async Task<Guid?> EnsureMenuAsync(
+            List<SiteMenuCrud> existingMenus,
+            string text,
+            Guid? linkTypeId,
+            Guid? targetId,
+            Guid? parentId,
+            int sortOrder,
+            bool enabled)
+        {
+            SiteMenuCrud? existing;
+
+            if (linkTypeId.HasValue || targetId.HasValue)
+            {
+                existing = existingMenus.FirstOrDefault(x =>
+                    x.ParentId == parentId &&
+                    x.Link1TypeId == linkTypeId &&
+                    x.Link1TargetId == targetId);
+            }
+            else
+            {
+                existing = existingMenus.FirstOrDefault(x =>
+                    x.ParentId == parentId &&
+                    x.Link1TypeId == null &&
+                    x.Link1TargetId == null &&
+                    x.Link1Text == text);
+            }
+
+            if (existing != null)
+                return existing.Id;
+
+            if (!enabled)
+                return null;
+
+            var result = await _siteMenuService.CreateAsync(new SiteMenuCrud
+            {
+                Link1Text = text,
+                Link1TypeId = linkTypeId,
+                Link1TargetId = targetId,
+                Link1Url = null,
+                Link1Color = null,
+                Link1OpenInNewTab = false,
+
+                ParentId = parentId,
+                SortOrder = sortOrder,
+
+                IsActive = true,
+
+                Icon = null,
+                IconColor = null
+            });
+
+            if (!result.Success || result.Data == null)
+            {
+                throw new Exception(
+                    $"Failed to create menu: {text}");
+            }
+
+            var id = result.Data.Id;
+
+            existingMenus.Add(new SiteMenuCrud
+            {
+                Id = id,
+                Link1Text = text,
+                Link1TypeId = linkTypeId,
+                Link1TargetId = targetId,
+                Link1Url = null,
+                Link1Color = null,
+                Link1OpenInNewTab = false,
+
+                ParentId = parentId,
+                SortOrder = sortOrder,
+
+                IsActive = true
+            });
+
+            return id;
+        }
+        private async Task DisableMenuAsync(
+    List<SiteMenuCrud> existingMenus,
+    string text,
+    Guid? linkTypeId,
+    Guid? targetId,
+    Guid? parentId)
+        {
+            var existing = existingMenus.FirstOrDefault(x =>
+                x.ParentId == parentId &&
+                x.Link1TypeId == linkTypeId &&
+                x.Link1TargetId == targetId &&
+                (
+                    linkTypeId.HasValue ||
+                    x.Link1Text == text
+                ));
+
+            if (existing == null || !existing.IsActive)
+                return;
+
+            existing.IsActive = false;
+
+            await _siteMenuService.UpdateAsync(existing);
+        }
+        private async Task DisableChildMenusAsync(
+    List<SiteMenuCrud> existingMenus,
+    Guid parentId,
+    Guid? linkTypeId)
+        {
+            var children = existingMenus
+                .Where(x =>
+                    x.ParentId == parentId &&
+                    (!linkTypeId.HasValue || x.Link1TypeId == linkTypeId) &&
+                    x.IsActive)
+                .ToList();
+
+            foreach (var child in children)
+            {
+                child.IsActive = false;
+
+                await _siteMenuService.UpdateAsync(child);
+            }
+        }
+        private async Task<Guid?> GetLinkTypeIdAsync(
+    IQueryable<LinkTypeCrud> linkTypes,
+    string code)
+        {
+            return await linkTypes
+                .Where(x => x.Code == code)
+                .Select(x => (Guid?)x.Id)
+                .FirstOrDefaultAsync();
+        }
         public async Task SeedCoreAsync()
         {
             const string seederName = SeederNames.Core;

@@ -93,4 +93,14 @@ public partial class VwSiteGlobalSetting
     public decimal? DutyPercentage { get; set; }
 
     public bool HasCardToCardPayment { get; set; }
+
+    public bool? EnableFaq { get; set; }
+
+    public bool? EnablePrivacy { get; set; }
+
+    public bool? EnableProductBrandsMenu { get; set; }
+
+    public bool? EnableProductCategoriesMenu { get; set; }
+
+    public bool? EnableProductSearchMenu { get; set; }
 }

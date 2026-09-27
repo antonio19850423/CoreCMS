@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 using Velora.Application.Services;
 using Velora.Application.Shared;
@@ -27,11 +28,13 @@ namespace Velora.Host.Controllers
         private readonly IProductQuestionService _productQuestionService;
         private readonly IShippingMethodService _shippingMethodService;
         private readonly IShippingMethodCityService _shippingMethodCityService;
-        
+        private readonly ISiteMenuService _siteMenuService;
+        private readonly IMemoryCache _memoryCache;
 
 
 
-        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService, IBankAccountService bankAccountService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService)
+
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService, IBankAccountService bankAccountService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, ISiteMenuService siteMenuService, IMemoryCache memoryCache)
         {
 
             _contentService = ContentService;
@@ -45,6 +48,8 @@ namespace Velora.Host.Controllers
             _bankAccountService= bankAccountService;
             _shippingMethodService= shippingMethodService;
             _shippingMethodCityService= shippingMethodCityService;
+            _siteMenuService= siteMenuService;
+            _memoryCache=memoryCache;
         }
 
 
@@ -55,28 +60,31 @@ namespace Velora.Host.Controllers
         //    var result = await _contentService.GetSiteInfoAsync();
         //    return Ok(result);
         //}
+
         [HttpGet]
         [Route("GetSiteInfoAsync")]
         public async Task<ResultDto<SiteInfoDto>> GetSiteInfoAsync()
         {
+            const string cacheKey = "SiteInfo";
+
+            if (_memoryCache.TryGetValue(
+                cacheKey,
+                out ResultDto<SiteInfoDto>? cachedResult))
+            {
+                return cachedResult!;
+            }
+
             try
             {
-                var footerData = await _pageService.GetFooterAsync();
+                var footerData =
+                    await _pageService.GetFooterAsync();
 
-                var siteData = await _contentService.GetSiteInfoAsync();
+                var siteData =
+                    await _contentService.GetSiteInfoAsync();
 
-                var bankAccounts = new List<BankAccountCrud>();
-
-                if (siteData.Data.HasCardToCardPayment)
-                {
-                    var bankAccountsQuery =
-                        await _bankAccountService
-                            .GetBankAccountsBySiteInfoId(siteData.Data.Id);
-
-                    bankAccounts = bankAccountsQuery.ToList();
-                }
-
-                if (!footerData.Success || !siteData.Success)
+                if (!footerData.Success ||
+                    !siteData.Success ||
+                    siteData.Data == null)
                 {
                     return new ResultDto<SiteInfoDto>
                     {
@@ -90,6 +98,19 @@ namespace Velora.Host.Controllers
                     };
                 }
 
+                var bankAccounts =
+                    new List<BankAccountCrud>();
+
+                if (siteData.Data.HasCardToCardPayment)
+                {
+                    var bankAccountsQuery =
+                        await _bankAccountService
+                            .GetBankAccountsBySiteInfoId(siteData.Data.Id);
+
+                    bankAccounts =
+                        bankAccountsQuery.ToList();
+                }
+
                 // دریافت روش‌های ارسال
                 var shippingMethodsQuery =
                     await _shippingMethodService.GetAllViews();
@@ -98,32 +119,26 @@ namespace Velora.Host.Controllers
                     await _shippingMethodCityService.GetAllViews();
 
                 var shippingMethods =
-                     shippingMethodsQuery
+                    shippingMethodsQuery
                         .Where(x => x.IsActive)
                         .ToList();
 
                 var shippingCities =
-                     shippingCitiesQuery
+                    shippingCitiesQuery
                         .Where(x => x.IsActive)
                         .ToList();
 
-                // تبدیل به DTO نهایی
+                // تبدیل روش‌های ارسال به DTO
                 var shippingMethodsDto =
                     shippingMethods
                         .Select(method => new ShippingMethodViewDto
                         {
                             Id = method.Id,
-
                             Name = method.Name,
-
                             Description = method.Description,
-
                             Price = method.Price,
-
                             EstimatedDays = method.EstimatedDays,
-
                             IsNationwide = method.IsNationwide,
-
                             IsDefault = method.IsDefault,
 
                             Cities = method.IsNationwide
@@ -133,47 +148,88 @@ namespace Velora.Host.Controllers
                                     .Select(city => new ShippingMethodCityViewDto
                                     {
                                         CityId = city.CityId,
-
                                         CityTitle = city.CityTitle,
-
                                         ParentId = city.ParentId
                                     })
                                     .ToList()
                         })
                         .ToList();
 
-                var result = new SiteInfoDto
-                {
-                    Footer = footerData.Data,
+                // دریافت منوها
+                var siteMenusQuery =
+                    await _siteMenuService.GetAllViews();
 
-                    Settings = siteData.Data,
+                var siteMenus =
+                    siteMenusQuery
+                        .Where(x => x.IsActive)
+                        .OrderBy(x => x.SortOrder)
+                        .ToList();
 
-                    BankAccounts = bankAccounts,
+                var menusDto =
+                    BuildMenuTree(siteMenus, null);
 
-                    Shippings = shippingMethodsDto
-                };
+                // DTO نهایی
+                var result =
+                    new ResultDto<SiteInfoDto>
+                    {
+                        Data = new SiteInfoDto
+                        {
+                            Footer = footerData.Data,
+                            Settings = siteData.Data,
+                            BankAccounts = bankAccounts,
+                            Shippings = shippingMethodsDto,
+                            SiteMenus = menusDto
+                        },
+                        Success = true
+                    };
 
-                return new ResultDto<SiteInfoDto>
-                {
-                    Data = result,
+                // Cache به مدت 30 دقیقه
+                _memoryCache.Set(
+                    cacheKey,
+                    result,
+                    TimeSpan.FromMinutes(30));
 
-                    Success = true
-                };
+                return result;
             }
             catch (Exception ex)
             {
                 return new ResultDto<SiteInfoDto>
                 {
                     Success = false,
-
                     Message = ex.Message,
-
                     Errors = new List<string>
             {
                 ex.Message
             }
                 };
             }
+        }
+        private List<SiteMenuViewDto> BuildMenuTree(
+    List<SiteMenuCrud> menus,
+    Guid? parentId)
+        {
+            return menus
+                .Where(x => x.ParentId == parentId)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new SiteMenuViewDto
+                {
+                    Id = x.Id,
+
+                    ParentId = x.ParentId,
+
+                    Label = x.Link1Text,
+
+                    Url = x.Link1Url,
+
+                    Icon = x.Icon,
+
+                    OpenInNewTab = x.Link1OpenInNewTab ?? false,
+
+                    SortOrder = x.SortOrder,
+
+                    Children = BuildMenuTree(menus, x.Id)
+                })
+                .ToList();
         }
         [HttpGet]
         [Route("GetPageAsync")]
@@ -450,6 +506,17 @@ namespace Velora.Host.Controllers
                         page,
                         pageSize);
 
+
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("SearchProductsAsync")]
+        public async Task<IActionResult> SearchProductsAsync(
+    string search)
+        {
+            var result =
+                await _productService
+                    .SearchAsync(search);
 
             return Ok(result);
         }

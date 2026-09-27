@@ -169,4 +169,13 @@
   <data name="CmsConfiguration.EnableDynamicPages" xml:space="preserve">
     <value>EnableDynamicPages</value>
   </data>
+  <data name="CmsConfiguration.EnableProductCategoriesMenu" xml:space="preserve">
+    <value>Enable Product Categories Menu</value>
+  </data>
+  <data name="CmsConfiguration.EnableProductBrandsMenu" xml:space="preserve">
+    <value>Enable Product Brands Menu  </value>
+  </data>
+  <data name="CmsConfiguration.EnableProductSearchMenu" xml:space="preserve">
+    <value>Enable Product Search Menu</value>
+  </data>
 </root>

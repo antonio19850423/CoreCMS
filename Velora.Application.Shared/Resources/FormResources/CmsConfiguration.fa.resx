@@ -169,4 +169,13 @@
   <data name="CmsConfiguration.EnableDynamicPages" xml:space="preserve">
     <value>فعال بودن صفحات داینامیک</value>
   </data>
+  <data name="CmsConfiguration.EnableProductCategoriesMenu" xml:space="preserve">
+    <value>نمایش منوی دسته‌بندی محصولات</value>
+  </data>
+  <data name="CmsConfiguration.EnableProductBrandsMenu" xml:space="preserve">
+    <value> نمایش منوی برندهای محصولات</value>
+  </data>
+  <data name="CmsConfiguration.EnableProductSearchMenu" xml:space="preserve">
+    <value> نمایش منوی جستجوی محصولات</value>
+  </data>
 </root>

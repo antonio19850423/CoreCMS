@@ -27,5 +27,6 @@ namespace Velora.Application.Shared.Services
 bool exportCurrentPage,
 int pageNumber,
 int pageSize);
+        Task<ResultDto<List<ProductSearchDto>>> SearchAsync(string search);
     }
 }

@@ -17,5 +17,6 @@ namespace Velora.Application.Shared.Dtos
 
         public SqlSiteGlobalSetting Settings { get; set; }
         public List<ShippingMethodViewDto> Shippings { get; set; } = new();
+        public List<SiteMenuViewDto> SiteMenus { get; set; }
     }
 }

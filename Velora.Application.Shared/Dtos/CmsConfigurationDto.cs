@@ -46,5 +46,10 @@ namespace Velora.Application.Shared.Dtos
         public bool? EnablePrivacy { get; set; }
 
         public bool? EnableDynamicPages { get; set; }
+        public bool? EnableProductCategoriesMenu { get; set; }
+
+        public bool? EnableProductBrandsMenu { get; set; }
+
+        public bool? EnableProductSearchMenu { get; set; }
     }
 }

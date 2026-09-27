@@ -39,6 +39,12 @@ public partial class VwCmsConfigurationForm
 
     public bool? EnableDynamicPages { get; set; }
 
+    public bool? EnableProductCategoriesMenu { get; set; }
+
+    public bool? EnableProductBrandsMenu { get; set; }
+
+    public bool? EnableProductSearchMenu { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

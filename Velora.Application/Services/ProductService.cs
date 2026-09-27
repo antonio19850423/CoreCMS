@@ -36,14 +36,15 @@ namespace Velora.Application.Services
         protected readonly IProductTagMappingService _productTagMappingService;
         protected readonly IProductInventoryTransactionService _productInventoryService;
         protected readonly IDiscountService _discountService;
-
+        protected readonly IProductFileService _productFileService;
+        
         public ProductService(
               ISqlRepository<SqlProduct> sqlRepository,
               IPosgreSqlRepository<SqlProduct> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService, IDiscountService discountService)
+              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService, IDiscountService discountService, IProductFileService productFileService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -58,6 +59,7 @@ namespace Velora.Application.Services
             _productTagMappingService = productTagMappingService;
             _productInventoryService = productInventoryService;
             _discountService = discountService;
+            _productFileService = productFileService;
         }
         public async Task<IQueryable<ProductCrud>> GetAllViews()
         {
@@ -1030,6 +1032,64 @@ int ProductSize)
             }
                 };
             }
+        }
+        public async Task<ResultDto<List<ProductSearchDto>>> SearchAsync(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return new ResultDto<List<ProductSearchDto>>
+                {
+                    Success = true,
+                    Data = new List<ProductSearchDto>()
+                };
+            }
+
+            var products = await GetAllViews();
+
+            var productList = await products
+                .Where(x =>
+                    x.IsActive==true &&
+                    (
+                        x.Name.Contains(search) ||
+                        x.Slug.Contains(search)
+                    ))
+                .Take(10)
+                .ToListAsync();
+
+            var productFiles = await _productFileService.GetAllViews();
+
+            var productIds = productList
+                .Select(x => x.Id)
+                .ToList();
+
+            var mainFiles = await productFiles
+                .Where(x =>
+                    productIds.Contains(x.ParentId) &&
+                    x.IsMain &&
+                    x.IsActive)
+                .ToListAsync();
+
+            var result = productList
+                .Select(product =>
+                {
+                    var mainFile = mainFiles
+                        .FirstOrDefault(x => x.ParentId == product.Id);
+
+                    return new ProductSearchDto
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Slug = product.Slug,
+                        ImageUrl = mainFile?.ThumbnailUrl ?? mainFile?.FileUrl
+                    };
+                })
+                .ToList();
+
+            return new ResultDto<List<ProductSearchDto>>
+            {
+                Success = true,
+                Data = result
+            };
         }
     }
 

@@ -41,36 +41,41 @@ public class LinkResolverService : ILinkResolverService
                 return currentUrl;
 
             var linkType = await _linkTypeService.GetByIdAsync(linkTypeId.Value);
+
             if (!linkType.Success || linkType.Data == null)
                 return currentUrl;
 
             var code = linkType.Data.Code?.ToUpperInvariant();
 
-
             // لینک خارجی
             if (code == "EXTERNAL")
                 return currentUrl;
-
-            // لینک داخلی بدون Target
-            if (!targetId.HasValue)
-                return null;
 
             switch (code)
             {
                 case "PAGE":
                     {
+                        if (!targetId.HasValue)
+                            return null;
+
                         var pages = await _pageService.GetAllViews();
 
                         var page = pages
                             .FirstOrDefault(x => x.Id == targetId.Value);
 
-                        return page != null
-                            ? $"/{page.Slug}"
-                            : null;
+                        if (page == null)
+                            return null;
+
+                        return page.Slug?.Equals("home", StringComparison.OrdinalIgnoreCase) == true
+                            ? "/"
+                            : $"/{page.Slug}";
                     }
 
                 case "PRODUCT":
                     {
+                        if (!targetId.HasValue)
+                            return "/products/";
+
                         var products = await _productService.GetAllViews();
 
                         var product = products
@@ -83,8 +88,10 @@ public class LinkResolverService : ILinkResolverService
 
                 case "CATEGORY":
                     {
-                        var categories =
-                            await _productCategoryService.GetAllViews();
+                        if (!targetId.HasValue)
+                            return "/products/";
+
+                        var categories = await _productCategoryService.GetAllViews();
 
                         var category = categories
                             .FirstOrDefault(x => x.Id == targetId.Value);
@@ -96,8 +103,10 @@ public class LinkResolverService : ILinkResolverService
 
                 case "BRAND":
                     {
-                        var brands =
-                            await _productBrandService.GetAllViews();
+                        if (!targetId.HasValue)
+                            return "/products/";
+
+                        var brands = await _productBrandService.GetAllViews();
 
                         var brand = brands
                             .FirstOrDefault(x => x.Id == targetId.Value);
@@ -109,6 +118,10 @@ public class LinkResolverService : ILinkResolverService
 
                 case "NEWS":
                     {
+                        // منوی اصلی اخبار Target ندارد
+                        if (!targetId.HasValue)
+                            return "/news/";
+
                         var news = await _contentItemService.GetAllViews();
 
                         var item = news.FirstOrDefault(x =>
@@ -122,6 +135,10 @@ public class LinkResolverService : ILinkResolverService
 
                 case "ARTICLE":
                     {
+                        // منوی اصلی مقالات Target ندارد
+                        if (!targetId.HasValue)
+                            return "/articles/";
+
                         var articles = await _contentItemService.GetAllViews();
 
                         var item = articles.FirstOrDefault(x =>

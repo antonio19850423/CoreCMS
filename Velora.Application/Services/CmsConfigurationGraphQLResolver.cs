@@ -45,15 +45,18 @@ public class CmsConfigurationGqlResolver : ICmsConfigurationGqlResolver
             IsActive = x.IsActive,
             EnableShop = x.EnableShop,
             EnableBlog = x.EnableBlog,
-            DefaultTheme=x.DefaultTheme ?? "",
+            DefaultTheme = x.DefaultTheme ?? "",
             CreatedAtPersian = x.CreatedAtPersian ?? "",
-            UpdatedAtPersian = x.UpdatedAtPersian??"",
+            UpdatedAtPersian = x.UpdatedAtPersian ?? "",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
-            EnablePrivacy = x.EnablePrivacy ,
-            EnableFaq = x.EnableFaq ,
-            EnableDynamicPages= x.EnableDynamicPages ,
-            ShouldInsert = x.ShouldInsert
+            EnablePrivacy = x.EnablePrivacy,
+            EnableFaq = x.EnableFaq,
+            EnableDynamicPages = x.EnableDynamicPages,
+            ShouldInsert = x.ShouldInsert,
+            EnableProductSearchMenu = x.EnableProductSearchMenu,
+            EnableProductCategoriesMenu = x.EnableProductCategoriesMenu,
+            EnableProductBrandsMenu = x.EnableProductBrandsMenu,
         });
     }
 
