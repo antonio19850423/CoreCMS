@@ -178,4 +178,10 @@
   <data name="CmsConfiguration.EnableProductSearchMenu" xml:space="preserve">
     <value>Enable Product Search Menu</value>
   </data>
+  <data name="CmsConfiguration.EnableUserLogin" xml:space="preserve">
+    <value>EnableUserLogin</value>
+  </data>
+  <data name="CmsConfiguration.EnableUserRegistration" xml:space="preserve">
+    <value>EnableUserRegistration</value>
+  </data>
 </root>

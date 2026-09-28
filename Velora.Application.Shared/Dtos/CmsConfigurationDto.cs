@@ -51,5 +51,8 @@ namespace Velora.Application.Shared.Dtos
         public bool? EnableProductBrandsMenu { get; set; }
 
         public bool? EnableProductSearchMenu { get; set; }
+        public bool? EnableUserLogin { get; set; }
+
+        public bool? EnableUserRegistration { get; set; }
     }
 }

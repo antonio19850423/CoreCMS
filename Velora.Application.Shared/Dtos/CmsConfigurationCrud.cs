@@ -56,6 +56,10 @@ namespace Velora.Application.Shared.Dtos
         public bool? EnableProductBrandsMenu { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 20, GridOrder = 20, ShowInGrid = true, ShowInForm = true)]
         public bool? EnableProductSearchMenu { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
+        public bool? EnableUserLogin { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 22, GridOrder = 22, ShowInGrid = true, ShowInForm = true)]
+        public bool? EnableUserRegistration { get; set; }
 
     }
 }

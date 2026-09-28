@@ -57,6 +57,8 @@ public class CmsConfigurationGqlResolver : ICmsConfigurationGqlResolver
             EnableProductSearchMenu = x.EnableProductSearchMenu,
             EnableProductCategoriesMenu = x.EnableProductCategoriesMenu,
             EnableProductBrandsMenu = x.EnableProductBrandsMenu,
+            EnableUserLogin = x.EnableUserLogin,
+            EnableUserRegistration= x.EnableUserRegistration,
         });
     }
 

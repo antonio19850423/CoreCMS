@@ -178,4 +178,10 @@
   <data name="CmsConfiguration.EnableProductSearchMenu" xml:space="preserve">
     <value> نمایش منوی جستجوی محصولات</value>
   </data>
+  <data name="CmsConfiguration.EnableUserLogin" xml:space="preserve">
+    <value>فعال‌سازی ورود کاربران</value>
+  </data>
+  <data name="CmsConfiguration.EnableUserRegistration" xml:space="preserve">
+    <value>فعال‌سازی ثبت‌نام کاربران</value>
+  </data>
 </root>

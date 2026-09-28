@@ -83,6 +83,8 @@ namespace Velora.Application.Services
                  EnableProductBrandsMenu = input.EnableProductBrandsMenu,
                  EnableProductCategoriesMenu = input.EnableProductCategoriesMenu,
                  EnableProductSearchMenu = input.EnableProductSearchMenu,
+                 EnableUserRegistration = input.EnableUserRegistration,
+                 EnableUserLogin = input.EnableUserLogin,
                 };
 
                 var result = await CreateAsync(CmsConfiguration);
@@ -146,6 +148,8 @@ namespace Velora.Application.Services
                     EnableProductBrandsMenu = input.EnableProductBrandsMenu,
                     EnableProductCategoriesMenu = input.EnableProductCategoriesMenu,
                     EnableProductSearchMenu = input.EnableProductSearchMenu,
+                    EnableUserLogin = input.EnableUserLogin,
+                    EnableUserRegistration = input.EnableUserRegistration,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

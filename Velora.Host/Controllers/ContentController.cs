@@ -187,7 +187,7 @@ namespace Velora.Host.Controllers
                 _memoryCache.Set(
                     cacheKey,
                     result,
-                    TimeSpan.FromMinutes(30));
+                    TimeSpan.FromSeconds(1));
 
                 return result;
             }

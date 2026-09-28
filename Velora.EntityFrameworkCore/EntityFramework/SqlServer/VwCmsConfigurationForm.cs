@@ -45,6 +45,10 @@ public partial class VwCmsConfigurationForm
 
     public bool? EnableProductSearchMenu { get; set; }
 
+    public bool? EnableUserLogin { get; set; }
+
+    public bool? EnableUserRegistration { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

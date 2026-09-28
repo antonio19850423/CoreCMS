@@ -103,4 +103,10 @@ public partial class VwSiteGlobalSetting
     public bool? EnableProductCategoriesMenu { get; set; }
 
     public bool? EnableProductSearchMenu { get; set; }
+
+    public bool? EnableDynamicPages { get; set; }
+
+    public bool? EnableUserLogin { get; set; }
+
+    public bool? EnableUserRegistration { get; set; }
 }
