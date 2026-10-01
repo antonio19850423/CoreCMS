@@ -169,5 +169,17 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(500)]
         public string? ThumbnailUrl { get; set; }
+        [StringLength(250)]
+        public string? EnglishTitle { get; set; }
+
+        public bool? IsLatestNews { get; set; }
+
+        public bool? IsSpecialOffers { get; set; }
+
+        public bool? IsBestSellingProducts { get; set; }
+
+        public bool? IsActiveBrands { get; set; }
+
+        public bool? IsActiveCategries { get; set; }
     }
 }

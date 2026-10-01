@@ -158,4 +158,17 @@ public partial class VwSectionForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    [StringLength(250)]
+    public string? EnglishTitle { get; set; }
+
+    public bool? IsActiveBrands { get; set; }
+
+    public bool? IsActiveCategries { get; set; }
+
+    public bool? IsBestSellingProducts { get; set; }
+
+    public bool? IsLatestNews { get; set; }
+
+    public bool? IsSpecialOffers { get; set; }
 }

@@ -1801,299 +1801,415 @@ namespace Velora.Application.Seeds
         public async Task SeedCmsTemplateAsync()
         {
             var excludedSlugs = new[] { "news", "articles" };
-            var seederName = SeederNames.Seed_Core_Template;
-            var existing = await _cmsConfigurationService
-    .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+
+            var existing =
+                await _cmsConfigurationService
+                    .FirstOrDefaultAsync<SqlCmsConfiguration>(
+                        x => x.IsActive);
+
+            // =====================================================
+            // LOAD TEMPLATE CONFIGURATION
+            // =====================================================
+
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:Templates:Enabled");
+
+            if (!enabled)
                 return;
 
-            var templateName = _configuration["Cms:DefaultTemplate"];
+            var templateFile =
+                _configuration.GetValue<string>(
+                    "Seed:Templates:File");
 
-            if (string.IsNullOrWhiteSpace(templateName))
-                throw new Exception("DefaultTemplate is not configured in appsettings");
+            if (string.IsNullOrWhiteSpace(templateFile))
+                throw new InvalidOperationException(
+                    "Seed:Templates:File is not configured.");
 
-            var assembly = typeof(SeedJsonModel).Assembly;
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
 
             // =====================================================
             // LOAD TEMPLATE
             // =====================================================
-            using var templateStream = assembly.GetManifestResourceStream(
-                "Velora.Application.Shared.Resources.Templates.json");
+
+            var templateResourceName =
+                $"Velora.Application.Shared.Resources.{templateFile
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            using var templateStream =
+                assembly.GetManifestResourceStream(
+                    templateResourceName);
 
             if (templateStream == null)
-                throw new FileNotFoundException("Templates.json not found");
+                throw new FileNotFoundException(
+                    $"Template seed resource '{templateResourceName}' not found.");
 
-            var templateModel = await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
-                templateStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var templateModel =
+                await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
+                    templateStream,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
 
             if (templateModel == null)
-                throw new Exception("Invalid Template JSON");
+                throw new InvalidOperationException(
+                    $"Invalid Template JSON: {templateFile}");
 
-            var template = templateModel.Templates
-                .FirstOrDefault(x => x.TemplateName == templateName);
+            // =====================================================
+            // GET TEMPLATE
+            // =====================================================
+
+            var template =
+                templateModel.Templates.FirstOrDefault();
 
             if (template == null)
-                throw new Exception($"Template {templateName} not found");
+                throw new InvalidOperationException(
+                    $"No template found in '{templateFile}'.");
 
             // =====================================================
             // LOAD COMPONENT RULES
             // =====================================================
-            using var componentStream = assembly.GetManifestResourceStream(
-                "Velora.Application.Shared.Resources.ComponentRules.json");
+
+            using var componentStream =
+                assembly.GetManifestResourceStream(
+                    "Velora.Application.Shared.Resources.ComponentRules.json");
 
             if (componentStream == null)
-                throw new FileNotFoundException("ComponentRules.json not found");
+                throw new FileNotFoundException(
+                    "ComponentRules.json not found.");
 
-            var componentRules = await JsonSerializer.DeserializeAsync<
-                Dictionary<string, ComponentRuleModel>>(
-                componentStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var componentRules =
+                await JsonSerializer.DeserializeAsync<
+                    Dictionary<string, ComponentRuleModel>>(
+                    componentStream,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
 
             if (componentRules == null)
-                throw new Exception("Invalid ComponentRules JSON");
-
-            int sortOrder = 1;
-            var componentTypeCache = new Dictionary<string, ComponentTypeDto>();
+                throw new InvalidOperationException(
+                    "Invalid ComponentRules JSON.");
 
             // =====================================================
-            // PAGES LOOP (UPSERT)
+            // CACHE
             // =====================================================
+
+            var componentTypeCache =
+                new Dictionary<string, ComponentTypeDto>();
+
+            // =====================================================
+            // PAGES LOOP
+            // =====================================================
+
             foreach (var page in template.Pages)
             {
-                // ❌ SKIP special dynamic pages
-                if (excludedSlugs.Contains(page.Slug?.ToLower()))
-                    continue;
-                var cmsConfig = existing?.Data;
-                if (page.Slug == "faq" && !(cmsConfig?.EnableFaq ?? false))
-                {
-                    continue;
-                }
-                if (page.Slug == "privacy" && !(cmsConfig?.EnablePrivacy ?? false))
-                {
-                    continue;
-                }
-                // ================= PAGE UPSERT =================
-                var existingPage = _dbType == DatabaseType.SqlServer
-                     ? await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug)
-                     : await _pageService.FirstOrDefaultAsync<SqlPage>(x => x.Slug == page.Slug);
+                // =================================================
+                // SKIP SPECIAL DYNAMIC PAGES
+                // =================================================
 
-                var pageEntity = new PageDto
+                if (excludedSlugs.Contains(
+                        page.Slug?.ToLower()))
                 {
-                    Name = page.PageName,
-                    Slug = page.Slug,
-                    IsDynamic = page.IsDynamic,
-                    IsPublished = false,
-                    MetaTitle = page.MetaTitle ?? $"صفحه {page.PageName}",
-                    MetaDescription = page.MetaDescription ?? $"توضیحات صفحه {page.PageName}",
-                    MetaKeywords = page.MetaKeywords ?? "آموزشی، نمونه، سایت",
-                    IsActive = true
-                };
+                    continue;
+                }
+
+                var cmsConfig = existing?.Data;
+
+                if (page.Slug == "faq" &&
+                    !(cmsConfig?.EnableFaq ?? false))
+                {
+                    continue;
+                }
+
+                if (page.Slug == "privacy" &&
+                    !(cmsConfig?.EnablePrivacy ?? false))
+                {
+                    continue;
+                }
+
+                // =================================================
+                // PAGE UPSERT
+                // =================================================
+
+                var existingPage =
+                    _dbType == DatabaseType.SqlServer
+                        ? await _pageService
+                            .FirstOrDefaultAsync<SqlPage>(
+                                x => x.Slug == page.Slug)
+                        : await _pageService
+                            .FirstOrDefaultAsync<SqlPage>(
+                                x => x.Slug == page.Slug);
+
+                var pageEntity =
+                    new PageDto
+                    {
+                        Name = page.PageName,
+                        Slug = page.Slug,
+                        IsDynamic = page.IsDynamic,
+                        IsPublished = false,
+
+                        MetaTitle =
+                            page.MetaTitle ??
+                            $"صفحه {page.PageName}",
+
+                        MetaDescription =
+                            page.MetaDescription ??
+                            $"توضیحات صفحه {page.PageName}",
+
+                        MetaKeywords =
+                            page.MetaKeywords ??
+                            "آموزشی، نمونه، سایت",
+
+                        IsActive = true
+                    };
 
                 if (existingPage.Data == null)
                 {
-                    var created = await _pageService.CreateAsync(pageEntity);
-                    pageEntity.Id = created.Data.Id;
+                    var created =
+                        await _pageService
+                            .CreateAsync(pageEntity);
+
+                    pageEntity.Id =
+                        created.Data.Id;
                 }
                 else
                 {
-                    pageEntity.Id = existingPage.Data.Id;
-                    pageEntity.IsActive = true;
+                    pageEntity.Id =
+                        existingPage.Data.Id;
 
+                    pageEntity.IsActive = true;
                 }
 
                 // =================================================
                 // COMPONENT LOOP
                 // =================================================
+
                 int sectionIndex = 1;
+
+                // این مجموعه مشخص می‌کند چه ComponentTypeهایی
+                // در Template جدید این Page وجود دارند.
+                var activeComponentTypeIds =
+                    new HashSet<Guid>();
 
                 foreach (var component in page.Components)
                 {
+                    // =============================================
+                    // COMPONENT RULE
+                    // =============================================
 
-                    if (!componentRules.TryGetValue(component.Code, out var rule))
-                        continue;
-
-                    // ================= COMPONENT TYPE UPSERT =================
-                    var existingComponentType = _dbType == DatabaseType.SqlServer
-                        ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
-                        : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
-
-                    var componentTypeEntity = new ComponentTypeDto
+                    if (!componentRules.TryGetValue(
+                            component.Code,
+                            out var rule))
                     {
-                        Name = component.Code,
-                        Code = component.Code,
-                        Type = component.Type,
-                        IsActive = true
-                    };
+                        continue;
+                    }
+
+                    // =============================================
+                    // COMPONENT TYPE UPSERT
+                    // =============================================
+
+                    var existingComponentType =
+                        _dbType == DatabaseType.SqlServer
+                            ? await _componentTypeService
+                                .FirstOrDefaultAsync<SqlComponentType>(
+                                    x => x.Code == component.Code)
+                            : await _componentTypeService
+                                .FirstOrDefaultAsync<PgComponentType>(
+                                    x => x.Code == component.Code);
+
+                    var componentTypeEntity =
+                        new ComponentTypeDto
+                        {
+                            Name = component.Code,
+                            Code = component.Code,
+                            Type = component.Type,
+                            IsActive = true
+                        };
 
                     if (existingComponentType.Data == null)
                     {
-                        var created = await _componentTypeService.CreateAsync(componentTypeEntity);
-                        componentTypeEntity.Id = created.Data.Id;
+                        var created =
+                            await _componentTypeService
+                                .CreateAsync(componentTypeEntity);
+
+                        componentTypeEntity.Id =
+                            created.Data.Id;
                     }
                     else
                     {
-                        componentTypeEntity.Id = existingComponentType.Data.Id;
+                        componentTypeEntity.Id =
+                            existingComponentType.Data.Id;
                     }
 
-                    componentTypeCache[component.Code] = componentTypeEntity;
+                    componentTypeCache[component.Code] =
+                        componentTypeEntity;
 
-                    // ================= SECTION UPSERT =================
-                    var existingSection = _dbType == DatabaseType.SqlServer
-                        ? await _sectionService.FirstOrDefaultAsync<SqlSection>(
-                            x => x.PageId == pageEntity.Id &&
-                                 x.ComponentTypeId == componentTypeEntity.Id)
-                        : await _sectionService.FirstOrDefaultAsync<SqlSection>(
-                            x => x.PageId == pageEntity.Id &&
-                                 x.ComponentTypeId == componentTypeEntity.Id);
+                    // این Section در Template جدید وجود دارد.
+                    activeComponentTypeIds.Add(
+                        componentTypeEntity.Id);
 
-                    SectionDto sectionEntity;
-                    var rtl = rule.DefaultData?.Rtl;
+                    // =============================================
+                    // FIND EXISTING SECTION
+                    // =============================================
 
-                    // 🔥 FIXED: deterministic SortOrder instead of sortOrder++
-                    var currentSectionSortOrder = sectionIndex++;
+                    var existingSection =
+                        _dbType == DatabaseType.SqlServer
+                            ? await _sectionService
+                                .FirstOrDefaultAsync<SqlSection>(
+                                    x =>
+                                        x.PageId == pageEntity.Id &&
+                                        x.ComponentTypeId ==
+                                        componentTypeEntity.Id)
+                            : await _sectionService
+                                .FirstOrDefaultAsync<SqlSection>(
+                                    x =>
+                                        x.PageId == pageEntity.Id &&
+                                        x.ComponentTypeId ==
+                                        componentTypeEntity.Id);
+
+                    var rtl =
+                        rule.DefaultData?.Rtl;
+
+                    var currentSectionSortOrder =
+                        sectionIndex++;
+
+                    // =============================================
+                    // SECTION DOES NOT EXIST
+                    // فقط در این حالت Section و Item ایجاد می‌شوند
+                    // =============================================
 
                     if (existingSection.Data == null)
                     {
-                        sectionEntity = BuildSectionDto(
-    pageEntity.Id,
-    componentTypeEntity.Id,
-    rtl,
-    currentSectionSortOrder);
+                        var sectionEntity =
+                            BuildSectionDto(
+                                pageEntity.Id,
+                                componentTypeEntity.Id,
+                                rtl,
+                                currentSectionSortOrder);
 
-                        var created = await _sectionService.CreateAsync(sectionEntity);
-                        sectionEntity.Id = created.Data.Id;
+                        var created =
+                            await _sectionService
+                                .CreateAsync(sectionEntity);
+
+                        sectionEntity.Id =
+                            created.Data.Id;
 
                         // =========================================
-                        // SECTION ITEMS SEED
+                        // SECTION ITEMS
+                        // فقط برای Section جدید
                         // =========================================
+
                         int itemSortOrder = 1;
-                        var sectionGroupCache = new Dictionary<string, Guid>();
-                        foreach (var item in rtl.Items)
-                        {
 
-                            Guid? sectionGroupItemId = null;
+                        var sectionGroupCache =
+                            new Dictionary<string, Guid>();
 
-                            if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
-                            {
-                                if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
-                                {
-                                    var groupResult =
-                                        await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
-                                            x => x.Code == item.SectionGroupItemCode);
-
-                                    if (groupResult.Data != null)
-                                    {
-                                        cachedId = groupResult.Data.Id;
-
-                                        sectionGroupCache[item.SectionGroupItemCode] = cachedId;
-                                    }
-                                }
-
-                                if (cachedId != Guid.Empty)
-                                {
-                                    sectionGroupItemId = cachedId;
-                                }
-                            }
-                            var existingItem = await _sectionItemService
-                                .FirstOrDefaultAsync<SqlSectionItem>(
-                                    x => x.SectionId == sectionEntity.Id &&
-                                         x.Title == item.Title);
-
-                            var sectionItem = BuildSectionItemDto(
-                    sectionEntity.Id,
-                    item,
-                    sectionGroupItemId,
-                    itemSortOrder++);
-
-                            if (existingItem.Data == null)
-                            {
-                                await _sectionItemService.CreateAsync(sectionItem);
-                            }
-                            else
-                            {
-                                sectionItem.Id = existingItem.Data.Id;
-                                await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        sectionEntity = existingSection.Data;
-                        // ===============================
-                        // 🔥 FULL SECTION UPDATE FROM SEED
-                        // ===============================
-                        var updatedSection = BuildSectionDto(
-                            pageEntity.Id,
-                            componentTypeEntity.Id,
-                            rtl,
-                            currentSectionSortOrder);
-
-                        updatedSection.Id = sectionEntity.Id;
-
-                        await _sectionService.UpdateAsync(
-                            updatedSection,
-                            updatedSection.Id);
-                        // =========================================
-                        // SECTION ITEMS SEED IF NOT EXISTS
-                        // =========================================
-                        int itemSortOrder = 1;
-                        var sectionGroupCache = new Dictionary<string, Guid>();
                         if (rtl?.Items != null)
                         {
-
-
-
                             foreach (var item in rtl.Items)
                             {
                                 Guid? sectionGroupItemId = null;
 
-                                if (!string.IsNullOrWhiteSpace(item.SectionGroupItemCode))
+                                // =====================================
+                                // SECTION GROUP ITEM
+                                // =====================================
+
+                                if (!string.IsNullOrWhiteSpace(
+                                        item.SectionGroupItemCode))
                                 {
-                                    if (!sectionGroupCache.TryGetValue(item.SectionGroupItemCode, out var cachedId))
+                                    if (!sectionGroupCache.TryGetValue(
+                                            item.SectionGroupItemCode,
+                                            out var cachedId))
                                     {
                                         var groupResult =
-                                            await _sectionGroupItemService.FirstOrDefaultAsync<SqlSectionGroupItem>(
-                                                x => x.Code == item.SectionGroupItemCode);
+                                            await _sectionGroupItemService
+                                                .FirstOrDefaultAsync<
+                                                    SqlSectionGroupItem>(
+                                                    x =>
+                                                        x.Code ==
+                                                        item.SectionGroupItemCode);
 
                                         if (groupResult.Data != null)
                                         {
-                                            cachedId = groupResult.Data.Id;
+                                            cachedId =
+                                                groupResult.Data.Id;
 
-                                            sectionGroupCache[item.SectionGroupItemCode] = cachedId;
+                                            sectionGroupCache[
+                                                item.SectionGroupItemCode] =
+                                                cachedId;
                                         }
                                     }
 
                                     if (cachedId != Guid.Empty)
                                     {
-                                        sectionGroupItemId = cachedId;
+                                        sectionGroupItemId =
+                                            cachedId;
                                     }
                                 }
-                                var existingItem = await _sectionItemService
-                                    .FirstOrDefaultAsync<SqlSectionItem>(
-                                        x => x.SectionId == sectionEntity.Id &&
-                                             x.Title == item.Title);
-                                var sectionItem = BuildSectionItemDto(
-                                    sectionEntity.Id,
-                                    item,
-                                    sectionGroupItemId,
-                                    itemSortOrder++);
 
-                                if (existingItem.Data == null)
-                                {
-                                    await _sectionItemService.CreateAsync(sectionItem);
-                                }
-                                else
-                                {
-                                    sectionItem.Id = existingItem.Data.Id;
-                                    await _sectionItemService.UpdateAsync(sectionItem, sectionItem.Id);
-                                }
+                                var sectionItem =
+                                    BuildSectionItemDto(
+                                        sectionEntity.Id,
+                                        item,
+                                        sectionGroupItemId,
+                                        itemSortOrder++);
+
+                                await _sectionItemService
+                                    .CreateAsync(sectionItem);
                             }
                         }
+                    }
 
+                    // =============================================
+                    // SECTION EXISTS
+                    // =============================================
+
+                    else
+                    {
+                        // هیچ Update روی Section موجود انجام نمی‌دهیم.
+                        //
+                        // اطلاعاتی که قبلاً توسط Admin تغییر کرده
+                        // باید دست‌نخورده باقی بماند.
+                        //
+                        // SectionItemهای موجود نیز دست‌نخورده
+                        // باقی می‌مانند.
+                    }
+                }
+
+                // =================================================
+                // DEACTIVATE OLD SECTIONS
+                //
+                // هر Section که قبلاً روی این Page وجود داشته
+                // ولی در Template جدید نیست، غیرفعال می‌شود.
+                // =================================================
+                var existingSections = await _sectionService.GetAllViews();
+
+                var pageSections = existingSections
+                    .Where(x => x.ParentId == pageEntity.Id);
+
+                foreach (var oldSection in pageSections)
+                {
+                    if (!activeComponentTypeIds.Contains(oldSection.ComponentTypeId))
+                    {
+                        if (oldSection.IsActive)
+                        {
+                            oldSection.IsActive = false;
+
+                            await _sectionService.UpdateAsync(
+                                oldSection,
+                                oldSection.Id);
+                        }
                     }
                 }
             }
+
+            // =====================================================
+            // COMMIT
+            // =====================================================
 
             await _transactionService.CommitAsync();
         }
@@ -2904,33 +3020,39 @@ int sortOrder)
                 return result.Data.Id;
             }
         }
-        public async Task SeedProductsAsync()
+
+public async Task SeedProductsAsync()
         {
+            var enabled = _configuration.GetValue<bool>(
+                "Seed:Products:Enabled");
 
+            if (!enabled)
+                return;
 
+            var file = _configuration.GetValue<string>(
+                "Seed:Products:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:Products:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
 
             var assembly = typeof(SeedJsonModel).Assembly;
 
-
-
             using var stream =
-                assembly.GetManifestResourceStream(
-                    "Velora.Application.Shared.Resources.Products.json");
-
-
+                assembly.GetManifestResourceStream(resourceName);
 
             if (stream == null)
                 throw new FileNotFoundException(
-                    "Products.json not found");
-
-
+                    $"Seed resource '{resourceName}' not found.");
 
             using var reader = new StreamReader(stream);
 
-
             var json = await reader.ReadToEndAsync();
-
-
 
             var model =
                 JsonSerializer.Deserialize<ProductSeedRoot>(
@@ -2940,50 +3062,47 @@ int sortOrder)
                         PropertyNameCaseInsensitive = true
                     });
 
-
-
             if (model == null)
-                throw new Exception(
-                    "Products.json deserialize failed");
-
-
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
 
             foreach (var item in model.Products)
             {
-
                 // دسته بندی
                 var categoryId =
                     await SeedCategoryAsync(item.Category);
-
-
 
                 // برند
                 var brandId =
                     await SeedBrandAsync(item.Brand);
 
-
-
                 // نوع محصول
                 var productTypeId =
                     await SeedProductTypeAsync(item.ProductType);
 
+                var productId = await SeedProductAsync(
+             item.Product,
+             categoryId,
+             brandId,
+             productTypeId);
 
+                var productQuery = await _productService.GetAllViews();
 
-                // محصول اصلی
-                var productId =
-                    await SeedProductAsync(
-                        item.Product,
-                        categoryId,
-                        brandId,
-                        productTypeId);
+                var productExists = await productQuery
+                    .AnyAsync(x => x.Id == productId);
 
-
+                if (!productExists)
+                {
+                    throw new Exception(
+                        $"Product was not found after seed. ProductId: {productId}, Slug: {item.Product.Slug}");
+                }
 
                 // تصاویر
                 await SeedProductFilesAsync(
                     productId,
                     item.Files);
 
+                // موجودی اولیه
                 if (item.Variants == null || !item.Variants.Any())
                 {
                     await SeedProductInventoryAsync(
@@ -2996,22 +3115,19 @@ int sortOrder)
                     productId,
                     item.Variants);
 
-
-
                 // ویژگی ها
                 await SeedProductAttributeValuesAsync(
                     productId,
                     item.Attributes);
 
-
-
                 // تگ ها
                 await SeedProductTagsAsync(
                     productId,
                     item.Tags);
-
             }
         }
+
+
         private async Task SeedProductTagsAsync(
             Guid productId,
             List<ProductTagSeedModel>? tags)
@@ -3964,21 +4080,14 @@ int sortOrder)
 
             var transactionQuery =
                 await _productInventoryTransactionService
-                    .GetAllViews();
-
-
+                    .GetInventoryTransactionQuery();
 
             var existTransaction =
                 await transactionQuery
-                .FirstOrDefaultAsync(x =>
-
-                    x.ProductId == productId &&
-
-                    x.ProductVariantId == null &&
-
-                    x.ReasonId == reasonId
-
-                );
+                    .FirstOrDefaultAsync(x =>
+                        x.ParentId == productId &&
+                        x.ProductVariantId == null &&
+                        x.ReasonId == reasonId);
 
 
 

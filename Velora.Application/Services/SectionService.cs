@@ -132,7 +132,13 @@ namespace Velora.Application.Services
                     SubtitleColor = input.SubtitleColor,
                     ThumbnailUrl = input.ThumbnailUrl,
                     VideoUrl = input.VideoUrl,
-
+                    EnglishTitle = input.EnglishTitle,
+                    IsActiveBrands = input.IsActiveBrands,
+                    IsActiveCategries = input.IsActiveCategries,
+                    IsBestSellingProducts = input.IsBestSellingProducts,
+                    IsLatestNews = input.IsLatestNews,
+                    IsSpecialOffers = input.IsSpecialOffers,
+                    
 
                 };
 
@@ -244,7 +250,12 @@ namespace Velora.Application.Services
                     SubtitleColor = input.SubtitleColor,
                     ThumbnailUrl = input.ThumbnailUrl,
                     VideoUrl = input.VideoUrl,
-
+                    EnglishTitle = input.EnglishTitle,
+                    IsActiveBrands = input.IsActiveBrands,
+                    IsActiveCategries = input.IsActiveCategries,
+                    IsBestSellingProducts = input.IsBestSellingProducts,
+                    IsLatestNews = input.IsLatestNews,
+                    IsSpecialOffers = input.IsSpecialOffers,
 
                 };
 

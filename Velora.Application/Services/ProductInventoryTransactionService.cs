@@ -60,6 +60,11 @@ namespace Velora.Application.Services
         {
             return await GetAllViewQueryable<SqlProductInventoryTransactionView, SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>();
         }
+        public async Task<IQueryable<SqlProductInventoryTransactionView>> GetInventoryTransactionQuery()
+        {
+            return _sqlRepository
+                .GetViewQueryable<SqlProductInventoryTransactionView>();
+        }
 
         public async Task<ResultDto<ProductInventoryTransactionDto>> CreateAsync(ProductInventoryTransactionCrud input)
         {
@@ -82,8 +87,10 @@ namespace Velora.Application.Services
                     ChangeQuantity= input.ChangeQuantity,
                     Note= input.Note,
                     OperationType= input.OperationType,
-                    ProductId= input.ParentId,
-                    ProductVariantId=input.ProductVariantId,
+                    ProductId = input.ParentId != Guid.Empty
+            ? input.ParentId
+            : input.ProductId,
+                    ProductVariantId =input.ProductVariantId,
                     ReasonId=input.ReasonId,
                     ReferenceDetailId=input.ReferenceDetailId,
                     ReferenceId=input.ReferenceId,
@@ -138,7 +145,9 @@ namespace Velora.Application.Services
                     ChangeQuantity = input.ChangeQuantity,
                     Note = input.Note,
                     OperationType = input.OperationType,
-                    ProductId = input.ParentId,
+                    ProductId = input.ParentId != Guid.Empty
+            ? input.ParentId
+            : input.ProductId,
                     ProductVariantId = input.ProductVariantId,
                     ReasonId = input.ReasonId,
                     ReferenceDetailId = input.ReferenceDetailId,

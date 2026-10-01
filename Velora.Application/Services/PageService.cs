@@ -418,6 +418,7 @@ int pageSize)
                     CanonicalUrl = pageEntity.CanonicalUrl,
                     OgImageUrl = pageEntity.OgImageUrl,
                     IsActive = pageEntity.IsActive,
+                    
 
                     Sections = pageEntity.Sections
                         .OrderBy(c => c.SortOrder)
@@ -494,6 +495,7 @@ int pageSize)
                             MapEmbedUrl = s.MapEmbedUrl,
                             ThumbnailUrl = s.ThumbnailUrl,
                             VideoUrl = s.VideoUrl,
+                            EnglishTitle = s.EnglishTitle,
 
                             Items = s.SectionItems
                                 .OrderBy(c => c.SortOrder)

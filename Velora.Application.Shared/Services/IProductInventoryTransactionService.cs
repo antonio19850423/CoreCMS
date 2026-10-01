@@ -25,5 +25,6 @@ namespace Velora.Application.Shared.Services
 bool exportCurrentPage,
 int pageNumber,
 int pageSize);
+        Task<IQueryable<SqlProductInventoryTransactionView>> GetInventoryTransactionQuery();
     }
 }

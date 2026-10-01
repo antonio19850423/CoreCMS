@@ -33,7 +33,7 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = false)]
         public Guid ParentId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = false)]
         public string? Barcode { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = true, IsRequired = true)]

@@ -190,6 +190,23 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 49, GridOrder = 49, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? MapEmbedUrl { get; set; }
+        [StringLength(250)]
+        public string? EnglishTitle { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 50, GridOrder = 50, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsLatestNews { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 51, GridOrder = 51, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsSpecialOffers { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 52, GridOrder = 52, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsBestSellingProducts { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 53, GridOrder = 53, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsActiveBrands { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 54, GridOrder = 54, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsActiveCategries { get; set; }
 
     }
 }

@@ -75,7 +75,7 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true)]
         public decimal Price { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = false)]
         public string? Barcode { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = true)]
         public string? Sku { get; set; }
@@ -87,7 +87,7 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = false, FormOrder = 15, GridOrder = 15, ShowInGrid = true, ShowInForm = false, EntityName = LookupEntities.ProductTag, ServiceName = "productTagView", LinkedFieldCode = "ProductTagIds", Route = "", SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string? ProductTagNames { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = false)]
         public decimal? Weight { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]

@@ -12,7 +12,7 @@ public class ProductBrandCrud : BulkInsert
     public string Slug { get; set; } = null!;
     [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 300, ShowInSelectBox = true, IsRequired = true)]
     public string Logo { get; set; } = null!;
-    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 300, ShowInSelectBox = true, IsRequired = true)]
+    [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 300, ShowInSelectBox = true, IsRequired = false)]
     public string Website { get; set; } = null!;
 
     [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, MaxLength = 500)]

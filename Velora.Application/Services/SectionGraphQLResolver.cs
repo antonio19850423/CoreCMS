@@ -97,6 +97,14 @@ public class SectionGqlResolver : ISectionGqlResolver
             Link4Text = x.Link4Text ?? "",
             Link4TypeId = x.Link4TypeId,
             Link4OpenInNewTab = x.Link4OpenInNewTab,
+            EnglishTitle= x.EnglishTitle??"",
+            ThumbnailUrl= x.ThumbnailUrl ??"",
+            VideoUrl= x.VideoUrl ??"",
+            IsSpecialOffers= x.IsSpecialOffers,
+            IsLatestNews= x.IsLatestNews,
+            IsBestSellingProducts= x.IsBestSellingProducts,
+            IsActiveCategries= x.IsActiveCategries,
+            IsActiveBrands = x.IsActiveBrands
         });
     }
 

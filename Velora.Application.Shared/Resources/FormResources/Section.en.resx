@@ -306,4 +306,22 @@
   <data name="Section.ThumbnailUrl" xml:space="preserve">
     <value>ThumbnailUrl</value>
   </data>
+  <data name="Section.EnglishTitle" xml:space="preserve">
+    <value>EnglishTitle</value>
+  </data>
+  <data name="Section.IsActiveBrands" xml:space="preserve">
+    <value>IsActiveBrands</value>
+  </data>
+  <data name="Section.IsActiveCategries" xml:space="preserve">
+    <value>IsActiveCategries</value>
+  </data>
+  <data name="Section.IsBestSellingProducts" xml:space="preserve">
+    <value>IsBestSellingProducts</value>
+  </data>
+  <data name="Section.IsLatestNews" xml:space="preserve">
+    <value>IsLatestNews</value>
+  </data>
+  <data name="Section.IsSpecialOffers" xml:space="preserve">
+    <value>IsSpecialOffers</value>
+  </data>
 </root>
