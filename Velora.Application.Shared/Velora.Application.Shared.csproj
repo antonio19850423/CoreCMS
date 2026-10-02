@@ -71,6 +71,7 @@
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\Templates.json" />
 	  <EmbeddedResource Include="Resources\Templates\LuxuryJewelry_Template.json" />
+	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template.json" />
 	</ItemGroup>
 
 	<ItemGroup>

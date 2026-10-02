@@ -279,4 +279,22 @@
   <data name="SectionItem.Link4TypeId" xml:space="preserve">
     <value>Link4TypeId</value>
   </data>
+  <data name="SectionItem.CategoryId" xml:space="preserve">
+    <value>CategoryId</value>
+  </data>
+  <data name="SectionItem.CategoryName" xml:space="preserve">
+    <value>CategoryName</value>
+  </data>
+  <data name="SectionItem.BrandId" xml:space="preserve">
+    <value>BrandId</value>
+  </data>
+  <data name="SectionItem.BrandName" xml:space="preserve">
+    <value>BrandName</value>
+  </data>
+  <data name="SectionItem.ProductId" xml:space="preserve">
+    <value>ProductId</value>
+  </data>
+  <data name="SectionItem.ProductName" xml:space="preserve">
+    <value>ProductName</value>
+  </data>
 </root>

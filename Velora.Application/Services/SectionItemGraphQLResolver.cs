@@ -90,7 +90,13 @@ public class SectionItemGqlResolver : ISectionItemGqlResolver
             Link4Text = x.Link4Text ?? "",
             Link4TypeId = x.Link4TypeId,
             Link4OpenInNewTab = x.Link4OpenInNewTab,
-            ShouldInsert = x.ShouldInsert
+            ShouldInsert = x.ShouldInsert,
+            ProductId = x.ProductId,
+            CategoryId = x.CategoryId,
+            BrandId = x.BrandId,
+            BrandName = x.BrandName,
+            CategoryName = x.CategoryName,
+            ProductName = x.ProductName 
         });
     }
 

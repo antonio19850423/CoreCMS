@@ -147,5 +147,10 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link4TypeId { get; set; }
 
         public bool? Link4OpenInNewTab { get; set; }
+        public Guid? CategoryId { get; set; }
+
+        public Guid? BrandId { get; set; }
+
+        public Guid? ProductId { get; set; }
     }
 }

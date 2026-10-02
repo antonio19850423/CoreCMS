@@ -114,6 +114,11 @@ namespace Velora.Application.Services
                     Question = input.Question,
                     Role= input.Role,
                     Name=input.Name,
+                    BrandId=input.BrandId,
+                    CategoryId=input.CategoryId,
+                    Answer=input.Answer,
+                    ProductId=input.ProductId,
+
                     
                     
                 };
@@ -212,6 +217,9 @@ namespace Velora.Application.Services
                     Name=input.Name,
                     Role=input.Role,
                     SectionGroupItemId=input.SectionGroupItemId,
+                    BrandId = input.BrandId,
+                    CategoryId = input.CategoryId,
+                    ProductId = input.ProductId,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

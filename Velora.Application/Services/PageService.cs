@@ -34,13 +34,19 @@ namespace Velora.Application.Services
         private readonly IPageService _rolePageService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IContentItemService _contentItemService;
+        protected readonly IProductCategoryService _productCategoryService;
+        protected readonly IProductBrandService _productBrandService;
+        protected readonly IDiscountService _discountService;
+        protected readonly IProductInventoryTransactionService _productInventoryService;
+        protected readonly IProductService _productService;
+        
         public PageService(
               ISqlRepository<SqlPage> sqlRepository,
               IPosgreSqlRepository<SqlPage> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IContentItemService contentItemService)
+              ICurrentUserService currentUserService, IContentItemService contentItemService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IDiscountService discountService, IProductInventoryTransactionService productInventoryService, IProductService productService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -52,6 +58,11 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
             _contentItemService = contentItemService;
+            _productCategoryService= productCategoryService;
+            _productBrandService= productBrandService;
+            _discountService= discountService;
+            _productInventoryService= productInventoryService;
+            _productService= productService;
         }
         public async Task<IQueryable<PageCrud>> GetAllViews()
         {
@@ -403,6 +414,93 @@ int pageSize)
                     return result;
                 }
 
+                // فقط این قسمت تغییر کرده:
+                var sectionDtos = new List<SectionViewDto>();
+
+                foreach (var s in pageEntity.Sections.OrderBy(c => c.SortOrder))
+                {
+                    var sectionDto = new SectionViewDto
+                    {
+                        Id = s.Id,
+                        ParentId = pageEntity.Id,
+                        ComponentTypeId = s.ComponentTypeId,
+                        ComponentTypeName = s.ComponentType.Name,
+                        Title = s.Title,
+                        Subtitle = s.Subtitle,
+                        Description = s.Description,
+                        ImageUrl = s.ImageUrl,
+                        ColumnsCount = s.ColumnsCount,
+                        SortOrder = s.SortOrder,
+                        IsActive = s.IsActive,
+                        BackgroundColor = s.BackgroundColor,
+                        HeaderColor = s.HeaderColor,
+                        SubtitleColor = s.SubtitleColor,
+                        DescriptionColor = s.DescriptionColor,
+                        Icon = s.Icon,
+                        IconColor = s.IconColor,
+                        IconAlt = s.IconAlt,
+                        ImageAlt = s.ImageAlt,
+
+                        Link1Text = s.Link1Text,
+                        Link1Url = s.Link1Url,
+                        Link1Color = s.Link1Color,
+
+                        Link2Text = s.Link2Text,
+                        Link2Url = s.Link2Url,
+                        Link2Color = s.Link2Color,
+
+                        Link3Text = s.Link3Text,
+                        Link3Url = s.Link3Url,
+                        Link3Color = s.Link3Color,
+
+                        Link4Text = s.Link4Text,
+                        Link4Url = s.Link4Url,
+                        Link4Color = s.Link4Color,
+
+                        Features = s.Features,
+                        ContactEmailLabel = s.ContactEmailLabel,
+
+                        Link1OpenInNewTab = s.Link1OpenInNewTab,
+                        Link2OpenInNewTab = s.Link2OpenInNewTab,
+                        Link3OpenInNewTab = s.Link3OpenInNewTab,
+                        Link4OpenInNewTab = s.Link4OpenInNewTab,
+
+                        Link1TypeId = s.Link1TypeId,
+                        Link2TypeId = s.Link2TypeId,
+                        Link3TypeId = s.Link3TypeId,
+                        Link4TypeId = s.Link4TypeId,
+
+                        ContactFirstNameLabel = s.ContactFirstNameLabel,
+                        ContactLastNameLabel = s.ContactLastNameLabel,
+                        ContactMessageLabel = s.ContactMessageLabel,
+                        ContactSubmitButtonText = s.ContactSubmitButtonText,
+                        CopyrightText = s.CopyrightText,
+
+                        ImageAlt2 = s.ImageAlt2,
+                        ImageAlt3 = s.ImageAlt3,
+                        ImageAlt4 = s.ImageAlt4,
+
+                        ImageUrl2 = s.ImageUrl2,
+                        ImageUrl3 = s.ImageUrl3,
+                        ImageUrl4 = s.ImageUrl4,
+
+                        Link1TargetId = s.Link1TargetId,
+                        Link2TargetId = s.Link2TargetId,
+                        Link3TargetId = s.Link3TargetId,
+                        Link4TargetId = s.Link4TargetId,
+
+                        MapEmbedUrl = s.MapEmbedUrl,
+                        ThumbnailUrl = s.ThumbnailUrl,
+                        VideoUrl = s.VideoUrl,
+                        EnglishTitle = s.EnglishTitle,
+
+                        // فقط این قسمت جایگزین mapping قبلی SectionItems شده
+                        Items = await BuildSectionItemsAsync(s)
+                    };
+
+                    sectionDtos.Add(sectionDto);
+                }
+
                 // map مستقیم به PageViewDto
                 var pageViewDto = new PageViewDto
                 {
@@ -418,158 +516,9 @@ int pageSize)
                     CanonicalUrl = pageEntity.CanonicalUrl,
                     OgImageUrl = pageEntity.OgImageUrl,
                     IsActive = pageEntity.IsActive,
-                    
 
-                    Sections = pageEntity.Sections
-                        .OrderBy(c => c.SortOrder)
-                        .Select(s => new SectionViewDto
-                        {
-                            Id = s.Id,
-                            ParentId = pageEntity.Id,
-                            ComponentTypeId = s.ComponentTypeId,
-                            ComponentTypeName = s.ComponentType.Name,
-                            Title = s.Title,
-                            Subtitle = s.Subtitle,
-                            Description = s.Description,
-                            ImageUrl = s.ImageUrl,
-                            ColumnsCount = s.ColumnsCount,
-                            SortOrder = s.SortOrder,
-                            IsActive = s.IsActive,
-                            BackgroundColor = s.BackgroundColor,
-                            HeaderColor = s.HeaderColor,
-                            SubtitleColor = s.SubtitleColor,
-                            DescriptionColor = s.DescriptionColor,
-                            Icon = s.Icon,
-                            IconColor = s.IconColor,
-                            IconAlt = s.IconAlt,
-                            ImageAlt = s.ImageAlt,
-
-                            Link1Text = s.Link1Text,
-                            Link1Url = s.Link1Url,
-                            Link1Color = s.Link1Color,
-
-                            Link2Text = s.Link2Text,
-                            Link2Url = s.Link2Url,
-                            Link2Color = s.Link2Color,
-
-                            Link3Text = s.Link3Text,
-                            Link3Url = s.Link3Url,
-                            Link3Color = s.Link3Color,
-
-                            Link4Text = s.Link4Text,
-                            Link4Url = s.Link4Url,
-                            Link4Color = s.Link4Color,
-
-                            Features = s.Features,
-                            ContactEmailLabel = s.ContactEmailLabel,
-
-                            Link1OpenInNewTab = s.Link1OpenInNewTab,
-                            Link2OpenInNewTab = s.Link2OpenInNewTab,
-                            Link3OpenInNewTab = s.Link3OpenInNewTab,
-                            Link4OpenInNewTab = s.Link4OpenInNewTab,
-
-                            Link1TypeId = s.Link1TypeId,
-                            Link2TypeId = s.Link2TypeId,
-                            Link3TypeId = s.Link3TypeId,
-                            Link4TypeId = s.Link4TypeId,
-
-                            ContactFirstNameLabel = s.ContactFirstNameLabel,
-                            ContactLastNameLabel = s.ContactLastNameLabel,
-                            ContactMessageLabel = s.ContactMessageLabel,
-                            ContactSubmitButtonText = s.ContactSubmitButtonText,
-                            CopyrightText = s.CopyrightText,
-
-                            ImageAlt2 = s.ImageAlt2,
-                            ImageAlt3 = s.ImageAlt3,
-                            ImageAlt4 = s.ImageAlt4,
-
-                            ImageUrl2 = s.ImageUrl2,
-                            ImageUrl3 = s.ImageUrl3,
-                            ImageUrl4 = s.ImageUrl4,
-
-                            Link1TargetId = s.Link1TargetId,
-                            Link2TargetId = s.Link2TargetId,
-                            Link3TargetId = s.Link3TargetId,
-                            Link4TargetId = s.Link4TargetId,
-
-                            MapEmbedUrl = s.MapEmbedUrl,
-                            ThumbnailUrl = s.ThumbnailUrl,
-                            VideoUrl = s.VideoUrl,
-                            EnglishTitle = s.EnglishTitle,
-
-                            Items = s.SectionItems
-                                .OrderBy(c => c.SortOrder)
-                                .Select(si => new SectionItemCrud
-                                {
-                                    Id = si.Id,
-                                    ParentId = si.SectionId,
-                                    Title = si.Title,
-                                    Subtitle = si.Subtitle,
-                                    Description = si.Description,
-                                    Price = si.Price,
-                                    ImageUrl = si.ImageUrl,
-                                    AvatarUrl = si.AvatarUrl,
-                                    SortOrder = si.SortOrder,
-                                    IsActive = si.IsActive,
-                                    BackgroundColor = si.BackgroundColor,
-                                    SubtitleColor = si.SubtitleColor,
-                                    DescriptionColor = si.DescriptionColor,
-
-                                    Link1Text = si.Link1Text,
-                                    Link1Url = si.Link1Url,
-                                    Link1Color = si.Link1Color,
-
-                                    Link2Text = si.Link2Text,
-                                    Link2Url = si.Link2Url,
-                                    Link2Color = si.Link2Color,
-
-                                    Link3Text = si.Link3Text,
-                                    Link3Url = si.Link3Url,
-                                    Link3Color = si.Link3Color,
-
-                                    Link4Text = si.Link4Text,
-                                    Link4Url = si.Link4Url,
-                                    Link4Color = si.Link4Color,
-
-                                    Icon = si.Icon,
-                                    IconColor = si.IconColor,
-                                    IconAlt = si.IconAlt,
-                                    ImageAlt = si.ImageAlt,
-                                    TitleColor = si.TitleColor,
-                                    AvatarAlt = si.AvatarAlt,
-                                    Features = si.Features,
-
-                                    Link4TargetId = si.Link4TargetId,
-                                    Link3TargetId = si.Link3TargetId,
-                                    Link2TargetId = si.Link2TargetId,
-                                    Link1TargetId = si.Link1TargetId,
-
-                                    Answer = si.Answer,
-
-                                    //ComponentTypeName=si.ComponentTypeName,
-
-                                    Link1OpenInNewTab = si.Link1OpenInNewTab,
-                                    Link1TypeId = si.Link1TypeId,
-
-                                    Link2OpenInNewTab = si.Link2OpenInNewTab,
-                                    Link2TypeId = si.Link2TypeId,
-
-                                    Link3OpenInNewTab = si.Link3OpenInNewTab,
-                                    Link3TypeId = si.Link3TypeId,
-
-                                    Link4OpenInNewTab = si.Link4OpenInNewTab,
-                                    Link4TypeId = si.Link4TypeId,
-
-                                    Name = si.Name,
-                                    Question = si.Question,
-                                    Role = si.Role,
-                                    SectionGroupItemId = si.SectionGroupItemId,
-
-                                    //SectionGroupItemName=si.SectionGroupItemName
-                                })
-                                .ToList()
-                        })
-                        .ToList()
+                    // فقط این قسمت تغییر کرده
+                    Sections = sectionDtos
                 };
 
                 result.Data = pageViewDto;
@@ -585,8 +534,405 @@ int pageSize)
             return result;
         }
 
+        private async Task<List<SectionItemCrud>> BuildSectionItemsAsync(Section section)
+        {
+            const string categoryComponentType = "luxuryJewelryCategories";
+            const string brandComponentType = "luxuryJewelryBrands";
+            const string newArrivalsComponentType = "luxuryJewelryNewArrivals";
+            const string bestSellersComponentType = "luxuryJewelryBestSellers";
+            const string specialOffersComponentType = "luxuryJewelrySpecialOffers";
 
 
+            // =========================================================
+            // Categories
+            // =========================================================
+
+            if (string.Equals(
+                section.ComponentType?.Name,
+                categoryComponentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                if (section.IsActiveCategries == true)
+                {
+                    var categories = await _productCategoryService.GetAllViews();
+
+                    return categories
+                        .Where(x => x.IsActive)
+                        .OrderBy(x => x.SortOrder)
+                        .Select(category => new SectionItemCrud
+                        {
+                            Id = Guid.NewGuid(),
+                            ParentId = section.Id,
+
+                            CategoryId = category.Id,
+                            CategoryName = category.Name,
+
+                            Title = category.Name,
+                            ImageUrl = category.Icon,
+
+                            SortOrder = category.SortOrder,
+                            IsActive = true
+                        })
+                        .ToList();
+                }
+            }
+
+
+            // =========================================================
+            // Brands
+            // =========================================================
+
+            if (string.Equals(
+                section.ComponentType?.Name,
+                brandComponentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                if (section.IsActiveBrands == true)
+                {
+                    var brands = await _productBrandService.GetAllViews();
+
+                    return brands
+                        .Where(x => x.IsActive == true)
+                        .OrderBy(x => x.SortOrder)
+                        .Select(brand => new SectionItemCrud
+                        {
+                            Id = Guid.NewGuid(),
+                            ParentId = section.Id,
+
+                            BrandId = brand.Id,
+                            BrandName = brand.Name,
+
+                            Title = brand.Name,
+                            ImageUrl = brand.Logo,
+
+                            SortOrder = brand.SortOrder.Value,
+                            IsActive = true
+                        })
+                        .ToList();
+                }
+            }
+
+
+            // =========================================================
+            // New Arrivals
+            // =========================================================
+
+            if (string.Equals(
+                section.ComponentType?.Name,
+                newArrivalsComponentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return await BuildProductSectionItemsAsync(
+                    section,
+                    "newest");
+            }
+
+
+            // =========================================================
+            // Best Sellers
+            // =========================================================
+
+            if (string.Equals(
+                section.ComponentType?.Name,
+                bestSellersComponentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return await BuildProductSectionItemsAsync(
+                    section,
+                    "bestSelling");
+            }
+
+
+            // =========================================================
+            // Special Offers
+            // =========================================================
+
+            if (string.Equals(
+                section.ComponentType?.Name,
+                specialOffersComponentType,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return await BuildProductSectionItemsAsync(
+                    section,
+                    "specialOffers");
+            }
+
+
+            // =========================================================
+            // Default - Manual SectionItems
+            // =========================================================
+
+            return section.SectionItems
+                .OrderBy(x => x.SortOrder)
+                .Select(si => MapSectionItem(si))
+                .ToList();
+        }
+        private async Task<List<SectionItemCrud>> BuildProductSectionItemsAsync(
+    Section section,
+    string type)
+        {
+            var query = _productService.Query()
+                .Include(x => x.Category)
+                .Include(x => x.Brand)
+                .Include(x => x.ProductFiles)
+                .Include(x => x.ProductVariants)
+                .Include(x => x.ProductTagMappings)
+                    .ThenInclude(x => x.ProductTag)
+                .Where(x =>
+                    x.IsPublished == true &&
+                    x.IsActive == true);
+
+
+            // =========================================================
+            // Sort / Filter
+            // =========================================================
+
+            switch (type)
+            {
+                case "newest":
+
+                    query = query
+                        .OrderByDescending(x => x.CreatedAt);
+
+                    break;
+
+
+                case "bestSelling":
+
+                    // فعلاً اینجا باید معیار فروش واقعی پروژه استفاده شود.
+                    // اگر Product جدول/فیلد مربوط به تعداد فروش دارد،
+                    // این قسمت را بر اساس همان فیلد مرتب می‌کنیم.
+
+                    query = query
+                        .OrderByDescending(x => x.CreatedAt);
+
+                    break;
+
+
+                case "specialOffers":
+
+                    var activeDiscounts =
+                        await _discountService.GetActiveDiscountsAsync();
+
+                    var discountedProductIds = new HashSet<Guid>();
+
+                    foreach (var product in await query.ToListAsync())
+                    {
+                        var price =
+                            product.ProductVariants.Count == 1
+                                ? product.ProductVariants.First().Price
+                                : product.ProductVariants.Any()
+                                    ? product.ProductVariants.Min(v => v.Price)
+                                    : product.Price ?? 0;
+
+                        var discount = _discountService.CalculateDiscount(
+                            new DiscountCalculationInput
+                            {
+                                ProductId = product.Id,
+                                ProductVariantId =
+                                    product.ProductVariants.Count == 1
+                                        ? product.ProductVariants.First().Id
+                                        : null,
+                                ProductBrandId = product.BrandId,
+                                ProductCategoryId = product.CategoryId,
+                                Price = price
+                            },
+                            activeDiscounts);
+
+                        if (discount.HasDiscount)
+                        {
+                            discountedProductIds.Add(product.Id);
+                        }
+                    }
+
+                    query = query
+                        .Where(x => discountedProductIds.Contains(x.Id))
+                        .OrderByDescending(x => x.CreatedAt);
+
+                    break;
+            }
+
+
+            // =========================================================
+            // گرفتن محصولات
+            // =========================================================
+
+            var products = await query
+      .Take(12)
+      .ToListAsync();
+
+
+            // =========================================================
+            // Discounts
+            // =========================================================
+
+            var discounts =
+                await _discountService.GetActiveDiscountsAsync();
+
+
+            // =========================================================
+            // Inventory
+            // =========================================================
+
+            var productIds = products
+                .Select(x => x.Id)
+                .ToList();
+
+            var inventories =
+                await _productInventoryService.GetInventoryAsync(productIds);
+
+
+            // =========================================================
+            // Mapping
+            // =========================================================
+
+            var result = products.Select((product, index) =>
+            {
+                var price =
+                    product.ProductVariants.Count == 1
+                        ? product.ProductVariants.First().Price
+                        : product.ProductVariants.Any()
+                            ? product.ProductVariants.Min(v => v.Price)
+                            : product.Price ?? 0;
+
+
+                var discount = _discountService.CalculateDiscount(
+                    new DiscountCalculationInput
+                    {
+                        ProductId = product.Id,
+
+                        ProductVariantId =
+                            product.ProductVariants.Count == 1
+                                ? product.ProductVariants.First().Id
+                                : null,
+
+                        ProductBrandId = product.BrandId,
+
+                        ProductCategoryId = product.CategoryId,
+
+                        Price = price
+                    },
+                    discounts);
+
+
+                inventories.TryGetValue(
+                    product.Id,
+                    out var inventory);
+
+
+                return new SectionItemCrud
+                {
+                    Id = Guid.NewGuid(),
+
+                    ParentId = section.Id,
+
+                    ProductId = product.Id,
+                    ProductName = product.Name,
+
+                    Title = product.Name,
+
+                    Description = product.Summary,
+
+                    Price = price.ToString(),
+
+                    ImageUrl = product.MainImage,
+
+                    AvatarUrl = product.Thumbnail,
+
+                    SortOrder = index,
+
+                    IsActive = true,
+
+                    CategoryId = product.CategoryId,
+                    CategoryName = product.Category?.Name,
+
+                    BrandId = product.BrandId,
+                    BrandName = product.Brand?.Name,
+
+                    // اطلاعات تخفیف
+                    // اگر این فیلدها را به SectionItemCrud اضافه کرده باشی،
+                    // اینجا مستقیماً مقداردهی می‌شوند.
+
+                    Features = discount.HasDiscount
+                        ? $"Discount:{discount.DiscountAmount}"
+                        : null
+                };
+            }).ToList();
+
+
+            return result;
+        }
+        private SectionItemCrud MapSectionItem(SectionItem si)
+        {
+            return new SectionItemCrud
+            {
+                Id = si.Id,
+                ParentId = si.SectionId,
+                Title = si.Title,
+                Subtitle = si.Subtitle,
+                Description = si.Description,
+                Price = si.Price,
+                ImageUrl = si.ImageUrl,
+                AvatarUrl = si.AvatarUrl,
+                SortOrder = si.SortOrder,
+                IsActive = si.IsActive,
+                BackgroundColor = si.BackgroundColor,
+                SubtitleColor = si.SubtitleColor,
+                DescriptionColor = si.DescriptionColor,
+
+                Link1Text = si.Link1Text,
+                Link1Url = si.Link1Url,
+                Link1Color = si.Link1Color,
+
+                Link2Text = si.Link2Text,
+                Link2Url = si.Link2Url,
+                Link2Color = si.Link2Color,
+
+                Link3Text = si.Link3Text,
+                Link3Url = si.Link3Url,
+                Link3Color = si.Link3Color,
+
+                Link4Text = si.Link4Text,
+                Link4Url = si.Link4Url,
+                Link4Color = si.Link4Color,
+
+                Icon = si.Icon,
+                IconColor = si.IconColor,
+                IconAlt = si.IconAlt,
+                ImageAlt = si.ImageAlt,
+                TitleColor = si.TitleColor,
+                AvatarAlt = si.AvatarAlt,
+                Features = si.Features,
+
+                Link4TargetId = si.Link4TargetId,
+                Link3TargetId = si.Link3TargetId,
+                Link2TargetId = si.Link2TargetId,
+                Link1TargetId = si.Link1TargetId,
+
+                Answer = si.Answer,
+
+                Link1OpenInNewTab = si.Link1OpenInNewTab,
+                Link1TypeId = si.Link1TypeId,
+
+                Link2OpenInNewTab = si.Link2OpenInNewTab,
+                Link2TypeId = si.Link2TypeId,
+
+                Link3OpenInNewTab = si.Link3OpenInNewTab,
+                Link3TypeId = si.Link3TypeId,
+
+                Link4OpenInNewTab = si.Link4OpenInNewTab,
+                Link4TypeId = si.Link4TypeId,
+
+                Name = si.Name,
+                Question = si.Question,
+                Role = si.Role,
+                SectionGroupItemId = si.SectionGroupItemId,
+
+                CategoryId = si.CategoryId,
+                BrandId = si.BrandId,
+                ProductId = si.ProductId
+            };
+        }
         public async Task<ResultDto<PageViewDto>> GetContentPageAsync(
             string slug,
             int page = 1,

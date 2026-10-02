@@ -149,6 +149,12 @@ public partial class SectionItem
 
     public bool? Link4OpenInNewTab { get; set; }
 
+    public Guid? CategoryId { get; set; }
+
+    public Guid? BrandId { get; set; }
+
+    public Guid? ProductId { get; set; }
+
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SectionItemLink1Types")]
     public virtual LinkType? Link1Type { get; set; }

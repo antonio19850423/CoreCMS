@@ -691,7 +691,7 @@ namespace Velora.Application.Seeds
 
             existing.IsActive = false;
 
-            await _siteMenuService.UpdateAsync(existing);
+            await _siteMenuService.UpdateAsync(existing, existing.Id);
         }
         private async Task DisableChildMenusAsync(
     List<SiteMenuCrud> existingMenus,
@@ -709,7 +709,7 @@ namespace Velora.Application.Seeds
             {
                 child.IsActive = false;
 
-                await _siteMenuService.UpdateAsync(child);
+                await _siteMenuService.UpdateAsync(child, child.Id);
             }
         }
         private async Task<Guid?> GetLinkTypeIdAsync(
@@ -1792,7 +1792,7 @@ namespace Velora.Application.Seeds
                 existing.Data.SiteType = SiteTypes.COMPANY;
                 existing.Data.IsActive = true;
 
-                await _cmsConfigurationService.UpdateAsync(existing.Data);
+                await _cmsConfigurationService.UpdateAsync(existing.Data,existing.Data.Id);
             }
 
             await _transactionService.CommitAsync();
@@ -1800,16 +1800,14 @@ namespace Velora.Application.Seeds
 
         public async Task SeedCmsTemplateAsync()
         {
-            var excludedSlugs = new[] { "news", "articles" };
-
             var existing =
                 await _cmsConfigurationService
                     .FirstOrDefaultAsync<SqlCmsConfiguration>(
                         x => x.IsActive);
 
-            // =====================================================
+            // ---------------------------------------------------------
             // LOAD TEMPLATE CONFIGURATION
-            // =====================================================
+            // ---------------------------------------------------------
 
             var enabled =
                 _configuration.GetValue<bool>(
@@ -1823,15 +1821,17 @@ namespace Velora.Application.Seeds
                     "Seed:Templates:File");
 
             if (string.IsNullOrWhiteSpace(templateFile))
+            {
                 throw new InvalidOperationException(
                     "Seed:Templates:File is not configured.");
+            }
 
             var assembly =
                 typeof(SeedJsonModel).Assembly;
 
-            // =====================================================
-            // LOAD TEMPLATE
-            // =====================================================
+            // ---------------------------------------------------------
+            // LOAD TEMPLATE JSON
+            // ---------------------------------------------------------
 
             var templateResourceName =
                 $"Velora.Application.Shared.Resources.{templateFile
@@ -1843,8 +1843,10 @@ namespace Velora.Application.Seeds
                     templateResourceName);
 
             if (templateStream == null)
+            {
                 throw new FileNotFoundException(
                     $"Template seed resource '{templateResourceName}' not found.");
+            }
 
             var templateModel =
                 await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
@@ -1855,268 +1857,436 @@ namespace Velora.Application.Seeds
                     });
 
             if (templateModel == null)
+            {
                 throw new InvalidOperationException(
                     $"Invalid Template JSON: {templateFile}");
-
-            // =====================================================
-            // GET TEMPLATE
-            // =====================================================
+            }
 
             var template =
                 templateModel.Templates.FirstOrDefault();
 
             if (template == null)
+            {
                 throw new InvalidOperationException(
                     $"No template found in '{templateFile}'.");
+            }
 
-            // =====================================================
+            // ---------------------------------------------------------
             // LOAD COMPONENT RULES
-            // =====================================================
+            // ---------------------------------------------------------
 
             using var componentStream =
                 assembly.GetManifestResourceStream(
                     "Velora.Application.Shared.Resources.ComponentRules.json");
 
             if (componentStream == null)
+            {
                 throw new FileNotFoundException(
                     "ComponentRules.json not found.");
+            }
 
             var componentRules =
                 await JsonSerializer.DeserializeAsync<
                     Dictionary<string, ComponentRuleModel>>(
-                    componentStream,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
+                        componentStream,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
 
             if (componentRules == null)
+            {
                 throw new InvalidOperationException(
                     "Invalid ComponentRules JSON.");
+            }
 
-            // =====================================================
+            // ---------------------------------------------------------
             // CACHE
-            // =====================================================
+            // ---------------------------------------------------------
 
             var componentTypeCache =
-                new Dictionary<string, ComponentTypeDto>();
+                new Dictionary<string, ComponentTypeDto>(
+                    StringComparer.OrdinalIgnoreCase);
 
-            // =====================================================
-            // PAGES LOOP
-            // =====================================================
+            // ---------------------------------------------------------
+            // CMS CONFIG
+            // ---------------------------------------------------------
 
-            foreach (var page in template.Pages)
+            var cmsConfig = existing?.Data;
+
+            // ---------------------------------------------------------
+            // BUILD FINAL PAGE LIST FROM JSON
+            //
+            // Only pages which are actually enabled by CMS configuration
+            // participate in the active template.
+            // ---------------------------------------------------------
+
+            var templatePages =
+                template.Pages
+                    .Where(page =>
+                    {
+                        var slug =
+                            page.Slug?
+                                .Trim()
+                                .ToLowerInvariant();
+
+                        if (string.IsNullOrWhiteSpace(slug))
+                            return false;
+
+                        // These pages are controlled by configuration.
+                        if (slug == "faq" &&
+                            !(cmsConfig?.EnableFaq ?? false))
+                        {
+                            return false;
+                        }
+
+                        if ((slug == "privacy" ||
+                             slug == "privacy-policy") &&
+                            !(cmsConfig?.EnablePrivacy ?? false))
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    })
+                    .ToList();
+
+            var activePageSlugs =
+                new HashSet<string>(
+                    templatePages
+                        .Select(x =>
+                            x.Slug!
+                                .Trim()
+                                .ToLowerInvariant()),
+                    StringComparer.OrdinalIgnoreCase);
+
+            // ---------------------------------------------------------
+            // DEACTIVATE OLD PAGES
+            //
+            // Any active page which is not in the new JSON becomes
+            // inactive. Nothing is deleted.
+            // ---------------------------------------------------------
+
+            var activePagesResult =
+                await _pageService.GetAllViews();
+
+            var activePages =
+                await activePagesResult.ToListAsync();
+
+            foreach (var oldPage in activePages)
             {
-                // =================================================
-                // SKIP SPECIAL DYNAMIC PAGES
-                // =================================================
+                var oldSlug =
+                    oldPage.Slug?
+                        .Trim()
+                        .ToLowerInvariant();
 
-                if (excludedSlugs.Contains(
-                        page.Slug?.ToLower()))
-                {
+                if (string.IsNullOrWhiteSpace(oldSlug))
                     continue;
-                }
 
-                var cmsConfig = existing?.Data;
-
-                if (page.Slug == "faq" &&
-                    !(cmsConfig?.EnableFaq ?? false))
-                {
+                if (activePageSlugs.Contains(oldSlug))
                     continue;
-                }
 
-                if (page.Slug == "privacy" &&
-                    !(cmsConfig?.EnablePrivacy ?? false))
-                {
+                var deactivatePage =
+                    new PageDto
+                    {
+                        Id = oldPage.Id,
+                        Name = oldPage.Name,
+                        Slug = oldPage.Slug,
+                        IsDynamic = oldPage.IsDynamic,
+                        IsPublished = oldPage.IsPublished,
+                        MetaTitle = oldPage.MetaTitle,
+                        MetaDescription = oldPage.MetaDescription,
+                        MetaKeywords = oldPage.MetaKeywords,
+                        IsActive = false
+                    };
+
+                await _pageService.UpdateAsync(deactivatePage, deactivatePage.Id);
+            }
+
+            // ---------------------------------------------------------
+            // PAGES LOOP
+            // ---------------------------------------------------------
+
+            foreach (var page in templatePages)
+            {
+                var pageSlug =
+                    page.Slug?
+                        .Trim()
+                        .ToLowerInvariant();
+
+                if (string.IsNullOrWhiteSpace(pageSlug))
                     continue;
-                }
 
-                // =================================================
+                // -----------------------------------------------------
                 // PAGE UPSERT
-                // =================================================
+                // -----------------------------------------------------
 
                 var existingPage =
                     _dbType == DatabaseType.SqlServer
                         ? await _pageService
                             .FirstOrDefaultAsync<SqlPage>(
-                                x => x.Slug == page.Slug)
+                                x => x.Slug == pageSlug)
                         : await _pageService
                             .FirstOrDefaultAsync<SqlPage>(
-                                x => x.Slug == page.Slug);
+                                x => x.Slug == pageSlug);
 
-                var pageEntity =
-                    new PageDto
-                    {
-                        Name = page.PageName,
-                        Slug = page.Slug,
-                        IsDynamic = page.IsDynamic,
-                        IsPublished = false,
-
-                        MetaTitle =
-                            page.MetaTitle ??
-                            $"صفحه {page.PageName}",
-
-                        MetaDescription =
-                            page.MetaDescription ??
-                            $"توضیحات صفحه {page.PageName}",
-
-                        MetaKeywords =
-                            page.MetaKeywords ??
-                            "آموزشی، نمونه، سایت",
-
-                        IsActive = true
-                    };
+                Guid pageId;
 
                 if (existingPage.Data == null)
                 {
+                    // -------------------------------------------------
+                    // CREATE NEW PAGE
+                    // -------------------------------------------------
+
+                    var pageEntity =
+                        new PageDto
+                        {
+                            Name = page.PageName,
+                            Slug = page.Slug,
+                            IsDynamic = page.IsDynamic,
+                            IsPublished = page.IsPublished,
+                            MetaTitle =
+                                page.MetaTitle ??
+                                $"صفحه {page.PageName}",
+                            MetaDescription =
+                                page.MetaDescription ??
+                                $"توضیحات صفحه {page.PageName}",
+                            MetaKeywords =
+                                page.MetaKeywords ??
+                                "آموزشی، نمونه، سایت",
+                            IsActive = true
+                        };
+
                     var created =
                         await _pageService
                             .CreateAsync(pageEntity);
 
-                    pageEntity.Id =
+                    pageId =
                         created.Data.Id;
                 }
                 else
                 {
-                    pageEntity.Id =
+                    // -------------------------------------------------
+                    // UPDATE EXISTING PAGE
+                    // -------------------------------------------------
+
+                    pageId =
                         existingPage.Data.Id;
 
-                    pageEntity.IsActive = true;
+                    var pageEntity =
+                        new PageDto
+                        {
+                            Id = existingPage.Data.Id,
+
+                            Name = page.PageName,
+                            Slug = page.Slug,
+
+                            IsDynamic = page.IsDynamic,
+
+                            IsPublished = page.IsPublished,
+
+                            MetaTitle =
+                                page.MetaTitle ??
+                                $"صفحه {page.PageName}",
+
+                            MetaDescription =
+                                page.MetaDescription ??
+                                $"توضیحات صفحه {page.PageName}",
+
+                            MetaKeywords =
+                                page.MetaKeywords ??
+                                "آموزشی، نمونه، سایت",
+
+                            IsActive = true
+                        };
+
+                    await _pageService
+                        .UpdateAsync(pageEntity, pageEntity.Id);
                 }
 
-                // =================================================
-                // COMPONENT LOOP
-                // =================================================
+                // -----------------------------------------------------
+                // COMPONENTS FROM JSON
+                // -----------------------------------------------------
 
                 int sectionIndex = 1;
 
-                // این مجموعه مشخص می‌کند چه ComponentTypeهایی
-                // در Template جدید این Page وجود دارند.
                 var activeComponentTypeIds =
                     new HashSet<Guid>();
 
                 foreach (var component in page.Components)
                 {
-                    // =============================================
-                    // COMPONENT RULE
-                    // =============================================
-
-                    if (!componentRules.TryGetValue(
-                            component.Code,
-                            out var rule))
-                    {
+                    if (string.IsNullOrWhiteSpace(component.Code))
                         continue;
-                    }
 
-                    // =============================================
+                    var componentCode =
+                        component.Code.Trim();
+
+                    // -------------------------------------------------
+                    // COMPONENT RULE
+                    //
+                    // Rule is optional for creating the ComponentType.
+                    // If it exists, we use its DefaultData.
+                    // -------------------------------------------------
+
+                    componentRules.TryGetValue(
+                        componentCode,
+                        out var rule);
+
+                    // -------------------------------------------------
                     // COMPONENT TYPE UPSERT
-                    // =============================================
+                    // -------------------------------------------------
 
-                    var existingComponentType =
-                        _dbType == DatabaseType.SqlServer
-                            ? await _componentTypeService
-                                .FirstOrDefaultAsync<SqlComponentType>(
-                                    x => x.Code == component.Code)
-                            : await _componentTypeService
-                                .FirstOrDefaultAsync<PgComponentType>(
-                                    x => x.Code == component.Code);
+                    ComponentTypeDto componentTypeEntity;
 
-                    var componentTypeEntity =
-                        new ComponentTypeDto
+                    if (!componentTypeCache.TryGetValue(
+                            componentCode,
+                            out componentTypeEntity!))
+                    {
+                        var existingComponentType =
+                            _dbType == DatabaseType.SqlServer
+                                ? await _componentTypeService
+                                    .FirstOrDefaultAsync<SqlComponentType>(
+                                        x => x.Code == componentCode)
+                                : await _componentTypeService
+                                    .FirstOrDefaultAsync<PgComponentType>(
+                                        x => x.Code == componentCode);
+
+                        if (existingComponentType.Data == null)
                         {
-                            Name = component.Code,
-                            Code = component.Code,
-                            Type = component.Type,
-                            IsActive = true
-                        };
+                            // -----------------------------------------
+                            // CREATE COMPONENT TYPE
+                            // -----------------------------------------
 
-                    if (existingComponentType.Data == null)
-                    {
-                        var created =
+                            componentTypeEntity =
+                                new ComponentTypeDto
+                                {
+                                    Name = componentCode,
+                                    Code = componentCode,
+                                    Type = component.Type,
+                                    IsActive = true
+                                };
+
+                            if (string.IsNullOrWhiteSpace(
+                                    componentTypeEntity.Code))
+                            {
+                                throw new InvalidOperationException(
+                                    $"ComponentType Code is empty. " +
+                                    $"Page='{pageSlug}', " +
+                                    $"Component='{componentCode}'.");
+                            }
+
+                            var created =
+                                await _componentTypeService
+                                    .CreateAsync(componentTypeEntity);
+
+                            componentTypeEntity.Id =
+                                created.Data.Id;
+                        }
+                        else
+                        {
+                            // -----------------------------------------
+                            // EXISTING COMPONENT TYPE
+                            // -----------------------------------------
+
+                            componentTypeEntity =
+                                new ComponentTypeDto
+                                {
+                                    Id =
+                                        existingComponentType.Data.Id,
+
+                                    Name =
+                                        componentCode,
+
+                                    Code =
+                                        componentCode,
+
+                                    Type =
+                                        component.Type,
+
+                                    IsActive = true
+                                };
+
+                            // If the ComponentType already exists but
+                            // was inactive, make it active again.
                             await _componentTypeService
-                                .CreateAsync(componentTypeEntity);
+                                .UpdateAsync(componentTypeEntity, componentTypeEntity.Id);
+                        }
 
-                        componentTypeEntity.Id =
-                            created.Data.Id;
-                    }
-                    else
-                    {
-                        componentTypeEntity.Id =
-                            existingComponentType.Data.Id;
+                        componentTypeCache[componentCode] =
+                            componentTypeEntity;
                     }
 
-                    componentTypeCache[component.Code] =
-                        componentTypeEntity;
-
-                    // این Section در Template جدید وجود دارد.
                     activeComponentTypeIds.Add(
                         componentTypeEntity.Id);
 
-                    // =============================================
+                    // -------------------------------------------------
                     // FIND EXISTING SECTION
-                    // =============================================
+                    //
+                    // Important:
+                    // FirstOrDefaultAsync must be able to find an
+                    // inactive Section as well.
+                    // -------------------------------------------------
 
                     var existingSection =
                         _dbType == DatabaseType.SqlServer
                             ? await _sectionService
                                 .FirstOrDefaultAsync<SqlSection>(
                                     x =>
-                                        x.PageId == pageEntity.Id &&
+                                        x.PageId == pageId &&
                                         x.ComponentTypeId ==
                                         componentTypeEntity.Id)
                             : await _sectionService
                                 .FirstOrDefaultAsync<SqlSection>(
                                     x =>
-                                        x.PageId == pageEntity.Id &&
+                                        x.PageId == pageId &&
                                         x.ComponentTypeId ==
                                         componentTypeEntity.Id);
 
                     var rtl =
-                        rule.DefaultData?.Rtl;
+                        rule?.DefaultData?.Rtl;
 
                     var currentSectionSortOrder =
                         sectionIndex++;
 
-                    // =============================================
-                    // SECTION DOES NOT EXIST
-                    // فقط در این حالت Section و Item ایجاد می‌شوند
-                    // =============================================
-
                     if (existingSection.Data == null)
                     {
+                        // -------------------------------------------------
+                        // CREATE NEW SECTION
+                        // -------------------------------------------------
+
                         var sectionEntity =
                             BuildSectionDto(
-                                pageEntity.Id,
+                                pageId,
                                 componentTypeEntity.Id,
                                 rtl,
                                 currentSectionSortOrder);
 
-                        var created =
+                        sectionEntity.IsActive = true;
+
+                        var createdSection =
                             await _sectionService
                                 .CreateAsync(sectionEntity);
 
                         sectionEntity.Id =
-                            created.Data.Id;
+                            createdSection.Data.Id;
 
-                        // =========================================
-                        // SECTION ITEMS
-                        // فقط برای Section جدید
-                        // =========================================
+                        // -------------------------------------------------
+                        // CREATE SECTION ITEMS ONLY FOR A NEW SECTION
+                        //
+                        // Existing SectionItems are never touched.
+                        // -------------------------------------------------
 
                         int itemSortOrder = 1;
 
                         var sectionGroupCache =
-                            new Dictionary<string, Guid>();
+                            new Dictionary<string, Guid>(
+                                StringComparer.OrdinalIgnoreCase);
 
                         if (rtl?.Items != null)
                         {
                             foreach (var item in rtl.Items)
                             {
                                 Guid? sectionGroupItemId = null;
-
-                                // =====================================
-                                // SECTION GROUP ITEM
-                                // =====================================
 
                                 if (!string.IsNullOrWhiteSpace(
                                         item.SectionGroupItemCode))
@@ -2163,53 +2333,252 @@ namespace Velora.Application.Seeds
                             }
                         }
                     }
-
-                    // =============================================
-                    // SECTION EXISTS
-                    // =============================================
-
                     else
                     {
-                        // هیچ Update روی Section موجود انجام نمی‌دهیم.
+                        // -------------------------------------------------
+                        // EXISTING SECTION
                         //
-                        // اطلاعاتی که قبلاً توسط Admin تغییر کرده
-                        // باید دست‌نخورده باقی بماند.
-                        //
-                        // SectionItemهای موجود نیز دست‌نخورده
-                        // باقی می‌مانند.
+                        // Keep all existing section data.
+                        // Only update activation and sort order.
+                        // SectionItems are never touched.
+                        // -------------------------------------------------
+
+                        var sectionEntity = new SectionDto
+                        {
+                            Id = existingSection.Data.Id,
+
+                            PageId = existingSection.Data.PageId,
+
+                            ComponentTypeId = existingSection.Data.ComponentTypeId,
+
+                            Title = existingSection.Data.Title,
+                            Subtitle = existingSection.Data.Subtitle,
+                            Description = existingSection.Data.Description,
+
+                            ImageUrl = existingSection.Data.ImageUrl,
+                            ImageAlt = existingSection.Data.ImageAlt,
+
+                            ImageUrl2 = existingSection.Data.ImageUrl2,
+                            ImageAlt2 = existingSection.Data.ImageAlt2,
+
+                            ImageUrl3 = existingSection.Data.ImageUrl3,
+                            ImageAlt3 = existingSection.Data.ImageAlt3,
+
+                            ImageUrl4 = existingSection.Data.ImageUrl4,
+                            ImageAlt4 = existingSection.Data.ImageAlt4,
+
+                            Icon = existingSection.Data.Icon,
+                            IconAlt = existingSection.Data.IconAlt,
+                            IconColor = existingSection.Data.IconColor,
+
+                            Features = existingSection.Data.Features,
+                            CopyrightText = existingSection.Data.CopyrightText,
+
+                            ContactFirstNameLabel = existingSection.Data.ContactFirstNameLabel,
+                            ContactLastNameLabel = existingSection.Data.ContactLastNameLabel,
+                            ContactEmailLabel = existingSection.Data.ContactEmailLabel,
+                            ContactMessageLabel = existingSection.Data.ContactMessageLabel,
+                            ContactSubmitButtonText = existingSection.Data.ContactSubmitButtonText,
+
+                            BackgroundColor = existingSection.Data.BackgroundColor,
+                            HeaderColor = existingSection.Data.HeaderColor,
+                            SubtitleColor = existingSection.Data.SubtitleColor,
+                            DescriptionColor = existingSection.Data.DescriptionColor,
+
+                            Link1Text = existingSection.Data.Link1Text,
+                            Link1Url = existingSection.Data.Link1Url,
+                            Link1Color = existingSection.Data.Link1Color,
+                            Link1TargetId = existingSection.Data.Link1TargetId,
+                            Link1TypeId = existingSection.Data.Link1TypeId,
+                            Link1OpenInNewTab = existingSection.Data.Link1OpenInNewTab,
+
+                            Link2Text = existingSection.Data.Link2Text,
+                            Link2Url = existingSection.Data.Link2Url,
+                            Link2Color = existingSection.Data.Link2Color,
+                            Link2TargetId = existingSection.Data.Link2TargetId,
+                            Link2TypeId = existingSection.Data.Link2TypeId,
+                            Link2OpenInNewTab = existingSection.Data.Link2OpenInNewTab,
+
+                            Link3Text = existingSection.Data.Link3Text,
+                            Link3Url = existingSection.Data.Link3Url,
+                            Link3Color = existingSection.Data.Link3Color,
+                            Link3TargetId = existingSection.Data.Link3TargetId,
+                            Link3TypeId = existingSection.Data.Link3TypeId,
+                            Link3OpenInNewTab = existingSection.Data.Link3OpenInNewTab,
+
+                            Link4Text = existingSection.Data.Link4Text,
+                            Link4Url = existingSection.Data.Link4Url,
+                            Link4Color = existingSection.Data.Link4Color,
+                            Link4TargetId = existingSection.Data.Link4TargetId,
+                            Link4TypeId = existingSection.Data.Link4TypeId,
+                            Link4OpenInNewTab = existingSection.Data.Link4OpenInNewTab,
+
+                            MapEmbedUrl = existingSection.Data.MapEmbedUrl,
+                            VideoUrl = existingSection.Data.VideoUrl,
+                            ThumbnailUrl = existingSection.Data.ThumbnailUrl,
+
+                            ColumnsCount = existingSection.Data.ColumnsCount,
+
+                            EnglishTitle = existingSection.Data.EnglishTitle,
+
+                            IsLatestNews = existingSection.Data.IsLatestNews,
+                            IsLatestProducts = existingSection.Data.IsLatestProducts,
+                            IsSpecialOffers = existingSection.Data.IsSpecialOffers,
+                            IsBestSellingProducts = existingSection.Data.IsBestSellingProducts,
+                            IsActiveBrands = existingSection.Data.IsActiveBrands,
+                            IsActiveCategries = existingSection.Data.IsActiveCategries,
+
+                            // Only these are changed by the seeder
+                            SortOrder = currentSectionSortOrder,
+                            IsActive = true
+                        };
+
+                        await _sectionService
+                            .UpdateAsync(sectionEntity, sectionEntity.Id);
                     }
                 }
 
-                // =================================================
-                // DEACTIVATE OLD SECTIONS
+                // -----------------------------------------------------
+                // DEACTIVATE OLD SECTIONS OF THIS PAGE
                 //
-                // هر Section که قبلاً روی این Page وجود داشته
-                // ولی در Template جدید نیست، غیرفعال می‌شود.
-                // =================================================
-                var existingSections = await _sectionService.GetAllViews();
+                // Example:
+                //
+                // DB:
+                // hero
+                // categories
+                // brands
+                // oldBanner
+                //
+                // JSON:
+                // categories
+                // newArrivals
+                // ...
+                //
+                // Result:
+                // hero      -> inactive
+                // categories -> active
+                // brands     -> active
+                // oldBanner  -> inactive
+                // -----------------------------------------------------
 
-                var pageSections = existingSections
-                    .Where(x => x.ParentId == pageEntity.Id);
+                var activeSectionsQuery =
+                    await _sectionService.GetAllViews();
 
-                foreach (var oldSection in pageSections)
+                var activeSections =
+                    await activeSectionsQuery
+                        .Where(x => x.ParentId == pageId)
+                        .ToListAsync();
+
+                foreach (var oldSection in activeSections)
                 {
-                    if (!activeComponentTypeIds.Contains(oldSection.ComponentTypeId))
+                    if (activeComponentTypeIds.Contains(
+                            oldSection.ComponentTypeId))
                     {
-                        if (oldSection.IsActive)
-                        {
-                            oldSection.IsActive = false;
-
-                            await _sectionService.UpdateAsync(
-                                oldSection,
-                                oldSection.Id);
-                        }
+                        continue;
                     }
+
+                    var deactivateSection = new SectionDto
+                    {
+                        Id = oldSection.Id.Value,
+
+                        PageId = oldSection.ParentId,
+
+                        ComponentTypeId = oldSection.ComponentTypeId,
+
+                        Title = oldSection.Title,
+                        Subtitle = oldSection.Subtitle,
+                        Description = oldSection.Description,
+
+                        ImageUrl = oldSection.ImageUrl,
+                        ImageAlt = oldSection.ImageAlt,
+
+                        ImageUrl2 = oldSection.ImageUrl2,
+                        ImageAlt2 = oldSection.ImageAlt2,
+
+                        ImageUrl3 = oldSection.ImageUrl3,
+                        ImageAlt3 = oldSection.ImageAlt3,
+
+                        ImageUrl4 = oldSection.ImageUrl4,
+                        ImageAlt4 = oldSection.ImageAlt4,
+
+                        Icon = oldSection.Icon,
+                        IconAlt = oldSection.IconAlt,
+                        IconColor = oldSection.IconColor,
+
+                        Features = oldSection.Features,
+                        CopyrightText = oldSection.CopyrightText,
+
+                        ContactFirstNameLabel = oldSection.ContactFirstNameLabel,
+                        ContactLastNameLabel = oldSection.ContactLastNameLabel,
+                        ContactEmailLabel = oldSection.ContactEmailLabel,
+                        ContactMessageLabel = oldSection.ContactMessageLabel,
+                        ContactSubmitButtonText = oldSection.ContactSubmitButtonText,
+
+                        BackgroundColor = oldSection.BackgroundColor,
+                        HeaderColor = oldSection.HeaderColor,
+                        SubtitleColor = oldSection.SubtitleColor,
+                        DescriptionColor = oldSection.DescriptionColor,
+
+                        Link1Text = oldSection.Link1Text,
+                        Link1Url = oldSection.Link1Url,
+                        Link1Color = oldSection.Link1Color,
+                        Link1TargetId = oldSection.Link1TargetId,
+                        Link1TypeId = oldSection.Link1TypeId,
+                        Link1OpenInNewTab = oldSection.Link1OpenInNewTab,
+
+                        Link2Text = oldSection.Link2Text,
+                        Link2Url = oldSection.Link2Url,
+                        Link2Color = oldSection.Link2Color,
+                        Link2TargetId = oldSection.Link2TargetId,
+                        Link2TypeId = oldSection.Link2TypeId,
+                        Link2OpenInNewTab = oldSection.Link2OpenInNewTab,
+
+                        Link3Text = oldSection.Link3Text,
+                        Link3Url = oldSection.Link3Url,
+                        Link3Color = oldSection.Link3Color,
+                        Link3TargetId = oldSection.Link3TargetId,
+                        Link3TypeId = oldSection.Link3TypeId,
+                        Link3OpenInNewTab = oldSection.Link3OpenInNewTab,
+
+                        Link4Text = oldSection.Link4Text,
+                        Link4Url = oldSection.Link4Url,
+                        Link4Color = oldSection.Link4Color,
+                        Link4TargetId = oldSection.Link4TargetId,
+                        Link4TypeId = oldSection.Link4TypeId,
+                        Link4OpenInNewTab = oldSection.Link4OpenInNewTab,
+
+                        MapEmbedUrl = oldSection.MapEmbedUrl,
+                        VideoUrl = oldSection.VideoUrl,
+                        ThumbnailUrl = oldSection.ThumbnailUrl,
+
+                        ColumnsCount = oldSection.ColumnsCount,
+
+                        EnglishTitle = oldSection.EnglishTitle,
+
+                        IsLatestNews = oldSection.IsLatestNews,
+                        IsLatestProducts = oldSection.IsLatestProducts,
+                        IsSpecialOffers = oldSection.IsSpecialOffers,
+                        IsBestSellingProducts = oldSection.IsBestSellingProducts,
+                        IsActiveBrands = oldSection.IsActiveBrands,
+                        IsActiveCategries = oldSection.IsActiveCategries,
+
+                        // فقط وضعیت Section تغییر می‌کند
+                        SortOrder = oldSection.SortOrder,
+                        IsActive = false
+                    };
+
+                    await _sectionService.UpdateAsync(
+                        deactivateSection,
+                        deactivateSection.Id);
+
+                    await _sectionService
+                        .UpdateAsync(deactivateSection, deactivateSection.Id);
                 }
             }
 
-            // =====================================================
+            // ---------------------------------------------------------
             // COMMIT
-            // =====================================================
+            // ---------------------------------------------------------
 
             await _transactionService.CommitAsync();
         }
@@ -2335,6 +2704,7 @@ namespace Velora.Application.Seeds
                 {
                     if (!componentRules.TryGetValue(component.Code, out var rule))
                         continue;
+
                     var existingComponentType = _dbType == DatabaseType.SqlServer
                         ? await _componentTypeService.FirstOrDefaultAsync<SqlComponentType>(x => x.Code == component.Code)
                         : await _componentTypeService.FirstOrDefaultAsync<PgComponentType>(x => x.Code == component.Code);
@@ -2346,7 +2716,11 @@ namespace Velora.Application.Seeds
                         Type = component.Type,
                         IsActive = true
                     };
-
+                    if (string.IsNullOrWhiteSpace(componentTypeEntity.Code))
+                    {
+                        throw new Exception(
+                            $"ComponentType Code is NULL. Component Code = '{component.Code}'");
+                    }
                     if (existingComponentType.Data == null)
                     {
                         var created = await _componentTypeService.CreateAsync(componentTypeEntity);
@@ -2505,10 +2879,10 @@ namespace Velora.Application.Seeds
 
                 SortOrder = sortOrder,
 
-                BackgroundColor = "#ffffff",
-                HeaderColor = "#000000",
-                SubtitleColor = "#333333",
-                DescriptionColor = "#555555",
+                BackgroundColor = rtl?.BackgroundColor,
+                HeaderColor = rtl?.HeaderColor,
+                SubtitleColor = rtl?.SubtitleColor,
+                DescriptionColor = rtl?.DescriptionColor,
 
                 Title = rtl?.Title,
                 Subtitle = rtl?.Subtitle,
@@ -2568,7 +2942,14 @@ namespace Velora.Application.Seeds
                 MapEmbedUrl = rtl?.MapEmbedUrl,
                 ThumbnailUrl = rtl?.ThumbnailUrl,
                 VideoUrl = rtl?.VideoUrl,
-                ColumnsCount = 1
+                ColumnsCount = 1,
+                IsActiveBrands = rtl?.IsActiveBrands,   
+                IsActiveCategries = rtl?.IsActiveCategries,
+                IsBestSellingProducts= rtl?.IsBestSellingProducts,
+                IsLatestNews= rtl?.IsLatestNews,
+                IsSpecialOffers= rtl?.IsSpecialOffers,
+                EnglishTitle= rtl?.EnglishTitle,
+                IsLatestProducts= rtl?.IsLatestProducts,
             };
         }
         private ContentItemDto BuildContentItemDto(
@@ -2801,7 +3182,7 @@ int sortOrder)
 
 
                 var result =
-                    await _productCategoryService.UpdateAsync(model);
+                    await _productCategoryService.UpdateAsync(model, model.Id);
 
 
 
@@ -2891,7 +3272,7 @@ int sortOrder)
 
 
                 var result =
-                    await _productBrandService.UpdateAsync(model);
+                    await _productBrandService.UpdateAsync(model,model.Id);
 
 
 
@@ -2975,7 +3356,7 @@ int sortOrder)
 
 
                 var result =
-                    await _productTypeService.UpdateAsync(model);
+                    await _productTypeService.UpdateAsync(model,model.Id);
 
 
 
@@ -3237,7 +3618,7 @@ public async Task SeedProductsAsync()
 
 
                     await _productTagService
-                        .UpdateAsync(tagModel);
+                        .UpdateAsync(tagModel,tagModel.Id);
 
 
 
@@ -3400,7 +3781,7 @@ public async Task SeedProductsAsync()
 
 
                 var result =
-                    await _productService.UpdateAsync(model);
+                    await _productService.UpdateAsync(model, model.Id);
 
 
                 if (!result.Success)
@@ -3546,7 +3927,7 @@ public async Task SeedProductsAsync()
 
 
                     await _productFileService
-                        .UpdateAsync(model);
+                        .UpdateAsync(model, model.Id);
 
                 }
                 else
@@ -3646,7 +4027,7 @@ public async Task SeedProductsAsync()
 
 
                     await _productVariantService
-                        .UpdateAsync(model);
+                        .UpdateAsync(model, model.Id);
 
 
                     variantId = exist.Id;
@@ -3882,7 +4263,7 @@ public async Task SeedProductsAsync()
 
 
                     await _productAttributeValueService
-                        .UpdateAsync(model);
+                        .UpdateAsync(model, model.Id);
 
 
                 }
@@ -4120,7 +4501,7 @@ public async Task SeedProductsAsync()
 
 
                 await _productInventoryTransactionService
-                    .UpdateAsync(transactionModel);
+                    .UpdateAsync(transactionModel, transactionModel.Id);
 
 
 

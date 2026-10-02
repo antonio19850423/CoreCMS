@@ -171,4 +171,6 @@ public partial class VwSectionForm
     public bool? IsLatestNews { get; set; }
 
     public bool? IsSpecialOffers { get; set; }
+
+    public bool? IsLatestProducts { get; set; }
 }

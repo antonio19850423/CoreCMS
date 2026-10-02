@@ -324,4 +324,7 @@
   <data name="Section.IsSpecialOffers" xml:space="preserve">
     <value>نمایش خودکار پیشنهادهای ویژه</value>
   </data>
+  <data name="Section.IsLatestProducts" xml:space="preserve">
+    <value>نمایش خودکار جدیدترین محصولات</value>
+  </data>
 </root>

@@ -324,4 +324,7 @@
   <data name="Section.IsSpecialOffers" xml:space="preserve">
     <value>IsSpecialOffers</value>
   </data>
+  <data name="Section.IsLatestProducts" xml:space="preserve">
+    <value>IsLatestProducts</value>
+  </data>
 </root>

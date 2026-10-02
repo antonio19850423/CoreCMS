@@ -207,6 +207,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 54, GridOrder = 54, ShowInGrid = false, ShowInForm = true)]
 
         public bool? IsActiveCategries { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 55, GridOrder = 55, ShowInGrid = false, ShowInForm = true)]
+
+        public bool? IsLatestProducts { get; set; }
 
     }
 }

@@ -163,5 +163,50 @@ namespace Velora.Application.Shared.Dtos
         public string? Question { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 41, GridOrder = 41, ShowInGrid = false, ShowInForm = true, MaxLength = 600)]
         public string? Answer { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = false, ShowInForm = true,
+        EntityName = LookupEntities.ProductCategory,
+        ServiceName = "productCategoryView",
+        LinkedFieldCode = "CategoryName",
+        Route = "/api/ComboBox/ProductCategories",
+        SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public Guid? CategoryId { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = false,
+            EntityName = LookupEntities.ProductCategory,
+            ServiceName = "productCategoryView",
+            LinkedFieldCode = "CategoryId",
+            Route = "/api/ComboBox/ProductCategories",
+            SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public string? CategoryName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true,
+            EntityName = LookupEntities.ProductBrand,
+            ServiceName = "productBrandView",
+            LinkedFieldCode = "BrandName",
+            Route = "/api/ComboBox/ProductBrands",
+            SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public Guid? BrandId { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false,
+            EntityName = LookupEntities.ProductBrand,
+            ServiceName = "productBrandView",
+            LinkedFieldCode = "BrandId",
+            Route = "/api/ComboBox/ProductBrands",
+            SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public string? BrandName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true,
+    EntityName = LookupEntities.Product,
+    ServiceName = "productView",
+    LinkedFieldCode = "ProductName",
+    Route = "/api/ComboBox/Products",
+    SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public Guid? ProductId { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = false, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = false,
+            EntityName = LookupEntities.Product,
+            ServiceName = "productView",
+            LinkedFieldCode = "ProductId",
+            Route = "/api/ComboBox/Products",
+            SelectDisplayFields = "[\"name\",\"slug\"]")]
+        public string? ProductName { get; set; }
     }
 }

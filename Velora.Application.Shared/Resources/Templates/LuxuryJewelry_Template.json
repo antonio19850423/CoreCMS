@@ -1,143 +1,147 @@
 {
-  "templateName": "LuxuryJewelry_Template",
-  "pages": [
+  "templates": [
     {
-      "pageName": "خانه",
-      "slug": "home",
-      "isPublished": false,
-      "metaTitle": "فروشگاه طلا و زیورآلات",
-      "metaDescription": "خرید آنلاین طلا و زیورآلات با مجموعه‌ای از انگشتر، گردنبند، دستبند، گوشواره و سرویس‌های طلا",
-      "metaKeywords": "طلا، زیورآلات، جواهرات، انگشتر طلا، گردنبند طلا، دستبند طلا، گوشواره طلا، خرید طلا",
-      "components": [
+      "templateName": "LuxuryJewelry_Template",
+      "pages": [
         {
-          "code": "luxuryJewelryHero",
-          "type": "hero"
+          "pageName": "خانه",
+          "slug": "home",
+          "isPublished": false,
+          "metaTitle": "فروشگاه طلا و زیورآلات",
+          "metaDescription": "خرید آنلاین طلا و زیورآلات با مجموعه‌ای از انگشتر، گردنبند، دستبند، گوشواره و سرویس‌های طلا",
+          "metaKeywords": "طلا، زیورآلات، جواهرات، انگشتر طلا، گردنبند طلا، دستبند طلا، گوشواره طلا، خرید طلا",
+          "components": [
+            {
+              "code": "luxuryJewelryHero",
+              "type": "hero"
+            },
+            {
+              "code": "luxuryJewelryCategories",
+              "type": "categoryGrid"
+            },
+            {
+              "code": "luxuryJewelryNewArrivals",
+              "type": "productGrid"
+            },
+            {
+              "code": "luxuryJewelrySpecialOffers",
+              "type": "productGrid"
+            },
+            {
+              "code": "luxuryJewelryPromoBanner",
+              "type": "promoBanner"
+            },
+            {
+              "code": "luxuryJewelryBestSellers",
+              "type": "productGrid"
+            },
+            {
+              "code": "luxuryJewelryBrands",
+              "type": "brandGrid"
+            },
+            {
+              "code": "luxuryJewelryBenefits",
+              "type": "benefits"
+            },
+            {
+              "code": "luxuryJewelryNews",
+              "type": "newsGrid"
+            },
+            {
+              "code": "luxuryJewelryNewsletter",
+              "type": "newsletter"
+            },
+            {
+              "code": "luxuryJewelryFinalCta",
+              "type": "finalCta"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelryCategories",
-          "type": "categoryGrid"
+          "pageName": "درباره ما",
+          "slug": "about",
+          "isPublished": false,
+          "metaTitle": "درباره ما - فروشگاه طلا و زیورآلات",
+          "metaDescription": "آشنایی با مجموعه، داستان برند و ارزش‌های فروشگاه طلا و زیورآلات",
+          "metaKeywords": "درباره ما، فروشگاه طلا، زیورآلات، برند طلا",
+          "components": [
+            {
+              "code": "about",
+              "type": "about"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelryNewArrivals",
-          "type": "productGrid"
+          "pageName": "تماس با ما",
+          "slug": "contact",
+          "isPublished": false,
+          "metaTitle": "تماس با ما - فروشگاه طلا و زیورآلات",
+          "metaDescription": "راه‌های ارتباط با فروشگاه طلا و زیورآلات و پشتیبانی سفارش‌ها",
+          "metaKeywords": "تماس با ما، پشتیبانی، فروشگاه طلا، ارتباط با ما",
+          "components": [
+            {
+              "code": "contact",
+              "type": "contact"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelrySpecialOffers",
-          "type": "productGrid"
+          "pageName": "سوالات متداول",
+          "slug": "faq",
+          "isPublished": false,
+          "metaTitle": "سوالات متداول - فروشگاه طلا و زیورآلات",
+          "metaDescription": "پاسخ به سوالات متداول درباره خرید، سفارش، ارسال، پرداخت و خدمات فروشگاه طلا و زیورآلات",
+          "metaKeywords": "سوالات متداول، FAQ، خرید طلا، ارسال طلا، پرداخت، سفارش",
+          "components": [
+            {
+              "code": "faq",
+              "type": "faq"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelryPromoBanner",
-          "type": "promoBanner"
+          "pageName": "طرح‌بندی",
+          "slug": "layout",
+          "isPublished": false,
+          "components": [
+            {
+              "code": "footer",
+              "type": "footer"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelryBestSellers",
-          "type": "productGrid"
+          "pageName": "مقالات",
+          "slug": "articles",
+          "isPublished": false,
+          "metaTitle": "مقالات طلا و زیورآلات",
+          "metaDescription": "مطالب و مقالات تخصصی درباره طلا، زیورآلات، نگهداری و انتخاب محصولات",
+          "metaKeywords": "مقالات طلا، مقالات زیورآلات، راهنمای خرید طلا",
+          "components": [
+            {
+              "code": "articleHero",
+              "type": "hero"
+            }
+          ]
         },
         {
-          "code": "luxuryJewelryBrands",
-          "type": "brandGrid"
-        },
-        {
-          "code": "luxuryJewelryBenefits",
-          "type": "benefits"
-        },
-        {
-          "code": "luxuryJewelryNews",
-          "type": "newsGrid"
-        },
-        {
-          "code": "luxuryJewelryNewsletter",
-          "type": "newsletter"
-        },
-        {
-          "code": "luxuryJewelryFinalCta",
-          "type": "finalCta"
-        }
-      ]
-    },
-    {
-      "pageName": "درباره ما",
-      "slug": "about",
-      "isPublished": false,
-      "metaTitle": "درباره ما - فروشگاه طلا و زیورآلات",
-      "metaDescription": "آشنایی با مجموعه، داستان برند و ارزش‌های فروشگاه طلا و زیورآلات",
-      "metaKeywords": "درباره ما، فروشگاه طلا، زیورآلات، برند طلا",
-      "components": [
-        {
-          "code": "about",
-          "type": "about"
-        }
-      ]
-    },
-    {
-      "pageName": "تماس با ما",
-      "slug": "contact",
-      "isPublished": false,
-      "metaTitle": "تماس با ما - فروشگاه طلا و زیورآلات",
-      "metaDescription": "راه‌های ارتباط با فروشگاه طلا و زیورآلات و پشتیبانی سفارش‌ها",
-      "metaKeywords": "تماس با ما، پشتیبانی، فروشگاه طلا، ارتباط با ما",
-      "components": [
-        {
-          "code": "contact",
-          "type": "contact"
-        }
-      ]
-    },
-    {
-      "pageName": "سوالات متداول",
-      "slug": "faq",
-      "isPublished": false,
-      "metaTitle": "سوالات متداول - فروشگاه طلا و زیورآلات",
-      "metaDescription": "پاسخ به سوالات متداول درباره خرید، سفارش، ارسال، پرداخت و خدمات فروشگاه طلا و زیورآلات",
-      "metaKeywords": "سوالات متداول، FAQ، خرید طلا، ارسال طلا، پرداخت، سفارش",
-      "components": [
-        {
-          "code": "faq",
-          "type": "faq"
-        }
-      ]
-    },
-    {
-      "pageName": "طرح‌بندی",
-      "slug": "layout",
-      "isPublished": false,
-      "components": [
-        {
-          "code": "footer",
-          "type": "footer"
-        }
-      ]
-    },
-    {
-      "pageName": "مقالات",
-      "slug": "articles",
-      "isPublished": false,
-      "metaTitle": "مقالات طلا و زیورآلات",
-      "metaDescription": "مطالب و مقالات تخصصی درباره طلا، زیورآلات، نگهداری و انتخاب محصولات",
-      "metaKeywords": "مقالات طلا، مقالات زیورآلات، راهنمای خرید طلا",
-      "components": [
-        {
-          "code": "articleHero",
-          "type": "hero"
-        }
-      ]
-    },
-    {
-      "pageName": "حریم خصوصی",
-      "slug": "privacy-policy",
-      "isPublished": false,
-      "isDynamic": false,
-      "metaTitle": "حریم خصوصی - فروشگاه طلا و زیورآلات",
-      "metaDescription": "سیاست حفظ حریم خصوصی و نحوه جمع‌آوری، استفاده و حفاظت از اطلاعات کاربران فروشگاه",
-      "metaKeywords": "حریم خصوصی، Privacy Policy، امنیت اطلاعات، اطلاعات کاربران، فروشگاه طلا",
-      "components": [
-        {
-          "code": "defaultPrivacyHero",
-          "type": "hero"
-        },
-        {
-          "code": "defaultPrivacyFaq",
-          "type": "faq"
+          "pageName": "حریم خصوصی",
+          "slug": "privacy-policy",
+          "isPublished": false,
+          "isDynamic": false,
+          "metaTitle": "حریم خصوصی - فروشگاه طلا و زیورآلات",
+          "metaDescription": "سیاست حفظ حریم خصوصی و نحوه جمع‌آوری، استفاده و حفاظت از اطلاعات کاربران فروشگاه",
+          "metaKeywords": "حریم خصوصی، Privacy Policy، امنیت اطلاعات، اطلاعات کاربران، فروشگاه طلا",
+          "components": [
+            {
+              "code": "defaultPrivacyHero",
+              "type": "hero"
+            },
+            {
+              "code": "defaultPrivacyFaq",
+              "type": "faq"
+            }
+          ]
         }
       ]
     }

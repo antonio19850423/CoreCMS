@@ -181,5 +181,6 @@ namespace Velora.Application.Shared.Dtos
         public bool? IsActiveBrands { get; set; }
 
         public bool? IsActiveCategries { get; set; }
+        public bool? IsLatestProducts { get; set; }
     }
 }

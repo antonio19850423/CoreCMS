@@ -153,4 +153,19 @@ public partial class VwSectionItemForm
     public Guid? Link4TypeId { get; set; }
 
     public bool? Link4OpenInNewTab { get; set; }
+
+    public Guid? BrandId { get; set; }
+
+    [StringLength(150)]
+    public string? BrandName { get; set; }
+
+    public Guid? CategoryId { get; set; }
+
+    [StringLength(150)]
+    public string? CategoryName { get; set; }
+
+    public Guid? ProductId { get; set; }
+
+    [StringLength(150)]
+    public string? ProductName { get; set; }
 }

@@ -279,4 +279,22 @@
   <data name="SectionItem.Link4TypeId" xml:space="preserve">
     <value>نوع لینک</value>
   </data>
+  <data name="SectionItem.CategoryId" xml:space="preserve">
+    <value>دسته بندی</value>
+  </data>
+  <data name="SectionItem.CategoryName" xml:space="preserve">
+    <value>دسته بندی</value>
+  </data>
+  <data name="SectionItem.BrandId" xml:space="preserve">
+    <value>برند </value>
+  </data>
+  <data name="SectionItem.BrandName" xml:space="preserve">
+    <value>برند </value>
+  </data>
+  <data name="SectionItem.ProductId" xml:space="preserve">
+    <value>محصول</value>
+  </data>
+  <data name="SectionItem.ProductName" xml:space="preserve">
+    <value>محصول</value>
+  </data>
 </root>

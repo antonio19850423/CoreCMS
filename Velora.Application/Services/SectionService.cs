@@ -55,6 +55,7 @@ namespace Velora.Application.Services
         {
             return await GetAllViewQueryable<SqlSectionView, SqlSectionView, SectionCrud>();
         }
+
         public async Task<ResultDto<SectionDto>> CreateAsync(SectionCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
@@ -138,6 +139,7 @@ namespace Velora.Application.Services
                     IsBestSellingProducts = input.IsBestSellingProducts,
                     IsLatestNews = input.IsLatestNews,
                     IsSpecialOffers = input.IsSpecialOffers,
+                    IsLatestProducts = input.IsLatestProducts,
                     
 
                 };
@@ -256,7 +258,8 @@ namespace Velora.Application.Services
                     IsBestSellingProducts = input.IsBestSellingProducts,
                     IsLatestNews = input.IsLatestNews,
                     IsSpecialOffers = input.IsSpecialOffers,
-
+                    IsLatestProducts = input.IsLatestProducts,
+                    
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

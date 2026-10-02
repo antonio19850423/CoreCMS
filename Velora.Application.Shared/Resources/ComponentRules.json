@@ -1110,8 +1110,8 @@
         "descriptionColor": true,
         "IsActiveCategries": true,
         "items": {
-          "link1Text": true,
-          "link1Url": true,
+          "categoryName": true,
+          "categoryId": true,
           "isActive": true,
           "sortOrder": true
         }
@@ -1125,6 +1125,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isActiveCategries": true,
           "items": []
         },
         "ltr": {
@@ -1135,6 +1136,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isActiveCategries": true,
           "items": []
         }
       }
@@ -1148,11 +1150,10 @@
         "headerColor": true,
         "subtitleColor": true,
         "descriptionColor": true,
-        "link1Text": true,
-        "link1Url": true,
+        "isLatestProducts": true,
         "items": {
-          "link1Text": true,
-          "link1Url": true,
+          "productId": true,
+          "productName": true,
           "isActive": true,
           "sortOrder": true
         }
@@ -1166,8 +1167,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "مشاهده همه محصولات",
-          "link1Url": "/products",
+          "isLatestProducts": true,
           "items": []
         },
         "ltr": {
@@ -1178,8 +1178,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "View All Products",
-          "link1Url": "/products",
+          "isLatestProducts": true,
           "items": []
         }
       }
@@ -1193,12 +1192,10 @@
         "headerColor": true,
         "subtitleColor": true,
         "descriptionColor": true,
-        "link1Text": true,
-        "link1Url": true,
-        "IsSpecialOffers": true,
+        "isSpecialOffers": true,
         "items": {
-          "link1Text": true,
-          "link1Url": true,
+          "productId": true,
+          "productName": true,
           "isActive": true,
           "sortOrder": true
         }
@@ -1212,8 +1209,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "مشاهده همه محصولات",
-          "link1Url": "/products",
+          "isSpecialOffers": true,
           "items": []
         },
         "ltr": {
@@ -1224,8 +1220,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "View All Products",
-          "link1Url": "/products",
+          "isSpecialOffers": true,
           "items": []
         }
       }
@@ -1288,12 +1283,10 @@
         "headerColor": true,
         "subtitleColor": true,
         "descriptionColor": true,
-        "link1Text": true,
-        "link1Url": true,
-        "IsBestSellingProducts": true,
+        "isBestSellingProducts": true,
         "items": {
-          "link1Text": true,
-          "link1Url": true,
+          "productId": true,
+          "productName": true,
           "isActive": true,
           "sortOrder": true
         }
@@ -1307,8 +1300,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "مشاهده همه محصولات",
-          "link1Url": "/products",
+          "isBestSellingProducts": true,
           "items": []
         },
         "ltr": {
@@ -1319,8 +1311,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
-          "link1Text": "View All Products",
-          "link1Url": "/products",
+          "isBestSellingProducts": true,
           "items": []
         }
       }
@@ -1334,10 +1325,10 @@
         "headerColor": true,
         "subtitleColor": true,
         "descriptionColor": true,
-        "IsActiveBrands": true,
+        "isActiveBrands": true,
         "items": {
-          "link1Text": true,
-          "link1Url": true,
+          "brandId": true,
+          "brandName": true,
           "isActive": true,
           "sortOrder": true
         }
@@ -1351,6 +1342,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isActiveBrands": true,
           "items": []
         },
         "ltr": {
@@ -1361,6 +1353,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isActiveBrands": true,
           "items": []
         }
       }
@@ -1490,7 +1483,7 @@
         "headerColor": true,
         "subtitleColor": true,
         "descriptionColor": true,
-        "IsLatestNews": true,
+        "isLatestNews": true,
         "items": {
           "link1Text": true,
           "link1Url": true,
@@ -1507,6 +1500,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isLatestNews": true,
           "items": []
         },
         "ltr": {
@@ -1517,6 +1511,7 @@
           "headerColor": "#171717",
           "subtitleColor": "#b08d57",
           "descriptionColor": "#777777",
+          "isLatestNews": true,
           "items": []
         }
       }
@@ -1529,7 +1524,8 @@
         "backgroundColor": true,
         "headerColor": true,
         "subtitleColor": true,
-        "descriptionColor": true
+        "descriptionColor": true,
+        "isLatestNews": true
       },
       "defaultData": {
         "rtl": {
@@ -1539,7 +1535,8 @@
           "backgroundColor": "#111111",
           "headerColor": "#ffffff",
           "subtitleColor": "#c4a46d",
-          "descriptionColor": "#999999"
+          "descriptionColor": "#999999",
+          "isLatestNews": true
         },
         "ltr": {
           "subtitle": "STAY IN TOUCH",
@@ -1548,7 +1545,8 @@
           "backgroundColor": "#111111",
           "headerColor": "#ffffff",
           "subtitleColor": "#c4a46d",
-          "descriptionColor": "#999999"
+          "descriptionColor": "#999999",
+          "isLatestNews": true
         }
       }
     },
@@ -1560,9 +1558,7 @@
       "backgroundColor": true,
       "headerColor": true,
       "subtitleColor": true,
-      "descriptionColor": true,
-      "link1Text": true,
-      "link1Url": true
+      "descriptionColor": true
     },
     "defaultData": {
       "rtl": {

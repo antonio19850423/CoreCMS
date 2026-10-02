@@ -189,6 +189,8 @@ public partial class Section
 
     public bool? IsActiveCategries { get; set; }
 
+    public bool? IsLatestProducts { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

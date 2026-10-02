@@ -66,25 +66,34 @@ namespace Velora.Application.Services
             return data;
         }
 
-        public async Task<TView?> GetFirstOrDefaultViewAsync<TView>(Expression<Func<TView, bool>> predicate) where TView : class
+        public async Task<TView?> GetFirstOrDefaultViewAsync<TView>(
+         Expression<Func<TView, bool>> predicate)
+         where TView : class
         {
-            // کلید کش بر اساس نوع ویو
             var cacheKey = $"{_cacheKey}_{typeof(TView).Name}";
 
-            if (!_cache.TryGetValue(cacheKey, out List<TView> data) ||
-               _env.IsDevelopment())
+            if (!_cache.TryGetValue(cacheKey, out List<TView>? data) ||
+                _env.IsDevelopment())
             {
-                // گرفتن query جنریک
-                var query = await _genericService.GetAllViewQueryable<TEntityPg, TEntitySql, TView>();
-                data = query.ToList();
+                var query =
+                    await _genericService
+                        .GetAllViewQueryable<TEntityPg, TEntitySql, TView>();
+
+                data =  query.ToList();
+
                 if (!_env.IsDevelopment())
-                    _cache.Set(cacheKey, data, TimeSpan.FromMinutes(2));
+                {
+                    _cache.Set(
+                        cacheKey,
+                        data,
+                        TimeSpan.FromMinutes(2));
+                }
             }
 
-            // اعمال شرط و گرفتن اولین نتیجه
-            return data.AsQueryable().FirstOrDefault(predicate);
+            return data
+                .AsQueryable()
+                .FirstOrDefault(predicate);
         }
-
 
         /// <summary>
         /// ریفرش دستی کش
