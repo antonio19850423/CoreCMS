@@ -109,4 +109,10 @@ public partial class VwSiteGlobalSetting
     public bool? EnableUserLogin { get; set; }
 
     public bool? EnableUserRegistration { get; set; }
+
+    [StringLength(500)]
+    public string? Background { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
 }

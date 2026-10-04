@@ -327,4 +327,7 @@
   <data name="Section.IsLatestProducts" xml:space="preserve">
     <value>IsLatestProducts</value>
   </data>
+  <data name="Section.ButtonColor" xml:space="preserve">
+    <value>ButtonColor</value>
+  </data>
 </root>

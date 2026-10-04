@@ -128,6 +128,10 @@ namespace Velora.Application.Shared.Dtos
         public string? CreatedByName { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 43, GridOrder = 43, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 44, GridOrder = 44, ShowInGrid = false, ShowInForm = true)]
+        public string? Background { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 45, GridOrder = 45, ShowInGrid = false, ShowInForm = true)]
+        public string? BackgroundGradient { get; set; }
 
     }
 }

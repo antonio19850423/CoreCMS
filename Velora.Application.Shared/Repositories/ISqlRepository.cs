@@ -26,6 +26,7 @@ namespace Velora.Application.Shared.Repositories
             string storedProcedureName,
             params object[] parameters)
             where TResult : class;
+        Task<TEntity?> GetByIdNoTrackingAsync(params object[] keyValues);
 
     }
 }

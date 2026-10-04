@@ -246,4 +246,10 @@
   <data name="SiteSetting.HasCardToCardPayment" xml:space="preserve">
     <value>HasCardToCardPayment</value>
   </data>
+  <data name="SiteSetting.Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="SiteSetting.BackgroundGradient" xml:space="preserve">
+    <value>BackgroundGradient</value>
+  </data>
 </root>

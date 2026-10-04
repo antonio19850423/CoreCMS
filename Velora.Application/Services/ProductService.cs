@@ -140,12 +140,10 @@ namespace Velora.Application.Services
                     }
 
                 }
-                await _transactionService.CommitAsync();
                 return ProductResult;
             }
             catch (Exception ex)
             {
-                await _transactionService.RollbackAsync();
                 var result = new ResultDto<ProductDto>
                 {
                     Success = false,
@@ -248,12 +246,10 @@ namespace Velora.Application.Services
                         ProductTagId = tagId
                     });
                 }
-                await _transactionService.CommitAsync();
                 return ProductResult;
             }
             catch (Exception ex)
             {
-                await _transactionService.RollbackAsync();
                 var result = new ResultDto<ProductDto>
                 {
                     Success = false,

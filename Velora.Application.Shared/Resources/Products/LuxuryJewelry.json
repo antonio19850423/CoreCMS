@@ -1,1322 +1,334 @@
 {
   "Products": [
     {
-      "Category": {
-        "Name": "انگشتر طلا",
-        "Slug": "gold-rings",
-        "Description": "انواع انگشترهای طلا با طراحی ظریف و مدرن.",
-        "SeoTitle": "خرید انگشتر طلا",
-        "SeoDescription": "مجموعه انگشترهای طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Aurelia",
-        "Slug": "aurelia",
-        "Description": "برند منتخب جواهرات با تمرکز بر طراحی ظریف.",
-        "Logo": "/uploads/brands/aurelia.jpg",
-        "Website": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "انگشتر طلای ۱۸ عیار مدل آتنا",
-        "Slug": "18k-gold-ring-atena",
-        "Summary": "انگشتر طلای ظریف و مینیمال مدل آتنا.",
-        "Description": "انگشتر طلای ۱۸ عیار مدل آتنا با طراحی ساده و مناسب استفاده روزمره و مناسبت‌های خاص.",
-        "Price": 18500000,
-        "Barcode": null,
-        "Sku": "ATENA-RING-01",
-        "Weight": 2.15,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "انگشتر طلای ۱۸ عیار مدل آتنا",
-        "SeoDescription": "خرید انگشتر طلای ۱۸ عیار مدل آتنا.",
-        "SortOrder": 1,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 8,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "انگشتر طلای آتنا",
-          "Alt": "انگشتر طلای ۱۸ عیار مدل آتنا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [
-        {
-          "Name": "سایز 52",
-          "Price": 18500000,
-          "ComparePrice": null,
-          "Image": "/uploads/sections/jewelry-product.jpg",
-          "Sku": "ATENA-52",
-          "Barcode": null,
-          "InitialStock": 3,
-          "IsDefault": true,
-          "SortOrder": 1,
-          "IsActive": true
-        },
-        {
-          "Name": "سایز 54",
-          "Price": 18700000,
-          "ComparePrice": null,
-          "Image": "/uploads/sections/jewelry-product.jpg",
-          "Sku": "ATENA-54",
-          "Barcode": null,
-          "InitialStock": 3,
-          "IsDefault": false,
-          "SortOrder": 2,
-          "IsActive": true
-        }
-      ],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "material",
-          "Name": "جنس",
-          "Value": "طلای زرد",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "طلای 18 عیار",
-          "Slug": "18k-gold"
-        },
-        {
-          "Name": "انگشتر",
-          "Slug": "ring"
-        },
-        {
-          "Name": "زنانه",
-          "Slug": "women"
-        }
-      ]
+      "Name": "انگشتر طلای ۱۸ عیار مدل آتنا",
+      "Slug": "18k-gold-ring-atena",
+      "CategorySlug": "gold-rings",
+      "BrandSlug": "bvlgari",
+      "ProductTypeCode": "physical",
+      "Summary": "انگشتر طلای ظریف و مینیمال مدل آتنا.",
+      "Description": "انگشتر طلای ۱۸ عیار مدل آتنا با طراحی ساده و مناسب استفاده روزمره و مناسبت‌های خاص.",
+      "Price": 18500000,
+      "Barcode": null,
+      "Sku": "ATENA-RING-01",
+      "Weight": 2.15,
+      "MainImage": "/uploads/sections/18k-gold-ring-atena.jpg",
+      "Thumbnail": "/uploads/sections/18k-gold-ring-atena.jpg",
+      "SeoTitle": "انگشتر طلای ۱۸ عیار مدل آتنا",
+      "SeoDescription": "خرید انگشتر طلای ۱۸ عیار مدل آتنا.",
+      "SortOrder": 1,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 8,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "انگشتر طلا",
-        "Slug": "gold-rings",
-        "Description": "انواع انگشترهای طلا با طراحی ظریف و مدرن.",
-        "SeoTitle": "خرید انگشتر طلا",
-        "SeoDescription": "مجموعه انگشترهای طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Zarin",
-        "Slug": "zarin",
-        "Description": "برندی با تمرکز بر طراحی کلاسیک و ماندگار.",
-        "Logo": "/uploads/brands/zarin.jpg",
-        "Website": null,
-        "SortOrder": 2,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "انگشتر طلای نگین‌دار مدل سلطنتی",
-        "Slug": "royal-gold-ring",
-        "Summary": "انگشتر طلای نگین‌دار با طراحی کلاسیک.",
-        "Description": "انگشتر طلای ۱۸ عیار با طراحی چشمگیر و نگین تزئینی، مناسب استفاده در مراسم و مناسبت‌های خاص.",
-        "Price": 32700000,
-        "Barcode": null,
-        "Sku": "ROYAL-RING-01",
-        "Weight": 3.65,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "انگشتر طلای نگین‌دار مدل سلطنتی",
-        "SeoDescription": "انگشتر طلای نگین‌دار زنانه مدل سلطنتی.",
-        "SortOrder": 2,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 5,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "انگشتر سلطنتی",
-          "Alt": "انگشتر طلای نگین‌دار مدل سلطنتی",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "stone",
-          "Name": "نگین",
-          "Value": "نگین تزئینی",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "طلای 18 عیار",
-          "Slug": "18k-gold"
-        },
-        {
-          "Name": "انگشتر نگین‌دار",
-          "Slug": "stone-ring"
-        }
-      ]
+      "Name": "انگشتر طلای نگین‌دار مدل سلطنتی",
+      "Slug": "royal-gold-ring",
+      "CategorySlug": "gold-rings",
+      "BrandSlug": "cartier",
+      "ProductTypeCode": "physical",
+      "Summary": "انگشتر طلای نگین‌دار با طراحی کلاسیک.",
+      "Description": "انگشتر طلای ۱۸ عیار با طراحی چشمگیر و نگین تزئینی، مناسب استفاده در مراسم و مناسبت‌های خاص.",
+      "Price": 32700000,
+      "Barcode": null,
+      "Sku": "ROYAL-RING-01",
+      "Weight": 3.65,
+      "MainImage": "/uploads/sections/royal-gold-ring.jpg",
+      "Thumbnail": "/uploads/sections/royal-gold-ring.jpg",
+      "SeoTitle": "انگشتر طلای نگین‌دار مدل سلطنتی",
+      "SeoDescription": "انگشتر طلای نگین‌دار زنانه مدل سلطنتی.",
+      "SortOrder": 2,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 5,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "انگشتر طلا",
-        "Slug": "gold-rings",
-        "Description": "انواع انگشترهای طلا با طراحی ظریف و مدرن.",
-        "SeoTitle": "خرید انگشتر طلا",
-        "SeoDescription": "مجموعه انگشترهای طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Elara",
-        "Slug": "elara",
-        "Description": "برند مدرن جواهرات با طراحی مینیمال.",
-        "Logo": "/uploads/brands/elara.jpg",
-        "Website": null,
-        "SortOrder": 3,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "انگشتر طلای ظریف مدل لیانا",
-        "Slug": "delicate-gold-ring-liana",
-        "Summary": "انگشتر طلای ظریف با طراحی مینیمال.",
-        "Description": "انگشتر طلای ۱۸ عیار مدل لیانا با طراحی ساده و ظریف برای استفاده روزمره.",
-        "Price": 15900000,
-        "Barcode": null,
-        "Sku": "LIANA-RING-01",
-        "Weight": 1.85,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "انگشتر طلای ظریف مدل لیانا",
-        "SeoDescription": "خرید انگشتر طلای ظریف مدل لیانا.",
-        "SortOrder": 3,
-        "IsFeatured": false,
-        "IsPublished": true,
-        "InitialStock": 10,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "انگشتر لیانا",
-          "Alt": "انگشتر طلای ظریف مدل لیانا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "مینیمال",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "مینیمال",
-          "Slug": "minimal"
-        },
-        {
-          "Name": "انگشتر",
-          "Slug": "ring"
-        }
-      ]
+      "Name": "انگشتر طلای ظریف مدل لیانا",
+      "Slug": "delicate-gold-ring-liana",
+      "CategorySlug": "gold-rings",
+      "BrandSlug": "van-cleef-arpels",
+      "ProductTypeCode": "physical",
+      "Summary": "انگشتر طلای ظریف با طراحی مینیمال.",
+      "Description": "انگشتر طلای ۱۸ عیار مدل لیانا با طراحی ساده و ظریف برای استفاده روزمره.",
+      "Price": 15900000,
+      "Barcode": null,
+      "Sku": "LIANA-RING-01",
+      "Weight": 1.85,
+      "MainImage": "/uploads/sections/delicate-gold-ring-liana.jpg",
+      "Thumbnail": "/uploads/sections/delicate-gold-ring-liana.jpg",
+      "SeoTitle": "انگشتر طلای ظریف مدل لیانا",
+      "SeoDescription": "خرید انگشتر طلای ظریف مدل لیانا.",
+      "SortOrder": 3,
+      "IsFeatured": false,
+      "IsPublished": true,
+      "InitialStock": 10,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گردنبند طلا",
-        "Slug": "gold-necklaces",
-        "Description": "مجموعه گردنبندهای طلای زنانه با طراحی متنوع.",
-        "SeoTitle": "خرید گردنبند طلا",
-        "SeoDescription": "گردنبندهای طلای زنانه با طراحی مدرن و کلاسیک.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 2,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Aurelia",
-        "Slug": "aurelia",
-        "Description": "برند منتخب جواهرات با تمرکز بر طراحی ظریف.",
-        "Logo": "/uploads/brands/aurelia.jpg",
-        "Website": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گردنبند طلای ظریف مدل ونوس",
-        "Slug": "venus-delicate-gold-necklace",
-        "Summary": "گردنبند طلای ظریف و elegant مدل ونوس.",
-        "Description": "گردنبند طلای ۱۸ عیار مدل ونوس با طراحی ظریف و مناسب استفاده روزمره.",
-        "Price": 28900000,
-        "Barcode": null,
-        "Sku": "VENUS-NECKLACE-01",
-        "Weight": 3.1,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گردنبند طلای ظریف مدل ونوس",
-        "SeoDescription": "خرید گردنبند طلای ظریف مدل ونوس.",
-        "SortOrder": 4,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 6,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گردنبند ونوس",
-          "Alt": "گردنبند طلای ظریف مدل ونوس",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "color",
-          "Name": "رنگ طلا",
-          "Value": "طلای زرد",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گردنبند",
-          "Slug": "necklace"
-        },
-        {
-          "Name": "ظریف",
-          "Slug": "delicate"
-        }
-      ]
+      "Name": "گردنبند طلای ظریف مدل ونوس",
+      "Slug": "venus-delicate-gold-necklace",
+      "CategorySlug": "gold-necklaces",
+      "BrandSlug": "pandora",
+      "ProductTypeCode": "physical",
+      "Summary": "گردنبند طلای ظریف و elegant مدل ونوس.",
+      "Description": "گردنبند طلای ۱۸ عیار مدل ونوس با طراحی ظریف و مناسب استفاده روزمره.",
+      "Price": 28900000,
+      "Barcode": null,
+      "Sku": "VENUS-NECKLACE-01",
+      "Weight": 3.1,
+      "MainImage": "/uploads/sections/venus-delicate-gold-necklace.jpg",
+      "Thumbnail": "/uploads/sections/venus-delicate-gold-necklace.jpg",
+      "SeoTitle": "گردنبند طلای ظریف مدل ونوس",
+      "SeoDescription": "خرید گردنبند طلای ظریف مدل ونوس.",
+      "SortOrder": 4,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 6,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گردنبند طلا",
-        "Slug": "gold-necklaces",
-        "Description": "مجموعه گردنبندهای طلای زنانه با طراحی متنوع.",
-        "SeoTitle": "خرید گردنبند طلا",
-        "SeoDescription": "گردنبندهای طلای زنانه با طراحی مدرن و کلاسیک.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 2,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Viona",
-        "Slug": "viona",
-        "Description": "برند جواهرات با طراحی‌های ظریف و زنانه.",
-        "Logo": "/uploads/brands/viona.jpg",
-        "Website": null,
-        "SortOrder": 5,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گردنبند طلای پلاک قلب",
-        "Slug": "gold-heart-pendant-necklace",
-        "Summary": "گردنبند طلای زنانه با پلاک قلب.",
-        "Description": "گردنبند طلای ۱۸ عیار با پلاک قلب، مناسب هدیه و استفاده روزمره.",
-        "Price": 36500000,
-        "Barcode": null,
-        "Sku": "HEART-NECKLACE-01",
-        "Weight": 4.25,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گردنبند طلای پلاک قلب",
-        "SeoDescription": "خرید گردنبند طلای زنانه با پلاک قلب.",
-        "SortOrder": 5,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 5,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گردنبند قلب",
-          "Alt": "گردنبند طلای پلاک قلب",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "design",
-          "Name": "طرح",
-          "Value": "قلب",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گردنبند",
-          "Slug": "necklace"
-        },
-        {
-          "Name": "هدیه",
-          "Slug": "gift"
-        }
-      ]
+      "Name": "گردنبند طلای پلاک قلب",
+      "Slug": "gold-heart-pendant-necklace",
+      "CategorySlug": "gold-necklaces",
+      "BrandSlug": "pandora",
+      "ProductTypeCode": "physical",
+      "Summary": "گردنبند طلای زنانه با پلاک قلب.",
+      "Description": "گردنبند طلای ۱۸ عیار با پلاک قلب، مناسب هدیه و استفاده روزمره.",
+      "Price": 36500000,
+      "Barcode": null,
+      "Sku": "HEART-NECKLACE-01",
+      "Weight": 4.25,
+      "MainImage": "/uploads/sections/gold-heart-pendant-necklace.jpg",
+      "Thumbnail": "/uploads/sections/gold-heart-pendant-necklace.jpg",
+      "SeoTitle": "گردنبند طلای پلاک قلب",
+      "SeoDescription": "خرید گردنبند طلای زنانه با پلاک قلب.",
+      "SortOrder": 5,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 5,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گردنبند طلا",
-        "Slug": "gold-necklaces",
-        "Description": "مجموعه گردنبندهای طلای زنانه با طراحی متنوع.",
-        "SeoTitle": "خرید گردنبند طلا",
-        "SeoDescription": "گردنبندهای طلای زنانه با طراحی مدرن و کلاسیک.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 2,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Roya",
-        "Slug": "roya",
-        "Description": "برند جواهرات با تمرکز بر طراحی کلاسیک.",
-        "Logo": "/uploads/brands/roya.jpg",
-        "Website": null,
-        "SortOrder": 6,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گردنبند طلای زنجیری مدل کلاسیک",
-        "Slug": "classic-gold-chain-necklace",
-        "Summary": "گردنبند زنجیری طلای کلاسیک.",
-        "Description": "گردنبند طلای ۱۸ عیار با طراحی زنجیری کلاسیک و قابل استفاده در استایل‌های مختلف.",
-        "Price": 47800000,
-        "Barcode": null,
-        "Sku": "CLASSIC-CHAIN-01",
-        "Weight": 5.4,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گردنبند طلای زنجیری مدل کلاسیک",
-        "SeoDescription": "خرید گردنبند طلای زنجیری کلاسیک.",
-        "SortOrder": 6,
-        "IsFeatured": false,
-        "IsPublished": true,
-        "InitialStock": 4,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گردنبند زنجیری کلاسیک",
-          "Alt": "گردنبند طلای زنجیری مدل کلاسیک",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "کلاسیک",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گردنبند",
-          "Slug": "necklace"
-        },
-        {
-          "Name": "کلاسیک",
-          "Slug": "classic"
-        }
-      ]
+      "Name": "گردنبند طلای زنجیری مدل کلاسیک",
+      "Slug": "classic-gold-chain-necklace",
+      "CategorySlug": "gold-necklaces",
+      "BrandSlug": "tiffany-co",
+      "ProductTypeCode": "physical",
+      "Summary": "گردنبند زنجیری طلای کلاسیک.",
+      "Description": "گردنبند طلای ۱۸ عیار با طراحی زنجیری کلاسیک و قابل استفاده در استایل‌های مختلف.",
+      "Price": 47800000,
+      "Barcode": null,
+      "Sku": "CLASSIC-CHAIN-01",
+      "Weight": 5.4,
+      "MainImage": "/uploads/sections/classic-gold-chain-necklace.jpg",
+      "Thumbnail": "/uploads/sections/classic-gold-chain-necklace.jpg",
+      "SeoTitle": "گردنبند طلای زنجیری مدل کلاسیک",
+      "SeoDescription": "خرید گردنبند طلای زنجیری کلاسیک.",
+      "SortOrder": 6,
+      "IsFeatured": false,
+      "IsPublished": true,
+      "InitialStock": 4,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "دستبند طلا",
-        "Slug": "gold-bracelets",
-        "Description": "مجموعه دستبندهای طلای زنانه.",
-        "SeoTitle": "خرید دستبند طلا",
-        "SeoDescription": "دستبندهای طلای زنانه با طراحی ظریف و مدرن.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 3,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Elara",
-        "Slug": "elara",
-        "Description": "برند مدرن جواهرات با طراحی مینیمال.",
-        "Logo": "/uploads/brands/elara.jpg",
-        "Website": null,
-        "SortOrder": 3,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "دستبند طلای زنجیری مدل لونا",
-        "Slug": "luna-gold-chain-bracelet",
-        "Summary": "دستبند طلای زنجیری مدل لونا.",
-        "Description": "دستبند طلای ۱۸ عیار با طراحی زنجیری ظریف و مناسب استفاده روزمره.",
-        "Price": 31500000,
-        "Barcode": null,
-        "Sku": "LUNA-BRACELET-01",
-        "Weight": 3.75,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "دستبند طلای زنجیری مدل لونا",
-        "SeoDescription": "خرید دستبند طلای زنجیری مدل لونا.",
-        "SortOrder": 7,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 6,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "دستبند لونا",
-          "Alt": "دستبند طلای زنجیری مدل لونا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "زنجیری",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "دستبند",
-          "Slug": "bracelet"
-        },
-        {
-          "Name": "زنجیری",
-          "Slug": "chain"
-        }
-      ]
+      "Name": "دستبند طلای زنجیری مدل لونا",
+      "Slug": "luna-gold-chain-bracelet",
+      "CategorySlug": "gold-bracelets",
+      "BrandSlug": "swarovski",
+      "ProductTypeCode": "physical",
+      "Summary": "دستبند طلای زنجیری مدل لونا.",
+      "Description": "دستبند طلای ۱۸ عیار با طراحی زنجیری ظریف و مناسب استفاده روزمره.",
+      "Price": 31500000,
+      "Barcode": null,
+      "Sku": "LUNA-BRACELET-01",
+      "Weight": 3.75,
+      "MainImage": "/uploads/sections/luna-gold-chain-bracelet.jpg",
+      "Thumbnail": "/uploads/sections/luna-gold-chain-bracelet.jpg",
+      "SeoTitle": "دستبند طلای زنجیری مدل لونا",
+      "SeoDescription": "خرید دستبند طلای زنجیری مدل لونا.",
+      "SortOrder": 7,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 6,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "دستبند طلا",
-        "Slug": "gold-bracelets",
-        "Description": "مجموعه دستبندهای طلای زنانه.",
-        "SeoTitle": "خرید دستبند طلا",
-        "SeoDescription": "دستبندهای طلای زنانه با طراحی ظریف و مدرن.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 3,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Roya",
-        "Slug": "roya",
-        "Description": "برند جواهرات با تمرکز بر طراحی کلاسیک.",
-        "Logo": "/uploads/brands/roya.jpg",
-        "Website": null,
-        "SortOrder": 6,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "دستبند طلای زنانه مدل رویا",
-        "Slug": "roya-women-gold-bracelet",
-        "Summary": "دستبند طلای زنانه با طراحی لوکس.",
-        "Description": "دستبند طلای ۱۸ عیار مدل رویا با طراحی ظریف و مناسب استایل رسمی و مجلسی.",
-        "Price": 42900000,
-        "Barcode": null,
-        "Sku": "ROYA-BRACELET-01",
-        "Weight": 4.8,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "دستبند طلای زنانه مدل رویا",
-        "SeoDescription": "خرید دستبند طلای زنانه مدل رویا.",
-        "SortOrder": 8,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 4,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "دستبند رویا",
-          "Alt": "دستبند طلای زنانه مدل رویا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "مجلسی",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "دستبند",
-          "Slug": "bracelet"
-        },
-        {
-          "Name": "مجلسی",
-          "Slug": "formal"
-        }
-      ]
+      "Name": "دستبند طلای زنانه مدل رویا",
+      "Slug": "roya-women-gold-bracelet",
+      "CategorySlug": "gold-bracelets",
+      "BrandSlug": "swarovski",
+      "ProductTypeCode": "physical",
+      "Summary": "دستبند طلای زنانه با طراحی لوکس.",
+      "Description": "دستبند طلای ۱۸ عیار مدل رویا با طراحی ظریف و مناسب استایل رسمی و مجلسی.",
+      "Price": 42900000,
+      "Barcode": null,
+      "Sku": "ROYA-BRACELET-01",
+      "Weight": 4.8,
+      "MainImage": "/uploads/sections/roya-women-gold-bracelet.jpg",
+      "Thumbnail": "/uploads/sections/roya-women-gold-bracelet.jpg",
+      "SeoTitle": "دستبند طلای زنانه مدل رویا",
+      "SeoDescription": "خرید دستبند طلای زنانه مدل رویا.",
+      "SortOrder": 8,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 4,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گوشواره طلا",
-        "Slug": "gold-earrings",
-        "Description": "مجموعه گوشواره‌های طلای زنانه.",
-        "SeoTitle": "خرید گوشواره طلا",
-        "SeoDescription": "گوشواره‌های طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Zarin",
-        "Slug": "zarin",
-        "Description": "برندی با تمرکز بر طراحی کلاسیک و ماندگار.",
-        "Logo": "/uploads/brands/zarin.jpg",
-        "Website": null,
-        "SortOrder": 2,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گوشواره طلای حلقه‌ای مدل کلاسیک",
-        "Slug": "classic-gold-hoop-earrings",
-        "Summary": "گوشواره حلقه‌ای طلای کلاسیک.",
-        "Description": "گوشواره حلقه‌ای طلای ۱۸ عیار با طراحی ساده و قابل استفاده در موقعیت‌های مختلف.",
-        "Price": 24900000,
-        "Barcode": null,
-        "Sku": "HOOP-EARRING-01",
-        "Weight": 2.95,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گوشواره طلای حلقه‌ای مدل کلاسیک",
-        "SeoDescription": "خرید گوشواره طلای حلقه‌ای کلاسیک.",
-        "SortOrder": 9,
-        "IsFeatured": false,
-        "IsPublished": true,
-        "InitialStock": 7,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گوشواره حلقه‌ای",
-          "Alt": "گوشواره طلای حلقه‌ای مدل کلاسیک",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "کلاسیک",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گوشواره",
-          "Slug": "earring"
-        },
-        {
-          "Name": "حلقه‌ای",
-          "Slug": "hoop"
-        }
-      ]
+      "Name": "گوشواره طلای حلقه‌ای مدل کلاسیک",
+      "Slug": "classic-gold-hoop-earrings",
+      "CategorySlug": "gold-earrings",
+      "BrandSlug": "swarovski",
+      "ProductTypeCode": "physical",
+      "Summary": "گوشواره حلقه‌ای طلای کلاسیک.",
+      "Description": "گوشواره حلقه‌ای طلای ۱۸ عیار با طراحی ساده و قابل استفاده در موقعیت‌های مختلف.",
+      "Price": 24900000,
+      "Barcode": null,
+      "Sku": "HOOP-EARRING-01",
+      "Weight": 2.95,
+      "MainImage": "/uploads/sections/classic-gold-hoop-earrings.jpg",
+      "Thumbnail": "/uploads/sections/classic-gold-hoop-earrings.jpg",
+      "SeoTitle": "گوشواره طلای حلقه‌ای مدل کلاسیک",
+      "SeoDescription": "خرید گوشواره طلای حلقه‌ای کلاسیک.",
+      "SortOrder": 9,
+      "IsFeatured": false,
+      "IsPublished": true,
+      "InitialStock": 7,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گوشواره طلا",
-        "Slug": "gold-earrings",
-        "Description": "مجموعه گوشواره‌های طلای زنانه.",
-        "SeoTitle": "خرید گوشواره طلا",
-        "SeoDescription": "گوشواره‌های طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Viona",
-        "Slug": "viona",
-        "Description": "برند جواهرات با طراحی‌های ظریف و زنانه.",
-        "Logo": "/uploads/brands/viona.jpg",
-        "Website": null,
-        "SortOrder": 5,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گوشواره طلای میخی مدل آوا",
-        "Slug": "ava-gold-stud-earrings",
-        "Summary": "گوشواره طلای میخی ظریف مدل آوا.",
-        "Description": "گوشواره طلای ۱۸ عیار مدل آوا با طراحی مینیمال و مناسب استفاده روزانه.",
-        "Price": 19800000,
-        "Barcode": null,
-        "Sku": "AVA-STUD-01",
-        "Weight": 2.1,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گوشواره طلای میخی مدل آوا",
-        "SeoDescription": "خرید گوشواره طلای میخی مدل آوا.",
-        "SortOrder": 10,
-        "IsFeatured": false,
-        "IsPublished": true,
-        "InitialStock": 9,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گوشواره آوا",
-          "Alt": "گوشواره طلای میخی مدل آوا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "مینیمال",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گوشواره",
-          "Slug": "earring"
-        },
-        {
-          "Name": "مینیمال",
-          "Slug": "minimal"
-        }
-      ]
+      "Name": "گوشواره طلای میخی مدل آوا",
+      "Slug": "ava-gold-stud-earrings",
+      "CategorySlug": "gold-earrings",
+      "BrandSlug": "bvlgari",
+      "ProductTypeCode": "physical",
+      "Summary": "گوشواره طلای میخی ظریف مدل آوا.",
+      "Description": "گوشواره طلای ۱۸ عیار مدل آوا با طراحی مینیمال و مناسب استفاده روزانه.",
+      "Price": 19800000,
+      "Barcode": null,
+      "Sku": "AVA-STUD-01",
+      "Weight": 2.1,
+      "MainImage": "/uploads/sections/ava-gold-stud-earrings.jpg",
+      "Thumbnail": "/uploads/sections/ava-gold-stud-earrings.jpg",
+      "SeoTitle": "گوشواره طلای میخی مدل آوا",
+      "SeoDescription": "خرید گوشواره طلای میخی مدل آوا.",
+      "SortOrder": 10,
+      "IsFeatured": false,
+      "IsPublished": true,
+      "InitialStock": 9,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "گوشواره طلا",
-        "Slug": "gold-earrings",
-        "Description": "مجموعه گوشواره‌های طلای زنانه.",
-        "SeoTitle": "خرید گوشواره طلا",
-        "SeoDescription": "گوشواره‌های طلای زنانه با طراحی متنوع.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Mahoor",
-        "Slug": "mahoor",
-        "Description": "برند جواهرات با طراحی لوکس و ظریف.",
-        "Logo": "/uploads/brands/mahoor.jpg",
-        "Website": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "گوشواره طلای آویز مدل مهتاب",
-        "Slug": "mahtab-gold-drop-earrings",
-        "Summary": "گوشواره طلای آویز مدل مهتاب.",
-        "Description": "گوشواره طلای ۱۸ عیار مدل مهتاب با طراحی آویز و ظاهری ظریف و مجلسی.",
-        "Price": 38200000,
-        "Barcode": null,
-        "Sku": "MAHTAB-EARRING-01",
-        "Weight": 4.35,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "گوشواره طلای آویز مدل مهتاب",
-        "SeoDescription": "خرید گوشواره طلای آویز مدل مهتاب.",
-        "SortOrder": 11,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 4,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "گوشواره مهتاب",
-          "Alt": "گوشواره طلای آویز مدل مهتاب",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "آویز",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "گوشواره",
-          "Slug": "earring"
-        },
-        {
-          "Name": "مجلسی",
-          "Slug": "formal"
-        }
-      ]
+      "Name": "گوشواره طلای آویز مدل مهتاب",
+      "Slug": "mahtab-gold-drop-earrings",
+      "CategorySlug": "gold-earrings",
+      "BrandSlug": "tiffany-co",
+      "ProductTypeCode": "physical",
+      "Summary": "گوشواره طلای آویز مدل مهتاب.",
+      "Description": "گوشواره طلای ۱۸ عیار مدل مهتاب با طراحی آویز و ظاهری ظریف و مجلسی.",
+      "Price": 38200000,
+      "Barcode": null,
+      "Sku": "MAHTAB-EARRING-01",
+      "Weight": 4.35,
+      "MainImage": "/uploads/sections/mahtab-gold-drop-earrings.jpg",
+      "Thumbnail": "/uploads/sections/mahtab-gold-drop-earrings.jpg",
+      "SeoTitle": "گوشواره طلای آویز مدل مهتاب",
+      "SeoDescription": "خرید گوشواره طلای آویز مدل مهتاب.",
+      "SortOrder": 11,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 4,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "النگو طلا",
-        "Slug": "gold-bangles",
-        "Description": "مجموعه النگوهای طلای زنانه.",
-        "SeoTitle": "خرید النگو طلا",
-        "SeoDescription": "النگوهای طلای زنانه با طراحی ظریف و کلاسیک.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 5,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Mahoor",
-        "Slug": "mahoor",
-        "Description": "برند جواهرات با طراحی لوکس و ظریف.",
-        "Logo": "/uploads/brands/mahoor.jpg",
-        "Website": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "النگوی طلای ۱۸ عیار مدل ماندگار",
-        "Slug": "18k-gold-bangle-mandegar",
-        "Summary": "النگوی طلای ۱۸ عیار با طراحی کلاسیک.",
-        "Description": "النگوی طلای ۱۸ عیار مدل ماندگار با طراحی ساده و مناسب استفاده روزمره.",
-        "Price": 68500000,
-        "Barcode": null,
-        "Sku": "MANDEGAR-BANGLE-01",
-        "Weight": 7.8,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "النگوی طلای ۱۸ عیار مدل ماندگار",
-        "SeoDescription": "خرید النگوی طلای ۱۸ عیار مدل ماندگار.",
-        "SortOrder": 12,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 3,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "النگوی ماندگار",
-          "Alt": "النگوی طلای ۱۸ عیار مدل ماندگار",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "کلاسیک",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "النگو",
-          "Slug": "bangle"
-        },
-        {
-          "Name": "طلای 18 عیار",
-          "Slug": "18k-gold"
-        }
-      ]
+      "Name": "النگوی طلای ۱۸ عیار مدل ماندگار",
+      "Slug": "18k-gold-bangle-mandegar",
+      "CategorySlug": "gold-bangles",
+      "BrandSlug": "tiffany-co",
+      "ProductTypeCode": "physical",
+      "Summary": "النگوی طلای ۱۸ عیار با طراحی کلاسیک.",
+      "Description": "النگوی طلای ۱۸ عیار مدل ماندگار با طراحی ساده و مناسب استفاده روزمره.",
+      "Price": 68500000,
+      "Barcode": null,
+      "Sku": "MANDEGAR-BANGLE-01",
+      "Weight": 7.8,
+      "MainImage": "/uploads/sections/18k-gold-bangle-mandegar.jpg",
+      "Thumbnail": "/uploads/sections/18k-gold-bangle-mandegar.jpg",
+      "SeoTitle": "النگوی طلای ۱۸ عیار مدل ماندگار",
+      "SeoDescription": "خرید النگوی طلای ۱۸ عیار مدل ماندگار.",
+      "SortOrder": 12,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 3,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "النگو طلا",
-        "Slug": "gold-bangles",
-        "Description": "مجموعه النگوهای طلای زنانه.",
-        "SeoTitle": "خرید النگو طلا",
-        "SeoDescription": "النگوهای طلای زنانه با طراحی ظریف و کلاسیک.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 5,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Aurelia",
-        "Slug": "aurelia",
-        "Description": "برند منتخب جواهرات با تمرکز بر طراحی ظریف.",
-        "Logo": "/uploads/brands/aurelia.jpg",
-        "Website": null,
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "النگوی طلای ظریف مدل نیلا",
-        "Slug": "nila-delicate-gold-bangle",
-        "Summary": "النگوی طلای ظریف مدل نیلا.",
-        "Description": "النگوی طلای ۱۸ عیار مدل نیلا با طراحی ساده و ظریف.",
-        "Price": 52900000,
-        "Barcode": null,
-        "Sku": "NILA-BANGLE-01",
-        "Weight": 6.1,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "النگوی طلای ظریف مدل نیلا",
-        "SeoDescription": "خرید النگوی طلای ظریف مدل نیلا.",
-        "SortOrder": 13,
-        "IsFeatured": false,
-        "IsPublished": true,
-        "InitialStock": 4,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "النگوی نیلا",
-          "Alt": "النگوی طلای ظریف مدل نیلا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "style",
-          "Name": "سبک",
-          "Value": "ظریف",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "النگو",
-          "Slug": "bangle"
-        },
-        {
-          "Name": "ظریف",
-          "Slug": "delicate"
-        }
-      ]
+      "Name": "النگوی طلای ظریف مدل نیلا",
+      "Slug": "nila-delicate-gold-bangle",
+      "CategorySlug": "gold-bangles",
+      "BrandSlug": "cartier",
+      "ProductTypeCode": "physical",
+      "Summary": "النگوی طلای ظریف مدل نیلا.",
+      "Description": "النگوی طلای ۱۸ عیار مدل نیلا با طراحی ساده و ظریف.",
+      "Price": 52900000,
+      "Barcode": null,
+      "Sku": "NILA-BANGLE-01",
+      "Weight": 6.1,
+      "MainImage": "/uploads/sections/nila-delicate-gold-bangle.jpg",
+      "Thumbnail": "/uploads/sections/nila-delicate-gold-bangle.jpg",
+      "SeoTitle": "النگوی طلای ظریف مدل نیلا",
+      "SeoDescription": "خرید النگوی طلای ظریف مدل نیلا.",
+      "SortOrder": 13,
+      "IsFeatured": false,
+      "IsPublished": true,
+      "InitialStock": 4,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "نیم‌ست و سرویس طلا",
-        "Slug": "gold-sets",
-        "Description": "مجموعه نیم‌ست و سرویس‌های طلای زنانه.",
-        "SeoTitle": "خرید نیم ست و سرویس طلا",
-        "SeoDescription": "مجموعه نیم‌ست و سرویس طلای زنانه.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 6,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Elara",
-        "Slug": "elara",
-        "Description": "برند مدرن جواهرات با طراحی مینیمال.",
-        "Logo": "/uploads/brands/elara.jpg",
-        "Website": null,
-        "SortOrder": 3,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "نیم‌ست طلای زنانه مدل الارا",
-        "Slug": "elara-women-gold-set",
-        "Summary": "نیم‌ست طلای زنانه با طراحی مدرن.",
-        "Description": "نیم‌ست طلای ۱۸ عیار مدل الارا شامل گردنبند و گوشواره با طراحی هماهنگ.",
-        "Price": 89500000,
-        "Barcode": null,
-        "Sku": "ELARA-SET-01",
-        "Weight": 9.5,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "نیم‌ست طلای زنانه مدل الارا",
-        "SeoDescription": "خرید نیم‌ست طلای زنانه مدل الارا.",
-        "SortOrder": 14,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 2,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "نیم‌ست الارا",
-          "Alt": "نیم‌ست طلای زنانه مدل الارا",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "set-type",
-          "Name": "نوع ست",
-          "Value": "نیم‌ست",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "نیم‌ست",
-          "Slug": "gold-set"
-        },
-        {
-          "Name": "زنانه",
-          "Slug": "women"
-        }
-      ]
+      "Name": "نیم‌ست طلای زنانه مدل الارا",
+      "Slug": "elara-women-gold-set",
+      "CategorySlug": "gold-sets",
+      "BrandSlug": "bvlgari",
+      "ProductTypeCode": "physical",
+      "Summary": "نیم‌ست طلای زنانه با طراحی مدرن.",
+      "Description": "نیم‌ست طلای ۱۸ عیار مدل الارا شامل گردنبند و گوشواره با طراحی هماهنگ.",
+      "Price": 89500000,
+      "Barcode": null,
+      "Sku": "ELARA-SET-01",
+      "Weight": 9.5,
+      "MainImage": "/uploads/sections/elara-women-gold-set.jpg",
+      "Thumbnail": "/uploads/sections/elara-women-gold-set.jpg",
+      "SeoTitle": "نیم‌ست طلای زنانه مدل الارا",
+      "SeoDescription": "خرید نیم‌ست طلای زنانه مدل الارا.",
+      "SortOrder": 14,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 2,
+      "IsActive": true
     },
-
     {
-      "Category": {
-        "Name": "نیم‌ست و سرویس طلا",
-        "Slug": "gold-sets",
-        "Description": "مجموعه نیم‌ست و سرویس‌های طلای زنانه.",
-        "SeoTitle": "خرید نیم ست و سرویس طلا",
-        "SeoDescription": "مجموعه نیم‌ست و سرویس طلای زنانه.",
-        "Icon": null,
-        "IconColor": "#b08d57",
-        "ParentSlug": null,
-        "SortOrder": 6,
-        "IsActive": true
-      },
-      "Brand": {
-        "Name": "Mahoor",
-        "Slug": "mahoor",
-        "Description": "برند جواهرات با طراحی لوکس و ظریف.",
-        "Logo": "/uploads/brands/mahoor.jpg",
-        "Website": null,
-        "SortOrder": 4,
-        "IsActive": true
-      },
-      "ProductType": {
-        "Name": "محصول فیزیکی",
-        "Code": "physical",
-        "Description": "محصول فیزیکی قابل خرید و ارسال.",
-        "SortOrder": 1,
-        "IsActive": true
-      },
-      "Product": {
-        "Name": "سرویس طلای زنانه مدل ماهور",
-        "Slug": "mahoor-women-gold-jewelry-set",
-        "Summary": "سرویس طلای زنانه با طراحی لوکس.",
-        "Description": "سرویس طلای ۱۸ عیار مدل ماهور با طراحی هماهنگ و مناسب مراسم و مناسبت‌های خاص.",
-        "Price": 145000000,
-        "Barcode": null,
-        "Sku": "MAHOOR-SET-01",
-        "Weight": 15.8,
-        "MainImage": "/uploads/sections/jewelry-product.jpg",
-        "Thumbnail": "/uploads/sections/jewelry-product.jpg",
-        "SeoTitle": "سرویس طلای زنانه مدل ماهور",
-        "SeoDescription": "خرید سرویس طلای زنانه مدل ماهور.",
-        "SortOrder": 15,
-        "IsFeatured": true,
-        "IsPublished": true,
-        "InitialStock": 1,
-        "IsActive": true
-      },
-      "Files": [
-        {
-          "FileUrl": "/uploads/sections/jewelry-product.jpg",
-          "ThumbnailUrl": "/uploads/sections/jewelry-product.jpg",
-          "Title": "سرویس ماهور",
-          "Alt": "سرویس طلای زنانه مدل ماهور",
-          "MediaType": "Image",
-          "IsMain": true,
-          "SortOrder": 1
-        }
-      ],
-      "Variants": [],
-      "Attributes": [
-        {
-          "Code": "gold-purity",
-          "Name": "عیار",
-          "Value": "18 عیار",
-          "SortOrder": 1
-        },
-        {
-          "Code": "set-type",
-          "Name": "نوع ست",
-          "Value": "سرویس کامل",
-          "SortOrder": 2
-        }
-      ],
-      "Tags": [
-        {
-          "Name": "سرویس طلا",
-          "Slug": "gold-jewelry-set"
-        },
-        {
-          "Name": "مجلسی",
-          "Slug": "formal"
-        }
-      ]
+      "Name": "سرویس طلای زنانه مدل ماهور",
+      "Slug": "mahoor-women-gold-jewelry-set",
+      "CategorySlug": "gold-sets",
+      "BrandSlug": "bvlgari",
+      "ProductTypeCode": "physical",
+      "Summary": "سرویس طلای زنانه با طراحی لوکس.",
+      "Description": "سرویس طلای ۱۸ عیار مدل ماهور با طراحی هماهنگ و مناسب مراسم و مناسبت‌های خاص.",
+      "Price": 145000000,
+      "Barcode": null,
+      "Sku": "MAHOOR-SET-01",
+      "Weight": 15.8,
+      "MainImage": "/uploads/sections/MahoorGoldJewelrySet.jpg",
+      "Thumbnail": "/uploads/sections/MahoorGoldJewelrySet.jpg",
+      "SeoTitle": "سرویس طلای زنانه مدل ماهور",
+      "SeoDescription": "خرید سرویس طلای زنانه مدل ماهور.",
+      "SortOrder": 15,
+      "IsFeatured": true,
+      "IsPublished": true,
+      "InitialStock": 1,
+      "IsActive": true
     }
   ]
 }

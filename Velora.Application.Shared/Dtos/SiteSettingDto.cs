@@ -126,5 +126,9 @@ namespace Velora.Application.Shared.Dtos
         public int? OtpMaxRequestsPerHour { get; set; }
 
         public bool? OtpEnabled { get; set; }
+        [StringLength(500)]
+        public string? Background { get; set; }
+        [StringLength(500)]
+        public string? BackgroundGradient { get; set; }
     }
 }

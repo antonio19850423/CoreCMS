@@ -39,14 +39,18 @@ namespace Velora.Application.Services
         protected readonly IDiscountService _discountService;
         protected readonly IProductInventoryTransactionService _productInventoryService;
         protected readonly IProductService _productService;
+        protected readonly IShoppingCartItemService _shoppingCartItemService;
+        protected readonly IPaymentService _paymentService;
+        protected readonly IShoppingCartService _shoppingCartService;
         
+
         public PageService(
               ISqlRepository<SqlPage> sqlRepository,
               IPosgreSqlRepository<SqlPage> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IContentItemService contentItemService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IDiscountService discountService, IProductInventoryTransactionService productInventoryService, IProductService productService)
+              ICurrentUserService currentUserService, IContentItemService contentItemService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IDiscountService discountService, IProductInventoryTransactionService productInventoryService, IProductService productService, IShoppingCartService shoppingCartService,IPaymentService paymentService ,IShoppingCartItemService shoppingCartItemService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -63,6 +67,9 @@ namespace Velora.Application.Services
             _discountService= discountService;
             _productInventoryService= productInventoryService;
             _productService= productService;
+            _shoppingCartItemService= shoppingCartItemService;
+            _paymentService= paymentService;
+            _shoppingCartService= shoppingCartService;
         }
         public async Task<IQueryable<PageCrud>> GetAllViews()
         {
@@ -493,6 +500,14 @@ int pageSize)
                         ThumbnailUrl = s.ThumbnailUrl,
                         VideoUrl = s.VideoUrl,
                         EnglishTitle = s.EnglishTitle,
+                        IsLatestProducts = s.IsLatestProducts,
+                        ButtonColor = s.ButtonColor,
+                        IsActiveBrands = s.IsActiveBrands,
+                        IsActiveCategries = s.IsActiveCategries,
+                        IsBestSellingProducts= s.IsBestSellingProducts,
+                        IsLatestNews = s.IsLatestNews,
+                        IsSpecialOffers = s.IsSpecialOffers,
+                        
 
                         // فقط این قسمت جایگزین mapping قبلی SectionItems شده
                         Items = await BuildSectionItemsAsync(s)
@@ -668,8 +683,8 @@ int pageSize)
                 .ToList();
         }
         private async Task<List<SectionItemCrud>> BuildProductSectionItemsAsync(
-    Section section,
-    string type)
+        Section section,
+        string type)
         {
             var query = _productService.Query()
                 .Include(x => x.Category)
@@ -681,7 +696,6 @@ int pageSize)
                 .Where(x =>
                     x.IsPublished == true &&
                     x.IsActive == true);
-
 
             // =========================================================
             // Sort / Filter
@@ -699,12 +713,114 @@ int pageSize)
 
                 case "bestSelling":
 
-                    // فعلاً اینجا باید معیار فروش واقعی پروژه استفاده شود.
-                    // اگر Product جدول/فیلد مربوط به تعداد فروش دارد،
-                    // این قسمت را بر اساس همان فیلد مرتب می‌کنیم.
+                    // =========================================================
+                    // BEST SELLING
+                    // =========================================================
+                    // ShoppingCart.Status = 2
+                    // یعنی سبد به سفارش تبدیل شده است.
+                    //
+                    // Payment.PaymentStatus = 2
+                    // یعنی پرداخت موفق بوده است.
+                    //
+                    // سپس تعداد Quantity محصولات فروخته‌شده
+                    // محاسبه و بر اساس آن مرتب می‌شوند.
+                    // =========================================================
 
-                    query = query
-                        .OrderByDescending(x => x.CreatedAt);
+                    var bestSellingQuery =
+                        from cartItem in _shoppingCartItemService.Query()
+
+                        join cart in _shoppingCartService.Query()
+                            on cartItem.ShoppingCartId equals cart.Id
+
+                        join payment in _paymentService.Query()
+                            on cart.Id equals payment.ShoppingCartId
+
+                        where
+                            cart.Status == 2 &&
+                            payment.PaymentStatus == 2
+
+                        group cartItem by cartItem.ProductId
+                        into productGroup
+
+                        select new
+                        {
+                            ProductId = productGroup.Key,
+
+                            SoldQuantity =
+                                productGroup.Sum(x => x.Quantity)
+                        };
+
+
+                    var bestSellingProducts =
+                        await bestSellingQuery
+                            .OrderByDescending(x => x.SoldQuantity)
+                            .ToListAsync();
+
+
+                    // =========================================================
+                    // اگر هنوز هیچ فروش موفقی وجود ندارد
+                    // محصولات به صورت تصادفی نمایش داده شوند.
+                    // =========================================================
+
+                    if (!bestSellingProducts.Any())
+                    {
+                        query = query
+                            .OrderBy(x => Guid.NewGuid());
+                    }
+                    else
+                    {
+                        var bestSellingIds =
+                            bestSellingProducts
+                                .Select(x => x.ProductId)
+                                .ToList();
+
+
+                        // -----------------------------------------------------
+                        // محصولات دارای فروش ابتدا نمایش داده شوند.
+                        // ترتیب اصلی فروش بعداً در حافظه اعمال می‌شود.
+                        // -----------------------------------------------------
+
+                        var bestSellingProductList =
+                            await query
+                                .Where(x =>
+                                    bestSellingIds.Contains(x.Id))
+                                .ToListAsync();
+
+
+                        var bestSellingOrder =
+                            bestSellingProducts
+                                .Select((x, index) => new
+                                {
+                                    x.ProductId,
+                                    Index = index
+                                })
+                                .ToDictionary(
+                                    x => x.ProductId,
+                                    x => x.Index);
+
+
+                        bestSellingProductList =
+                            bestSellingProductList
+                                .OrderBy(x =>
+                                    bestSellingOrder[x.Id])
+                                .Take(12)
+                                .ToList();
+
+
+                        // -----------------------------------------------------
+                        // چون پایین‌تر متد دوباره query را ToListAsync می‌کند،
+                        // فعلاً نمی‌توانیم List را مستقیماً در query قرار دهیم.
+                        // -----------------------------------------------------
+
+                        var selectedIds =
+                            bestSellingProductList
+                                .Select(x => x.Id)
+                                .ToList();
+
+                        query = query
+                            .Where(x =>
+                                selectedIds.Contains(x.Id));
+                    }
 
                     break;
 
@@ -712,11 +828,16 @@ int pageSize)
                 case "specialOffers":
 
                     var activeDiscounts =
-                        await _discountService.GetActiveDiscountsAsync();
+                        await _discountService
+                            .GetActiveDiscountsAsync();
 
-                    var discountedProductIds = new HashSet<Guid>();
+                    var allProducts =
+                        await query.ToListAsync();
 
-                    foreach (var product in await query.ToListAsync())
+                    var discountedProductIds =
+                        new HashSet<Guid>();
+
+                    foreach (var product in allProducts)
                     {
                         var price =
                             product.ProductVariants.Count == 1
@@ -725,28 +846,37 @@ int pageSize)
                                     ? product.ProductVariants.Min(v => v.Price)
                                     : product.Price ?? 0;
 
-                        var discount = _discountService.CalculateDiscount(
-                            new DiscountCalculationInput
-                            {
-                                ProductId = product.Id,
-                                ProductVariantId =
-                                    product.ProductVariants.Count == 1
-                                        ? product.ProductVariants.First().Id
-                                        : null,
-                                ProductBrandId = product.BrandId,
-                                ProductCategoryId = product.CategoryId,
-                                Price = price
-                            },
-                            activeDiscounts);
+                        var discount =
+                            _discountService.CalculateDiscount(
+                                new DiscountCalculationInput
+                                {
+                                    ProductId = product.Id,
+
+                                    ProductVariantId =
+                                        product.ProductVariants.Count == 1
+                                            ? product.ProductVariants.First().Id
+                                            : null,
+
+                                    ProductBrandId =
+                                        product.BrandId,
+
+                                    ProductCategoryId =
+                                        product.CategoryId,
+
+                                    Price = price
+                                },
+                                activeDiscounts);
 
                         if (discount.HasDiscount)
                         {
-                            discountedProductIds.Add(product.Id);
+                            discountedProductIds.Add(
+                                product.Id);
                         }
                     }
 
                     query = query
-                        .Where(x => discountedProductIds.Contains(x.Id))
+                        .Where(x =>
+                            discountedProductIds.Contains(x.Id))
                         .OrderByDescending(x => x.CreatedAt);
 
                     break;
@@ -757,9 +887,10 @@ int pageSize)
             // گرفتن محصولات
             // =========================================================
 
-            var products = await query
-      .Take(12)
-      .ToListAsync();
+            var products =
+                await query
+                    .Take(12)
+                    .ToListAsync();
 
 
             // =========================================================
@@ -767,97 +898,172 @@ int pageSize)
             // =========================================================
 
             var discounts =
-                await _discountService.GetActiveDiscountsAsync();
+                await _discountService
+                    .GetActiveDiscountsAsync();
 
 
             // =========================================================
             // Inventory
             // =========================================================
 
-            var productIds = products
-                .Select(x => x.Id)
-                .ToList();
+            var productIds =
+                products
+                    .Select(x => x.Id)
+                    .ToList();
 
             var inventories =
-                await _productInventoryService.GetInventoryAsync(productIds);
+                await _productInventoryService
+                    .GetInventoryAsync(productIds);
 
 
             // =========================================================
             // Mapping
             // =========================================================
 
-            var result = products.Select((product, index) =>
-            {
-                var price =
-                    product.ProductVariants.Count == 1
-                        ? product.ProductVariants.First().Price
-                        : product.ProductVariants.Any()
-                            ? product.ProductVariants.Min(v => v.Price)
-                            : product.Price ?? 0;
+            var result =
+                products.Select((product, index) =>
+                {
+                    // -------------------------------------------------
+                    // PRODUCT PRICE
+                    // -------------------------------------------------
+
+                    var originalPrice =
+                        product.ProductVariants.Count == 1
+                            ? product.ProductVariants.First().Price
+                            : product.ProductVariants.Any()
+                                ? product.ProductVariants.Min(v => v.Price)
+                                : product.Price ?? 0;
 
 
-                var discount = _discountService.CalculateDiscount(
-                    new DiscountCalculationInput
+                    // -------------------------------------------------
+                    // DISCOUNT
+                    // -------------------------------------------------
+
+                    var discount =
+                        _discountService.CalculateDiscount(
+                            new DiscountCalculationInput
+                            {
+                                ProductId =
+                                    product.Id,
+
+                                ProductVariantId =
+                                    product.ProductVariants.Count == 1
+                                        ? product.ProductVariants.First().Id
+                                        : null,
+
+                                ProductBrandId =
+                                    product.BrandId,
+
+                                ProductCategoryId =
+                                    product.CategoryId,
+
+                                Price =
+                                    originalPrice
+                            },
+                            discounts);
+
+
+                    // -------------------------------------------------
+                    // INVENTORY
+                    // -------------------------------------------------
+
+                    inventories.TryGetValue(
+                        product.Id,
+                        out var inventory);
+
+
+                    // -------------------------------------------------
+                    // FINAL PRICE
+                    // -------------------------------------------------
+
+                    var finalPrice =
+                        discount.HasDiscount
+                            ? discount.FinalPrice
+                            : originalPrice;
+
+
+                    // -------------------------------------------------
+                    // SECTION ITEM
+                    // -------------------------------------------------
+
+                    return new SectionItemCrud
                     {
-                        ProductId = product.Id,
+                        Id =
+                            Guid.NewGuid(),
 
-                        ProductVariantId =
-                            product.ProductVariants.Count == 1
-                                ? product.ProductVariants.First().Id
+                        ParentId =
+                            section.Id,
+
+                        ProductId =
+                            product.Id,
+
+                        ProductSlug =
+                            product.Slug,
+
+                        ProductName =
+                            product.Name,
+
+                        Title =
+                            product.Name,
+
+                        Description =
+                            product.Summary,
+
+                        // قیمت نهایی
+                        Price =
+                            finalPrice.ToString(),
+
+                        // قیمت قبل از تخفیف
+                        OriginalPrice =
+                            discount.HasDiscount
+                                ? originalPrice
                                 : null,
 
-                        ProductBrandId = product.BrandId,
+                        // درصد تخفیف
+                        DiscountPercent =
+                            discount.HasDiscount
+                                ? discount.DiscountValue
+                                : null,
 
-                        ProductCategoryId = product.CategoryId,
+                        // مبلغ تخفیف
+                        DiscountAmount =
+                            discount.HasDiscount
+                                ? discount.DiscountAmount
+                                : null,
 
-                        Price = price
-                    },
-                    discounts);
+                        // آیا تخفیف دارد؟
+                        HasDiscount =
+                            discount.HasDiscount,
 
+                        ImageUrl =
+                            product.MainImage,
 
-                inventories.TryGetValue(
-                    product.Id,
-                    out var inventory);
+                        AvatarUrl =
+                            product.Thumbnail,
 
+                        SortOrder =
+                            index,
 
-                return new SectionItemCrud
-                {
-                    Id = Guid.NewGuid(),
+                        IsActive =
+                            true,
 
-                    ParentId = section.Id,
+                        CategoryId =
+                            product.CategoryId,
 
-                    ProductId = product.Id,
-                    ProductName = product.Name,
+                        CategoryName =
+                            product.Category?.Name,
 
-                    Title = product.Name,
+                        BrandId =
+                            product.BrandId,
 
-                    Description = product.Summary,
+                        BrandName =
+                            product.Brand?.Name,
 
-                    Price = price.ToString(),
-
-                    ImageUrl = product.MainImage,
-
-                    AvatarUrl = product.Thumbnail,
-
-                    SortOrder = index,
-
-                    IsActive = true,
-
-                    CategoryId = product.CategoryId,
-                    CategoryName = product.Category?.Name,
-
-                    BrandId = product.BrandId,
-                    BrandName = product.Brand?.Name,
-
-                    // اطلاعات تخفیف
-                    // اگر این فیلدها را به SectionItemCrud اضافه کرده باشی،
-                    // اینجا مستقیماً مقداردهی می‌شوند.
-
-                    Features = discount.HasDiscount
-                        ? $"Discount:{discount.DiscountAmount}"
-                        : null
-                };
-            }).ToList();
+                        // Features دیگر برای Discount استفاده نمی‌شود
+                        Features =
+                            null
+                    };
+                }).ToList();
 
 
             return result;

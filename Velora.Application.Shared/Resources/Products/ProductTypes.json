@@ -1,0 +1,11 @@
+﻿{
+  "ProductTypes": [
+    {
+      "Name": "محصول فیزیکی",
+      "Code": "physical",
+      "Description": "محصول فیزیکی قابل خرید و ارسال.",
+      "SortOrder": 1,
+      "IsActive": true
+    }
+  ]
+}

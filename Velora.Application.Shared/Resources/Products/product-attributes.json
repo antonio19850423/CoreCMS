@@ -1,0 +1,259 @@
+﻿{
+  "ProductAttributes": [
+    {
+      "ProductSlug": "18k-gold-ring-atena",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "material",
+          "Name": "جنس",
+          "Value": "طلای زرد",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "royal-gold-ring",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "stone",
+          "Name": "نگین",
+          "Value": "نگین تزئینی",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "delicate-gold-ring-liana",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "مینیمال",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "venus-delicate-gold-necklace",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "color",
+          "Name": "رنگ طلا",
+          "Value": "طلای زرد",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "gold-heart-pendant-necklace",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "design",
+          "Name": "طرح",
+          "Value": "قلب",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "classic-gold-chain-necklace",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "کلاسیک",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "luna-gold-chain-bracelet",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "زنجیری",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "roya-women-gold-bracelet",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "مجلسی",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "classic-gold-hoop-earrings",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "کلاسیک",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "ava-gold-stud-earrings",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "مینیمال",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "mahtab-gold-drop-earrings",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "آویز",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "18k-gold-bangle-mandegar",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "کلاسیک",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "nila-delicate-gold-bangle",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "style",
+          "Name": "سبک",
+          "Value": "ظریف",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "elara-women-gold-set",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "set-type",
+          "Name": "نوع ست",
+          "Value": "نیم‌ست",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "mahoor-women-gold-jewelry-set",
+      "Attributes": [
+        {
+          "Code": "gold-purity",
+          "Name": "عیار",
+          "Value": "18 عیار",
+          "SortOrder": 1
+        },
+        {
+          "Code": "set-type",
+          "Name": "نوع ست",
+          "Value": "سرویس کامل",
+          "SortOrder": 2
+        }
+      ]
+    }
+  ]
+}

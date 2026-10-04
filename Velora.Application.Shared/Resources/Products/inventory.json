@@ -1,0 +1,73 @@
+﻿{
+  "Inventory": [
+    {
+      "ProductSlug": "18k-gold-ring-atena",
+      "Variants": [
+        {
+          "Sku": "ATENA-52",
+          "InitialStock": 3
+        },
+        {
+          "Sku": "ATENA-54",
+          "InitialStock": 3
+        }
+      ]
+    },
+    {
+      "ProductSlug": "royal-gold-ring",
+      "InitialStock": 5
+    },
+    {
+      "ProductSlug": "delicate-gold-ring-liana",
+      "InitialStock": 8
+    },
+    {
+      "ProductSlug": "venus-delicate-gold-necklace",
+      "InitialStock": 6
+    },
+    {
+      "ProductSlug": "gold-heart-pendant-necklace",
+      "InitialStock": 10
+    },
+    {
+      "ProductSlug": "classic-gold-chain-necklace",
+      "InitialStock": 7
+    },
+    {
+      "ProductSlug": "luna-gold-chain-bracelet",
+      "InitialStock": 5
+    },
+    {
+      "ProductSlug": "roya-women-gold-bracelet",
+      "InitialStock": 4
+    },
+    {
+      "ProductSlug": "classic-gold-hoop-earrings",
+      "InitialStock": 9
+    },
+    {
+      "ProductSlug": "ava-gold-stud-earrings",
+      "InitialStock": 12
+    },
+    {
+      "ProductSlug": "mahtab-gold-drop-earrings",
+      "InitialStock": 6
+    },
+    {
+      "ProductSlug": "18k-gold-bangle-mandegar",
+      "InitialStock": 4
+    },
+    {
+      "ProductSlug": "nila-delicate-gold-bangle",
+      "InitialStock": 8
+    },
+    {
+      "ProductSlug": "elara-women-gold-set",
+      "InitialStock": 3
+    },
+    {
+      "ProductSlug": "mahoor-women-gold-jewelry-set",
+      "InitialStock": 2
+    }
+  ]
+}

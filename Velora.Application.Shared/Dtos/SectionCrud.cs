@@ -210,6 +210,8 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 55, GridOrder = 55, ShowInGrid = false, ShowInForm = true)]
 
         public bool? IsLatestProducts { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 56, GridOrder = 56, ShowInGrid = false, ShowInForm = true,MaxLength =50)]
+        public string? ButtonColor { get; set; }
 
     }
 }

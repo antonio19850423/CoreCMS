@@ -8,6 +8,6 @@ namespace Velora.Application.Shared.Dtos
 {
     public class ProductSeedRoot
     {
-        public List<ProductFullSeedModel> Products { get; set; } = new();
+        public List<ProductSeedModel> Products { get; set; } = new();
     }
 }

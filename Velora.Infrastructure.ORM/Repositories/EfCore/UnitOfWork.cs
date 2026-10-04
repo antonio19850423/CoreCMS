@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 using Velora.Infrastructure.ORM.Repositories.EfCore;
 
@@ -38,31 +39,56 @@ namespace MyApp.Orm.EfCore
         public DbContext Context => _context;
 
         public async Task<int> CommitAsync()
-            {
+        {
             try
+            {
+                foreach (var entry in _context.ChangeTracker.Entries())
                 {
-                int result = _context.SaveChanges();
-                if(_useTransaction && _transaction != null)
-                    await _transaction.CommitAsync();
-                await _transaction.DisposeAsync();
+                    Console.WriteLine(
+                        $"ENTITY: {entry.Entity.GetType().Name} | STATE: {entry.State}");
 
-                // ✅ ایجاد تراکنش جدید برای ادامه عملیات
-                _transaction = await _context.Database.BeginTransactionAsync();
-                return result;
+                    if (entry.Entity is Product product)
+                    {
+                        Console.WriteLine(
+                            $"PRODUCT => Id={product.Id}, Name='{product.Name}', Slug='{product.Slug}'");
+                    }
                 }
-            catch
+
+                int result = _context.SaveChanges();
+
+                if (_useTransaction && _transaction != null)
                 {
-                if(_useTransaction)
-                    await RollbackAsync();
-                throw;
+                    await _transaction.CommitAsync();
+                    await _transaction.DisposeAsync();
+                    _transaction = null;
                 }
+
+                return result;
             }
+            catch
+            {
+                if (_useTransaction && _transaction != null)
+                    await RollbackAsync();
+
+                throw;
+            }
+        }
 
         public async Task RollbackAsync()
+        {
+            if (_transaction == null)
+                return;
+
+            try
             {
-            if(_useTransaction && _transaction != null)
                 await _transaction.RollbackAsync();
             }
+            finally
+            {
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+        }
 
         public void Rollback()
             {

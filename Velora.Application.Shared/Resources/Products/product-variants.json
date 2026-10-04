@@ -1,0 +1,33 @@
+﻿{
+  "ProductVariants": [
+    {
+      "ProductSlug": "18k-gold-ring-atena",
+      "Variants": [
+        {
+          "Name": "سایز 52",
+          "Price": 18500000,
+          "ComparePrice": null,
+          "Image": "/uploads/sections/18k-gold-ring-atena.jpg",
+          "Sku": "ATENA-52",
+          "Barcode": null,
+          "InitialStock": 3,
+          "IsDefault": true,
+          "SortOrder": 1,
+          "IsActive": true
+        },
+        {
+          "Name": "سایز 54",
+          "Price": 18700000,
+          "ComparePrice": null,
+          "Image": "/uploads/sections/18k-gold-ring-atena.jpg",
+          "Sku": "ATENA-54",
+          "Barcode": null,
+          "InitialStock": 3,
+          "IsDefault": false,
+          "SortOrder": 2,
+          "IsActive": true
+        }
+      ]
+    }
+  ]
+}

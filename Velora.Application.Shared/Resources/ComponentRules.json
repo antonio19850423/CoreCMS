@@ -1012,544 +1012,605 @@
       }
     }
   },
-    "luxuryJewelrySlider": {
-      "rules": {
-        "direction": true,
-        "items": {
-          "title": true,
-          "subtitle": true,
-          "imageUrl": true,
-          "imageAlt": true,
-          "link1Text": true,
-          "link1Url": true,
-          "isActive": true,
-          "sortOrder": true
-        }
-      },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "items": [
-            {
-              "title": "زیبایی،",
-              "subtitle": "درخششِ ماندگار",
-              "imageUrl": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "مجموعه طلای لوکس",
-              "link1Text": "مشاهده کالکشن",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 1
-            },
-            {
-              "title": "ظرافتی برای همیشه",
-              "subtitle": "مجموعه‌ای از طلا و جواهرات ماندگار",
-              "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "مجموعه جواهرات",
-              "link1Text": "کشف مجموعه",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 2
-            },
-            {
-              "title": "درخشش متفاوت",
-              "subtitle": "انتخابی برای لحظه‌های خاص",
-              "imageUrl": "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "جواهرات ظریف",
-              "link1Text": "مشاهده محصولات",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 3
-            }
-          ]
-        },
-        "ltr": {
-          "direction": "ltr",
-          "items": [
-            {
-              "title": "Timeless Beauty",
-              "subtitle": "A lasting expression of elegance",
-              "imageUrl": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "Luxury gold collection",
-              "link1Text": "View Collection",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 1
-            },
-            {
-              "title": "Elegance That Lasts",
-              "subtitle": "A collection of timeless jewelry",
-              "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "Jewelry collection",
-              "link1Text": "Discover Collection",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 2
-            },
-            {
-              "title": "A Different Kind of Shine",
-              "subtitle": "Jewelry for your special moments",
-              "imageUrl": "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1600&q=90",
-              "imageAlt": "Fine jewelry",
-              "link1Text": "View Products",
-              "link1Url": "/products",
-              "isActive": true,
-              "sortOrder": 3
-            }
-          ]
-        }
-      }
-    },
-    "luxuryJewelryCategories": {
-      "rules": {
-        "subtitle": true,
+  "luxuryJewelrySlider": {
+    "rules": {
+      "direction": true,
+      "items": {
         "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "IsActiveCategries": true,
-        "items": {
-          "categoryName": true,
-          "categoryId": true,
-          "isActive": true,
-          "sortOrder": true
-        }
-      },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "EXPLORE",
-          "title": "دسته‌بندی محصولات",
-          "description": "انتخاب خود را از میان مجموعه‌ای از طلا و جواهرات ظریف و ماندگار آغاز کنید.",
-          "backgroundColor": "#ffffff",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isActiveCategries": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "EXPLORE",
-          "title": "Shop by Category",
-          "description": "Begin your journey through a collection of timeless gold and fine jewelry.",
-          "backgroundColor": "#ffffff",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isActiveCategries": true,
-          "items": []
-        }
-      }
-    },
-    "luxuryJewelryNewArrivals": {
-      "rules": {
         "subtitle": true,
-        "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "isLatestProducts": true,
-        "items": {
-          "productId": true,
-          "productName": true,
-          "isActive": true,
-          "sortOrder": true
-        }
-      },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "NEW ARRIVALS",
-          "title": "جدیدترین‌ها",
-          "description": "تازه‌ترین انتخاب‌هایی که به مجموعه ما اضافه شده‌اند.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isLatestProducts": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "NEW ARRIVALS",
-          "title": "New Arrivals",
-          "description": "The latest pieces added to our collection.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isLatestProducts": true,
-          "items": []
-        }
-      }
-    },
-    "luxuryJewelrySpecialOffers": {
-      "rules": {
-        "subtitle": true,
-        "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "isSpecialOffers": true,
-        "items": {
-          "productId": true,
-          "productName": true,
-          "isActive": true,
-          "sortOrder": true
-        }
-      },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "SPECIAL OFFERS",
-          "title": "پیشنهاد ویژه",
-          "description": "انتخابی از محصولات خاص با شرایط ویژه برای مدت محدود.",
-          "backgroundColor": "#F0ECE4",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isSpecialOffers": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "SPECIAL OFFERS",
-          "title": "Special Offers",
-          "description": "A selection of exceptional pieces available with special offers for a limited time.",
-          "backgroundColor": "#F0ECE4",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isSpecialOffers": true,
-          "items": []
-        }
-      }
-    },
-    "luxuryJewelryPromoBanner": {
-      "rules": {
-        "subtitle": true,
-        "title": true,
-        "description": true,
         "imageUrl": true,
         "imageAlt": true,
-        "icon": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "iconColor": true,
         "link1Text": true,
-        "link1Url": true
-      },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "TIMELESS BEAUTY",
-          "title": "درخشش،\nبرای همیشه ماندگار است.",
-          "description": "جواهراتی که فقط برای امروز طراحی نشده‌اند؛ بلکه بخشی از خاطرات ماندگار زندگی شما خواهند بود.",
-          "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1200&q=90",
-          "imageAlt": "Gold Collection",
-          "icon": "gem",
-          "backgroundColor": "#111111",
-          "headerColor": "#ffffff",
-          "subtitleColor": "#c4a46d",
-          "descriptionColor": "#c5c5c5",
-          "iconColor": "#c4a46d",
-          "link1Text": "کشف مجموعه",
-          "link1Url": "/products"
-        },
-        "ltr": {
-          "subtitle": "TIMELESS BEAUTY",
-          "title": "A shine,\nthat lasts forever.",
-          "description": "Jewelry designed not only for today, but to become part of the memories you will cherish forever.",
-          "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1200&q=90",
-          "imageAlt": "Gold Collection",
-          "icon": "gem",
-          "backgroundColor": "#111111",
-          "headerColor": "#ffffff",
-          "subtitleColor": "#c4a46d",
-          "descriptionColor": "#c5c5c5",
-          "iconColor": "#c4a46d",
-          "link1Text": "Discover Collection",
-          "link1Url": "/products"
-        }
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
-    "luxuryJewelryBestSellers": {
-      "rules": {
-        "subtitle": true,
-        "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "items": [
+          {
+            "title": "درخشش ماندگار",
+            "subtitle": "زیبایی که فراتر از زمان می‌درخشد",
+            "imageUrl": "/uploads/sections/jewelry-slider-01.jpg",
+            "imageAlt": "مجموعه جواهرات لوکس",
+            "link1Text": "مشاهده مجموعه",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "ظرافت بی‌زمان",
+            "subtitle": "انتخابی برای سلیقه‌های متمایز",
+            "imageUrl": "/uploads/sections/jewelry-slider-02.jpg",
+            "imageAlt": "مجموعه جواهرات ظریف",
+            "link1Text": "کشف مجموعه",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "امضای خاص شما",
+            "subtitle": "جزئیاتی که سبک شما را تعریف می‌کنند",
+            "imageUrl": "/uploads/sections/jewelry-slider-03.jpg",
+            "imageAlt": "جواهرات خاص و لوکس",
+            "link1Text": "مشاهده محصولات",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "شکوه در جزئیات",
+            "subtitle": "ترکیبی از هنر، ظرافت و درخشش",
+            "imageUrl": "/uploads/sections/jewelry-slider-04.jpg",
+            "imageAlt": "طلا و جواهرات لوکس",
+            "link1Text": "مشاهده مجموعه",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "title": "برای لحظه‌های خاص",
+            "subtitle": "جواهری برای ماندگارترین خاطرات",
+            "imageUrl": "/uploads/sections/jewelry-slider-05.jpg",
+            "imageAlt": "جواهرات برای مناسبت‌های خاص",
+            "link1Text": "کشف مجموعه",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 5
+          },
+          {
+            "title": "زیبایی که می‌ماند",
+            "subtitle": "انتخابی ماندگار برای امروز و فردا",
+            "imageUrl": "/uploads/sections/jewelry-slider-06.jpg",
+            "imageAlt": "مجموعه طلا و جواهرات ماندگار",
+            "link1Text": "مشاهده مجموعه",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 6
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "items": [
+          {
+            "title": "Timeless Radiance",
+            "subtitle": "Beauty that shines beyond time",
+            "imageUrl": "/uploads/sections/jewelry-slider-01.jpg",
+            "imageAlt": "Luxury jewelry collection",
+            "link1Text": "View Collection",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Timeless Elegance",
+            "subtitle": "A choice for discerning tastes",
+            "imageUrl": "/uploads/sections/jewelry-slider-02.jpg",
+            "imageAlt": "Elegant jewelry collection",
+            "link1Text": "Discover Collection",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Your Signature",
+            "subtitle": "Details that define your style",
+            "imageUrl": "/uploads/sections/jewelry-slider-03.jpg",
+            "imageAlt": "Unique luxury jewelry",
+            "link1Text": "View Products",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "Beauty in Every Detail",
+            "subtitle": "Where artistry meets refined brilliance",
+            "imageUrl": "/uploads/sections/jewelry-slider-04.jpg",
+            "imageAlt": "Luxury gold and jewelry",
+            "link1Text": "View Collection",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "title": "Made for Special Moments",
+            "subtitle": "Jewelry for your most memorable occasions",
+            "imageUrl": "/uploads/sections/jewelry-slider-05.jpg",
+            "imageAlt": "Jewelry for special occasions",
+            "link1Text": "Discover Collection",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 5
+          },
+          {
+            "title": "Beauty That Lasts",
+            "subtitle": "A timeless choice for today and tomorrow",
+            "imageUrl": "/uploads/sections/jewelry-slider-06.jpg",
+            "imageAlt": "Timeless gold and jewelry collection",
+            "link1Text": "View Collection",
+            "link1Url": "/products",
+            "isActive": true,
+            "sortOrder": 6
+          }
+        ]
+      }
+    }
+  },
+
+  "luxuryJewelryCategories": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "IsActiveCategries": true,
+      "items": {
+        "categoryName": true,
+        "categoryId": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "EXPLORE",
+        "title": "دسته‌بندی محصولات",
+        "description": "انتخاب خود را از میان مجموعه‌ای از طلا و جواهرات ظریف و ماندگار آغاز کنید.",
+        "backgroundColor": "#ffffff",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isActiveCategries": true,
+        "items": []
+      },
+      "ltr": {
+        "subtitle": "EXPLORE",
+        "title": "Shop by Category",
+        "description": "Begin your journey through a collection of timeless gold and fine jewelry.",
+        "backgroundColor": "#ffffff",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isActiveCategries": true,
+        "items": []
+      }
+    }
+  },
+  "luxuryJewelryNewArrivals": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isLatestProducts": true,
+      "items": {
+        "productId": true,
+        "productName": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "NEW ARRIVALS",
+        "title": "جدیدترین‌ها",
+        "description": "تازه‌ترین انتخاب‌هایی که به مجموعه ما اضافه شده‌اند.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isLatestProducts": true,
+        "items": []
+      },
+      "ltr": {
+        "subtitle": "NEW ARRIVALS",
+        "title": "New Arrivals",
+        "description": "The latest pieces added to our collection.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isLatestProducts": true,
+        "items": []
+      }
+    }
+  },
+  "luxuryJewelrySpecialOffers": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isSpecialOffers": true,
+      "items": {
+        "productId": true,
+        "productName": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "SPECIAL OFFERS",
+        "title": "پیشنهاد ویژه",
+        "description": "انتخابی از محصولات خاص با شرایط ویژه برای مدت محدود.",
+        "backgroundColor": "#F0ECE4",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isSpecialOffers": true,
+        "items": []
+      },
+      "ltr": {
+        "subtitle": "SPECIAL OFFERS",
+        "title": "Special Offers",
+        "description": "A selection of exceptional pieces available with special offers for a limited time.",
+        "backgroundColor": "#F0ECE4",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isSpecialOffers": true,
+        "items": []
+      }
+    }
+  },
+  "luxuryJewelryPromoBanner": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "icon": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "iconColor": true,
+      "link1Text": true,
+      "link1Url": true
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "TIMELESS BEAUTY",
+        "title": "درخشش،\nبرای همیشه ماندگار است.",
+        "description": "جواهراتی که فقط برای امروز طراحی نشده‌اند؛ بلکه بخشی از خاطرات ماندگار زندگی شما خواهند بود.",
+        "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1200&q=90",
+        "imageAlt": "Gold Collection",
+        "icon": "gem",
+        "backgroundColor": "#111111",
+        "headerColor": "#ffffff",
+        "subtitleColor": "#c4a46d",
+        "descriptionColor": "#c5c5c5",
+        "iconColor": "#c4a46d",
+        "link1Text": "کشف مجموعه",
+        "link1Url": "/products"
+      },
+      "ltr": {
+        "subtitle": "TIMELESS BEAUTY",
+        "title": "A shine,\nthat lasts forever.",
+        "description": "Jewelry designed not only for today, but to become part of the memories you will cherish forever.",
+        "imageUrl": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=1200&q=90",
+        "imageAlt": "Gold Collection",
+        "icon": "gem",
+        "backgroundColor": "#111111",
+        "headerColor": "#ffffff",
+        "subtitleColor": "#c4a46d",
+        "descriptionColor": "#c5c5c5",
+        "iconColor": "#c4a46d",
+        "link1Text": "Discover Collection",
+        "link1Url": "/products"
+      }
+    }
+  },
+  "luxuryJewelryBestSellers": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isBestSellingProducts": true,
+      "items": {
+        "productId": true,
+        "productName": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "BEST SELLERS",
+        "title": "پرفروش‌ترین‌ها",
+        "description": "محبوب‌ترین انتخاب‌های مشتریان ما در یک نگاه.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
         "isBestSellingProducts": true,
-        "items": {
-          "productId": true,
-          "productName": true,
-          "isActive": true,
-          "sortOrder": true
-        }
+        "items": []
       },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "BEST SELLERS",
-          "title": "پرفروش‌ترین‌ها",
-          "description": "محبوب‌ترین انتخاب‌های مشتریان ما در یک نگاه.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isBestSellingProducts": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "BEST SELLERS",
-          "title": "Best Sellers",
-          "description": "Our customers' most popular choices, gathered in one collection.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isBestSellingProducts": true,
-          "items": []
-        }
+      "ltr": {
+        "subtitle": "BEST SELLERS",
+        "title": "Best Sellers",
+        "description": "Our customers' most popular choices, gathered in one collection.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isBestSellingProducts": true,
+        "items": []
+      }
+    }
+  },
+  "luxuryJewelryBrands": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isActiveBrands": true,
+      "items": {
+        "brandId": true,
+        "brandName": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
-    "luxuryJewelryBrands": {
-      "rules": {
-        "subtitle": true,
-        "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
+    "defaultData": {
+      "rtl": {
+        "subtitle": "SELECTED BRANDS",
+        "title": "برندهای منتخب",
+        "description": "برندهایی با طراحی متمایز و استانداردهای بالای کیفیت.",
+        "backgroundColor": "#fafafa",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
         "isActiveBrands": true,
-        "items": {
-          "brandId": true,
-          "brandName": true,
-          "isActive": true,
-          "sortOrder": true
-        }
+        "items": []
       },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "SELECTED BRANDS",
-          "title": "برندهای منتخب",
-          "description": "برندهایی با طراحی متمایز و استانداردهای بالای کیفیت.",
-          "backgroundColor": "#fafafa",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isActiveBrands": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "SELECTED BRANDS",
-          "title": "Selected Brands",
-          "description": "Distinctive brands defined by exceptional design and high standards of quality.",
-          "backgroundColor": "#fafafa",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isActiveBrands": true,
-          "items": []
-        }
+      "ltr": {
+        "subtitle": "SELECTED BRANDS",
+        "title": "Selected Brands",
+        "description": "Distinctive brands defined by exceptional design and high standards of quality.",
+        "backgroundColor": "#fafafa",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isActiveBrands": true,
+        "items": []
       }
-    },
-    "luxuryJewelryBenefits": {
-      "rules": {
-        "backgroundColor": true,
-        "items": {
-          "title": true,
-          "description": true,
-          "icon": true,
-          "iconAlt": true,
-          "iconColor": true,
-          "titleColor": true,
-          "descriptionColor": true,
-          "isActive": true,
-          "sortOrder": true
-        }
-      },
-      "defaultData": {
-        "rtl": {
-          "backgroundColor": "#ffffff",
-          "items": [
-            {
-              "title": "ارسال سریع",
-              "description": "ارسال امن و سریع سفارش",
-              "icon": "truck",
-              "iconAlt": "ارسال سریع",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 1
-            },
-            {
-              "title": "تضمین اصالت",
-              "description": "تضمین اصالت محصولات",
-              "icon": "shieldCheck",
-              "iconAlt": "تضمین اصالت",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 2
-            },
-            {
-              "title": "کیفیت ممتاز",
-              "description": "انتخاب با بالاترین کیفیت",
-              "icon": "crown",
-              "iconAlt": "کیفیت ممتاز",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 3
-            },
-            {
-              "title": "پشتیبانی",
-              "description": "همراه شما در تمام مراحل",
-              "icon": "clock3",
-              "iconAlt": "پشتیبانی",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 4
-            }
-          ]
-        },
-        "ltr": {
-          "backgroundColor": "#ffffff",
-          "items": [
-            {
-              "title": "Fast Shipping",
-              "description": "Safe and fast delivery",
-              "icon": "truck",
-              "iconAlt": "Fast shipping",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 1
-            },
-            {
-              "title": "Authenticity Guaranteed",
-              "description": "Guaranteed product authenticity",
-              "icon": "shieldCheck",
-              "iconAlt": "Authenticity guaranteed",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 2
-            },
-            {
-              "title": "Exceptional Quality",
-              "description": "Selected with the highest standards",
-              "icon": "crown",
-              "iconAlt": "Exceptional quality",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 3
-            },
-            {
-              "title": "Dedicated Support",
-              "description": "We are with you every step of the way",
-              "icon": "clock3",
-              "iconAlt": "Dedicated support",
-              "iconColor": "#b08d57",
-              "titleColor": "#222222",
-              "descriptionColor": "#888888",
-              "isActive": true,
-              "sortOrder": 4
-            }
-          ]
-        }
-      }
-    },
-    "luxuryJewelryArticles": {
-      "rules": {
-        "subtitle": true,
+    }
+  },
+  "luxuryJewelryBenefits": {
+    "rules": {
+      "backgroundColor": true,
+      "items": {
         "title": true,
         "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
+        "icon": true,
+        "iconAlt": true,
+        "iconColor": true,
+        "titleColor": true,
         "descriptionColor": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "backgroundColor": "#ffffff",
+        "items": [
+          {
+            "title": "ارسال سریع",
+            "description": "ارسال امن و سریع سفارش",
+            "icon": "truck",
+            "iconAlt": "ارسال سریع",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "تضمین اصالت",
+            "description": "تضمین اصالت محصولات",
+            "icon": "shieldCheck",
+            "iconAlt": "تضمین اصالت",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "کیفیت ممتاز",
+            "description": "انتخاب با بالاترین کیفیت",
+            "icon": "crown",
+            "iconAlt": "کیفیت ممتاز",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "پشتیبانی",
+            "description": "همراه شما در تمام مراحل",
+            "icon": "clock3",
+            "iconAlt": "پشتیبانی",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "backgroundColor": "#ffffff",
+        "items": [
+          {
+            "title": "Fast Shipping",
+            "description": "Safe and fast delivery",
+            "icon": "truck",
+            "iconAlt": "Fast shipping",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Authenticity Guaranteed",
+            "description": "Guaranteed product authenticity",
+            "icon": "shieldCheck",
+            "iconAlt": "Authenticity guaranteed",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Exceptional Quality",
+            "description": "Selected with the highest standards",
+            "icon": "crown",
+            "iconAlt": "Exceptional quality",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "Dedicated Support",
+            "description": "We are with you every step of the way",
+            "icon": "clock3",
+            "iconAlt": "Dedicated support",
+            "iconColor": "#b08d57",
+            "titleColor": "#222222",
+            "descriptionColor": "#888888",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "luxuryJewelryArticles": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isLatestNews": true,
+      "items": {
+        "link1Text": true,
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "subtitle": "JOURNAL",
+        "title": "مجله طلا",
+        "description": "راهنماها و مطالبی برای انتخاب بهتر و نگهداری اصولی از طلا و جواهرات.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
         "isLatestNews": true,
-        "items": {
-          "link1Text": true,
-          "link1Url": true,
-          "isActive": true,
-          "sortOrder": true
-        }
+        "items": []
       },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "JOURNAL",
-          "title": "مجله طلا",
-          "description": "راهنماها و مطالبی برای انتخاب بهتر و نگهداری اصولی از طلا و جواهرات.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isLatestNews": true,
-          "items": []
-        },
-        "ltr": {
-          "subtitle": "JOURNAL",
-          "title": "Gold Journal",
-          "description": "Guides and insights to help you choose and care for your gold and fine jewelry.",
-          "backgroundColor": "#F7F6F3",
-          "headerColor": "#171717",
-          "subtitleColor": "#b08d57",
-          "descriptionColor": "#777777",
-          "isLatestNews": true,
-          "items": []
-        }
+      "ltr": {
+        "subtitle": "JOURNAL",
+        "title": "Gold Journal",
+        "description": "Guides and insights to help you choose and care for your gold and fine jewelry.",
+        "backgroundColor": "#F7F6F3",
+        "headerColor": "#171717",
+        "subtitleColor": "#b08d57",
+        "descriptionColor": "#777777",
+        "isLatestNews": true,
+        "items": []
       }
+    }
+  },
+  "luxuryJewelryNewsletter": {
+    "rules": {
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isLatestNews": true
     },
-    "luxuryJewelryNewsletter": {
-      "rules": {
-        "subtitle": true,
-        "title": true,
-        "description": true,
-        "backgroundColor": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
+    "defaultData": {
+      "rtl": {
+        "subtitle": "STAY IN TOUCH",
+        "title": "از جدیدترین کالکشن‌ها باخبر شوید",
+        "description": "برای دریافت اخبار مجموعه‌ها، محصولات جدید و پیشنهادهای ویژه ایمیل خود را وارد کنید.",
+        "backgroundColor": "#111111",
+        "headerColor": "#ffffff",
+        "subtitleColor": "#c4a46d",
+        "descriptionColor": "#999999",
         "isLatestNews": true
       },
-      "defaultData": {
-        "rtl": {
-          "subtitle": "STAY IN TOUCH",
-          "title": "از جدیدترین کالکشن‌ها باخبر شوید",
-          "description": "برای دریافت اخبار مجموعه‌ها، محصولات جدید و پیشنهادهای ویژه ایمیل خود را وارد کنید.",
-          "backgroundColor": "#111111",
-          "headerColor": "#ffffff",
-          "subtitleColor": "#c4a46d",
-          "descriptionColor": "#999999",
-          "isLatestNews": true
-        },
-        "ltr": {
-          "subtitle": "STAY IN TOUCH",
-          "title": "Stay Updated With Our Latest Collections",
-          "description": "Subscribe to receive updates about new collections, products and special offers.",
-          "backgroundColor": "#111111",
-          "headerColor": "#ffffff",
-          "subtitleColor": "#c4a46d",
-          "descriptionColor": "#999999",
-          "isLatestNews": true
-        }
+      "ltr": {
+        "subtitle": "STAY IN TOUCH",
+        "title": "Stay Updated With Our Latest Collections",
+        "description": "Subscribe to receive updates about new collections, products and special offers.",
+        "backgroundColor": "#111111",
+        "headerColor": "#ffffff",
+        "subtitleColor": "#c4a46d",
+        "descriptionColor": "#999999",
+        "isLatestNews": true
       }
-    },
+    }
+  },
   "luxuryJewelryFinalCta": {
     "rules": {
       "subtitle": true,

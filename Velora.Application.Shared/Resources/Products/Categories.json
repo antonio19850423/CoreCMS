@@ -1,0 +1,76 @@
+﻿{
+  "Categories": [
+    {
+      "Name": "انگشتر طلا",
+      "Slug": "gold-rings",
+      "Description": "انواع انگشترهای طلا با طراحی ظریف و مدرن.",
+      "SeoTitle": "خرید انگشتر طلا",
+      "SeoDescription": "مجموعه انگشترهای طلای زنانه با طراحی متنوع.",
+      "Icon": "/uploads/sections/gold-rings.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 1,
+      "IsActive": true
+    },
+    {
+      "Name": "گردنبند طلا",
+      "Slug": "gold-necklaces",
+      "Description": "مجموعه گردنبندهای طلای زنانه با طراحی متنوع.",
+      "SeoTitle": "خرید گردنبند طلا",
+      "SeoDescription": "گردنبندهای طلای زنانه با طراحی مدرن و کلاسیک.",
+      "Icon": "/uploads/sections/gold-necklaces.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 2,
+      "IsActive": true
+    },
+    {
+      "Name": "دستبند طلا",
+      "Slug": "gold-bracelets",
+      "Description": "مجموعه دستبندهای طلای زنانه.",
+      "SeoTitle": "خرید دستبند طلا",
+      "SeoDescription": "دستبندهای طلای زنانه با طراحی ظریف و مدرن.",
+      "Icon": "/uploads/sections/gold-bracelets.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 3,
+      "IsActive": true
+    },
+    {
+      "Name": "گوشواره طلا",
+      "Slug": "gold-earrings",
+      "Description": "مجموعه گوشواره‌های طلای زنانه.",
+      "SeoTitle": "خرید گوشواره طلا",
+      "SeoDescription": "گوشواره‌های طلای زنانه با طراحی متنوع.",
+      "Icon": "/uploads/sections/gold-earrings.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 4,
+      "IsActive": true
+    },
+    {
+      "Name": "النگو طلا",
+      "Slug": "gold-bangles",
+      "Description": "مجموعه النگوهای طلای زنانه.",
+      "SeoTitle": "خرید النگو طلا",
+      "SeoDescription": "النگوهای طلای زنانه با طراحی ظریف و کلاسیک.",
+      "Icon": "/uploads/sections/gold-bangles.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 5,
+      "IsActive": true
+    },
+    {
+      "Name": "نیم‌ست و سرویس طلا",
+      "Slug": "gold-sets",
+      "Description": "مجموعه نیم‌ست و سرویس‌های طلای زنانه.",
+      "SeoTitle": "خرید نیم ست و سرویس طلا",
+      "SeoDescription": "مجموعه نیم‌ست و سرویس طلای زنانه.",
+      "Icon": "/uploads/sections/gold-jewelry-set.jpg",
+      "IconColor": "#b08d57",
+      "ParentSlug": null,
+      "SortOrder": 6,
+      "IsActive": true
+    }
+  ]
+}

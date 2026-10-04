@@ -54,6 +54,12 @@ namespace Velora.Application.Shared.Dtos
         public int InitialStock { get; set; }
 
         public bool IsActive { get; set; }
+        
+        public string CategorySlug { get; set; }
+        public string BrandSlug { get; set; }
+        public string ProductTypeCode { get; set; }
+
+        
 
         public List<ProductFileSeedModel> Files { get; set; } = new();
 

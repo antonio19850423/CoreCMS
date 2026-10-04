@@ -140,6 +140,7 @@ namespace Velora.Application.Services
                     IsLatestNews = input.IsLatestNews,
                     IsSpecialOffers = input.IsSpecialOffers,
                     IsLatestProducts = input.IsLatestProducts,
+                    ButtonColor = input.ButtonColor,
                     
 
                 };
@@ -259,7 +260,8 @@ namespace Velora.Application.Services
                     IsLatestNews = input.IsLatestNews,
                     IsSpecialOffers = input.IsSpecialOffers,
                     IsLatestProducts = input.IsLatestProducts,
-                    
+                    ButtonColor = input.ButtonColor,
+
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

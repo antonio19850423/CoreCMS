@@ -246,4 +246,10 @@
   <data name="SiteSetting.HasCardToCardPayment" xml:space="preserve">
     <value>پرداخت کارت به کارت دارد ؟</value>
   </data>
+  <data name="SiteSetting.Background" xml:space="preserve">
+    <value>رنگ پس زمینه</value>
+  </data>
+  <data name="SiteSetting.BackgroundGradient" xml:space="preserve">
+    <value>طیف رنگی پس‌زمینه</value>
+  </data>
 </root>

@@ -152,5 +152,13 @@ namespace Velora.Application.Shared.Dtos
         public Guid? BrandId { get; set; }
 
         public Guid? ProductId { get; set; }
+        public bool HasDiscount { get; set; }
+
+        public decimal? DiscountPercent { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? OriginalPrice { get; set; }
+        public string? ProductSlug { get; set; }
     }
 }

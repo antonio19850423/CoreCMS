@@ -55,17 +55,39 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Brands.json" />
+	  <None Remove="Resources\Categories.json" />
 	  <None Remove="Resources\Products.json" />
+	  <None Remove="Resources\Products\discount-items.json" />
+	  <None Remove="Resources\Products\discounts.json" />
+	  <None Remove="Resources\Products\inventory.json" />
 	  <None Remove="Resources\Products\LuxuryJewelry.json" />
+	  <None Remove="Resources\Products\product-attributes.json" />
+	  <None Remove="Resources\Products\product-files.json" />
+	  <None Remove="Resources\Products\product-inventory.json" />
+	  <None Remove="Resources\Products\product-tags.json" />
+	  <None Remove="Resources\Products\product-variants.json" />
+	  <None Remove="Resources\ProductTypes.json" />
 	  <None Remove="Resources\SeedData.json" />
 	  <None Remove="Resources\Templates\LuxuryJewelry_Template.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Products\Brands.json" />
+	  <EmbeddedResource Include="Resources\Products\Categories.json" />
 	  <EmbeddedResource Include="Resources\ContentItemRules.json" />
 	  <EmbeddedResource Include="Resources\ComponentRules.json" />
 	  <EmbeddedResource Include="Resources\Products.json" />
+	  <EmbeddedResource Include="Resources\Products\discount-items.json" />
+	  <EmbeddedResource Include="Resources\Products\discounts.json" />
+	  <EmbeddedResource Include="Resources\Products\inventory.json" />
 	  <EmbeddedResource Include="Resources\Products\LuxuryJewelry.json" />
+	  <EmbeddedResource Include="Resources\Products\product-attributes.json" />
+	  <EmbeddedResource Include="Resources\Products\product-files.json" />
+	  <EmbeddedResource Include="Resources\Products\product-inventory.json" />
+	  <EmbeddedResource Include="Resources\Products\product-tags.json" />
+	  <EmbeddedResource Include="Resources\Products\product-variants.json" />
+	  <EmbeddedResource Include="Resources\Products\ProductTypes.json" />
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
@@ -99,6 +121,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="E:\Afe\Projects\CoreCMS\Velora.Application.Shared\Resources\.editorconfig" />
 	  <None Include="Resources\FormResources\CmsConfiguration.en.resx">
 	    <SubType>Designer</SubType>
 	  </None>
@@ -223,6 +246,10 @@
 	  <EmbeddedResource Update="Resources\FormResources\InventoryTransactionReason.en.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="E:\Afe\Projects\CoreCMS\Velora.Application.Shared\Resources\.editorconfig" />
 	</ItemGroup>
 
 </Project>

@@ -126,6 +126,12 @@ public partial class SiteSetting
 
     public bool HasCardToCardPayment { get; set; }
 
+    [StringLength(500)]
+    public string? Background { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
+
     [InverseProperty("SiteSetting")]
     public virtual ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 }

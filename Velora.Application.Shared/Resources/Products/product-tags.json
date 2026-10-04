@@ -1,0 +1,234 @@
+﻿{
+  "ProductTags": [
+    {
+      "ProductSlug": "18k-gold-ring-atena",
+      "Tags": [
+        {
+          "Name": "طلای 18 عیار",
+          "Slug": "18k-gold",
+          "SortOrder": 1
+        },
+        {
+          "Name": "انگشتر",
+          "Slug": "ring",
+          "SortOrder": 2
+        },
+        {
+          "Name": "زنانه",
+          "Slug": "women",
+          "SortOrder": 3
+        }
+      ]
+    },
+    {
+      "ProductSlug": "royal-gold-ring",
+      "Tags": [
+        {
+          "Name": "طلای 18 عیار",
+          "Slug": "18k-gold",
+          "SortOrder": 1
+        },
+        {
+          "Name": "انگشتر نگین‌دار",
+          "Slug": "stone-ring",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "delicate-gold-ring-liana",
+      "Tags": [
+        {
+          "Name": "مینیمال",
+          "Slug": "minimal",
+          "SortOrder": 1
+        },
+        {
+          "Name": "انگشتر",
+          "Slug": "ring",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "venus-delicate-gold-necklace",
+      "Tags": [
+        {
+          "Name": "گردنبند",
+          "Slug": "necklace",
+          "SortOrder": 1
+        },
+        {
+          "Name": "ظریف",
+          "Slug": "delicate",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "gold-heart-pendant-necklace",
+      "Tags": [
+        {
+          "Name": "گردنبند",
+          "Slug": "necklace",
+          "SortOrder": 1
+        },
+        {
+          "Name": "هدیه",
+          "Slug": "gift",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "classic-gold-chain-necklace",
+      "Tags": [
+        {
+          "Name": "گردنبند",
+          "Slug": "necklace",
+          "SortOrder": 1
+        },
+        {
+          "Name": "کلاسیک",
+          "Slug": "classic",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "luna-gold-chain-bracelet",
+      "Tags": [
+        {
+          "Name": "دستبند",
+          "Slug": "bracelet",
+          "SortOrder": 1
+        },
+        {
+          "Name": "زنجیری",
+          "Slug": "chain",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "roya-women-gold-bracelet",
+      "Tags": [
+        {
+          "Name": "دستبند",
+          "Slug": "bracelet",
+          "SortOrder": 1
+        },
+        {
+          "Name": "مجلسی",
+          "Slug": "formal",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "classic-gold-hoop-earrings",
+      "Tags": [
+        {
+          "Name": "گوشواره",
+          "Slug": "earring",
+          "SortOrder": 1
+        },
+        {
+          "Name": "حلقه‌ای",
+          "Slug": "hoop",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "ava-gold-stud-earrings",
+      "Tags": [
+        {
+          "Name": "گوشواره",
+          "Slug": "earring",
+          "SortOrder": 1
+        },
+        {
+          "Name": "مینیمال",
+          "Slug": "minimal",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "mahtab-gold-drop-earrings",
+      "Tags": [
+        {
+          "Name": "گوشواره",
+          "Slug": "earring",
+          "SortOrder": 1
+        },
+        {
+          "Name": "مجلسی",
+          "Slug": "formal",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "18k-gold-bangle-mandegar",
+      "Tags": [
+        {
+          "Name": "النگو",
+          "Slug": "bangle",
+          "SortOrder": 1
+        },
+        {
+          "Name": "طلای 18 عیار",
+          "Slug": "18k-gold",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "nila-delicate-gold-bangle",
+      "Tags": [
+        {
+          "Name": "النگو",
+          "Slug": "bangle",
+          "SortOrder": 1
+        },
+        {
+          "Name": "ظریف",
+          "Slug": "delicate",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "elara-women-gold-set",
+      "Tags": [
+        {
+          "Name": "نیم‌ست",
+          "Slug": "gold-set",
+          "SortOrder": 1
+        },
+        {
+          "Name": "زنانه",
+          "Slug": "women",
+          "SortOrder": 2
+        }
+      ]
+    },
+    {
+      "ProductSlug": "mahoor-women-gold-jewelry-set",
+      "Tags": [
+        {
+          "Name": "سرویس طلا",
+          "Slug": "gold-jewelry-set",
+          "SortOrder": 1
+        },
+        {
+          "Name": "مجلسی",
+          "Slug": "formal",
+          "SortOrder": 2
+        }
+      ]
+    }
+  ]
+}

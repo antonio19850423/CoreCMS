@@ -173,4 +173,7 @@ public partial class VwSectionForm
     public bool? IsSpecialOffers { get; set; }
 
     public bool? IsLatestProducts { get; set; }
+
+    [StringLength(50)]
+    public string? ButtonColor { get; set; }
 }

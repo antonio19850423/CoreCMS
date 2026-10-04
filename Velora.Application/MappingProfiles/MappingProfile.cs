@@ -211,7 +211,10 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlProductInventoryTransaction, ProductInventoryTransactionCrud>().ReverseMap();
             CreateMap<VwProductInventoryTransactionForm, ProductInventoryTransactionCrud>().ReverseMap();
             CreateMap<SqlProductInventoryTransaction, ProductInventoryTransactionDto>().ReverseMap();
-
+            CreateMap<ProductInventoryTransactionDto, SqlProductInventoryTransaction>()
+    .ForMember(x => x.Product, opt => opt.Ignore())
+    .ForMember(x => x.ProductVariant, opt => opt.Ignore())
+    .ForMember(x => x.Reason, opt => opt.Ignore());
 
 
             CreateMap<SqlDiscount, DiscountCrud>().ReverseMap();

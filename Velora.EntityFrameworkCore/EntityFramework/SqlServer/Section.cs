@@ -191,6 +191,9 @@ public partial class Section
 
     public bool? IsLatestProducts { get; set; }
 
+    [StringLength(50)]
+    public string? ButtonColor { get; set; }
+
     [ForeignKey("ComponentTypeId")]
     [InverseProperty("Sections")]
     public virtual ComponentType ComponentType { get; set; } = null!;

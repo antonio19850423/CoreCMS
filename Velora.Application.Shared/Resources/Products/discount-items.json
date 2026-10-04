@@ -1,0 +1,66 @@
+﻿{
+  "DiscountItems": [
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "18k-gold-ring-atena",
+      "SortOrder": 1
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "royal-gold-ring",
+      "SortOrder": 2
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "delicate-gold-ring-liana",
+      "SortOrder": 3
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "venus-delicate-gold-necklace",
+      "SortOrder": 4
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "gold-heart-pendant-necklace",
+      "SortOrder": 5
+    },
+
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "classic-gold-chain-necklace",
+      "SortOrder": 1
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "luna-gold-chain-bracelet",
+      "SortOrder": 2
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "roya-women-gold-bracelet",
+      "SortOrder": 3
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "classic-gold-hoop-earrings",
+      "SortOrder": 4
+    },
+
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "ava-gold-stud-earrings",
+      "SortOrder": 1
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "mahtab-gold-drop-earrings",
+      "SortOrder": 2
+    },
+    {
+      "DiscountName": "تخفیف افتتاحیه فروشگاه",
+      "ProductSlug": "18k-gold-bangle-mandegar",
+      "SortOrder": 3
+    }
+  ]
+}

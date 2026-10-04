@@ -11,5 +11,7 @@ namespace Velora.Application.Shared.Dtos
         public string Name { get; set; } = null!;
 
         public string Slug { get; set; } = null!;
+        public int SortOrder { get; set; }
+        
     }
 }

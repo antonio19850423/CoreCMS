@@ -100,12 +100,10 @@ namespace Velora.Application.Services
                 var ProductInventoryTransactionResult = await CreateAsync(ProductInventoryTransaction);
                 if (!ProductInventoryTransactionResult.Success)
                     return ProductInventoryTransactionResult;
-                await _transactionService.CommitAsync();
                 return ProductInventoryTransactionResult;
             }
             catch (Exception ex)
             {
-                await _transactionService.RollbackAsync();
                 var result = new ResultDto<ProductInventoryTransactionDto>
                 {
                     Success = false,
@@ -158,12 +156,10 @@ namespace Velora.Application.Services
                 if (!ProductInventoryTransactionResult.Success)
                     return ProductInventoryTransactionResult;
 
-                await _transactionService.CommitAsync();
                 return ProductInventoryTransactionResult;
             }
             catch (Exception ex)
             {
-                await _transactionService.RollbackAsync();
                 var result = new ResultDto<ProductInventoryTransactionDto>
                 {
                     Success = false,

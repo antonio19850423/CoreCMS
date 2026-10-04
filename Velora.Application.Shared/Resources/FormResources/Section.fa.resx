@@ -327,4 +327,7 @@
   <data name="Section.IsLatestProducts" xml:space="preserve">
     <value>نمایش خودکار جدیدترین محصولات</value>
   </data>
+  <data name="Section.ButtonColor" xml:space="preserve">
+    <value>رنگ دکمه</value>
+  </data>
 </root>

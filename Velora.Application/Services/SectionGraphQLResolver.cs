@@ -104,7 +104,9 @@ public class SectionGqlResolver : ISectionGqlResolver
             IsLatestNews= x.IsLatestNews,
             IsBestSellingProducts= x.IsBestSellingProducts,
             IsActiveCategries= x.IsActiveCategries,
-            IsActiveBrands = x.IsActiveBrands
+            IsActiveBrands = x.IsActiveBrands,
+            ButtonColor=x.ButtonColor ??"",
+            IsLatestProducts= x.IsLatestProducts,
         });
     }
 

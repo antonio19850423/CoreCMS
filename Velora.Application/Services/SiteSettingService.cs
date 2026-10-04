@@ -108,6 +108,8 @@ namespace Velora.Application.Services
                     HasDuty=input.HasDuty,
                     HasTax=input.HasTax,
                     HasCardToCardPayment = input.HasCardToCardPayment,
+                    Background=input.Background,
+                    BackgroundGradient=input.BackgroundGradient,
 
 
                 };
@@ -199,6 +201,8 @@ namespace Velora.Application.Services
                     HasDuty = input.HasDuty,
                     HasTax = input.HasTax,
                     HasCardToCardPayment = input.HasCardToCardPayment,
+                    Background=input.Background,
+                    BackgroundGradient=input.BackgroundGradient,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

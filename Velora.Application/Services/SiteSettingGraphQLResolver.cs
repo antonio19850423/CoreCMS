@@ -79,7 +79,9 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             HasCardToCardPayment= x.HasCardToCardPayment ,
             HasDuty= x.HasDuty ,
             HasTax= x.HasTax ,
-            TaxPercentage = x.TaxPercentage
+            TaxPercentage = x.TaxPercentage,
+            Background= x.Background??"" ,
+            BackgroundGradient= x.BackgroundGradient??"" ,
         });
     }
 

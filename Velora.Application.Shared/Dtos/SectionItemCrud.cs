@@ -208,5 +208,13 @@ namespace Velora.Application.Shared.Dtos
             Route = "/api/ComboBox/Products",
             SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string? ProductName { get; set; }
+        public bool HasDiscount { get; set; }
+
+        public decimal? DiscountPercent { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? OriginalPrice { get; set; }
+        public string? ProductSlug { get; set; }
     }
 }

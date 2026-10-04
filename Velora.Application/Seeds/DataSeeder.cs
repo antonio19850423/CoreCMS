@@ -37,6 +37,16 @@ namespace Velora.Application.Seeds
         public const string SeedCmsNewsAndArticlePagesAsync = "SeedCmsNewsAndArticlePagesAsync";
         public const string Seed_Products = "Seed_Products";
         public const string Seed_Menus = "Seed_Menus";
+        public const string Seed_Brands = "Seed_Brands";
+        public const string Seed_Categories = "Seed_Categories";
+        public const string Seed_ProductTypes = "Seed_ProductTypes";
+        public const string Seed_ProductFiles = "Seed_ProductFiles";
+        public const string Seed_ProductTags = "Seed_ProductTags";
+        public const string Seed_ProductVariants = "Seed_ProductVariants";
+        public const string Seed_ProductAttributes = "Seed_ProductAttributes";
+        public const string Seed_Inventory = "Seed_Inventory";
+        public const string Seed_Discounts = "Seed_Discounts";
+        public const string Seed_DiscountItems = "Seed_DiscountItems";
 
     }
 
@@ -84,6 +94,8 @@ namespace Velora.Application.Seeds
         private readonly IInventoryTransactionReasonService _inventoryTransactionReasonService;
         private readonly IProductInventoryTransactionService _productInventoryTransactionService;
         private readonly ISiteMenuService _siteMenuService;
+        private readonly IDiscountService _discountService;
+        private readonly IDiscountItemService _discountItemService;
         
 
 
@@ -110,7 +122,7 @@ namespace Velora.Application.Seeds
         IProductBrandService productBrandService,
         IProductCategoryService productCategoryService,
         IProductFileService productFileService,
-        IProductVariantService productVariantService, IProductTypeService productTypeService, IProductAttributeService productAttributeService, IProductTagService productTagService, IProductAttributeValueService productAttributeValueService, IProductTagMappingService productTagMappingService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductInventoryTransactionService productInventoryTransactionService, ISiteMenuService siteMenuService)
+        IProductVariantService productVariantService, IProductTypeService productTypeService, IProductAttributeService productAttributeService, IProductTagService productTagService, IProductAttributeValueService productAttributeValueService, IProductTagMappingService productTagMappingService, IInventoryTransactionReasonService inventoryTransactionReasonService, IProductInventoryTransactionService productInventoryTransactionService, ISiteMenuService siteMenuService, IDiscountService discountService, IDiscountItemService discountItemService)
         {
             var dbTypeString = configuration.GetValue<string>("Database:Provider") ?? "PostgreSql";
             _dbType = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
@@ -158,6 +170,8 @@ namespace Velora.Application.Seeds
             _inventoryTransactionReasonService = inventoryTransactionReasonService;
             _productInventoryTransactionService = productInventoryTransactionService;
             _siteMenuService= siteMenuService;
+            _discountService= discountService;
+            _discountItemService= discountItemService;
 
         }
 
@@ -167,30 +181,35 @@ namespace Velora.Application.Seeds
             {
                 await SeedCoreAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Core, CreatedAt = DateTime.Now });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Localization))
             {
                 await SeedLocalizationAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Localization, CreatedAt = DateTime.Now });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Resources))
             {
                 await SeedResourcesAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Resources, CreatedAt = DateTime.Now });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Permissions))
             {
                 await SeedPermissionsAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Permissions, CreatedAt = DateTime.Now });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Settings))
             {
                 await SeedSettingsAsync();
                 await _seedHistoryService.CreateAsync(new() { Name = SeederNames.Settings, CreatedAt = DateTime.Now });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Seed_Core_LinkTypes))
@@ -201,6 +220,7 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Seed_Core_LinkTypes,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Core_SiteSettings))
@@ -211,6 +231,7 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Core_SiteSettings,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
             }
 
             if (await ShouldRunSeederAsync(SeederNames.Core_CmsConfiguration))
@@ -221,6 +242,7 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Core_CmsConfiguration,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
             }
             if (await ShouldRunSeederAsync(SeederNames.Seed_Core_Template))
             {
@@ -230,6 +252,7 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Seed_Core_Template,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
             }
             if (await ShouldRunSeederAsync(SeederNames.Seed_Core_SectionGroupItem))
             {
@@ -239,6 +262,7 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Seed_Core_SectionGroupItem,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
             }
             if (await ShouldRunSeederAsync(SeederNames.SeedCmsNewsAndArticlePagesAsync))
             {
@@ -248,6 +272,42 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.SeedCmsNewsAndArticlePagesAsync,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(SeederNames.Seed_Categories))
+            {
+                await SeedCategoriesAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Categories,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+
+            if (await ShouldRunSeederAsync(SeederNames.Seed_Brands))
+            {
+                await SeedBrandsAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Brands,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+
+            if (await ShouldRunSeederAsync(SeederNames.Seed_ProductTypes))
+            {
+                await SeedProductTypesAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_ProductTypes,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
             }
             if (await ShouldRunSeederAsync(SeederNames.Seed_Products))
             {
@@ -257,9 +317,90 @@ namespace Velora.Application.Seeds
                     Name = SeederNames.Seed_Products,
                     CreatedAt = DateTime.Now
                 });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(SeederNames.Seed_ProductFiles))
+            {
+                await SeedProductFilesAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_ProductFiles,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(SeederNames.Seed_ProductTags))
+            {
+                await SeedProductTagsAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_ProductTags,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(SeederNames.Seed_ProductVariants))
+            {
+                await SeedProductVariantsAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_ProductVariants,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(
+    SeederNames.Seed_ProductAttributes))
+            {
+                await SeedProductAttributesAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_ProductAttributes,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(
+    SeederNames.Seed_Inventory))
+            {
+                await SeedInventoryAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Inventory,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(
+                    SeederNames.Seed_Discounts))
+            {
+                await SeedDiscountsAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_Discounts,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
+            }
+            if (await ShouldRunSeederAsync(
+        SeederNames.Seed_DiscountItems))
+            {
+                await SeedDiscountItemsAsync();
+
+                await _seedHistoryService.CreateAsync(new()
+                {
+                    Name = SeederNames.Seed_DiscountItems,
+                    CreatedAt = DateTime.Now
+                });
+                await _transactionService.CommitAsync();
             }
 
-            await _transactionService.CommitAsync();
         }
         public async Task SeedMenusDataAsync()
         {
@@ -3148,58 +3289,26 @@ int sortOrder)
         private async Task<Guid> SeedCategoryAsync(
             ProductCategorySeedModel category)
         {
+            if (category == null)
+                throw new ArgumentNullException(nameof(category));
+
+            if (string.IsNullOrWhiteSpace(category.Slug))
+                throw new InvalidOperationException(
+                    "Category Slug cannot be empty.");
+
             var query =
                 await _productCategoryService.GetAllViews();
 
-
-            var exist =
+            var existing =
                 await query.FirstOrDefaultAsync(x =>
                     x.Slug == category.Slug);
 
-
-
-            if (exist != null)
+            if (existing != null)
             {
-
                 var model = new ProductCategoryCrud
                 {
-                    Id = exist.Id,
+                    Id = existing.Id,
 
-                    Name = category.Name,
-                    Slug = category.Slug,
-
-                    Description = category.Description,
-
-                    SeoTitle = category.SeoTitle,
-                    SeoDescription = category.SeoDescription,
-
-                    Icon = category.Icon,
-
-                    SortOrder = category.SortOrder,
-
-                    IsActive = category.IsActive
-                };
-
-
-                var result =
-                    await _productCategoryService.UpdateAsync(model, model.Id);
-
-
-
-                if (!result.Success)
-                    throw new Exception(
-                        $"Category update failed : {category.Name}");
-
-
-
-                return exist.Id;
-
-            }
-            else
-            {
-
-                var model = new ProductCategoryCrud
-                {
                     Name = category.Name,
                     Slug = category.Slug,
 
@@ -3212,197 +3321,366 @@ int sortOrder)
                     IconColor = category.IconColor,
 
                     SortOrder = category.SortOrder,
-
                     IsActive = category.IsActive
                 };
 
-
-
                 var result =
-                    await _productCategoryService.CreateAsync(model);
-
-
+                    await _productCategoryService.UpdateAsync(
+                        model,
+                        existing.Id);
 
                 if (!result.Success)
-                    throw new Exception(
-                        $"Category create failed : {category.Name}");
+                {
+                    throw new InvalidOperationException(
+                        $"Category update failed. " +
+                        $"Name: {category.Name}, " +
+                        $"Slug: {category.Slug}");
+                }
 
-
-
-                return result.Data.Id;
-
+                return existing.Id;
             }
+
+            var createModel = new ProductCategoryCrud
+            {
+                Name = category.Name,
+                Slug = category.Slug,
+
+                Description = category.Description,
+
+                SeoTitle = category.SeoTitle,
+                SeoDescription = category.SeoDescription,
+
+                Icon = category.Icon,
+                IconColor = category.IconColor,
+
+                SortOrder = category.SortOrder,
+                IsActive = category.IsActive
+            };
+
+            var createResult =
+                await _productCategoryService.CreateAsync(createModel);
+
+            if (!createResult.Success)
+            {
+                throw new InvalidOperationException(
+                    $"Category create failed. " +
+                    $"Name: {category.Name}, " +
+                    $"Slug: {category.Slug}");
+            }
+
+            return createResult.Data.Id;
         }
 
-
-        private async Task<Guid> SeedBrandAsync(
-            ProductBrandSeedModel brand)
+        public async Task SeedCategoriesAsync()
         {
+            var enabled = _configuration.GetValue<bool>(
+                "Seed:Categories:Enabled");
+
+            if (!enabled)
+                return;
+
+            var file = _configuration.GetValue<string>(
+                "Seed:Categories:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:Categories:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
+
+            using var reader = new StreamReader(stream);
+
+            var json = await reader.ReadToEndAsync();
+
+            var model =
+                JsonSerializer.Deserialize<CategorySeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            if (model.Categories == null)
+                return;
+
+            foreach (var category in model.Categories)
+            {
+                await SeedCategoryAsync(category);
+            }
+        }
+        public async Task SeedBrandsAsync()
+        {
+            var enabled = _configuration.GetValue<bool>(
+                "Seed:Brands:Enabled");
+
+            if (!enabled)
+                return;
+
+            var file = _configuration.GetValue<string>(
+                "Seed:Brands:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:Brands:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
+
+            using var reader = new StreamReader(stream);
+
+            var json = await reader.ReadToEndAsync();
+
+            var model =
+                JsonSerializer.Deserialize<BrandSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            if (model.Brands == null)
+                return;
+
+            foreach (var brand in model.Brands)
+            {
+                await SeedBrandAsync(brand);
+            }
+        }
+        private async Task<Guid> SeedBrandAsync(
+        ProductBrandSeedModel brand)
+        {
+            if (brand == null)
+                throw new ArgumentNullException(nameof(brand));
+
+            if (string.IsNullOrWhiteSpace(brand.Slug))
+                throw new InvalidOperationException(
+                    "Brand Slug cannot be empty.");
+
             var query =
                 await _productBrandService.GetAllViews();
 
-
-            var exist =
+            var existing =
                 await query.FirstOrDefaultAsync(x =>
                     x.Slug == brand.Slug);
 
-
-
-            if (exist != null)
+            if (existing != null)
             {
-
                 var model = new ProductBrandCrud
                 {
-                    Id = exist.Id,
+                    Id = existing.Id,
 
                     Name = brand.Name,
-
                     Slug = brand.Slug,
 
                     Logo = brand.Logo,
-
                     Website = brand.Website,
 
                     Description = brand.Description,
 
                     SortOrder = brand.SortOrder,
-
                     IsActive = brand.IsActive
                 };
 
-
                 var result =
-                    await _productBrandService.UpdateAsync(model,model.Id);
-
-
+                    await _productBrandService.UpdateAsync(
+                        model,
+                        existing.Id.Value);
 
                 if (!result.Success)
-                    throw new Exception(
-                        $"Brand update failed : {brand.Name}");
+                {
+                    throw new InvalidOperationException(
+                        $"Brand update failed. " +
+                        $"Name: {brand.Name}, " +
+                        $"Slug: {brand.Slug}");
+                }
 
-
-
-                return exist.Id.Value;
+                return existing.Id.Value;
             }
-            else
+
+            var createModel = new ProductBrandCrud
             {
+                Name = brand.Name,
+                Slug = brand.Slug,
 
-                var model = new ProductBrandCrud
-                {
-                    Name = brand.Name,
+                Logo = brand.Logo,
+                Website = brand.Website,
 
-                    Slug = brand.Slug,
+                Description = brand.Description,
 
-                    Logo = brand.Logo,
+                SortOrder = brand.SortOrder,
+                IsActive = brand.IsActive
+            };
 
-                    Website = brand.Website,
+            var createResult =
+                await _productBrandService.CreateAsync(createModel);
 
-                    Description = brand.Description,
+            if (!createResult.Success)
+            {
+                throw new InvalidOperationException(
+                    $"Brand create failed. " +
+                    $"Name: {brand.Name}, " +
+                    $"Slug: {brand.Slug}");
+            }
 
-                    SortOrder = brand.SortOrder,
+            return createResult.Data.Id;
+        }
+        public async Task SeedProductTypesAsync()
+        {
+            var enabled = _configuration.GetValue<bool>(
+                "Seed:ProductTypes:Enabled");
 
-                    IsActive = brand.IsActive
-                };
+            if (!enabled)
+                return;
 
+            var file = _configuration.GetValue<string>(
+                "Seed:ProductTypes:File");
 
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:ProductTypes:File is not configured.");
 
-                var result =
-                    await _productBrandService.CreateAsync(model);
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
 
+            var assembly = typeof(SeedJsonModel).Assembly;
 
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
 
-                if (!result.Success)
-                    throw new Exception(
-                        $"Brand create failed : {brand.Name}");
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
 
+            using var reader = new StreamReader(stream);
 
+            var json = await reader.ReadToEndAsync();
 
-                return result.Data.Id;
+            var model =
+                JsonSerializer.Deserialize<ProductTypeSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            if (model.ProductTypes == null)
+                return;
+
+            foreach (var type in model.ProductTypes)
+            {
+                await SeedProductTypeAsync(type);
             }
         }
-
         private async Task<Guid> SeedProductTypeAsync(
-           ProductTypeSeedModel type)
+            ProductTypeSeedModel type)
         {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            if (string.IsNullOrWhiteSpace(type.Code))
+                throw new InvalidOperationException(
+                    "ProductType Code cannot be empty.");
+
             var query =
                 await _productTypeService.GetAllViews();
 
-
-
-            var exist =
+            var existing =
                 await query.FirstOrDefaultAsync(x =>
                     x.Code == type.Code);
 
-
-
-            if (exist != null)
+            if (existing != null)
             {
-
                 var model = new ProductTypeCrud
                 {
-                    Id = exist.Id,
+                    Id = existing.Id,
 
                     Name = type.Name,
-
                     Code = type.Code,
 
                     Description = type.Description,
 
                     SortOrder = type.SortOrder,
-
                     IsActive = type.IsActive
                 };
 
-
-
                 var result =
-                    await _productTypeService.UpdateAsync(model,model.Id);
-
-
+                    await _productTypeService.UpdateAsync(
+                        model,
+                        existing.Id);
 
                 if (!result.Success)
-                    throw new Exception(
-                        $"ProductType update failed : {type.Name}");
-
-
-
-                return exist.Id;
-
-            }
-            else
-            {
-
-                var model = new ProductTypeCrud
                 {
-                    Name = type.Name,
+                    throw new InvalidOperationException(
+                        $"ProductType update failed. " +
+                        $"Name: {type.Name}, " +
+                        $"Code: {type.Code}");
+                }
 
-                    Code = type.Code,
-
-                    Description = type.Description,
-
-                    SortOrder = type.SortOrder,
-
-                    IsActive = type.IsActive
-                };
-
-
-
-                var result =
-                    await _productTypeService.CreateAsync(model);
-
-
-
-                if (!result.Success)
-                    throw new Exception(
-                        $"ProductType create failed : {type.Name}");
-
-
-
-                return result.Data.Id;
+                return existing.Id;
             }
+
+            var createModel = new ProductTypeCrud
+            {
+                Name = type.Name,
+                Code = type.Code,
+
+                Description = type.Description,
+
+                SortOrder = type.SortOrder,
+                IsActive = type.IsActive
+            };
+
+            var createResult =
+                await _productTypeService.CreateAsync(createModel);
+
+            if (!createResult.Success)
+            {
+                throw new InvalidOperationException(
+                    $"ProductType create failed. " +
+                    $"Name: {type.Name}, " +
+                    $"Code: {type.Code}");
+            }
+
+            return createResult.Data.Id;
         }
-
-public async Task SeedProductsAsync()
+        public async Task SeedProductsAsync()
         {
             var enabled = _configuration.GetValue<bool>(
                 "Seed:Products:Enabled");
@@ -3447,278 +3725,497 @@ public async Task SeedProductsAsync()
                 throw new InvalidOperationException(
                     $"Seed file '{file}' deserialize failed.");
 
-            foreach (var item in model.Products)
+            foreach (var product in model.Products)
             {
-                // دسته بندی
-                var categoryId =
-                    await SeedCategoryAsync(item.Category);
+                if (product == null)
+                    throw new InvalidOperationException(
+                        "Product seed item cannot be null.");
 
-                // برند
-                var brandId =
-                    await SeedBrandAsync(item.Brand);
+                if (string.IsNullOrWhiteSpace(product.Name))
+                    throw new InvalidOperationException(
+                        "Product Name cannot be empty.");
 
-                // نوع محصول
-                var productTypeId =
-                    await SeedProductTypeAsync(item.ProductType);
+                if (string.IsNullOrWhiteSpace(product.Slug))
+                    throw new InvalidOperationException(
+                        $"Product Slug cannot be empty. " +
+                        $"Name: {product.Name}");
 
-                var productId = await SeedProductAsync(
-             item.Product,
-             categoryId,
-             brandId,
-             productTypeId);
+                await SeedProductAsync(product);
+            }
+        }
+        //public async Task SeedProductsAsync()
+        //{
+        //    var enabled = _configuration.GetValue<bool>(
+        //        "Seed:Products:Enabled");
 
-                var productQuery = await _productService.GetAllViews();
+        //    if (!enabled)
+        //        return;
 
-                var productExists = await productQuery
-                    .AnyAsync(x => x.Id == productId);
+        //    var file = _configuration.GetValue<string>(
+        //        "Seed:Products:File");
 
-                if (!productExists)
-                {
-                    throw new Exception(
-                        $"Product was not found after seed. ProductId: {productId}, Slug: {item.Product.Slug}");
-                }
+        //    if (string.IsNullOrWhiteSpace(file))
+        //        throw new InvalidOperationException(
+        //            "Seed:Products:File is not configured.");
 
-                // تصاویر
-                await SeedProductFilesAsync(
-                    productId,
-                    item.Files);
+        //    var resourceName =
+        //        $"Velora.Application.Shared.Resources.{file
+        //            .Replace("/", ".")
+        //            .Replace("\\", ".")}";
 
-                // موجودی اولیه
-                if (item.Variants == null || !item.Variants.Any())
-                {
-                    await SeedProductInventoryAsync(
-                        productId,
-                        item.Product.InitialStock);
-                }
+        //    var assembly = typeof(SeedJsonModel).Assembly;
 
-                // واریانت ها
-                await SeedProductVariantsAsync(
-                    productId,
-                    item.Variants);
+        //    using var stream =
+        //        assembly.GetManifestResourceStream(resourceName);
 
-                // ویژگی ها
-                await SeedProductAttributeValuesAsync(
-                    productId,
-                    item.Attributes);
+        //    if (stream == null)
+        //        throw new FileNotFoundException(
+        //            $"Seed resource '{resourceName}' not found.");
 
-                // تگ ها
+        //    using var reader = new StreamReader(stream);
+
+        //    var json = await reader.ReadToEndAsync();
+
+        //    var model =
+        //        JsonSerializer.Deserialize<ProductSeedRoot>(
+        //            json,
+        //            new JsonSerializerOptions
+        //            {
+        //                PropertyNameCaseInsensitive = true
+        //            });
+
+        //    if (model == null)
+        //        throw new InvalidOperationException(
+        //            $"Seed file '{file}' deserialize failed.");
+
+        //    foreach (var item in model.Products)
+        //    {
+        //        // دسته بندی
+        //        var categoryId =
+        //            await SeedCategoryAsync(item.Category);
+
+        //        // برند
+        //        var brandId =
+        //            await SeedBrandAsync(item.Brand);
+
+        //        // نوع محصول
+        //        var productTypeId =
+        //            await SeedProductTypeAsync(item.ProductType);
+
+        //        var productId = await SeedProductAsync(
+        //     item.Product,
+        //     categoryId,
+        //     brandId,
+        //     productTypeId);
+
+        //        var productQuery = await _productService.GetAllViews();
+
+        //        var productExists = await productQuery
+        //            .AnyAsync(x => x.Id == productId);
+
+        //        if (!productExists)
+        //        {
+        //            throw new Exception(
+        //                $"Product was not found after seed. ProductId: {productId}, Slug: {item.Product.Slug}");
+        //        }
+
+        //        // تصاویر
+        //        await SeedProductFilesAsync(
+        //            productId,
+        //            item.Files);
+
+        //        // موجودی اولیه
+        //        if (item.Variants == null || !item.Variants.Any())
+        //        {
+        //            await SeedProductInventoryAsync(
+        //                productId,
+        //                item.Product.InitialStock);
+        //        }
+
+        //        // واریانت ها
+        //        await SeedProductVariantsAsync(
+        //            productId,
+        //            item.Variants);
+
+        //        // ویژگی ها
+        //        await SeedProductAttributeValuesAsync(
+        //            productId,
+        //            item.Attributes);
+
+        //        // تگ ها
+        //        await SeedProductTagsAsync(
+        //            productId,
+        //            item.Tags);
+        //    }
+        //}
+
+        public async Task SeedProductTagsAsync()
+        {
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:ProductTags:Enabled");
+
+            if (!enabled)
+                return;
+
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:ProductTags:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:ProductTags:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var model =
+                JsonSerializer.Deserialize<ProductTagSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            foreach (var item in model.ProductTags)
+            {
+                if (item == null)
+                    throw new InvalidOperationException(
+                        "ProductTag seed item cannot be null.");
+
+                if (string.IsNullOrWhiteSpace(item.ProductSlug))
+                    throw new InvalidOperationException(
+                        "ProductTag ProductSlug cannot be empty.");
+
+                var productId =
+                    await GetProductIdBySlugAsync(
+                        item.ProductSlug);
+
                 await SeedProductTagsAsync(
                     productId,
                     item.Tags);
             }
         }
-
-
         private async Task SeedProductTagsAsync(
             Guid productId,
             List<ProductTagSeedModel>? tags)
         {
-            if (tags == null || !tags.Any())
+            if (tags == null)
                 return;
 
-
-
-            // =====================================
-            // تگ های فعلی محصول
-            // =====================================
-
-            var currentMappings =
+            var existingMappings =
                 await _productTagMappingService
                     .GetByProductTagMappingsAsync(productId);
 
-
-
-            // =====================================
-            // دریافت همه تگ ها
-            // =====================================
-
             var existingTagsQuery =
-                await _productTagService.GetAllViews();
+                await _productTagService
+                    .GetAllViews();
 
+            var existingTags =
+                await existingTagsQuery
+                    .ToListAsync();
 
-
-            // =====================================
-            // حذف Mapping های اضافی
-            // =====================================
+            // ---------------------------------------------------------
+            // REMOVE OLD MAPPINGS
+            // ---------------------------------------------------------
 
             var incomingSlugs =
                 tags
-                .Select(x => x.Slug)
-                .ToList();
+                    .Select(x => x.Slug)
+                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-
-
-            foreach (var mapping in currentMappings)
+            foreach (var mapping in existingMappings)
             {
-
                 var tag =
-                    await existingTagsQuery
-                        .FirstOrDefaultAsync(x =>
-                            x.Id == mapping.ProductTagId);
-
-
+                    existingTags.FirstOrDefault(
+                        x => x.Id == mapping.ProductTagId);
 
                 if (tag == null)
                     continue;
-
-
 
                 if (!incomingSlugs.Contains(tag.Slug))
                 {
                     await _productTagMappingService
                         .DeleteAsync(mapping.Id);
                 }
-
             }
 
-
-
-
-            // =====================================
-            // Create / Update Tag + Mapping
-            // =====================================
-
-            int sortOrder = 1;
-
+            // ---------------------------------------------------------
+            // CREATE / UPDATE TAGS
+            // ---------------------------------------------------------
 
             foreach (var item in tags)
             {
+                if (string.IsNullOrWhiteSpace(item.Name))
+                    throw new InvalidOperationException(
+                        $"Product tag Name cannot be empty. " +
+                        $"ProductId: {productId}");
 
-                var tag =
-                    await existingTagsQuery
-                        .FirstOrDefaultAsync(x =>
-                            x.Slug == item.Slug);
+                if (string.IsNullOrWhiteSpace(item.Slug))
+                    throw new InvalidOperationException(
+                        $"Product tag Slug cannot be empty. " +
+                        $"ProductId: {productId}");
 
-
+                var existingTag =
+                    existingTags.FirstOrDefault(
+                        x => x.Slug == item.Slug);
 
                 Guid tagId;
 
+                // -----------------------------------------------------
+                // CREATE TAG
+                // -----------------------------------------------------
 
-
-                // ================================
-                // Update Existing Tag
-                // ================================
-
-                if (tag != null)
+                if (existingTag == null)
                 {
-
-                    var tagModel =
-                        new ProductTagCrud
-                        {
-                            Id = tag.Id,
-
-                            Name = item.Name,
-
-                            Slug = item.Slug,
-
-                            SortOrder = sortOrder,
-
-                            IsActive = true
-                        };
-
-
-                    await _productTagService
-                        .UpdateAsync(tagModel,tagModel.Id);
-
-
-
-                    tagId = tag.Id.Value;
-
-                }
-
-
-                // ================================
-                // Insert New Tag
-                // ================================
-
-                else
-                {
-
-                    var tagModel =
+                    var tagCrud =
                         new ProductTagCrud
                         {
                             Name = item.Name,
-
                             Slug = item.Slug,
-
-                            SortOrder = sortOrder,
-
-                            IsActive = true
+                          SortOrder = item.SortOrder,
+                          IsActive=true
                         };
-
 
                     var result =
                         await _productTagService
-                            .CreateAsync(tagModel);
-
-
+                            .CreateAsync(tagCrud);
 
                     if (!result.Success)
-                        throw new Exception(
-                            $"Product Tag create failed : {item.Name}");
-
-
+                    {
+                        throw new InvalidOperationException(
+                            $"Product tag create failed. " +
+                            $"Slug: {item.Slug}");
+                    }
 
                     tagId = result.Data.Id;
+                }
+                else
+                {
+                    var tagCrud =
+                        new ProductTagCrud
+                        {
+                            Id = existingTag.Id,
+                            Name = item.Name,
+                            Slug = item.Slug,
+                            SortOrder= item.SortOrder,
+                            IsActive=true
+                        };
 
+                    var result =
+                        await _productTagService
+                            .UpdateAsync(
+                                tagCrud,
+                                existingTag.Id);
+
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product tag update failed. " +
+                            $"Slug: {item.Slug}");
+                    }
+
+                    tagId = existingTag.Id.Value;
                 }
 
+                // -----------------------------------------------------
+                // PRODUCT ↔ TAG MAPPING
+                // -----------------------------------------------------
 
+                var existingMapping =
+                    existingMappings.FirstOrDefault(
+                        x => x.ProductTagId == tagId);
 
-
-                // ================================
-                // بررسی Mapping
-                // ================================
-
-                var mappingExist =
-                    await _productTagMappingService
-                        .GetByProductTagMappingIdAsync(
-                            productId,
-                            tagId);
-
-
-
-                if (mappingExist == null)
+                if (existingMapping == null)
                 {
-
                     var mapping =
                         new ProductTagMappingDto
                         {
                             ProductId = productId,
-
                             ProductTagId = tagId
                         };
 
+                    var result =
+                        await _productTagMappingService
+                            .CreateAsync(mapping);
 
-                    await _productTagMappingService
-                        .CreateAsync(mapping);
-
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product tag mapping create failed. " +
+                            $"ProductId: {productId}, " +
+                            $"TagId: {tagId}");
+                    }
                 }
+                else
+                {
+                    var mapping =
+                        new ProductTagMappingDto
+                        {
+                            Id = existingMapping.Id,
+                            ProductId = productId,
+                            ProductTagId = tagId
+                        };
 
+                    var result =
+                        await _productTagMappingService
+                            .UpdateAsync(
+                                mapping,
+                                existingMapping.Id);
 
-                sortOrder++;
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product tag mapping update failed. " +
+                            $"ProductId: {productId}, " +
+                            $"TagId: {tagId}");
+                    }
+                }
+            }
+        }
+        private async Task<Guid> SeedProductAsync(ProductSeedModel item)
+        {
+            if (item == null)
+                throw new Exception("Product seed item is NULL.");
 
+            if (string.IsNullOrWhiteSpace(item.Name))
+            {
+                throw new Exception(
+                    $"PRODUCT NAME IS EMPTY BEFORE SEED. Slug: '{item.Slug}'");
             }
 
-        }
-        private async Task<Guid> SeedProductAsync(
-    ProductSeedModel item,
-    Guid categoryId,
-    Guid brandId,
-    Guid productTypeId)
-        {
+            if (string.IsNullOrWhiteSpace(item.Slug))
+            {
+                throw new Exception(
+                    $"PRODUCT SLUG IS EMPTY. Name: '{item.Name}'");
+            }
+
+            // ---------------------------------------------------------
+            // CATEGORY
+            // ---------------------------------------------------------
+
+            if (string.IsNullOrWhiteSpace(item.CategorySlug))
+            {
+                throw new Exception(
+                    $"Product CategorySlug is empty. " +
+                    $"Product: '{item.Name}', Slug: '{item.Slug}'");
+            }
+
+            var categoryQuery =
+                await _productCategoryService.GetAllViews();
+
+            var category =
+                await categoryQuery.FirstOrDefaultAsync(x =>
+                    x.Slug == item.CategorySlug);
+
+            if (category == null)
+            {
+                throw new Exception(
+                    $"Product category not found. " +
+                    $"CategorySlug: '{item.CategorySlug}', " +
+                    $"Product: '{item.Name}', " +
+                    $"Slug: '{item.Slug}'");
+            }
+
+            var categoryId = category.Id;
+
+            // ---------------------------------------------------------
+            // BRAND
+            // ---------------------------------------------------------
+
+            if (string.IsNullOrWhiteSpace(item.BrandSlug))
+            {
+                throw new Exception(
+                    $"Product BrandSlug is empty. " +
+                    $"Product: '{item.Name}', Slug: '{item.Slug}'");
+            }
+
+            var brandQuery =
+                await _productBrandService.GetAllViews();
+
+            var brand =
+                await brandQuery.FirstOrDefaultAsync(x =>
+                    x.Slug == item.BrandSlug);
+
+            if (brand == null)
+            {
+                throw new Exception(
+                    $"Product brand not found. " +
+                    $"BrandSlug: '{item.BrandSlug}', " +
+                    $"Product: '{item.Name}', " +
+                    $"Slug: '{item.Slug}'");
+            }
+
+            var brandId = brand.Id;
+
+            // ---------------------------------------------------------
+            // PRODUCT TYPE
+            // ---------------------------------------------------------
+
+            if (string.IsNullOrWhiteSpace(item.ProductTypeCode))
+            {
+                throw new Exception(
+                    $"Product ProductTypeCode is empty. " +
+                    $"Product: '{item.Name}', Slug: '{item.Slug}'");
+            }
+
+            var productTypeQuery =
+                await _productTypeService.GetAllViews();
+
+            var productType =
+                await productTypeQuery.FirstOrDefaultAsync(x =>
+                    x.Code == item.ProductTypeCode);
+
+            if (productType == null)
+            {
+                throw new Exception(
+                    $"Product type not found. " +
+                    $"ProductTypeCode: '{item.ProductTypeCode}', " +
+                    $"Product: '{item.Name}', " +
+                    $"Slug: '{item.Slug}'");
+            }
+
+            var productTypeId = productType.Id;
+
+            // ---------------------------------------------------------
+            // PRODUCT
+            // ---------------------------------------------------------
+
             var products =
                 await _productService.GetAllViews();
-
 
             var existProduct =
                 await products.FirstOrDefaultAsync(x =>
                     x.Slug == item.Slug);
 
-
-
             ProductCrud model;
 
+            // ---------------------------------------------------------
+            // UPDATE
+            // ---------------------------------------------------------
 
             if (existProduct != null)
             {
@@ -3727,767 +4224,846 @@ public async Task SeedProductsAsync()
                     Id = existProduct.Id,
 
                     Name = item.Name,
-
                     Slug = item.Slug,
 
                     CategoryId = categoryId,
-
                     BrandId = brandId,
-
                     ProductTypeId = productTypeId,
 
-
                     Summary = item.Summary,
-
                     Description = item.Description,
-
 
                     Price = item.Price,
 
-
                     Barcode = item.Barcode,
-
                     Sku = item.Sku,
-
 
                     Weight = item.Weight,
 
-
                     MainImage = item.MainImage,
-
                     Thumbnail = item.Thumbnail,
 
-
                     SeoTitle = item.SeoTitle,
-
                     SeoDescription = item.SeoDescription,
-
 
                     SortOrder = item.SortOrder,
 
-
                     IsFeatured = item.IsFeatured,
-
                     IsPublished = item.IsPublished,
-
                     IsActive = item.IsActive,
+
+                    // اطلاعات موجود محصول حفظ شود
                     ProductTagIds = existProduct.ProductTagIds,
                     BrandName = existProduct.BrandName,
                     CategoryName = existProduct.CategoryName,
                     ProductTagNames = existProduct.ProductTagNames,
                     ProductTypeName = existProduct.ProductTypeName,
-
                 };
 
+                Console.WriteLine(
+                    $"SEED PRODUCT UPDATE => " +
+                    $"Id={model.Id}, " +
+                    $"Name='{model.Name}', " +
+                    $"Slug='{model.Slug}', " +
+                    $"Category='{item.CategorySlug}', " +
+                    $"Brand='{item.BrandSlug}', " +
+                    $"Type='{item.ProductTypeCode}'");
+
+                if (string.IsNullOrWhiteSpace(model.Name))
+                {
+                    throw new Exception(
+                        $"PRODUCT UPDATE NAME IS EMPTY. " +
+                        $"Id: {model.Id}, " +
+                        $"Slug: {model.Slug}");
+                }
 
                 var result =
-                    await _productService.UpdateAsync(model, model.Id);
-
+                    await _productService.UpdateAsync(
+                        model,
+                        model.Id);
 
                 if (!result.Success)
+                {
                     throw new Exception(
-                        $"Product update failed : {item.Name}");
-
+                        $"Product update failed: {item.Name}");
+                }
 
                 return existProduct.Id;
-
             }
 
+            // ---------------------------------------------------------
+            // CREATE
+            // ---------------------------------------------------------
 
-            else
+            model = new ProductCrud
             {
+                Name = item.Name,
+                Slug = item.Slug,
 
-                model = new ProductCrud
-                {
-                    Name = item.Name,
+                CategoryId = categoryId,
+                BrandId = brandId,
+                ProductTypeId = productTypeId,
 
-                    Slug = item.Slug,
+                Summary = item.Summary,
+                Description = item.Description,
 
-                    CategoryId = categoryId,
+                Price = item.Price,
 
-                    BrandId = brandId,
+                Barcode = item.Barcode,
+                Sku = item.Sku,
 
-                    ProductTypeId = productTypeId,
+                Weight = item.Weight,
 
+                MainImage = item.MainImage,
+                Thumbnail = item.Thumbnail,
 
-                    Summary = item.Summary,
+                SeoTitle = item.SeoTitle,
+                SeoDescription = item.SeoDescription,
 
-                    Description = item.Description,
+                SortOrder = item.SortOrder,
 
+                IsFeatured = item.IsFeatured,
+                IsPublished = item.IsPublished,
+                IsActive = item.IsActive,
+            };
 
-                    Price = item.Price,
+            Console.WriteLine(
+                $"SEED PRODUCT CREATE => " +
+                $"Name='{model.Name}', " +
+                $"Slug='{model.Slug}', " +
+                $"Category='{item.CategorySlug}', " +
+                $"Brand='{item.BrandSlug}', " +
+                $"Type='{item.ProductTypeCode}'");
 
+            var createResult =
+                await _productService.CreateAsync(model);
 
-                    Barcode = item.Barcode,
-
-                    Sku = item.Sku,
-
-
-                    Weight = item.Weight,
-
-
-                    MainImage = item.MainImage,
-
-                    Thumbnail = item.Thumbnail,
-
-
-                    SeoTitle = item.SeoTitle,
-
-                    SeoDescription = item.SeoDescription,
-
-
-                    SortOrder = item.SortOrder,
-
-
-                    IsFeatured = item.IsFeatured,
-
-                    IsPublished = item.IsPublished,
-
-                    IsActive = item.IsActive,
-                };
-
-
-
-                var result =
-                    await _productService.CreateAsync(model);
-
-
-
-                if (!result.Success)
-                    throw new Exception(
-                        $"Product create failed : {item.Name}");
-
-
-
-                return result.Data.Id;
-
+            if (!createResult.Success)
+            {
+                throw new Exception(
+                    $"Product create failed: {item.Name}");
             }
 
+            return createResult.Data.Id;
+        }
+        public async Task SeedProductFilesAsync()
+        {
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:ProductFiles:Enabled");
+
+            if (!enabled)
+                return;
+
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:ProductFiles:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:ProductFiles:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var model =
+                JsonSerializer.Deserialize<ProductFileSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            foreach (var item in model.ProductFiles)
+            {
+                if (item == null)
+                    throw new InvalidOperationException(
+                        "ProductFile seed item cannot be null.");
+
+                if (string.IsNullOrWhiteSpace(item.ProductSlug))
+                    throw new InvalidOperationException(
+                        "ProductFile ProductSlug cannot be empty.");
+
+                var productId =
+                    await GetProductIdBySlugAsync(
+                        item.ProductSlug);
+
+                await SeedProductFilesAsync(
+                    productId,
+                    item.Files);
+            }
+        }
+        private async Task<Guid> GetProductIdBySlugAsync(
+    string productSlug)
+        {
+            if (string.IsNullOrWhiteSpace(productSlug))
+                throw new InvalidOperationException(
+                    "ProductSlug cannot be empty.");
+
+            var products =
+                await _productService.GetAllViews();
+
+            var product =
+                await products.FirstOrDefaultAsync(
+                    x => x.Slug == productSlug);
+
+            if (product == null)
+                throw new InvalidOperationException(
+                    $"Product with slug '{productSlug}' was not found.");
+
+            return product.Id;
         }
         private async Task SeedProductFilesAsync(
     Guid productId,
     List<ProductFileSeedModel> files)
         {
-
             if (files == null || !files.Any())
                 return;
-
-
 
             var existingFilesQuery =
                 await _productFileService.GetAllViews();
 
-
-
             var existingFiles =
                 await existingFilesQuery
-                .Where(x => x.ParentId == productId)
-                .ToListAsync();
-
-
+                    .Where(x => x.ParentId == productId)
+                    .ToListAsync();
 
             foreach (var item in files)
             {
+                if (string.IsNullOrWhiteSpace(item.FileUrl))
+                    throw new InvalidOperationException(
+                        $"Product file FileUrl cannot be empty. " +
+                        $"ProductId: {productId}");
 
-                var exist =
+                var existing =
                     existingFiles.FirstOrDefault(
                         x => x.FileUrl == item.FileUrl);
 
-
-
-                ProductFileCrud model;
-
-
-
-                if (exist != null)
+                if (existing != null)
                 {
+                    var model =
+                        new ProductFileCrud
+                        {
+                            Id = existing.Id,
+                            ParentId = productId,
+                            FileUrl = item.FileUrl,
+                            ThumbnailUrl = item.ThumbnailUrl,
+                            Title = item.Title,
+                            Alt = item.Alt,
+                            MediaType = item.MediaType,
+                            IsMain = item.IsMain,
+                            SortOrder = item.SortOrder,
+                            IsActive = true
+                        };
 
-                    model = new ProductFileCrud
+                    var result =
+                        await _productFileService
+                            .UpdateAsync(
+                                model,
+                                existing.Id);
+
+                    if (!result.Success)
                     {
-                        Id = exist.Id,
-
-                        ParentId = productId,
-
-                        FileUrl = item.FileUrl,
-
-                        ThumbnailUrl = item.ThumbnailUrl,
-
-                        Title = item.Title,
-
-                        Alt = item.Alt,
-
-                        MediaType = item.MediaType,
-
-                        IsMain = item.IsMain,
-
-                        SortOrder = item.SortOrder,
-
-                        IsActive = true
-                    };
-
-
-                    await _productFileService
-                        .UpdateAsync(model, model.Id);
-
+                        throw new InvalidOperationException(
+                            $"Product file update failed. " +
+                            $"FileUrl: {item.FileUrl}");
+                    }
                 }
                 else
                 {
+                    var model =
+                        new ProductFileCrud
+                        {
+                            ParentId = productId,
+                            FileUrl = item.FileUrl,
+                            ThumbnailUrl = item.ThumbnailUrl,
+                            Title = item.Title,
+                            Alt = item.Alt,
+                            MediaType = item.MediaType,
+                            IsMain = item.IsMain,
+                            SortOrder = item.SortOrder,
+                            IsActive = true
+                        };
 
-                    model = new ProductFileCrud
+                    var result =
+                        await _productFileService
+                            .CreateAsync(model);
+
+                    if (!result.Success)
                     {
-
-                        ParentId = productId,
-
-                        FileUrl = item.FileUrl,
-
-                        ThumbnailUrl = item.ThumbnailUrl,
-
-                        Title = item.Title,
-
-                        Alt = item.Alt,
-
-                        MediaType = item.MediaType,
-
-                        IsMain = item.IsMain,
-
-                        SortOrder = item.SortOrder,
-
-                        IsActive = true
-                    };
-
-
-                    await _productFileService
-                        .CreateAsync(model);
-
+                        throw new InvalidOperationException(
+                            $"Product file create failed. " +
+                            $"FileUrl: {item.FileUrl}");
+                    }
                 }
-
             }
-
         }
-        private async Task SeedProductVariantsAsync(
-            Guid productId,
-            List<ProductVariantSeedModel> variants)
+        public async Task SeedProductVariantsAsync()
         {
-            if (variants == null || !variants.Any())
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:ProductVariants:Enabled");
+
+            if (!enabled)
                 return;
 
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:ProductVariants:File");
 
-            var variantsQuery =
-                await _productVariantService.GetAllViews();
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:ProductVariants:File is not configured.");
 
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
 
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+                throw new FileNotFoundException(
+                    $"Seed resource '{resourceName}' not found.");
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var model =
+                JsonSerializer.Deserialize<ProductVariantSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+                throw new InvalidOperationException(
+                    $"Seed file '{file}' deserialize failed.");
+
+            foreach (var item in model.ProductVariants)
+            {
+                if (item == null)
+                    throw new InvalidOperationException(
+                        "ProductVariant seed item cannot be null.");
+
+                if (string.IsNullOrWhiteSpace(item.ProductSlug))
+                    throw new InvalidOperationException(
+                        "ProductVariant ProductSlug cannot be empty.");
+
+                var productId =
+                    await GetProductIdBySlugAsync(
+                        item.ProductSlug);
+
+                await SeedProductVariantsAsync(
+                    productId,
+                    item.Variants);
+            }
+        }
+        private async Task SeedProductVariantsAsync(
+          Guid productId,
+          List<ProductVariantSeedModel>? variants)
+        {
+            if (variants == null)
+                return;
+
+            var existingVariantsQuery =
+                await _productVariantService
+                    .GetAllViews();
 
             var existingVariants =
-                await variantsQuery
-                .Where(x => x.ParentId == productId)
-                .ToListAsync();
+                await existingVariantsQuery
+                    .Where(x => x.ParentId == productId)
+                    .ToListAsync();
 
+            // ---------------------------------------------------------
+            // DEACTIVATE REMOVED VARIANTS
+            // ---------------------------------------------------------
 
+            var incomingSkus =
+                variants
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Sku))
+                    .Select(x => x.Sku!)
+                    .ToHashSet(
+                        StringComparer.OrdinalIgnoreCase);
 
-            foreach (var item in variants)
+            foreach (var existing in existingVariants)
             {
+                if (string.IsNullOrWhiteSpace(existing.Sku))
+                    continue;
 
-                var exist =
-                    existingVariants.FirstOrDefault(
-                        x => x.Sku == item.Sku);
-
-
-
-                Guid variantId;
-
-
-
-                if (exist != null)
+                if (!incomingSkus.Contains(existing.Sku))
                 {
-
-                    var model = new ProductVariantCrud
-                    {
-                        Id = exist.Id,
-
-                        ParentId = productId,
-
-                        Name = item.Name,
-
-                        Price = item.Price,
-
-                        ComparePrice = item.ComparePrice,
-
-                        Image = item.Image,
-
-                        Sku = item.Sku,
-
-                        Barcode = item.Barcode,
-
-                        IsDefault = item.IsDefault,
-
-                        SortOrder = item.SortOrder,
-
-                        IsActive = item.IsActive
-                    };
-
-
-                    await _productVariantService
-                        .UpdateAsync(model, model.Id);
-
-
-                    variantId = exist.Id;
-
-                }
-                else
-                {
-
-                    var model = new ProductVariantCrud
-                    {
-                        ParentId = productId,
-
-                        Name = item.Name,
-
-                        Price = item.Price,
-
-                        ComparePrice = item.ComparePrice,
-
-                        Image = item.Image,
-
-                        Sku = item.Sku,
-
-                        Barcode = item.Barcode,
-
-                        IsDefault = item.IsDefault,
-
-                        SortOrder = item.SortOrder,
-
-                        IsActive = item.IsActive
-                    };
-
+                    var model =
+                        new ProductVariantCrud
+                        {
+                            Id = existing.Id,
+                            ParentId = productId,
+                            Name = existing.Name,
+                            Price = existing.Price,
+                            ComparePrice = existing.ComparePrice,
+                            Image = existing.Image,
+                            Sku = existing.Sku,
+                            Barcode = existing.Barcode,
+                            IsDefault = existing.IsDefault,
+                            SortOrder = existing.SortOrder,
+                            IsActive = false
+                        };
 
                     var result =
                         await _productVariantService
-                        .CreateAsync(model);
-
-
+                            .UpdateAsync(
+                                model,
+                                existing.Id);
 
                     if (!result.Success)
-                        throw new Exception(
-                            $"Variant create failed : {item.Name}");
-
-
-
-                    variantId = result.Data.Id;
-
+                    {
+                        throw new InvalidOperationException(
+                            $"Product variant deactivation failed. " +
+                            $"SKU: {existing.Sku}");
+                    }
                 }
-
-
-
-                // =====================================
-                // موجودی اولیه Variant
-                // =====================================
-
-                await SeedProductInventoryAsync(
-                    productId,
-                    variantId,
-                    item.InitialStock);
-
             }
 
+            // ---------------------------------------------------------
+            // CREATE / UPDATE VARIANTS
+            // ---------------------------------------------------------
+
+            foreach (var item in variants)
+            {
+                if (string.IsNullOrWhiteSpace(item.Name))
+                    throw new InvalidOperationException(
+                        $"Product variant Name cannot be empty. " +
+                        $"ProductId: {productId}");
+
+                if (string.IsNullOrWhiteSpace(item.Sku))
+                    throw new InvalidOperationException(
+                        $"Product variant SKU cannot be empty. " +
+                        $"ProductId: {productId}");
+
+                var existing =
+                    existingVariants.FirstOrDefault(
+                        x => x.Sku == item.Sku);
+
+                if (existing != null)
+                {
+                    var model =
+                        new ProductVariantCrud
+                        {
+                            Id = existing.Id,
+                            ParentId = productId,
+                            Name = item.Name,
+                            Price = item.Price,
+                            ComparePrice = item.ComparePrice,
+                            Image = item.Image,
+                            Sku = item.Sku,
+                            Barcode = item.Barcode,
+                            IsDefault = item.IsDefault,
+                            SortOrder = item.SortOrder,
+                            IsActive = item.IsActive
+                        };
+
+                    var result =
+                        await _productVariantService
+                            .UpdateAsync(
+                                model,
+                                existing.Id);
+
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product variant update failed. " +
+                            $"SKU: {item.Sku}");
+                    }
+                }
+                else
+                {
+                    var model =
+                        new ProductVariantCrud
+                        {
+                            ParentId = productId,
+                            Name = item.Name,
+                            Price = item.Price,
+                            ComparePrice = item.ComparePrice,
+                            Image = item.Image,
+                            Sku = item.Sku,
+                            Barcode = item.Barcode,
+                            IsDefault = item.IsDefault,
+                            SortOrder = item.SortOrder,
+                            IsActive = item.IsActive
+                        };
+
+                    var result =
+                        await _productVariantService
+                            .CreateAsync(model);
+
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product variant create failed. " +
+                            $"SKU: {item.Sku}");
+                    }
+                }
+            }
         }
         private const string InitialStockReasonCode = "INITIAL_STOCK";
-        private async Task<Guid> GetInitialStockReasonIdAsync()
+
+        private async Task SeedProductAttributesAsync()
         {
-            // ==========================================
-            // دریافت Reason موجود
-            // ==========================================
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:ProductAttributes:Enabled");
 
-            var reasonQuery =
-                await _inventoryTransactionReasonService
-                    .GetAllViews();
+            if (!enabled)
+                return;
 
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:ProductAttributes:File");
 
-            var reason =
-                await reasonQuery
-                    .FirstOrDefaultAsync(x =>
-                        x.Code == InitialStockReasonCode);
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:ProductAttributes:File is not configured.");
 
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
 
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
 
-            // ==========================================
-            // اگر وجود نداشت ایجاد کن
-            // ==========================================
+            await using var stream =
+                assembly.GetManifestResourceStream(resourceName);
 
-            if (reason == null)
+            if (stream == null)
             {
-
-                var reasonModel =
-                    new InventoryTransactionReasonCrud
-                    {
-                        Name = "موجودی اولیه",
-
-                        Code = InitialStockReasonCode,
-
-                        IsActive = true
-                    };
-
-
-                var result =
-                    await _inventoryTransactionReasonService
-                        .CreateAsync(reasonModel);
-
-
-
-                if (!result.Success)
-                    throw new Exception(
-                        "Create InventoryTransactionReason failed");
-
-
-
-                return result.Data.Id;
+                throw new FileNotFoundException(
+                    $"Embedded seed resource not found: {resourceName}");
             }
 
+            using var reader =
+                new StreamReader(stream);
 
+            var json =
+                await reader.ReadToEndAsync();
 
-            // ==========================================
-            // اگر وجود داشت همان Id
-            // ==========================================
+            var root =
+                JsonSerializer.Deserialize<ProductAttributeSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
 
-            return reason.Id;
+            if (root == null)
+                throw new InvalidOperationException(
+                    "Product attribute seed JSON is invalid.");
+
+            foreach (var item in root.ProductAttributes)
+            {
+                if (string.IsNullOrWhiteSpace(item.ProductSlug))
+                {
+                    throw new InvalidOperationException(
+                        "ProductSlug cannot be empty in product attribute seed.");
+                }
+
+                var productId =
+                    await GetProductIdBySlugAsync(
+                        item.ProductSlug);
+
+                await SeedProductAttributeValuesAsync(
+                    productId,
+                    item.Attributes);
+            }
         }
         private async Task SeedProductAttributeValuesAsync(
             Guid productId,
             List<ProductAttributeSeedModel> attributes)
         {
-
             if (attributes == null || !attributes.Any())
                 return;
 
-
+            // =========================================================
+            // ALL ATTRIBUTES
+            // =========================================================
 
             var attributesQuery =
                 await _productAttributeService.GetAllViews();
 
-
+            // =========================================================
+            // EXISTING VALUES FOR THIS PRODUCT
+            // =========================================================
 
             var valuesQuery =
                 await _productAttributeValueService.GetAllViews();
 
-
-
             var existingValues =
                 await valuesQuery
-                .Where(x => x.ParentId == productId)
-                .ToListAsync();
+                    .Where(x => x.ParentId == productId)
+                    .ToListAsync();
 
-
-
+            // =========================================================
+            // CREATE / UPDATE
+            // =========================================================
 
             foreach (var item in attributes)
             {
+                if (string.IsNullOrWhiteSpace(item.Code))
+                    throw new InvalidOperationException(
+                        $"Product attribute Code cannot be empty. ProductId: {productId}");
 
+                if (string.IsNullOrWhiteSpace(item.Name))
+                    throw new InvalidOperationException(
+                        $"Product attribute Name cannot be empty. Code: {item.Code}");
 
-                // ==============================
-                // ATTRIBUTE
-                // ==============================
+                if (string.IsNullOrWhiteSpace(item.Value))
+                    throw new InvalidOperationException(
+                        $"Product attribute Value cannot be empty. Code: {item.Code}");
+
+                // =====================================================
+                // FIND ATTRIBUTE BY CODE
+                // =====================================================
 
                 var attribute =
                     await attributesQuery
-                    .FirstOrDefaultAsync(
-                        x => x.Code == item.Code);
+                        .FirstOrDefaultAsync(
+                            x => x.Code == item.Code);
 
-
+                // =====================================================
+                // CREATE ATTRIBUTE IF NOT EXISTS
+                // =====================================================
 
                 if (attribute == null)
                 {
-
                     var createAttribute =
                         new ProductAttributeCrud
                         {
-
-                            Name = item.Code,
-
+                            Name = item.Name,
                             Code = item.Code,
-
                             IsActive = true
-
                         };
-
 
                     var result =
                         await _productAttributeService
-                        .CreateAsync(createAttribute);
+                            .CreateAsync(createAttribute);
 
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product attribute create failed. " +
+                            $"Code: {item.Code}");
+                    }
 
+                    // بعد از Create دوباره Attribute را پیدا می‌کنیم
                     attribute =
                         await attributesQuery
-                        .FirstOrDefaultAsync(
-                            x => x.Id == result.Data.Id);
+                            .FirstOrDefaultAsync(
+                                x => x.Id == result.Data.Id);
 
+                    if (attribute == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product attribute was created but could not be loaded. " +
+                            $"Code: {item.Code}");
+                    }
                 }
 
+                // =====================================================
+                // FIND PRODUCT ATTRIBUTE VALUE
+                // =====================================================
 
-
-
-
-                // ==============================
-                // ATTRIBUTE VALUE
-                // ==============================
-
-
-                var exist =
+                var existingValue =
                     existingValues.FirstOrDefault(
                         x =>
-                        x.ProductAttributeId == attribute.Id
-                        &&
-                        x.Value == item.Value);
+                            x.ProductAttributeId == attribute.Id);
 
+                // =====================================================
+                // UPDATE
+                // =====================================================
 
-
-                ProductAttributeValueCrud model;
-
-
-
-                if (exist != null)
+                if (existingValue != null)
                 {
+                    var model =
+                        new ProductAttributeValueCrud
+                        {
+                            Id = existingValue.Id,
 
-                    model = new ProductAttributeValueCrud
+                            ParentId = productId,
+
+                            ProductAttributeId =
+                                attribute.Id,
+
+                            Value = item.Value,
+
+                            SortOrder = item.SortOrder
+                        };
+
+                    var result =
+                        await _productAttributeValueService
+                            .UpdateAsync(
+                                model,
+                                existingValue.Id);
+
+                    if (!result.Success)
                     {
-
-                        Id = exist.Id,
-
-                        ParentId = productId,
-
-                        ProductAttributeId = attribute.Id,
-
-                        Value = item.Value,
-
-                        SortOrder = item.SortOrder
-
-                    };
-
-
-                    await _productAttributeValueService
-                        .UpdateAsync(model, model.Id);
-
-
+                        throw new InvalidOperationException(
+                            $"Product attribute value update failed. " +
+                            $"ProductId: {productId}, " +
+                            $"AttributeCode: {item.Code}");
+                    }
                 }
+                // =====================================================
+                // CREATE
+                // =====================================================
+
                 else
                 {
+                    var model =
+                        new ProductAttributeValueCrud
+                        {
+                            ParentId = productId,
 
-                    model = new ProductAttributeValueCrud
+                            ProductAttributeId =
+                                attribute.Id,
+
+                            Value = item.Value,
+
+                            SortOrder = item.SortOrder
+                        };
+
+                    var result =
+                        await _productAttributeValueService
+                            .CreateAsync(model);
+
+                    if (!result.Success)
                     {
-
-                        ParentId = productId,
-
-                        ProductAttributeId = attribute.Id,
-
-                        Value = item.Value,
-
-                        SortOrder = item.SortOrder
-
-                    };
-
-
-                    await _productAttributeValueService
-                        .CreateAsync(model);
-
+                        throw new InvalidOperationException(
+                            $"Product attribute value create failed. " +
+                            $"ProductId: {productId}, " +
+                            $"AttributeCode: {item.Code}");
+                    }
                 }
-
-
             }
-
-
         }
-
-        private async Task SeedProductInventoryAsync(
-    Guid productId,
-    Guid? productVariantId,
-    int quantity)
+        private async Task<Guid> GetInitialStockReasonIdAsync()
         {
+            if (_initialStockReasonId.HasValue)
+                return _initialStockReasonId.Value;
 
-            if (quantity <= 0)
-                return;
-
-
-
-
-
-
-
-
-            // ==========================================
-            // 2- بررسی تراکنش قبلی
-            // ==========================================
-
-            var transactionQuery =
-                await _productInventoryTransactionService
-                    .GetAllViews();
-
-
-            var transactions =
-                await transactionQuery
-                    .ToListAsync();
-
-            var reasonId =
-    await GetInitialStockReasonIdAsync();
-
-            var existTransaction =
-                transactions
-                .FirstOrDefault(x =>
-
-                    x.ProductId == productId &&
-
-                    x.ProductVariantId == productVariantId &&
-
-                    x.ReasonId == reasonId
-
-                );
-
-
-            if (existTransaction != null)
-                return;
-
-
-
-
-            // ==========================================
-            // 3- ایجاد تراکنش افزایش موجودی
-            // ==========================================
-
-
-            var transaction =
-                new ProductInventoryTransactionCrud
-                {
-
-                    ProductId = productId,
-
-                    ProductVariantId = productVariantId,
-                    ParentId = productId,
-
-                    OperationType = 1, // افزایش موجودی
-
-
-                    ChangeQuantity = quantity,
-
-
-                    ReasonId = reasonId,
-
-
-                    Note = "Seed initial product inventory"
-
-                };
-
-
-
-            var createResult =
-                await _productInventoryTransactionService
-                    .CreateAsync(transaction);
-
-
-
-            if (!createResult.Success)
-                throw new Exception(
-                    "Create ProductInventoryTransaction failed");
-
-        }
-        private async Task SeedProductInventoryAsync(
-    Guid productId,
-    int quantity)
-        {
-            if (quantity <= 0)
-                return;
-
-
-
-            // ==========================================
-            // 1- دریافت یا ایجاد Reason
-            // ==========================================
-
-            var reasonQuery =
+            var reasonsQuery =
                 await _inventoryTransactionReasonService
                     .GetAllViews();
 
-
-
             var reason =
-                await reasonQuery
-                .FirstOrDefaultAsync(x =>
-                    x.Code == InitialStockReasonCode);
+                await reasonsQuery
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(
+                        x => x.Code == InitialStockReasonCode);
 
-
-
-            Guid reasonId;
-
-
-
-            if (reason == null)
+            if (reason != null)
             {
-
-                var reasonModel =
-                    new InventoryTransactionReasonCrud
-                    {
-                        Name = "موجودی اولیه",
-
-                        Code = InitialStockReasonCode,
-
-                        IsActive = true
-                    };
-
-
-
-                var result =
-                    await _inventoryTransactionReasonService
-                        .CreateAsync(reasonModel);
-
-
-
-                if (!result.Success)
-                    throw new Exception(
-                        "Create InventoryTransactionReason failed");
-
-
-
-                reasonId = result.Data.Id;
-
-            }
-            else
-            {
-                reasonId = reason.Id;
+                _initialStockReasonId = reason.Id;
+                return reason.Id;
             }
 
+            var createReason =
+                new InventoryTransactionReasonCrud
+                {
+                    Name = "موجودی اولیه",
+                    Code = InitialStockReasonCode
+                };
 
+            var result =
+                await _inventoryTransactionReasonService
+                    .CreateAsync(createReason);
 
+            if (!result.Success)
+            {
+                throw new InvalidOperationException(
+                    "Initial stock reason creation failed. " +
+                    $"Message: {result.Message}");
+            }
 
-            // ==========================================
-            // 2- بررسی تراکنش موجودی اولیه Product
-            //    بدون Variant
-            // ==========================================
+            _initialStockReasonId = result.Data.Id;
 
-            var transactionQuery =
+            return result.Data.Id;
+        }
+        private async Task SeedProductInventoryAsync(
+            Guid productId,
+            int quantity,
+            Guid? variantId = null)
+        {
+            if (quantity <= 0)
+                return;
+
+            // =========================================================
+            // INITIAL STOCK REASON
+            // =========================================================
+
+            var reasonId =
+                await GetInitialStockReasonIdAsync();
+
+            // =========================================================
+            // EXISTING TRANSACTION
+            // =========================================================
+
+            var transactionsQuery =
                 await _productInventoryTransactionService
                     .GetInventoryTransactionQuery();
 
-            var existTransaction =
-                await transactionQuery
-                    .FirstOrDefaultAsync(x =>
-                        x.ParentId == productId &&
-                        x.ProductVariantId == null &&
-                        x.ReasonId == reasonId);
+            var existing =
+                await transactionsQuery
+                    .FirstOrDefaultAsync(
+                        x =>
+                            x.ParentId == productId &&
+                            x.ProductVariantId == variantId &&
+                            x.ReasonId == reasonId);
 
+            // =========================================================
+            // CREATE / UPDATE
+            // =========================================================
 
-
-
-            // ==========================================
-            // 3- Update موجودی قبلی
-            // ==========================================
-
-            if (existTransaction != null)
+            if (existing != null)
             {
-
-                var transactionModel =
+                var model =
                     new ProductInventoryTransactionCrud
                     {
-                        Id = existTransaction.Id,
+                        Id = existing.Id,
 
                         ProductId = productId,
+                        ParentId = productId,
 
-                        ProductVariantId = null,
+                        ProductVariantId = variantId,
 
                         OperationType = 1,
 
@@ -4495,55 +5071,664 @@ public async Task SeedProductsAsync()
 
                         ReasonId = reasonId,
 
-                        Note = "Update seed initial product inventory"
+                        Note = "موجودی اولیه"
                     };
 
+                var result =
+                    await _productInventoryTransactionService
+                        .UpdateAsync(
+                            model,
+                            existing.Id);
 
+                if (!result.Success)
+                {
+                    throw new InvalidOperationException(
+                        $"Initial stock update failed. " +
+                        $"ProductId: {productId}, " +
+                        $"VariantId: {variantId?.ToString() ?? "None"}. " +
+                        $"Message: {result.Message}");
+                }
+            }
+            else
+            {
+                var model =
+                    new ProductInventoryTransactionCrud
+                    {
+                        ProductId = productId,
+                        ParentId = productId,
 
-                await _productInventoryTransactionService
-                    .UpdateAsync(transactionModel, transactionModel.Id);
+                        ProductVariantId = variantId,
 
+                        OperationType = 1,
 
+                        ChangeQuantity = quantity,
 
+                        ReasonId = reasonId,
+
+                        Note = "موجودی اولیه"
+                    };
+
+                var result =
+                    await _productInventoryTransactionService
+                        .CreateAsync(model);
+
+                if (!result.Success)
+                {
+                    throw new InvalidOperationException(
+                        $"Initial stock creation failed. " +
+                        $"ProductId: {productId}, " +
+                        $"VariantId: {variantId?.ToString() ?? "None"}. " +
+                        $"Message: {result.Message}");
+                }
+            }
+        }
+        private async Task SeedInventoryAsync()
+        {
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:Inventory:Enabled");
+
+            if (!enabled)
+                return;
+
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:Inventory:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+                throw new InvalidOperationException(
+                    "Seed:Inventory:File is not configured.");
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            await using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+            {
+                throw new FileNotFoundException(
+                    $"Embedded seed resource not found: {resourceName}");
+            }
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var root =
+                JsonSerializer.Deserialize<InventorySeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (root == null)
+                throw new InvalidOperationException(
+                    "Inventory seed JSON is invalid.");
+
+            if (root.Inventory == null ||
+                !root.Inventory.Any())
+                return;
+
+            foreach (var item in root.Inventory)
+            {
+                // =========================================================
+                // PRODUCT
+                // =========================================================
+
+                if (string.IsNullOrWhiteSpace(item.ProductSlug))
+                {
+                    throw new InvalidOperationException(
+                        "ProductSlug cannot be empty in inventory seed.");
+                }
+
+                var productId =
+                    await GetProductIdBySlugAsync(
+                        item.ProductSlug);
+
+                // =========================================================
+                // PRODUCT INVENTORY
+                // =========================================================
+
+                if (item.InitialStock.HasValue)
+                {
+                    await SeedProductInventoryAsync(
+                        productId,
+                        item.InitialStock.Value);
+                }
+
+                // =========================================================
+                // VARIANT INVENTORY
+                // =========================================================
+
+                if (item.Variants == null ||
+                    !item.Variants.Any())
+                {
+                    continue;
+                }
+
+                var variantsQuery =
+                    await _productVariantService
+                        .GetAllViews();
+
+                foreach (var variantItem in item.Variants)
+                {
+                    if (string.IsNullOrWhiteSpace(
+                            variantItem.Sku))
+                    {
+                        throw new InvalidOperationException(
+                            $"Variant SKU cannot be empty. " +
+                            $"ProductSlug: {item.ProductSlug}");
+                    }
+
+                    var variant =
+                        await variantsQuery
+                            .FirstOrDefaultAsync(
+                                x =>
+                                    x.ParentId == productId &&
+                                    x.Sku == variantItem.Sku);
+
+                    if (variant == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product variant with SKU '{variantItem.Sku}' " +
+                            $"was not found. " +
+                            $"ProductSlug: {item.ProductSlug}");
+                    }
+
+                    await SeedProductInventoryAsync(
+                        productId,
+                        variantItem.InitialStock,
+                        variant.Id
+                        );
+                }
+            }
+        }
+        private async Task SeedDiscountsAsync()
+        {
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:Discounts:Enabled");
+
+            if (!enabled)
+                return;
+
+            if (!await ShouldRunSeederAsync(
+                    SeederNames.Seed_Discounts))
+                return;
+
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:Discounts:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                throw new InvalidOperationException(
+                    "Seed:Discounts:File is not configured.");
+            }
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            await using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+            {
+                throw new FileNotFoundException(
+                    $"Embedded seed resource not found: {resourceName}");
+            }
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var root =
+                JsonSerializer.Deserialize<DiscountSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (root == null)
+            {
+                throw new InvalidOperationException(
+                    "Discount seed JSON is invalid.");
+            }
+
+            if (root.Discounts == null ||
+                !root.Discounts.Any())
+            {
                 return;
             }
 
+            var discountsQuery =
+                await _discountService.GetAllViews();
 
+            var existingDiscounts =
+                await discountsQuery.ToListAsync();
 
-
-            // ==========================================
-            // 4- ایجاد موجودی اولیه جدید
-            // ==========================================
-
-            var inventoryTransaction =
-                new ProductInventoryTransactionCrud
+            foreach (var item in root.Discounts)
+            {
+                if (string.IsNullOrWhiteSpace(item.Name))
                 {
-                    ProductId = productId,
+                    throw new InvalidOperationException(
+                        "Discount Name cannot be empty.");
+                }
 
-                    ProductVariantId = null,
+                if (item.DiscountValue < 0)
+                {
+                    throw new InvalidOperationException(
+                        $"DiscountValue cannot be negative. " +
+                        $"Discount: {item.Name}");
+                }
 
-                    OperationType = 1,
+                if (item.EndDate <= item.StartDate)
+                {
+                    throw new InvalidOperationException(
+                        $"Discount EndDate must be greater than StartDate. " +
+                        $"Discount: {item.Name}");
+                }
 
-                    ChangeQuantity = quantity,
+                var existing =
+                    existingDiscounts.FirstOrDefault(
+                        x => x.Name == item.Name);
 
-                    ReasonId = reasonId,
+                if (existing == null)
+                {
+                    var model =
+                        new DiscountCrud
+                        {
+                            Name = item.Name,
+                            DiscountType = item.DiscountType,
+                            DiscountValue = item.DiscountValue,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            IsActive = item.IsActive
+                        };
 
-                    Note = "Seed initial product inventory"
-                };
+                    var result =
+                        await _discountService
+                            .CreateAsync(model);
 
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Discount creation failed. " +
+                            $"Name: {item.Name}. " +
+                            $"Message: {result.Message}");
+                    }
 
+                    continue;
+                }
 
-            var createResult =
-                await _productInventoryTransactionService
-                    .CreateAsync(inventoryTransaction);
+                var updateModel =
+                    new DiscountCrud
+                    {
+                        Id = existing.Id,
+                        Name = item.Name,
+                        DiscountType = item.DiscountType,
+                        DiscountValue = item.DiscountValue,
+                        StartDate = item.StartDate,
+                        EndDate = item.EndDate,
+                        IsActive = item.IsActive
+                    };
 
+                var updateResult =
+                    await _discountService
+                        .UpdateAsync(
+                            updateModel,
+                            existing.Id);
 
+                if (!updateResult.Success)
+                {
+                    throw new InvalidOperationException(
+                        $"Discount update failed. " +
+                        $"Name: {item.Name}. " +
+                        $"Message: {updateResult.Message}");
+                }
+            }
 
-            if (!createResult.Success)
-                throw new Exception(
-                    "Create ProductInventoryTransaction failed");
-
+ 
         }
+        private async Task<Guid> GetDiscountIdByNameAsync(
+    string discountName)
+        {
+            if (string.IsNullOrWhiteSpace(discountName))
+            {
+                throw new InvalidOperationException(
+                    "DiscountName cannot be empty.");
+            }
+
+            var discountsQuery =
+                await _discountService.GetAllViews();
+
+            var discount =
+                await discountsQuery
+                    .FirstOrDefaultAsync(
+                        x => x.Name == discountName);
+
+            if (discount == null)
+            {
+                throw new InvalidOperationException(
+                    $"Discount with name '{discountName}' was not found.");
+            }
+
+            return discount.Id;
+        }
+        private async Task SeedDiscountItemsAsync()
+        {
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:DiscountItems:Enabled");
+
+            if (!enabled)
+                return;
+
+            if (!await ShouldRunSeederAsync(
+                    SeederNames.Seed_DiscountItems))
+                return;
+
+            var file =
+                _configuration.GetValue<string>(
+                    "Seed:DiscountItems:File");
+
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                throw new InvalidOperationException(
+                    "Seed:DiscountItems:File is not configured.");
+            }
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{file
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            await using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+            {
+                throw new FileNotFoundException(
+                    $"Embedded seed resource not found: {resourceName}");
+            }
+
+            using var reader =
+                new StreamReader(stream);
+
+            var json =
+                await reader.ReadToEndAsync();
+
+            var root =
+                JsonSerializer.Deserialize<DiscountItemSeedRoot>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (root == null)
+            {
+                throw new InvalidOperationException(
+                    "Discount item seed JSON is invalid.");
+            }
+
+            if (root.DiscountItems == null ||
+                !root.DiscountItems.Any())
+            {
+                return;
+            }
+
+            foreach (var item in root.DiscountItems)
+            {
+                if (string.IsNullOrWhiteSpace(item.DiscountName))
+                {
+                    throw new InvalidOperationException(
+                        "DiscountName cannot be empty.");
+                }
+
+                var targetCount = 0;
+
+                if (!string.IsNullOrWhiteSpace(item.ProductSlug))
+                    targetCount++;
+
+                if (!string.IsNullOrWhiteSpace(item.VariantSku))
+                    targetCount++;
+
+                if (!string.IsNullOrWhiteSpace(item.CategorySlug))
+                    targetCount++;
+
+                if (!string.IsNullOrWhiteSpace(item.BrandSlug))
+                    targetCount++;
+
+                if (targetCount != 1)
+                {
+                    throw new InvalidOperationException(
+                        $"Discount item must have exactly one target. " +
+                        $"Discount: {item.DiscountName}");
+                }
+
+                var discountId =
+                    await GetDiscountIdByNameAsync(
+                        item.DiscountName);
+
+                Guid? productId = null;
+                Guid? productVariantId = null;
+                Guid? productCategoryId = null;
+                Guid? productBrandId = null;
+
+                // =========================================================
+                // PRODUCT
+                // =========================================================
+
+                if (!string.IsNullOrWhiteSpace(
+                        item.ProductSlug))
+                {
+                    productId =
+                        await GetProductIdBySlugAsync(
+                            item.ProductSlug);
+                }
+
+                // =========================================================
+                // VARIANT
+                // =========================================================
+
+                if (!string.IsNullOrWhiteSpace(
+                        item.VariantSku))
+                {
+                    if (string.IsNullOrWhiteSpace(
+                            item.ProductSlug))
+                    {
+                        throw new InvalidOperationException(
+                            $"VariantSku requires ProductSlug. " +
+                            $"Discount: {item.DiscountName}, " +
+                            $"SKU: {item.VariantSku}");
+                    }
+
+                    var variantProductId =
+                        await GetProductIdBySlugAsync(
+                            item.ProductSlug);
+
+                    var variantsQuery =
+                        await _productVariantService
+                            .GetAllViews();
+
+                    var variant =
+                        await variantsQuery
+                            .FirstOrDefaultAsync(
+                                x =>
+                                    x.ParentId == variantProductId &&
+                                    x.Sku == item.VariantSku);
+
+                    if (variant == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product variant with SKU " +
+                            $"'{item.VariantSku}' was not found. " +
+                            $"ProductSlug: {item.ProductSlug}");
+                    }
+
+                    productId = variantProductId;
+                    productVariantId = variant.Id;
+                }
+
+                // =========================================================
+                // CATEGORY
+                // =========================================================
+
+                if (!string.IsNullOrWhiteSpace(
+                        item.CategorySlug))
+                {
+                    var categoriesQuery =
+                        await _productCategoryService
+                            .GetAllViews();
+
+                    var category =
+                        await categoriesQuery
+                            .FirstOrDefaultAsync(
+                                x =>
+                                    x.Slug == item.CategorySlug);
+
+                    if (category == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product category with slug " +
+                            $"'{item.CategorySlug}' was not found.");
+                    }
+
+                    productCategoryId =
+                        category.Id;
+                }
+
+                // =========================================================
+                // BRAND
+                // =========================================================
+
+                if (!string.IsNullOrWhiteSpace(
+                        item.BrandSlug))
+                {
+                    var brandsQuery =
+                        await _productBrandService
+                            .GetAllViews();
+
+                    var brand =
+                        await brandsQuery
+                            .FirstOrDefaultAsync(
+                                x =>
+                                    x.Slug == item.BrandSlug);
+
+                    if (brand == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Product brand with slug " +
+                            $"'{item.BrandSlug}' was not found.");
+                    }
+
+                    productBrandId =
+                        brand.Id;
+                }
+
+                // =========================================================
+                // CHECK DUPLICATE
+                // =========================================================
+
+                var itemsQuery =
+                    await _discountItemService
+                        .GetAllViews();
+
+                var existing =
+                    await itemsQuery
+                        .FirstOrDefaultAsync(
+                            x =>
+                                x.ParentId == discountId &&
+                                x.ProductId == productId &&
+                                x.ProductVariantId == productVariantId &&
+                                x.ProductCategoryId == productCategoryId &&
+                                x.ProductBrandId == productBrandId);
+
+                // =========================================================
+                // UPDATE
+                // =========================================================
+
+                if (existing != null)
+                {
+                    var updateModel =
+                        new DiscountItemCrud
+                        {
+                            Id = existing.Id,
+                            ParentId = discountId,
+                            ProductId = productId.Value,
+                            ProductVariantId = productVariantId,
+                            ProductCategoryId = productCategoryId,
+                            ProductBrandId = productBrandId,
+                            SortOrder = item.SortOrder
+                        };
+
+                    var result =
+                        await _discountItemService
+                            .UpdateAsync(
+                                updateModel,
+                                existing.Id);
+
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Discount item update failed. " +
+                            $"Discount: {item.DiscountName}. " +
+                            $"Message: {result.Message}");
+                    }
+                }
+                // =========================================================
+                // CREATE
+                // =========================================================
+                else
+                {
+                    var createModel =
+                        new DiscountItemCrud
+                        {
+                            ParentId = discountId,
+                            ProductId = productId.Value,
+                            ProductVariantId = productVariantId,
+                            ProductCategoryId = productCategoryId,
+                            ProductBrandId = productBrandId,
+                            SortOrder = item.SortOrder
+                        };
+
+                    var result =
+                        await _discountItemService
+                            .CreateAsync(createModel);
+
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(
+                            $"Discount item creation failed. " +
+                            $"Discount: {item.DiscountName}. " +
+                            $"Message: {result.Message}");
+                    }
+                }
+            }
+        }
+        private Guid? _initialStockReasonId;
+
     }
 }
 

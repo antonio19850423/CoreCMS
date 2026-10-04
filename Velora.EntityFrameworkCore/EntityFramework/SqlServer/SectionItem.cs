@@ -155,6 +155,20 @@ public partial class SectionItem
 
     public Guid? ProductId { get; set; }
 
+    public bool? HasDiscount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DiscountPercent { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? DiscountAmount { get; set; }
+
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal? OriginalPrice { get; set; }
+
+    [StringLength(250)]
+    public string? ProductSlug { get; set; }
+
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SectionItemLink1Types")]
     public virtual LinkType? Link1Type { get; set; }

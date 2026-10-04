@@ -128,4 +128,10 @@ public partial class VwSiteSettingForm
     public decimal? DutyPercentage { get; set; }
 
     public bool HasCardToCardPayment { get; set; }
+
+    [StringLength(500)]
+    public string? Background { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
 }

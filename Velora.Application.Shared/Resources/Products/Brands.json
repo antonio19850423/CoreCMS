@@ -1,0 +1,58 @@
+﻿{
+  "Brands": [
+    {
+      "Name": "Bvlgari",
+      "Slug": "bvlgari",
+      "Description": "برند لوکس ایتالیایی با تمرکز بر جواهرات و طراحی‌های شاخص.",
+      "Logo": "/uploads/sections/bvlgari.jpg",
+      "Website": null,
+      "SortOrder": 1,
+      "IsActive": true
+    },
+    {
+      "Name": "Cartier",
+      "Slug": "cartier",
+      "Description": "برند لوکس فرانسوی شناخته‌شده در زمینه جواهرات و ساعت.",
+      "Logo": "/uploads/sections/cartier.jpg",
+      "Website": null,
+      "SortOrder": 2,
+      "IsActive": true
+    },
+    {
+      "Name": "Van Cleef & Arpels",
+      "Slug": "van-cleef-arpels",
+      "Description": "خانه جواهرات لوکس فرانسوی با طراحی‌های ظریف و منحصربه‌فرد.",
+      "Logo": "/uploads/sections/van-cleef-arpels.jpg",
+      "Website": null,
+      "SortOrder": 3,
+      "IsActive": true
+    },
+    {
+      "Name": "Pandora",
+      "Slug": "pandora",
+      "Description": "برند بین‌المللی جواهرات با طراحی‌های مدرن و متنوع.",
+      "Logo": "/uploads/sections/pandora.jpg",
+      "Website": null,
+      "SortOrder": 1,
+      "IsActive": true
+    },
+    {
+      "Name": "Tiffany & Co.",
+      "Slug": "tiffany-co",
+      "Description": "برند مشهور آمریکایی در زمینه جواهرات و الماس..",
+      "Logo": "/uploads/sections/tiffany-co.jpg",
+      "Website": null,
+      "SortOrder": 6,
+      "IsActive": true
+    },
+    {
+      "Name": "Swarovski",
+      "Slug": "swarovski",
+      "Description": "برند اتریشی شناخته‌شده در زمینه کریستال و جواهرات.",
+      "Logo": "/uploads/sections/swarovski.jpg",
+      "Website": null,
+      "SortOrder": 3,
+      "IsActive": true
+    }
+  ]
+}

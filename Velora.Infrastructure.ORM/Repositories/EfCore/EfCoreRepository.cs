@@ -48,7 +48,20 @@ public class EfCoreRepository<TEntity> : ISqlRepository<TEntity> , IPosgreSqlRep
     {
         return await _dbSet.AsNoTracking().Where(predicate).ToListAsync();
     }
-
+    public async Task<TEntity?> GetByIdNoTrackingAsync(params object[] keyValues)
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                entity => EF.Property<object>(
+                    entity,
+                    _context.Model
+                        .FindEntityType(typeof(TEntity))!
+                        .FindPrimaryKey()!
+                        .Properties[0]
+                        .Name
+                ).Equals(keyValues[0]));
+    }
     public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
@@ -88,7 +101,6 @@ public class EfCoreRepository<TEntity> : ISqlRepository<TEntity> , IPosgreSqlRep
 
     public async Task<bool> UpdateAsync(TEntity entity)
     {
-        _dbSet.Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
         return true;
     }
