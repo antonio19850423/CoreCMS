@@ -218,3 +218,6 @@ global using SqlOrderManagement = Velora.EntityFrameworkCore.EntityFramework.Sql
 global using SqlProductSalesManagement = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwProductSalesManagement;
 
 
+global using SqlNewsletterSubscriber= Velora.EntityFrameworkCore.EntityFramework.SqlServer.NewsletterSubscriber;
+global using SqlNewsletterSubscriberView = Velora.EntityFrameworkCore.EntityFramework.SqlServer.VwNewsletterSubscriberForm;
+

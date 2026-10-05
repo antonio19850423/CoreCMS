@@ -58,8 +58,8 @@
 	  <None Remove="Resources\Brands.json" />
 	  <None Remove="Resources\Categories.json" />
 	  <None Remove="Resources\Products.json" />
-	  <None Remove="Resources\Products\discount-items.json" />
-	  <None Remove="Resources\Products\discounts.json" />
+	  <None Remove="Resources\Products\NewsletterSubscriber-items.json" />
+	  <None Remove="Resources\Products\NewsletterSubscribers.json" />
 	  <None Remove="Resources\Products\inventory.json" />
 	  <None Remove="Resources\Products\LuxuryJewelry.json" />
 	  <None Remove="Resources\Products\product-attributes.json" />
@@ -69,7 +69,6 @@
 	  <None Remove="Resources\Products\product-variants.json" />
 	  <None Remove="Resources\ProductTypes.json" />
 	  <None Remove="Resources\SeedData.json" />
-	  <None Remove="Resources\SiteSettings.json" />
 	  <None Remove="Resources\Templates\LuxuryJewelry_Template.json" />
 	</ItemGroup>
 
@@ -79,8 +78,8 @@
 	  <EmbeddedResource Include="Resources\ContentItemRules.json" />
 	  <EmbeddedResource Include="Resources\ComponentRules.json" />
 	  <EmbeddedResource Include="Resources\Products.json" />
-	  <EmbeddedResource Include="Resources\Products\discount-items.json" />
-	  <EmbeddedResource Include="Resources\Products\discounts.json" />
+	  <EmbeddedResource Include="Resources\Products\NewsletterSubscriber-items.json" />
+	  <EmbeddedResource Include="Resources\Products\NewsletterSubscribers.json" />
 	  <EmbeddedResource Include="Resources\Products\inventory.json" />
 	  <EmbeddedResource Include="Resources\Products\LuxuryJewelry.json" />
 	  <EmbeddedResource Include="Resources\Products\product-attributes.json" />
@@ -92,7 +91,6 @@
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="Resources\SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\Templates.json" />
 	  <EmbeddedResource Include="Resources\Templates\LuxuryJewelry_Template.json" />
 	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template.json" />

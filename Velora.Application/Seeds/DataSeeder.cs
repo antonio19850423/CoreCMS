@@ -1696,92 +1696,162 @@ namespace Velora.Application.Seeds
 
         public async Task SeedCoreSiteSettingsAsync()
         {
-            const string seederName = SeederNames.Core_SiteSettings;
+            // ---------------------------------------------------------
+            // LOAD SEED CONFIGURATION
+            // ---------------------------------------------------------
 
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:SiteSettings:Enabled");
+
+            if (!enabled)
                 return;
 
-            var existing = await _siteSettingService
-                .FirstOrDefaultAsync<SqlSiteSetting>(x => x.IsActive);
+            var siteSettingsFile =
+                _configuration.GetValue<string>(
+                    "Seed:SiteSettings:File");
+
+            if (string.IsNullOrWhiteSpace(siteSettingsFile))
+            {
+                throw new InvalidOperationException(
+                    "Seed:SiteSettings:File is not configured.");
+            }
+
+            // ---------------------------------------------------------
+            // ASSEMBLY
+            // ---------------------------------------------------------
+
+            var assembly =
+                typeof(SeedJsonModel).Assembly;
+
+            // ---------------------------------------------------------
+            // LOAD SITE SETTINGS JSON
+            // ---------------------------------------------------------
+
+            var siteSettingsResourceName =
+                $"Velora.Application.Shared.Resources.{siteSettingsFile
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            using var siteSettingsStream =
+                assembly.GetManifestResourceStream(
+                    siteSettingsResourceName);
+
+            if (siteSettingsStream == null)
+            {
+                throw new FileNotFoundException(
+                    $"SiteSettings seed resource '{siteSettingsResourceName}' not found.");
+            }
+
+            // ---------------------------------------------------------
+            // DESERIALIZE JSON
+            // ---------------------------------------------------------
+
+            var seedModel =
+                await JsonSerializer.DeserializeAsync<SiteSettingsSeedModel>(
+                    siteSettingsStream,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (seedModel?.SiteSettings == null)
+            {
+                throw new InvalidOperationException(
+                    $"Invalid SiteSettings JSON: {siteSettingsFile}");
+            }
+
+            var siteSettings =
+                seedModel.SiteSettings;
+
+            // ---------------------------------------------------------
+            // VALIDATE REQUIRED DATA
+            // ---------------------------------------------------------
+
+            if (string.IsNullOrWhiteSpace(siteSettings.SiteName))
+            {
+                throw new InvalidOperationException(
+                    $"SiteName is empty in SiteSettings JSON: {siteSettingsFile}");
+            }
+
+            // ---------------------------------------------------------
+            // FIND EXISTING SITE SETTINGS
+            // ---------------------------------------------------------
+
+            var existing =
+                await _siteSettingService
+                    .FirstOrDefaultAsync<SqlSiteSetting>(
+                        x => x.IsActive);
+
+            // ---------------------------------------------------------
+            // CREATE
+            // ---------------------------------------------------------
 
             if (existing.Data == null)
             {
-                await _siteSettingService.CreateAsync(new SiteSettingDto
-                {
-                    SiteName = "CMS پیش‌فرض",
-                    DomainName = "localhost",
+                siteSettings.IsActive = true;
 
-                    LogoUrl = "http://localhost:5274/logo/xing.png",
-                    LogoAlt = "لوگوی سایت",
-                    DarkLogoUrl = "http://localhost:5274/logo/xing.png",
-                    DarkLogoAlt = "لوگوی حالت تاریک",
-                    FaviconUrl = "/assets/favicon.ico",
-
-                    PhoneTitle = "شماره تماس",
-                    Phone = "021-00000000",
-
-                    Phone2Title = "شماره تماس دوم",
-                    Phone2 = "021-11111111",
-
-                    MobileTitle = "موبایل",
-                    Mobile = "09120000000",
-
-                    FaxTitle = "فکس",
-                    Fax = "021-22222222",
-
-                    Email = "info@example.com",
-
-                    AddressTitle = "آدرس",
-                    Address = "تهران، ایران",
-
-                    Address2Title = "آدرس دوم",
-                    Address2 = "دفتر دوم",
-
-                    DefaultMetaTitle = "CMS پیش‌فرض",
-                    DefaultMetaDescription = "سیستم مدیریت محتوای پیش‌فرض",
-                    DefaultMetaKeywords = "cms, website, management",
-
-                    IsActive = true
-                });
+                await _siteSettingService
+                    .CreateAsync(siteSettings);
             }
             else
             {
-                // 🔥 UPDATE
-                existing.Data.SiteName = "CMS پیش‌فرض";
-                existing.Data.DomainName = "localhost";
+                // -----------------------------------------------------
+                // UPDATE EXISTING SITE SETTINGS
+                // -----------------------------------------------------
 
-                existing.Data.LogoUrl = "http://localhost:5274/uploads/logo/xing.png";
-                existing.Data.LogoAlt = "لوگوی سایت";
-                existing.Data.DarkLogoUrl = "http://localhost:5274/uploads/logo/xing.png";
-                existing.Data.DarkLogoAlt = "لوگوی حالت تاریک";
-                existing.Data.FaviconUrl = "http://localhost:5274/uploads/logo/favicon.ico";
+                var siteSettingEntity =
+                    new SiteSettingDto
+                    {
+                        Id = existing.Data.Id,
 
-                existing.Data.PhoneTitle = "شماره تماس";
-                existing.Data.Phone = "021-00000000";
+                        SiteName = siteSettings.SiteName,
+                        DomainName = siteSettings.DomainName,
 
-                existing.Data.Phone2Title = "شماره تماس دوم";
-                existing.Data.Phone2 = "021-11111111";
+                        LogoUrl = siteSettings.LogoUrl,
+                        LogoAlt = siteSettings.LogoAlt,
 
-                existing.Data.MobileTitle = "موبایل";
-                existing.Data.Mobile = "09120000000";
+                        DarkLogoUrl = siteSettings.DarkLogoUrl,
+                        DarkLogoAlt = siteSettings.DarkLogoAlt,
 
-                existing.Data.FaxTitle = "فکس";
-                existing.Data.Fax = "021-22222222";
+                        FaviconUrl = siteSettings.FaviconUrl,
 
-                existing.Data.Email = "info@example.com";
+                        PhoneTitle = siteSettings.PhoneTitle,
+                        Phone = siteSettings.Phone,
 
-                existing.Data.AddressTitle = "آدرس";
-                existing.Data.Address = "تهران، ایران";
+                        Phone2Title = siteSettings.Phone2Title,
+                        Phone2 = siteSettings.Phone2,
 
-                existing.Data.Address2Title = "آدرس دوم";
-                existing.Data.Address2 = "دفتر دوم";
+                        MobileTitle = siteSettings.MobileTitle,
+                        Mobile = siteSettings.Mobile,
 
-                existing.Data.DefaultMetaTitle = "CMS پیش‌فرض";
-                existing.Data.DefaultMetaDescription = "سیستم مدیریت محتوای پیش‌فرض";
-                existing.Data.DefaultMetaKeywords = "cms, website, management";
+                        FaxTitle = siteSettings.FaxTitle,
+                        Fax = siteSettings.Fax,
 
-                await _siteSettingService.UpdateAsync(existing.Data, existing.Data.Id);
+                        Email = siteSettings.Email,
+
+                        AddressTitle = siteSettings.AddressTitle,
+                        Address = siteSettings.Address,
+
+                        Address2Title = siteSettings.Address2Title,
+                        Address2 = siteSettings.Address2,
+
+                        DefaultMetaTitle = siteSettings.DefaultMetaTitle,
+                        DefaultMetaDescription = siteSettings.DefaultMetaDescription,
+                        DefaultMetaKeywords = siteSettings.DefaultMetaKeywords,
+
+                        IsActive = siteSettings.IsActive
+                    };
+
+                await _siteSettingService
+                    .UpdateAsync(
+                        siteSettingEntity,
+                        siteSettingEntity.Id);
             }
+
+            // ---------------------------------------------------------
+            // COMMIT
+            // ---------------------------------------------------------
 
             await _transactionService.CommitAsync();
         }

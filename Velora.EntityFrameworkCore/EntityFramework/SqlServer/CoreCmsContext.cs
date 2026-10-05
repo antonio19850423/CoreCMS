@@ -53,6 +53,8 @@ public partial class CoreCmsContext : DbContext
 
     public virtual DbSet<Menu> Menus { get; set; }
 
+    public virtual DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
+
     public virtual DbSet<Page> Pages { get; set; }
 
     public virtual DbSet<PageTemplate> PageTemplates { get; set; }
@@ -176,6 +178,8 @@ public partial class CoreCmsContext : DbContext
     public virtual DbSet<VwMyOrder> VwMyOrders { get; set; }
 
     public virtual DbSet<VwMyOrderDetail> VwMyOrderDetails { get; set; }
+
+    public virtual DbSet<VwNewsletterSubscriberForm> VwNewsletterSubscriberForms { get; set; }
 
     public virtual DbSet<VwOrderManagement> VwOrderManagements { get; set; }
 
@@ -456,6 +460,11 @@ public partial class CoreCmsContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
 
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_Menus_Parent");
+        });
+
+        modelBuilder.Entity<NewsletterSubscriber>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Page>(entity =>
@@ -1053,6 +1062,11 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwMyOrderDetail>(entity =>
         {
             entity.ToView("VwMyOrderDetail", "cms");
+        });
+
+        modelBuilder.Entity<VwNewsletterSubscriberForm>(entity =>
+        {
+            entity.ToView("VwNewsletterSubscriberForm", "cms");
         });
 
         modelBuilder.Entity<VwOrderManagement>(entity =>

@@ -1407,6 +1407,32 @@
               "Order": 1
             }
           ]
+        },
+        {
+          "Type": "MENU",
+          "Code": "NEWSLETTERSUBSCRIBER_MANAGEMENT",
+          "Name": "NewsletterSubscriber Management",
+          "Route": "basic-info/newsletter-subscriber-management",
+          "DisplayName": {
+            "en": "NewsletterSubscriber Management",
+            "fa": "مدیریت مشترکین خبرنامه"
+          },
+          "Order": 20,
+          "Roles": [
+            "DEV"
+          ],
+          "Children": [
+            {
+              "Type": "PAGE",
+              "Code": "NEWSLETTERSUBSCRIBER_MANAGEMENT_PAGE",
+              "Name": "NewsletterSubscriber Management Page",
+              "DisplayName": {
+                "en": "NewsletterSubscriber Management Page",
+                "fa": "مدیریت مشترکین خبرنامه"
+              },
+              "Order": 1
+            }
+          ]
         }
       ]
     }

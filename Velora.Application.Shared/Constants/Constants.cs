@@ -118,7 +118,8 @@ namespace Velora.Application.Shared.Constants
         public const string OrderManagement = "OrderManagement";
         public const string InventoryManagement = "InventoryManagement";
         public const string CustomerManagement = "CustomerManagement";
-        
+        public const string NewsletterSubscriber = "NewsletterSubscriber";
+
 
         // سایر entityها...
     }

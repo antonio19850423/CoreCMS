@@ -323,6 +323,12 @@ namespace Velora.Application.MappingProfiles
             CreateMap<SqlOrderManagement, OrderManagementCrud>().ReverseMap();
             CreateMap<SqlProductSalesManagement, ProductSalesManagementCrud>().ReverseMap();
 
+
+            CreateMap<SqlNewsletterSubscriber, NewsletterSubscriberCrud>().ReverseMap();
+            CreateMap<SqlNewsletterSubscriberView, NewsletterSubscriberCrud>().ReverseMap();
+            CreateMap<SqlNewsletterSubscriber, NewsletterSubscriberDto>().ReverseMap();
+
+
         }
 
 

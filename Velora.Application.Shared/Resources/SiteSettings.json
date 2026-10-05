@@ -1,0 +1,40 @@
+﻿{
+  "SiteSettings": {
+    "SiteName": "گالری جواهرات الماس",
+    "DomainName": "localhost",
+
+    "LogoUrl": "/uploads/sections/jewelry-logo.png",
+    "LogoAlt": "لوگوی گالری جواهرات الماس",
+
+    "DarkLogoUrl": "/uploads/sections/jewelry-logo.png",
+    "DarkLogoAlt": "لوگوی گالری جواهرات الماس",
+
+    "FaviconUrl": "/uploads/sections/jewelry-logo.png",
+
+    "PhoneTitle": "تماس با ما",
+    "Phone": "021-00000000",
+
+    "Phone2Title": "شماره تماس دوم",
+    "Phone2": "021-11111111",
+
+    "MobileTitle": "شماره موبایل",
+    "Mobile": "09120000000",
+
+    "FaxTitle": "فکس",
+    "Fax": "021-22222222",
+
+    "Email": "info@example.com",
+
+    "AddressTitle": "آدرس فروشگاه",
+    "Address": "تهران، ایران",
+
+    "Address2Title": "آدرس شعبه دوم",
+    "Address2": "تهران، ایران",
+
+    "DefaultMetaTitle": "گالری جواهرات الماس | خرید آنلاین طلا و جواهر",
+    "DefaultMetaDescription": "گالری جواهرات الماس؛ فروشگاه اینترنتی طلا و جواهر با مجموعه‌ای از زیورآلات لوکس، انگشتر، گردنبند، دستبند و گوشواره.",
+    "DefaultMetaKeywords": "گالری جواهرات الماس, خرید طلا, خرید آنلاین طلا, خرید جواهر, زیورآلات, انگشتر طلا, گردنبند طلا, دستبند طلا, گوشواره طلا",
+
+    "IsActive": true
+  }
+}

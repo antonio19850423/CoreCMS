@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -25,8 +26,24 @@ namespace Velora.Application.Shared.Attributes
             Roles = roles;
         }
 
-        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(
+            AuthorizationFilterContext context)
         {
+            // ---------------------------------------------------------
+            // AllowAnonymous
+            // ---------------------------------------------------------
+
+            var endpoint = context.HttpContext.GetEndpoint();
+
+            if (endpoint?.Metadata.GetMetadata<IAllowAnonymous>() != null)
+            {
+                return;
+            }
+
+            // ---------------------------------------------------------
+            // Authentication
+            // ---------------------------------------------------------
+
             var user = context.HttpContext.User;
 
             if (user?.Identity == null || !user.Identity.IsAuthenticated)
@@ -35,43 +52,76 @@ namespace Velora.Application.Shared.Attributes
                 return;
             }
 
+            // ---------------------------------------------------------
+            // User Roles
+            // ---------------------------------------------------------
+
             var userRoles = user.Claims
                 .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => Guid.Parse(c.Value)) // ✅ تبدیل به Guid
+                .Select(c => Guid.Parse(c.Value))
                 .ToList();
 
-            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            var resourceCode = GetResourceName(actionDescriptor);
+            // ---------------------------------------------------------
+            // Resource
+            // ---------------------------------------------------------
+
+            var actionDescriptor =
+                context.ActionDescriptor as ControllerActionDescriptor;
+
+            var resourceCode =
+                GetResourceName(actionDescriptor);
+
             if (string.IsNullOrEmpty(resourceCode))
             {
                 context.Result = new ForbidResult();
                 return;
             }
 
-            var permissionCache = context.HttpContext.RequestServices
-                .GetRequiredService<IPermissionCacheService>();
+            // ---------------------------------------------------------
+            // Permission
+            // ---------------------------------------------------------
 
-            // 🔹 بررسی دسترسی async
-            var hasAccess = await permissionCache.HasAccessAsync(userRoles, resourceCode);
+            var permissionCache =
+                context.HttpContext.RequestServices
+                    .GetRequiredService<IPermissionCacheService>();
+
+            var hasAccess =
+                await permissionCache.HasAccessAsync(
+                    userRoles,
+                    resourceCode);
+
             if (!hasAccess)
             {
-                context.Result = new ObjectResult(new ResultDto<object>
-                {
-                    Success = false,
-                    Message = "You do not have access to this resource",
-                    Errors = new List<string> { "AccessDenied" },
-                    StatusCode = StatusCodes.Status403Forbidden
-                })
-                {
-                    StatusCode = StatusCodes.Status403Forbidden
-                };
+                context.Result =
+                    new ObjectResult(
+                        new ResultDto<object>
+                        {
+                            Success = false,
+                            Message =
+                                "You do not have access to this resource",
+                            Errors = new List<string>
+                            {
+                            "AccessDenied"
+                            },
+                            StatusCode =
+                                StatusCodes.Status403Forbidden
+                        })
+                    {
+                        StatusCode =
+                            StatusCodes.Status403Forbidden
+                    };
             }
         }
 
-        public static string GetResourceName(ControllerActionDescriptor actionDescriptor)
+        public static string GetResourceName(
+            ControllerActionDescriptor actionDescriptor)
         {
-            var controllerName = actionDescriptor.ControllerName;
-            var actionName = actionDescriptor.ActionName;
+            var controllerName =
+                actionDescriptor.ControllerName;
+
+            var actionName =
+                actionDescriptor.ActionName;
+
             return $"Api.{controllerName}.{actionName}";
         }
     }

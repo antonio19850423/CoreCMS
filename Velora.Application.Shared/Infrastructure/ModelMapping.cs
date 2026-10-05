@@ -63,6 +63,7 @@ namespace Velora.Application.Shared.Infrastructure
             { LookupEntities.ShoppingCartItem, typeof(ShoppingCartItem) },
             { LookupEntities.Payment, typeof(Payment) },
             { LookupEntities.PaymentStatusLog, typeof(PaymentStatusLog) },
+            { LookupEntities.NewsletterSubscriber, typeof(NewsletterSubscriber) },
 
         };
 
