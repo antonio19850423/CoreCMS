@@ -9,6 +9,7 @@ namespace Velora.Application.Shared.Dtos
     public class FooterDto
     {
         public string CopyRight { get; set; }
+        public string? BackgroundColor { get; set; }
         public List<FooterGroupDto> Groups { get; set; }
     }
 }

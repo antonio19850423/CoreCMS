@@ -3293,6 +3293,7 @@ int sortOrder)
                         Name = name,
                         Description = description,
                         SortOrder = sortOrder,
+
                         IsActive = true,
                         GroupId = groupId
                     });
@@ -3339,7 +3340,7 @@ int sortOrder)
                 footerGroup.Data.Description = "فوتر";
                 footerGroup.Data.SortOrder = 1;
                 footerGroup.Data.IsActive = true;
-
+                
                 await _sectionGroupItemService.UpdateAsync(footerGroup.Data, footerGroup.Data.Id);
             }
 

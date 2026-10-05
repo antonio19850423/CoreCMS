@@ -641,7 +641,7 @@
     },
     "defaultData": {
       "rtl": {
-        "backgroundColor": "#ffffff",
+        "backgroundColor": "",
         "copyrightText": "© تمامی حقوق این وب‌سایت محفوظ است",
         "items": [
           {
@@ -787,8 +787,8 @@
           {
             "sectionGroupItemCode": "FOOTER_TRUST",
             "title": "نماد اعتماد الکترونیکی",
-            "imageUrl": "https://Trustseal.eNamad.ir/logo.aspx?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
-            "link1Url": "https://trustseal.enamad.ir/?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
+            "imageUrl": "/uploads/sections/enamad.png",
+            "link1Url": "/uploads/sections/enamad.png",
             "link1OpenInNewTab": true,
             "isActive": true,
             "sortOrder": 1
@@ -796,8 +796,8 @@
           {
             "sectionGroupItemCode": "FOOTER_TRUST",
             "title": "نشان ساماندهی",
-            "imageUrl": "https://logo.samandehi.ir/logo.aspx?id=12345",
-            "link1Url": "https://logo.samandehi.ir/Verify.aspx?id=12345",
+            "imageUrl": "/uploads/sections/NeshanMeli.png",
+            "link1Url": "/uploads/sections/NeshanMeli.png",
             "link1OpenInNewTab": true,
             "isActive": true,
             "sortOrder": 2

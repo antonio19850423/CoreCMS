@@ -328,7 +328,9 @@ int pageSize)
                     CopyRight = footerSections
                         .Select(s => s.CopyrightText)
                         .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)),
-
+                    BackgroundColor = footerSections
+        .Select(s => s.BackgroundColor)
+        .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x)),
                     Groups = footerSections
                         .SelectMany(s => s.SectionItems ?? new List<SectionItem>())
                         .Where(i => i.SectionGroupItem != null)
