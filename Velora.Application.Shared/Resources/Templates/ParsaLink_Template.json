@@ -111,7 +111,7 @@
           "metaKeywords": "نمونه کار طراحی سایت، نمونه کار طراحی وب، نمونه کار فروشگاه اینترنتی، نمونه کار UI UX، نمونه کار توسعه نرم افزار، نمونه کار برنامه نویسی، پارسا لینک",
           "components": [
             {
-              "code": "templateGallery",
+              "code": "dynamicGallery",
               "type": "gallery"
             }
           ]

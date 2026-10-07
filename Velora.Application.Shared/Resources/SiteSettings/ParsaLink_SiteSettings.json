@@ -3,13 +3,13 @@
     "SiteName": "پارسا لینک",
     "DomainName": "localhost",
 
-    "LogoUrl": "/uploads/sections/parsa-link-logo.png",
+    "LogoUrl": "/uploads/sections/ParsaLink/parsa-link-logo.png",
     "LogoAlt": "لوگوی پارسا لینک",
 
-    "DarkLogoUrl": "/uploads/sections/parsa-link-logo.png",
+    "DarkLogoUrl": "/uploads/sections/ParsaLink/parsa-link-logo.png",
     "DarkLogoAlt": "لوگوی پارسا لینک",
 
-    "FaviconUrl": "/uploads/sections/parsa-link-logo.png",
+    "FaviconUrl": "/uploads/sections/ParsaLink/parsa-link-logo.ico",
 
     "PhoneTitle": "تماس با ما",
     "Phone": "021-00000000",
