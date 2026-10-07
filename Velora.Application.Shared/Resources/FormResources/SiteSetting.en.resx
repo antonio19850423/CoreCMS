@@ -252,4 +252,16 @@
   <data name="SiteSetting.BackgroundGradient" xml:space="preserve">
     <value>BackgroundGradient</value>
   </data>
+  <data name="SiteSetting.HeaderPhoneIcon" xml:space="preserve">
+    <value>HeaderPhoneIcon</value>
+  </data>
+  <data name="SiteSetting.HeaderPhone" xml:space="preserve">
+    <value>HeaderPhone </value>
+  </data>
+  <data name="SiteSetting.HeaderPhoneColor" xml:space="preserve">
+    <value>HeaderPhoneColor</value>
+  </data>
+  <data name="SiteSetting.HeaderPhoneEnabled" xml:space="preserve">
+    <value>HeaderPhoneEnabled</value>
+  </data>
 </root>

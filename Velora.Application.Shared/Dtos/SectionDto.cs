@@ -48,7 +48,7 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid? UpdatedBy { get; set; }
 
-        [StringLength(50)]
+        [StringLength(500)]
         public string? BackgroundColor { get; set; }
 
         [StringLength(50)]

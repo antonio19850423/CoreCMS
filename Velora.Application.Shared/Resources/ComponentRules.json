@@ -620,6 +620,107 @@
       }
     }
   },
+  "faq-pasralink": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "items": {
+        "question": true,
+        "answer": true,
+        "sortOrder": true,
+        "isActive": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "سوالات متداول",
+        "subtitle": "پاسخ به سوالات رایج درباره پارسا لینک، نحوه ثبت درخواست، مشاوره، هزینه خدمات و راه‌های ارتباطی.",
+        "items": [
+          {
+            "question": "پارسا لینک چیست؟",
+            "answer": "پارسا لینک با هدف ارائه خدمات و راهکارهای کاربردی در حوزه فعالیت خود راه‌اندازی شده است و تلاش می‌کند نیازهای مشتریان را با راهکارهایی ساده، شفاف و متناسب با هر درخواست پاسخ دهد.",
+            "sortOrder": 1,
+            "isActive": true
+          },
+          {
+            "question": "چگونه می‌توانم درخواست خود را در پارسا لینک ثبت کنم؟",
+            "answer": "برای شروع کافی است از طریق فرم تماس یا اطلاعات ارتباطی موجود در وب‌سایت، درخواست و نیاز خود را با ما در میان بگذارید. پس از بررسی اولیه، برای ادامه فرآیند با شما هماهنگ خواهیم کرد.",
+            "sortOrder": 2,
+            "isActive": true
+          },
+          {
+            "question": "آیا قبل از شروع همکاری امکان دریافت مشاوره وجود دارد؟",
+            "answer": "بله. پیش از شروع همکاری می‌توانید نیاز و شرایط خود را مطرح کنید تا پس از بررسی، درباره مسیر مناسب و نحوه انجام کار با شما گفتگو شود.",
+            "sortOrder": 3,
+            "isActive": true
+          },
+          {
+            "question": "هزینه خدمات چگونه مشخص می‌شود؟",
+            "answer": "هزینه به نوع درخواست، حجم کار و امکانات موردنیاز بستگی دارد. پس از بررسی نیاز شما، جزئیات کار و هزینه مربوط به آن به صورت شفاف اعلام خواهد شد.",
+            "sortOrder": 4,
+            "isActive": true
+          },
+          {
+            "question": "مدت زمان انجام درخواست چقدر است؟",
+            "answer": "زمان انجام کار به نوع و جزئیات هر درخواست بستگی دارد. زمان‌بندی پس از بررسی درخواست و مشخص شدن نیازمندی‌ها با شما هماهنگ خواهد شد.",
+            "sortOrder": 5,
+            "isActive": true
+          },
+          {
+            "question": "چگونه می‌توانم با پارسا لینک در ارتباط باشم؟",
+            "answer": "برای ارتباط با پارسا لینک می‌توانید از شماره تماس، ایمیل یا فرم ارتباطی موجود در وب‌سایت استفاده کنید. درخواست شما بررسی می‌شود و در اولین فرصت پاسخ لازم ارائه خواهد شد.",
+            "sortOrder": 6,
+            "isActive": true
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to common questions about Parsa Link, getting started, consultation, service costs and how to contact us.",
+        "items": [
+          {
+            "question": "What is Parsa Link?",
+            "answer": "Parsa Link has been established to provide practical services and solutions in its field, with a focus on offering clear and suitable solutions based on each customer's needs.",
+            "sortOrder": 1,
+            "isActive": true
+          },
+          {
+            "question": "How can I submit a request to Parsa Link?",
+            "answer": "You can get started by sharing your request and requirements through the contact form or the contact information available on the website. We will review your request and coordinate the next steps with you.",
+            "sortOrder": 2,
+            "isActive": true
+          },
+          {
+            "question": "Can I get a consultation before starting a collaboration?",
+            "answer": "Yes. You can discuss your needs and requirements with us before starting a collaboration so we can review them and discuss the most suitable approach with you.",
+            "sortOrder": 3,
+            "isActive": true
+          },
+          {
+            "question": "How are service costs determined?",
+            "answer": "The cost depends on the type of request, scope of work and required features. After reviewing your requirements, the details and related costs will be clearly communicated to you.",
+            "sortOrder": 4,
+            "isActive": true
+          },
+          {
+            "question": "How long does it take to complete a request?",
+            "answer": "The completion time depends on the type and details of each request. The estimated timeline will be discussed with you after reviewing the requirements.",
+            "sortOrder": 5,
+            "isActive": true
+          },
+          {
+            "question": "How can I contact Parsa Link?",
+            "answer": "You can contact Parsa Link through the phone number, email address or contact form available on the website. Your request will be reviewed and followed up as soon as possible.",
+            "sortOrder": 6,
+            "isActive": true
+          }
+        ]
+      }
+    }
+  },
   "footer": {
     "rules": {
       "backgroundColor": true,
@@ -806,6 +907,167 @@
       }
     }
   },
+  "footerdefault": {
+    "rules": {
+      "backgroundColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "copyrightText": true,
+      "items": {
+        "sectionGroupItemCode": true,
+        "SectionGroupItemId": true,
+        "SectionGroupItemName": true,
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "link1Text": true,
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "backgroundColor": "",
+        "copyrightText": "© تمامی حقوق این وب‌سایت محفوظ است",
+        "items": [
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "صفحه اصلی",
+            "link1Url": "/",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "درباره ما",
+            "link1Url": "/about",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_COMPANY",
+            "link1Text": "تماس با ما",
+            "link1Url": "/contact",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SUPPORT",
+            "link1Text": "سوالات متداول",
+            "link1Url": "/faq",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SUPPORT",
+            "link1Text": "پشتیبانی",
+            "link1Url": "/contact",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_LEGAL",
+            "link1Text": "حریم خصوصی",
+            "link1Url": "/privacy-policy",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "آدرس",
+            "subtitle": "تهران، ایران",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "تلفن",
+            "subtitle": "+98 21 000 000 00",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "موبایل",
+            "subtitle": "+98 912 000 0000",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "فکس",
+            "subtitle": "+98 21 111 111 11",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_CONTACT",
+            "title": "ایمیل",
+            "subtitle": "info@example.com",
+            "isActive": true,
+            "sortOrder": 5
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Instagram",
+            "link1Text": "Instagram",
+            "link1Url": "https://instagram.com",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Telegram",
+            "link1Text": "Telegram",
+            "link1Url": "https://t.me",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "LinkedIn",
+            "link1Text": "LinkedIn",
+            "link1Url": "https://linkedin.com",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "YouTube",
+            "link1Text": "YouTube",
+            "link1Url": "https://youtube.com",
+            "isActive": true,
+            "sortOrder": 4
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Facebook",
+            "link1Text": "Facebook",
+            "link1Url": "https://facebook.com",
+            "isActive": true,
+            "sortOrder": 5
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "Twitter",
+            "link1Text": "Twitter",
+            "link1Url": "https://x.com",
+            "isActive": true,
+            "sortOrder": 6
+          },
+          {
+            "sectionGroupItemCode": "FOOTER_SOCIAL",
+            "title": "GitHub",
+            "link1Text": "GitHub",
+            "link1Url": "https://github.com",
+            "isActive": true,
+            "sortOrder": 7
+          }
+        ]
+      }
+    }
+  },
   "dynamicHero": {
     "rules": {
       "subtitle": true,
@@ -847,29 +1109,50 @@
     },
     "defaultData": {
       "rtl": {
-        "title": "نمونه پروژه‌ها",
-        "subtitle": "گالری خدمات و نمونه کارها",
-        "description": "برخی از پروژه‌ها و خدمات انجام شده توسط تیم ما",
+        "title": "نمونه‌کارهای پارسا لینک",
+        "subtitle": "پروژه‌های طراحی و توسعه وب‌سایت",
+        "description": "مجموعه‌ای از پروژه‌های طراحی و توسعه وب‌سایت که توسط تیم پارسا لینک با تمرکز بر تجربه کاربری، طراحی مدرن و عملکرد فنی اجرا شده‌اند.",
         "items": [
           {
-            "title": "طراحی رابط کاربری مدرن",
-            "description": "تمرکز بر UX/UI حرفه‌ای برای تجربه کاربری بهتر",
-            "imageUrl": "/uploads/sections/ui-ux.png",
-            "imageAlt": "UI UX Design",
+            "title": "آرمان گالری",
+            "description": "طراحی و توسعه وب‌سایت فروشگاهی برای برند تخصصی طلا و زیورآلات با تمرکز بر طراحی لوکس و تجربه خرید آنلاین.",
+            "imageUrl": "/uploads/sections/portfolio-arman-gallery.webp",
+            "imageAlt": "وب‌سایت فروشگاهی آرمان گالری",
             "linkUrl": "#"
           },
           {
-            "title": "معماری نرم‌افزار",
-            "description": "طراحی سیستم‌های مقیاس‌پذیر با Microservices",
-            "imageUrl": "/uploads/sections/software-architect.webp",
-            "imageAlt": "Software Architecture",
+            "title": "ویستا سازه",
+            "description": "طراحی وب‌سایت شرکتی برای مجموعه ساختمانی با معرفی پروژه‌ها، خدمات تخصصی و ساختار حرفه‌ای محتوایی.",
+            "imageUrl": "/uploads/sections/portfolio-vista-saze.webp",
+            "imageAlt": "وب‌سایت شرکتی ویستا سازه",
             "linkUrl": "#"
           },
           {
-            "title": "توسعه API",
-            "description": "ساخت API امن و سریع با ASP.NET Core",
-            "imageUrl": "/uploads/sections/develop-api.jpg",
-            "imageAlt": "API Development",
+            "title": "پارس‌مد",
+            "description": "طراحی و توسعه وب‌سایت مجموعه تجهیزات پزشکی با ساختار دسته‌بندی محصولات و رابط کاربری ساده و کاربردی.",
+            "imageUrl": "/uploads/sections/portfolio-parsmed.webp",
+            "imageAlt": "وب‌سایت تجهیزات پزشکی پارس‌مد",
+            "linkUrl": "#"
+          },
+          {
+            "title": "نیکان مارکت",
+            "description": "طراحی فروشگاه اینترنتی با تمرکز بر نمایش محصولات، جستجوی سریع، دسته‌بندی کاربردی و تجربه خرید روان.",
+            "imageUrl": "/uploads/sections/portfolio-nikan-market.webp",
+            "imageAlt": "وب‌سایت فروشگاهی نیکان مارکت",
+            "linkUrl": "#"
+          },
+          {
+            "title": "راهکاران نوین",
+            "description": "طراحی وب‌سایت خدمات فناوری و نرم‌افزار با ساختار مدرن برای معرفی خدمات، راهکارها و پروژه‌های سازمانی.",
+            "imageUrl": "/uploads/sections/portfolio-rahkaran-novin.webp",
+            "imageAlt": "وب‌سایت خدمات فناوری راهکاران نوین",
+            "linkUrl": "#"
+          },
+          {
+            "title": "خانه سبز",
+            "description": "طراحی وب‌سایت حوزه معماری و دکوراسیون داخلی با تمرکز بر نمایش پروژه‌ها، تصاویر و نمونه‌کارهای اجرایی.",
+            "imageUrl": "/uploads/sections/portfolio-khaneh-sabz.webp",
+            "imageAlt": "وب‌سایت معماری و دکوراسیون خانه سبز",
             "linkUrl": "#"
           }
         ]
@@ -1159,7 +1442,6 @@
       }
     }
   },
-
   "luxuryJewelryCategories": {
     "rules": {
       "subtitle": true,
@@ -1643,6 +1925,118 @@
         "descriptionColor": "#777777",
         "link1Text": "View Products",
         "link1Url": "/products"
+      }
+    }
+  },
+  "templateGallery": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkUrl": true,
+        "price": true,
+        "features": true,
+        "backgroundColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "پلن‌های طراحی و توسعه وب‌سایت",
+        "subtitle": "راهکار مناسب کسب‌وکار خود را انتخاب کنید",
+        "description": "تمام پروژه‌ها با CMS اختصاصی پارسا لینک اجرا می‌شوند و امکانات هر پلن بر اساس ساختار و محدوده تعریف‌شده ارائه خواهد شد.",
+        "items": [
+          {
+            "title": "شروع — وب‌سایت پایه",
+            "description": "شروع حرفه‌ای برای حضور آنلاین؛ مناسب کسب‌وکارهایی که به یک وب‌سایت معرفی حرفه‌ای با امکانات پایه و مدیریت آسان محتوا نیاز دارند.",
+            "imageUrl": "/uploads/sections/ParsaLink/Starter.png",
+            "imageAlt": "Starter Website",
+            "linkUrl": "#",
+            "price": "۲۵ میلیون تومان",
+            "backgroundColor": "#FFFFFF",
+            "features": "خانه|درباره ما|تماس با ما|مدیریت محتوای پایه|مدیریت منو|مدیریت تصاویر و فایل‌ها|SEO پایه|امنیت پایه|طراحی واکنش‌گرا"
+          },
+          {
+            "title": "رشد — وب‌سایت شرکتی",
+            "description": "زیرساخت حرفه‌ای برای رشد کسب‌وکار؛ مناسب کسب‌وکارهایی که به یک وب‌سایت کامل‌تر با امکانات محتوایی و مدیریتی پیشرفته‌تر نیاز دارند.",
+            "imageUrl": "/uploads/sections/ParsaLink/Business.png",
+            "imageAlt": "Business Website",
+            "linkUrl": "#",
+            "price": "۴۰ میلیون تومان",
+            "backgroundColor": "#F5F5F5",
+            "features": "تمام امکانات پلن پایه|صفحات داینامیک|مقالات|اخبار|خدمات|نمونه‌کارها|FAQ|مدیریت محتوای پیشرفته‌تر|SEO پیشرفته‌تر"
+          },
+          {
+            "title": "فروش — فروشگاه اینترنتی",
+            "description": "راه‌اندازی فروش آنلاین حرفه‌ای؛ مناسب کسب‌وکارهایی که به یک فروشگاه اینترنتی کامل برای مدیریت محصولات، سفارش‌ها، مشتریان و فرآیند فروش نیاز دارند.",
+            "imageUrl": "/uploads/sections/ParsaLink/Ecommerce.png",
+            "imageAlt": "E-commerce Website",
+            "linkUrl": "#",
+            "price": "۶۵ میلیون تومان",
+            "backgroundColor": "#FDF1F3",
+            "features": "تمام امکانات موردنیاز سایت|محصولات|دسته‌بندی|برندها|ویژگی و تنوع محصول|سبد خرید|سفارش‌ها|موجودی|تخفیف|کوپن|مشتریان|گزارش‌ها|پرداخت آنلاین|کارت‌به‌کارت"
+          },
+          {
+            "title": "توسعه — توسعه اختصاصی و استارتاپ",
+            "description": "ساخت محصول دیجیتال اختصاصی؛ مناسب استارتاپ‌ها و کسب‌وکارهایی که به طراحی و توسعه یک محصول، پلتفرم یا سامانه اختصاصی با قابلیت‌های پیشرفته و قابل توسعه نیاز دارند.",
+            "imageUrl": "/uploads/sections/ParsaLink/Startup.png",
+            "imageAlt": "Startup Digital Product",
+            "linkUrl": "#",
+            "price": "از ۹۰ میلیون تومان",
+            "backgroundColor": "#F1F6FC",
+            "features": "طراحی UI و UX اختصاصی|توسعه امکانات اختصاصی|پنل‌های مدیریتی و کاربری اختصاصی|API و اتصال به سرویس‌های خارجی|پیاده‌سازی فرآیندهای اختصاصی کسب‌وکار|اتصال به سیستم‌ها و پلتفرم‌های خارجی|توسعه ماژول‌ها و قابلیت‌های جدید|توسعه MVP و نسخه اولیه محصول|توسعه پلتفرم و سامانه اختصاصی|داشبوردها و گزارش‌های اختصاصی|اتوماسیون فرآیندهای کسب‌وکار|توسعه زیرساخت و معماری قابل توسعه|توسعه قابلیت‌های پیشرفته و مقیاس‌پذیر"
+          }
+        ]
+      }
+    }
+  },
+  "dynamicNotes": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "backgroundColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "نکات مهم",
+        "subtitle": "شرایط و هزینه‌های جانبی",
+        "description": "موارد زیر را پیش از انتخاب پلن و شروع پروژه در نظر داشته باشید.",
+        "items": [
+          {
+            "title": "طراحی و امکانات اختصاصی",
+            "description": "امکانات و صفحات خارج از الگوی انتخاب‌شده، نیازمند طراحی اختصاصی UI/UX و توسعه فرانت‌اند و بک‌اند هستند و هزینه آن‌ها جداگانه برآورد می‌شود.",
+            "backgroundColor": "#FFFFFF"
+          },
+          {
+            "title": "سایت‌های فروشگاهی",
+            "description": "سایت‌های فروشگاهی به سرور یا VPS نیاز دارند. هزینه سرور، دامنه و سرویس‌های جانبی بر عهده مشتری است.",
+            "backgroundColor": "#FDF1F3"
+          },
+          {
+            "title": "سایت‌های شرکتی",
+            "description": "سایت‌های شرکتی در حالت پایه روی فضای اشتراکی اجرا می‌شوند. هزینه دامنه بر عهده مشتری است. در صورت افزایش حجم اطلاعات یا نیاز به منابع بیشتر، هزینه ارتقای سرویس یا سرور جداگانه محاسبه می‌شود.",
+            "backgroundColor": "#F5F5F5"
+          },
+          {
+            "title": "توسعه‌های آینده",
+            "description": "هرگونه قابلیت یا تغییر جدید خارج از امکانات پلن انتخاب‌شده، پس از بررسی فنی و توافق با مشتری، جداگانه برآورد و اجرا می‌شود.",
+            "backgroundColor": "#F1F6FC"
+          },
+          {
+            "title": "سرویس‌های جانبی",
+            "description": "هزینه سرویس‌هایی مانند درگاه پرداخت، پیامک، ایمیل، CDN و APIهای خارجی بر عهده مشتری و جدا از هزینه توسعه است.",
+            "backgroundColor": "#FFFFFF"
+          }
+        ]
       }
     }
   }

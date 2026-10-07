@@ -57,6 +57,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\Brands.json" />
 	  <None Remove="Resources\Categories.json" />
+	  <None Remove="Resources\CmsConfigurationSeed.json" />
 	  <None Remove="Resources\Products.json" />
 	  <None Remove="Resources\Products\discount-items.json" />
 	  <None Remove="Resources\Products\discounts.json" />
@@ -71,9 +72,11 @@
 	  <None Remove="Resources\SeedData.json" />
 	  <None Remove="Resources\SiteSettings.json" />
 	  <None Remove="Resources\Templates\LuxuryJewelry_Template.json" />
+	  <None Remove="Resources\Templates\ParsaLink_Template - Copy.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\CmsConfigurationSeed.json" />
 	  <EmbeddedResource Include="Resources\Products\Brands.json" />
 	  <EmbeddedResource Include="Resources\Products\Categories.json" />
 	  <EmbeddedResource Include="Resources\ContentItemRules.json" />
@@ -92,9 +95,11 @@
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="Resources\SiteSettings.json" />
+	  <EmbeddedResource Include="Resources\SiteSettings\ParsaLink_SiteSettings.json" />
+	  <EmbeddedResource Include="Resources\SiteSettings\LuxuryJewelry_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\Templates.json" />
 	  <EmbeddedResource Include="Resources\Templates\LuxuryJewelry_Template.json" />
+	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template - Copy.json" />
 	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template.json" />
 	</ItemGroup>
 

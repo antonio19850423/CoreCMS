@@ -134,4 +134,15 @@ public partial class VwSiteSettingForm
 
     [StringLength(500)]
     public string? BackgroundGradient { get; set; }
+
+    public bool? HeaderPhoneEnabled { get; set; }
+
+    [StringLength(500)]
+    public string? HeaderPhone { get; set; }
+
+    [StringLength(100)]
+    public string? HeaderPhoneIcon { get; set; }
+
+    [StringLength(50)]
+    public string? HeaderPhoneColor { get; set; }
 }

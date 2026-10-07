@@ -132,6 +132,17 @@ namespace Velora.Application.Shared.Dtos
         public string? Background { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 45, GridOrder = 45, ShowInGrid = false, ShowInForm = true)]
         public string? BackgroundGradient { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 46, GridOrder = 46, ShowInGrid = false, ShowInForm = true)]
+        public bool? HeaderPhoneEnabled { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 47, GridOrder = 47, ShowInGrid = false, ShowInForm = true,MaxLength =500)]
+        public string? HeaderPhone { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 48, GridOrder = 48, ShowInGrid = false, ShowInForm = true, MaxLength = 100)]
+        public string? HeaderPhoneIcon { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 49, GridOrder = 49, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+        public string? HeaderPhoneColor { get; set; }
 
     }
 }

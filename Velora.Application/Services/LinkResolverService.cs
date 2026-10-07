@@ -66,6 +66,9 @@ public class LinkResolverService : ILinkResolverService
                         if (page == null)
                             return null;
 
+                        if (page.IsDynamic==true)
+                            return $"/page/{page.Slug}";
+
                         return page.Slug?.Equals("home", StringComparison.OrdinalIgnoreCase) == true
                             ? "/"
                             : $"/{page.Slug}";

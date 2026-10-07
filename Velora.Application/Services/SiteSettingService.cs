@@ -110,6 +110,10 @@ namespace Velora.Application.Services
                     HasCardToCardPayment = input.HasCardToCardPayment,
                     Background=input.Background,
                     BackgroundGradient=input.BackgroundGradient,
+                    HeaderPhone=input.HeaderPhone,
+                    HeaderPhoneColor=input.HeaderPhoneColor,
+                    HeaderPhoneEnabled=input.HeaderPhoneEnabled,
+                    HeaderPhoneIcon=input.HeaderPhoneIcon,
 
 
                 };
@@ -203,6 +207,10 @@ namespace Velora.Application.Services
                     HasCardToCardPayment = input.HasCardToCardPayment,
                     Background=input.Background,
                     BackgroundGradient=input.BackgroundGradient,
+                    HeaderPhone = input.HeaderPhone,
+                    HeaderPhoneColor = input.HeaderPhoneColor,
+                    HeaderPhoneEnabled = input.HeaderPhoneEnabled,
+                    HeaderPhoneIcon = input.HeaderPhoneIcon,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

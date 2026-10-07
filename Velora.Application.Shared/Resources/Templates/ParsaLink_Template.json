@@ -26,10 +26,6 @@
             {
               "code": "howItWorks",
               "type": "howItWorks"
-            },
-            {
-              "code": "pricing",
-              "type": "pricing"
             }
           ]
         },
@@ -62,55 +58,13 @@
           ]
         },
         {
-          "pageName": "سوالات متداول",
-          "slug": "faq",
-          "isPublished": false,
-          "metaTitle": "سوالات متداول",
-          "metaDescription": "پاسخ سوالات متداول کاربران درباره خدمات، سفارشات، پشتیبانی و همکاری",
-          "metaKeywords": "FAQ, سوالات متداول, پشتیبانی, سفارش, خدمات",
-          "components": [
-            {
-              "code": "faq",
-              "type": "faq"
-            }
-          ]
-        },
-        {
           "pageName": "طرح‌بندی",
           "slug": "layout",
           "isPublished": false,
           "components": [
             {
-              "code": "footer",
+              "code": "footerdefault",
               "type": "footer"
-            }
-          ]
-        },
-        {
-          "pageName": "اخبار",
-          "slug": "news",
-          "isPublished": false,
-          "metaTitle": "اخبار و مقالات - وب‌سایت شرکتی",
-          "metaDescription": "آخرین اخبار، مقالات و به‌روزرسانی‌های سیستم مدیریت محتوا",
-          "metaKeywords": "اخبار، مقالات، CMS، تکنولوژی، آپدیت‌ها",
-          "components": [
-            {
-              "code": "newsHero",
-              "type": "hero"
-            }
-          ]
-        },
-        {
-          "pageName": "مقالات",
-          "slug": "articles",
-          "isPublished": false,
-          "metaTitle": "مقالات تخصصی - وب‌سایت شرکتی",
-          "metaDescription": "آخرین مقالات تخصصی در حوزه فناوری، توسعه نرم‌افزار و معماری سیستم‌ها",
-          "metaKeywords": "مقالات، فناوری، برنامه‌نویسی، معماری نرم‌افزار، CMS",
-          "components": [
-            {
-              "code": "articleHero",
-              "type": "hero"
             }
           ]
         },
@@ -119,44 +73,46 @@
           "slug": "services",
           "isPublished": false,
           "IsDynamic": true,
-          "metaTitle": "خدمات تخصصی توسعه نرم‌افزار و طراحی سیستم‌های مدرن",
-          "metaDescription": "ارائه خدمات حرفه‌ای شامل طراحی UI/UX، توسعه API، و معماری نرم‌افزارهای مقیاس‌پذیر",
-          "metaKeywords": "خدمات، طراحی UI، توسعه API، معماری نرم‌افزار، Microservices",
+          "metaTitle": "خدمات طراحی و توسعه وب‌سایت و نرم‌افزار اختصاصی",
+          "metaDescription": "ارائه خدمات تخصصی طراحی UI/UX، توسعه وب‌سایت و فروشگاه آنلاین، طراحی API، توسعه نرم‌افزار اختصاصی و پیاده‌سازی راهکارهای متناسب با نیاز کسب‌وکارها.",
+          "metaKeywords": "خدمات طراحی سایت، توسعه وب‌سایت، طراحی UI UX، فروشگاه اینترنتی، توسعه API، نرم افزار اختصاصی، طراحی سیستم، توسعه سامانه، CMS، خدمات برنامه نویسی",
           "components": [
             {
-              "code": "dynamicHero",
-              "type": "hero"
-            },
-            {
-              "code": "dynamicRichContent",
-              "type": "richContent"
-            },
-            {
-              "code": "dynamicGallery",
+              "code": "templateGallery",
               "type": "gallery"
             },
             {
-              "code": "dynamicVideoSection",
-              "type": "video"
+              "code": "dynamicNotes",
+              "type": "note"
             }
           ]
         },
         {
-          "pageName": "حریم خصوصی",
-          "slug": "privacy-policy",
+          "pageName": "سوالات متداول",
+          "slug": "faq",
           "isPublished": false,
-          "IsDynamic": false,
-          "metaTitle": "سیاست حفظ حریم خصوصی | نحوه جمع‌آوری و حفاظت از اطلاعات کاربران",
-          "metaDescription": "در این صفحه نحوه جمع‌آوری، نگهداری، استفاده و محافظت از اطلاعات شخصی کاربران، استفاده از کوکی‌ها و حقوق کاربران توضیح داده شده است.",
-          "metaKeywords": "حریم خصوصی، Privacy Policy، امنیت اطلاعات، اطلاعات کاربران، کوکی، حفاظت از داده، GDPR",
+          "metaTitle": "سوالات متداول | پارسا لینک",
+          "metaDescription": "پاسخ به سوالات متداول درباره پارسا لینک، نحوه ثبت درخواست، مشاوره، هزینه خدمات و راه‌های ارتباطی",
+          "metaKeywords": "پارسا لینک, سوالات متداول, خدمات, مشاوره, ثبت درخواست, پشتیبانی, ارتباط با ما",
           "components": [
             {
-              "code": "defaultPrivacyHero",
-              "type": "hero"
-            },
-            {
-              "code": "defaultPrivacyFaq",
+              "code": "faq-pasralink",
               "type": "faq"
+            }
+          ]
+        },
+        {
+          "pageName": "نمونه‌کارها",
+          "slug": "portfolio",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "نمونه‌کارهای طراحی سایت و توسعه نرم‌افزار | پارسا لینک",
+          "metaDescription": "مشاهده نمونه‌کارهای پارسا لینک در زمینه طراحی و توسعه وب‌سایت، فروشگاه اینترنتی، طراحی UI/UX، توسعه نرم‌افزار اختصاصی و راهکارهای دیجیتال.",
+          "metaKeywords": "نمونه کار طراحی سایت، نمونه کار طراحی وب، نمونه کار فروشگاه اینترنتی، نمونه کار UI UX، نمونه کار توسعه نرم افزار، نمونه کار برنامه نویسی، پارسا لینک",
+          "components": [
+            {
+              "code": "templateGallery",
+              "type": "gallery"
             }
           ]
         }

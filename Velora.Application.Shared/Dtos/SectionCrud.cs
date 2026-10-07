@@ -99,7 +99,7 @@ namespace Velora.Application.Shared.Dtos
         public string? IconColor { get; set; }
 
         // Colors (hidden)
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 20, GridOrder = 20, ShowInGrid = false, ShowInForm = false, MaxLength = 50)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 20, GridOrder = 20, ShowInGrid = false, ShowInForm = false, MaxLength = 500)]
         public string? BackgroundColor { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 21, GridOrder = 21, ShowInGrid = false, ShowInForm = false, MaxLength = 50)]

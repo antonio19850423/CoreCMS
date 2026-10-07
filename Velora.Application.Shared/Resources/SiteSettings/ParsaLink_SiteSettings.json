@@ -1,0 +1,45 @@
+﻿{
+  "SiteSettings": {
+    "SiteName": "پارسا لینک",
+    "DomainName": "localhost",
+
+    "LogoUrl": "/uploads/sections/parsa-link-logo.png",
+    "LogoAlt": "لوگوی پارسا لینک",
+
+    "DarkLogoUrl": "/uploads/sections/parsa-link-logo.png",
+    "DarkLogoAlt": "لوگوی پارسا لینک",
+
+    "FaviconUrl": "/uploads/sections/parsa-link-logo.png",
+
+    "PhoneTitle": "تماس با ما",
+    "Phone": "021-00000000",
+
+    "Phone2Title": "شماره تماس دوم",
+    "Phone2": "021-11111111",
+
+    "MobileTitle": "شماره موبایل",
+    "Mobile": "09120000000",
+
+    "FaxTitle": "فکس",
+    "Fax": "021-22222222",
+
+    "Email": "info@parsalink.ir",
+
+    "AddressTitle": "آدرس دفتر",
+    "Address": "تهران، ایران",
+
+    "Address2Title": "آدرس شعبه دوم",
+    "Address2": "تهران، ایران",
+    "HeaderPhoneIcon": "☎",
+    "HeaderPhone": "021-00000000|09120000000",
+    "HeaderPhoneColor": "#C62828",
+    "HeaderPhoneEnabled": true,
+    "DefaultMetaTitle": "پارسا لینک | طراحی سایت، توسعه نرم‌افزار و راهکارهای دیجیتال",
+
+    "DefaultMetaDescription": "پارسا لینک؛ ارائه‌دهنده خدمات طراحی و توسعه وب‌سایت، طراحی فروشگاه اینترنتی، توسعه نرم‌افزار و راهکارهای دیجیتال برای کسب‌وکارها و استارتاپ‌ها.",
+
+    "DefaultMetaKeywords": "پارسا لینک, طراحی سایت, طراحی وب سایت, طراحی فروشگاه اینترنتی, توسعه سایت, توسعه نرم افزار, برنامه نویسی, استارتاپ, خدمات دیجیتال, طراحی سایت شرکتی, طراحی سایت فروشگاهی, اپلیکیشن, سئو",
+
+    "IsActive": true
+  }
+}

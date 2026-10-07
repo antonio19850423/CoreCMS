@@ -881,6 +881,7 @@ public partial class CoreCmsContext : DbContext
 
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.HeaderPhoneColor).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(true);
         });
 
@@ -1222,6 +1223,8 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteGlobalSetting>(entity =>
         {
             entity.ToView("VwSiteGlobalSettings", "cms");
+
+            entity.Property(e => e.HeaderPhoneColor).IsFixedLength();
         });
 
         modelBuilder.Entity<VwSiteMenuForm>(entity =>
@@ -1232,6 +1235,8 @@ public partial class CoreCmsContext : DbContext
         modelBuilder.Entity<VwSiteSettingForm>(entity =>
         {
             entity.ToView("VwSiteSettingForm", "cms");
+
+            entity.Property(e => e.HeaderPhoneColor).IsFixedLength();
         });
 
         modelBuilder.Entity<VwSmsLogForm>(entity =>

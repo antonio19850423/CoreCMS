@@ -82,6 +82,10 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             TaxPercentage = x.TaxPercentage,
             Background= x.Background??"" ,
             BackgroundGradient= x.BackgroundGradient??"" ,
+            HeaderPhoneIcon= x.HeaderPhoneIcon??"",
+            HeaderPhone= x.HeaderPhone??"",
+            HeaderPhoneColor= x.HeaderPhoneColor??"",
+            HeaderPhoneEnabled= x.HeaderPhoneEnabled
         });
     }
 

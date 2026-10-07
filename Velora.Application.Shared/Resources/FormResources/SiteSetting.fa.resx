@@ -252,4 +252,16 @@
   <data name="SiteSetting.BackgroundGradient" xml:space="preserve">
     <value>طیف رنگی پس‌زمینه</value>
   </data>
+  <data name="SiteSetting.HeaderPhoneIcon" xml:space="preserve">
+    <value>آیکون شماره تماس</value>
+  </data>
+  <data name="SiteSetting.HeaderPhone" xml:space="preserve">
+    <value>شماره تماس</value>
+  </data>
+  <data name="SiteSetting.HeaderPhoneColor" xml:space="preserve">
+    <value>رنگ شماره تماس</value>
+  </data>
+  <data name="SiteSetting.HeaderPhoneEnabled" xml:space="preserve">
+    <value>نمایش شماره تماس</value>
+  </data>
 </root>

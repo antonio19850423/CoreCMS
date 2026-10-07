@@ -1839,6 +1839,13 @@ namespace Velora.Application.Seeds
                         DefaultMetaTitle = siteSettings.DefaultMetaTitle,
                         DefaultMetaDescription = siteSettings.DefaultMetaDescription,
                         DefaultMetaKeywords = siteSettings.DefaultMetaKeywords,
+                        HeaderPhoneEnabled = siteSettings.HeaderPhoneEnabled,
+                        HeaderPhoneColor=siteSettings.HeaderPhoneColor,
+                        HeaderPhoneIcon=siteSettings.HeaderPhoneIcon,
+                        HeaderPhone=siteSettings.HeaderPhone,
+                        Background=siteSettings.Background,
+                        BackgroundGradient=siteSettings.BackgroundGradient,
+                        
 
                         IsActive = siteSettings.IsActive
                     };
@@ -1957,54 +1964,343 @@ namespace Velora.Application.Seeds
 
         public async Task SeedCoreCmsConfigurationAsync()
         {
-            const string seederName = SeederNames.Core_CmsConfiguration;
+            // ---------------------------------------------------------
+            // SEEDER CONFIGURATION
+            // ---------------------------------------------------------
 
-            // جلوگیری از اجرای دوباره seeder
-            if (await _seedHistoryService.GetByNameAsync(seederName) != null)
+            var enabled =
+                _configuration.GetValue<bool>(
+                    "Seed:CmsConfiguration:Enabled");
+
+            if (!enabled)
                 return;
 
-            var existing = await _cmsConfigurationService
-                .FirstOrDefaultAsync<SqlCmsConfiguration>(x => x.IsActive);
+            var configurationFile =
+                _configuration.GetValue<string>(
+                    "Seed:CmsConfiguration:File");
+
+            if (string.IsNullOrWhiteSpace(configurationFile))
+            {
+                throw new InvalidOperationException(
+                    "Seed:CmsConfiguration:File is not configured.");
+            }
+
+            var configurationType =
+                _configuration.GetValue<string>(
+                    "Seed:CmsConfiguration:Type");
+
+            if (string.IsNullOrWhiteSpace(configurationType))
+                configurationType = "company";
+
+
+            // ---------------------------------------------------------
+            // LOAD JSON RESOURCE
+            // ---------------------------------------------------------
+
+            var assembly =
+                typeof(CmsConfigurationSeedModel).Assembly;
+
+            var configurationResourceName =
+                $"Velora.Application.Shared.Resources.{configurationFile
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            using var configurationStream =
+                assembly.GetManifestResourceStream(
+                    configurationResourceName);
+
+            if (configurationStream == null)
+            {
+                throw new FileNotFoundException(
+                    $"CMS configuration seed resource '{configurationResourceName}' not found.");
+            }
+
+
+            // ---------------------------------------------------------
+            // DESERIALIZE JSON
+            // ---------------------------------------------------------
+
+            var configurationModel =
+                await JsonSerializer.DeserializeAsync<CmsConfigurationSeedModel>(
+                    configurationStream,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (configurationModel == null)
+            {
+                throw new InvalidOperationException(
+                    $"Invalid CMS Configuration JSON: {configurationFile}");
+            }
+
+
+            // ---------------------------------------------------------
+            // SELECT CONFIGURATION TYPE
+            // ---------------------------------------------------------
+
+            CmsConfigurationSeedSection selectedConfiguration;
+
+            switch (configurationType.Trim().ToLowerInvariant())
+            {
+                case "base":
+                    selectedConfiguration =
+                        configurationModel.Base;
+                    break;
+
+                case "company":
+                    selectedConfiguration =
+                        configurationModel.Company;
+                    break;
+
+                case "shop":
+                    selectedConfiguration =
+                        configurationModel.Shop;
+                    break;
+
+                default:
+                    throw new InvalidOperationException(
+                        $"Invalid CMS configuration type '{configurationType}'. " +
+                        $"Valid values are: base, company, shop.");
+            }
+
+
+            // ---------------------------------------------------------
+            // VALIDATE
+            // ---------------------------------------------------------
+
+            if (selectedConfiguration == null)
+            {
+                throw new InvalidOperationException(
+                    $"CMS configuration '{configurationType}' not found in '{configurationFile}'.");
+            }
+
+
+            // ---------------------------------------------------------
+            // FIND EXISTING CONFIGURATION
+            // ---------------------------------------------------------
+
+            var existing =
+                await _cmsConfigurationService
+                    .FirstOrDefaultAsync<SqlCmsConfiguration>(
+                        x => x.IsActive);
+
+
+            // ---------------------------------------------------------
+            // CREATE
+            // ---------------------------------------------------------
 
             if (existing.Data == null)
             {
-                // ✅ CREATE
-                await _cmsConfigurationService.CreateAsync(new CmsConfigurationDto
-                {
-                    DefaultTheme = "default",
+                var configurationDto =
+                    new CmsConfigurationDto
+                    {
+                        DefaultTheme =
+                            selectedConfiguration.DefaultTheme
+                            ?? configurationModel.Base.DefaultTheme
+                            ?? "default",
 
-                    EnableBlog = true,
-                    EnableShop = true,
-                    EnableNews = true,
+                        EnableShop =
+                            selectedConfiguration.EnableShop
+                            ?? configurationModel.Base.EnableShop
+                            ?? false,
 
-                    EnableSeo = true,
-                    EnableCache = true,
-                    EnableComments = false,
-                    EnableMultiLanguage = false,
+                        EnableBlog =
+                            selectedConfiguration.EnableBlog
+                            ?? configurationModel.Base.EnableBlog
+                            ?? false,
 
-                    SiteType = SiteTypes.COMPANY,
-                    IsActive = true
-                });
+                        EnableNews =
+                            selectedConfiguration.EnableNews
+                            ?? configurationModel.Base.EnableNews
+                            ?? false,
+
+                        EnableMultiLanguage =
+                            selectedConfiguration.EnableMultiLanguage
+                            ?? configurationModel.Base.EnableMultiLanguage
+                            ?? false,
+
+                        EnableComments =
+                            selectedConfiguration.EnableComments
+                            ?? configurationModel.Base.EnableComments
+                            ?? false,
+
+                        EnableSeo =
+                            selectedConfiguration.EnableSeo
+                            ?? configurationModel.Base.EnableSeo
+                            ?? false,
+
+                        EnableCache =
+                            selectedConfiguration.EnableCache
+                            ?? configurationModel.Base.EnableCache
+                            ?? true,
+
+                        EnableFaq =
+                            selectedConfiguration.EnableFaq
+                            ?? configurationModel.Base.EnableFaq
+                            ?? false,
+
+                        EnablePrivacy =
+                            selectedConfiguration.EnablePrivacy
+                            ?? configurationModel.Base.EnablePrivacy
+                            ?? false,
+
+                        EnableDynamicPages =
+                            selectedConfiguration.EnableDynamicPages
+                            ?? configurationModel.Base.EnableDynamicPages
+                            ?? false,
+
+                        EnableProductCategoriesMenu =
+                            selectedConfiguration.EnableProductCategoriesMenu
+                            ?? configurationModel.Base.EnableProductCategoriesMenu
+                            ?? false,
+
+                        EnableProductBrandsMenu =
+                            selectedConfiguration.EnableProductBrandsMenu
+                            ?? configurationModel.Base.EnableProductBrandsMenu
+                            ?? false,
+
+                        EnableProductSearchMenu =
+                            selectedConfiguration.EnableProductSearchMenu
+                            ?? configurationModel.Base.EnableProductSearchMenu
+                            ?? false,
+
+                        EnableUserLogin =
+                            selectedConfiguration.EnableUserLogin
+                            ?? configurationModel.Base.EnableUserLogin
+                            ?? false,
+
+                        EnableUserRegistration =
+                            selectedConfiguration.EnableUserRegistration
+                            ?? configurationModel.Base.EnableUserRegistration
+                            ?? false,
+
+                        SiteType =
+                            selectedConfiguration.SiteType
+                            ?? configurationModel.Base.SiteType
+                            ?? SiteTypes.COMPANY,
+
+                        IsActive =
+                            selectedConfiguration.IsActive
+                            ?? configurationModel.Base.IsActive
+                            ?? true
+                    };
+
+                await _cmsConfigurationService
+                    .CreateAsync(configurationDto);
             }
+
+
+            // ---------------------------------------------------------
+            // UPDATE
+            // ---------------------------------------------------------
+
             else
             {
-                // 🔥 UPDATE
-                existing.Data.DefaultTheme = "default";
+                var existingConfiguration =
+                    existing.Data;
 
-                existing.Data.EnableBlog = true;
-                existing.Data.EnableShop = true;
-                existing.Data.EnableNews = true;
+                existingConfiguration.DefaultTheme =
+                    selectedConfiguration.DefaultTheme
+                    ?? configurationModel.Base.DefaultTheme
+                    ?? "default";
 
-                existing.Data.EnableSeo = true;
-                existing.Data.EnableCache = true;
-                existing.Data.EnableComments = false;
-                existing.Data.EnableMultiLanguage = false;
+                existingConfiguration.EnableShop =
+                    selectedConfiguration.EnableShop
+                    ?? configurationModel.Base.EnableShop
+                    ?? false;
 
-                existing.Data.SiteType = SiteTypes.COMPANY;
-                existing.Data.IsActive = true;
+                existingConfiguration.EnableBlog =
+                    selectedConfiguration.EnableBlog
+                    ?? configurationModel.Base.EnableBlog
+                    ?? false;
 
-                await _cmsConfigurationService.UpdateAsync(existing.Data,existing.Data.Id);
+                existingConfiguration.EnableNews =
+                    selectedConfiguration.EnableNews
+                    ?? configurationModel.Base.EnableNews
+                    ?? false;
+
+                existingConfiguration.EnableMultiLanguage =
+                    selectedConfiguration.EnableMultiLanguage
+                    ?? configurationModel.Base.EnableMultiLanguage
+                    ?? false;
+
+                existingConfiguration.EnableComments =
+                    selectedConfiguration.EnableComments
+                    ?? configurationModel.Base.EnableComments
+                    ?? false;
+
+                existingConfiguration.EnableSeo =
+                    selectedConfiguration.EnableSeo
+                    ?? configurationModel.Base.EnableSeo
+                    ?? false;
+
+                existingConfiguration.EnableCache =
+                    selectedConfiguration.EnableCache
+                    ?? configurationModel.Base.EnableCache
+                    ?? true;
+
+                existingConfiguration.EnableFaq =
+                    selectedConfiguration.EnableFaq
+                    ?? configurationModel.Base.EnableFaq
+                    ?? false;
+
+                existingConfiguration.EnablePrivacy =
+                    selectedConfiguration.EnablePrivacy
+                    ?? configurationModel.Base.EnablePrivacy
+                    ?? false;
+
+                existingConfiguration.EnableDynamicPages =
+                    selectedConfiguration.EnableDynamicPages
+                    ?? configurationModel.Base.EnableDynamicPages
+                    ?? false;
+
+                existingConfiguration.EnableProductCategoriesMenu =
+                    selectedConfiguration.EnableProductCategoriesMenu
+                    ?? configurationModel.Base.EnableProductCategoriesMenu
+                    ?? false;
+
+                existingConfiguration.EnableProductBrandsMenu =
+                    selectedConfiguration.EnableProductBrandsMenu
+                    ?? configurationModel.Base.EnableProductBrandsMenu
+                    ?? false;
+
+                existingConfiguration.EnableProductSearchMenu =
+                    selectedConfiguration.EnableProductSearchMenu
+                    ?? configurationModel.Base.EnableProductSearchMenu
+                    ?? false;
+
+                existingConfiguration.EnableUserLogin =
+                    selectedConfiguration.EnableUserLogin
+                    ?? configurationModel.Base.EnableUserLogin
+                    ?? false;
+
+                existingConfiguration.EnableUserRegistration =
+                    selectedConfiguration.EnableUserRegistration
+                    ?? configurationModel.Base.EnableUserRegistration
+                    ?? false;
+
+                existingConfiguration.SiteType =
+                    selectedConfiguration.SiteType
+                    ?? configurationModel.Base.SiteType
+                    ?? SiteTypes.COMPANY;
+
+                existingConfiguration.IsActive =
+                    selectedConfiguration.IsActive
+                    ?? configurationModel.Base.IsActive
+                    ?? true;
+
+
+                await _cmsConfigurationService
+                    .UpdateAsync(
+                        existingConfiguration,
+                        existingConfiguration.Id);
             }
+
+
+            // ---------------------------------------------------------
+            // COMMIT
+            // ---------------------------------------------------------
 
             await _transactionService.CommitAsync();
         }
