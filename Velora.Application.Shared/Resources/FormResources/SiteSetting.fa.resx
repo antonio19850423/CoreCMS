@@ -264,4 +264,19 @@
   <data name="SiteSetting.HeaderPhoneEnabled" xml:space="preserve">
     <value>نمایش شماره تماس</value>
   </data>
+  <data name="SiteSetting.FooterBackgroundColor" xml:space="preserve">
+    <value>رنگ پس‌زمینه فوتر</value>
+  </data>
+  <data name="SiteSetting.FooterTextColor" xml:space="preserve">
+    <value>رنگ متن فوتر</value>
+  </data>
+  <data name="SiteSetting.HeaderBackgroundColor" xml:space="preserve">
+    <value>رنگ پس‌زمینه هدر</value>
+  </data>
+  <data name="SiteSetting.HeaderTextColor" xml:space="preserve">
+    <value>رنگ متن هدر</value>
+  </data>
+  <data name="SiteSetting.TextColor" xml:space="preserve">
+    <value>رنگ متن عمومی</value>
+  </data>
 </root>

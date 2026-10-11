@@ -509,7 +509,7 @@ int pageSize)
                         IsBestSellingProducts= s.IsBestSellingProducts,
                         IsLatestNews = s.IsLatestNews,
                         IsSpecialOffers = s.IsSpecialOffers,
-                        
+                        TextColor = s.TextColor,
 
                         // فقط این قسمت جایگزین mapping قبلی SectionItems شده
                         Items = await BuildSectionItemsAsync(s)

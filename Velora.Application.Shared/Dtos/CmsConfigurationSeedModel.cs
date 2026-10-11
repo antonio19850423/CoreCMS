@@ -9,6 +9,7 @@ namespace Velora.Application.Shared.Dtos
     public class CmsConfigurationSeedModel
     {
         public CmsConfigurationSeedSection Base { get; set; } = new();
+        public CmsConfigurationSeedSection Dynamic { get; set; } = new();
         public CmsConfigurationSeedSection Company { get; set; } = new();
         public CmsConfigurationSeedSection Shop { get; set; } = new();
     }

@@ -143,6 +143,25 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 49, GridOrder = 49, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
         public string? HeaderPhoneColor { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 50, GridOrder = 50, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+
+        public string? HeaderBackgroundColor { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 51, GridOrder = 51, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+
+        public string? HeaderTextColor { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 52, GridOrder = 52, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+
+        public string? FooterBackgroundColor { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 53, GridOrder = 53, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+
+        public string? FooterTextColor { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 54, GridOrder = 54, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+
+        public string? TextColor { get; set; }
 
     }
 }

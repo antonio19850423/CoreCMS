@@ -96,7 +96,14 @@ public class SectionItemGqlResolver : ISectionItemGqlResolver
             BrandId = x.BrandId,
             BrandName = x.BrandName,
             CategoryName = x.CategoryName,
-            ProductName = x.ProductName 
+            ProductName = x.ProductName ,
+            TextColor = x.TextColor??"",
+            DiscountAmount = x.DiscountAmount,
+            DiscountPercent = x.DiscountPercent,
+            HasDiscount = x.HasDiscount,
+            OriginalPrice = x.OriginalPrice,
+            ProductSlug = x.ProductSlug??"",
+            BackgroundGradient=x.BackgroundGradient??"",
         });
     }
 

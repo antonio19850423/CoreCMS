@@ -216,5 +216,9 @@ namespace Velora.Application.Shared.Dtos
 
         public decimal? OriginalPrice { get; set; }
         public string? ProductSlug { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 42, GridOrder = 42, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+        public string? TextColor { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 43, GridOrder = 43, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? BackgroundGradient { get; set; }
     }
 }

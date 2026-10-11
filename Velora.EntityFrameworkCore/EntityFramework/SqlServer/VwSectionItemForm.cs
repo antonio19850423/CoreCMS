@@ -168,4 +168,10 @@ public partial class VwSectionItemForm
 
     [StringLength(150)]
     public string? ProductName { get; set; }
+
+    [StringLength(50)]
+    public string? TextColor { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
 }

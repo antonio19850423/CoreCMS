@@ -1,0 +1,58 @@
+﻿{
+  "SiteSettings": {
+    "SiteName": "رُز",
+    "DomainName": "localhost",
+
+    "LogoUrl": "/uploads/sections/roze/Roze-Logo.png",
+    "LogoAlt": "لوگوی رستوران رُز",
+
+    "DarkLogoUrl": "/uploads/sections/roze/Roze-Logo.png",
+    "DarkLogoAlt": "لوگوی رستوران رُز",
+
+    "FaviconUrl": "/uploads/sections/roze/Roze-Logo.ico",
+
+    "PhoneTitle": "رزرو و تماس",
+    "Phone": "021-00000000",
+
+    "Phone2Title": "شماره تماس دوم",
+    "Phone2": "021-11111111",
+
+    "MobileTitle": "شماره موبایل",
+    "Mobile": "09120000000",
+
+    "FaxTitle": "فکس",
+    "Fax": "021-22222222",
+
+    "Email": "info@roze.ir",
+
+    "AddressTitle": "آدرس رستوران",
+    "Address": "تهران، ایران",
+
+    "Address2Title": "آدرس شعبه دوم",
+    "Address2": "تهران، ایران",
+
+    "HeaderPhoneIcon": "◉",
+    "HeaderPhone": "021-00000000|09120000000",
+    "HeaderPhoneColor": "#8F3D3A",
+    "HeaderPhoneEnabled": true,
+
+    "Background": "#5E2424",
+    "BackgroundGradient": null,
+
+    "HeaderBackgroundColor": "#5E2424",
+    "HeaderTextColor": "#FFF8F0",
+
+    "FooterBackgroundColor": "#5E2424",
+    "FooterTextColor": "#FFF8F0",
+
+    "TextColor": "#FFF8F0",
+
+    "DefaultMetaTitle": "رستوران رُز | تجربه‌ای متفاوت از طعم و کیفیت",
+
+    "DefaultMetaDescription": "رستوران رُز؛ تجربه‌ای متفاوت از غذا، طعم و فضا با استفاده از مواد اولیه تازه و ارائه غذاهایی باکیفیت در محیطی گرم و دلنشین.",
+
+    "DefaultMetaKeywords": "رستوران رُز, رستوران رز, Roze Restaurant, رستوران تهران, بهترین رستوران, غذای ایرانی, غذای فرنگی, استیک, پاستا, برگر, دسر, رزرو رستوران, منوی رستوران",
+
+    "IsActive": true
+  }
+}

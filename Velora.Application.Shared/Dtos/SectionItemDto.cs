@@ -160,5 +160,9 @@ namespace Velora.Application.Shared.Dtos
 
         public decimal? OriginalPrice { get; set; }
         public string? ProductSlug { get; set; }
+        [StringLength(50)]
+        public string? TextColor { get; set; }
+        [StringLength(500)]
+        public string? BackgroundGradient { get; set; }
     }
 }

@@ -330,4 +330,10 @@
   <data name="Section.ButtonColor" xml:space="preserve">
     <value>ButtonColor</value>
   </data>
+  <data name="Section.TextColor" xml:space="preserve">
+    <value>TextColor</value>
+  </data>
+  <data name="Section.BackgroundGradient" xml:space="preserve">
+    <value>BackgroundGradient</value>
+  </data>
 </root>

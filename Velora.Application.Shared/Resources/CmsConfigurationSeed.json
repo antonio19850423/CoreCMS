@@ -10,13 +10,13 @@
     "EnableCache": true,
     "EnableFaq": false,
     "EnablePrivacy": false,
-    "EnableDynamicPages": false,
+    "EnableDynamicPages": true,
     "EnableProductCategoriesMenu": false,
     "EnableProductBrandsMenu": false,
     "EnableProductSearchMenu": false,
     "EnableUserLogin": false,
     "EnableUserRegistration": false,
-    "SiteType": "COMPANY",
+    "SiteType": "Base",
     "IsActive": true
   },
 
@@ -59,6 +59,26 @@
     "EnableUserLogin": true,
     "EnableUserRegistration": true,
     "SiteType": "SHOP",
+    "IsActive": true
+  },
+  "dynamic": {
+    "DefaultTheme": "default",
+    "EnableShop": false,
+    "EnableBlog": false,
+    "EnableNews": false,
+    "EnableMultiLanguage": false,
+    "EnableComments": false,
+    "EnableSeo": false,
+    "EnableCache": true,
+    "EnableFaq": false,
+    "EnablePrivacy": false,
+    "EnableDynamicPages": true,
+    "EnableProductCategoriesMenu": false,
+    "EnableProductBrandsMenu": false,
+    "EnableProductSearchMenu": false,
+    "EnableUserLogin": true,
+    "EnableUserRegistration": true,
+    "SiteType": "ِynamic",
     "IsActive": true
   }
 }

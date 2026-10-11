@@ -212,6 +212,10 @@ namespace Velora.Application.Shared.Dtos
         public bool? IsLatestProducts { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 56, GridOrder = 56, ShowInGrid = false, ShowInForm = true,MaxLength =50)]
         public string? ButtonColor { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 57, GridOrder = 57, ShowInGrid = false, ShowInForm = true, MaxLength = 50)]
+        public string? TextColor { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 58, GridOrder = 58, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? BackgroundGradient { get; set; }
 
     }
 }

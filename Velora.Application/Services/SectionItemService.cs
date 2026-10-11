@@ -118,9 +118,11 @@ namespace Velora.Application.Services
                     CategoryId=input.CategoryId,
                     Answer=input.Answer,
                     ProductId=input.ProductId,
+                    TextColor = input.TextColor,
+                    BackgroundGradient=input.BackgroundGradient,
+                    
 
-                    
-                    
+
                 };
 
                 var result = await CreateAsync(SectionItem);
@@ -220,6 +222,8 @@ namespace Velora.Application.Services
                     BrandId = input.BrandId,
                     CategoryId = input.CategoryId,
                     ProductId = input.ProductId,
+                    TextColor = input.TextColor,
+                    BackgroundGradient=input.BackgroundGradient,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

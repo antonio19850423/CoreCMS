@@ -114,6 +114,11 @@ namespace Velora.Application.Services
                     HeaderPhoneColor=input.HeaderPhoneColor,
                     HeaderPhoneEnabled=input.HeaderPhoneEnabled,
                     HeaderPhoneIcon=input.HeaderPhoneIcon,
+                    FooterBackgroundColor=input.FooterBackgroundColor,
+                    HeaderBackgroundColor=input.HeaderBackgroundColor,
+                    HeaderTextColor=input.HeaderTextColor,
+                    FooterTextColor=input.FooterTextColor,
+                    TextColor=input.TextColor,
 
 
                 };
@@ -211,6 +216,11 @@ namespace Velora.Application.Services
                     HeaderPhoneColor = input.HeaderPhoneColor,
                     HeaderPhoneEnabled = input.HeaderPhoneEnabled,
                     HeaderPhoneIcon = input.HeaderPhoneIcon,
+                    FooterBackgroundColor = input.FooterBackgroundColor,
+                    HeaderBackgroundColor = input.HeaderBackgroundColor,
+                    HeaderTextColor = input.HeaderTextColor,
+                    FooterTextColor = input.FooterTextColor,
+                    TextColor = input.TextColor,
                 };
 
                 var result = await UpdateAsync(userUpdateDto, input.Id);

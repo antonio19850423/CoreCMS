@@ -140,5 +140,19 @@ namespace Velora.Application.Shared.Dtos
 
         [StringLength(50)]
         public string? HeaderPhoneColor { get; set; }
+        [StringLength(500)]
+        public string? HeaderBackgroundColor { get; set; }
+
+        [StringLength(50)]
+        public string? HeaderTextColor { get; set; }
+
+        [StringLength(500)]
+        public string? FooterBackgroundColor { get; set; }
+
+        [StringLength(50)]
+        public string? FooterTextColor { get; set; }
+
+        [StringLength(50)]
+        public string? TextColor { get; set; }
     }
 }

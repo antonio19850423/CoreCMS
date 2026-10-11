@@ -297,4 +297,10 @@
   <data name="SectionItem.ProductName" xml:space="preserve">
     <value>ProductName</value>
   </data>
+  <data name="SectionItem.TextColor" xml:space="preserve">
+    <value>TextColor</value>
+  </data>
+  <data name="SectionItem.BackgroundGradient" xml:space="preserve">
+    <value>BackgroundGradient</value>
+  </data>
 </root>

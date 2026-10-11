@@ -85,7 +85,12 @@ public class SiteSettingGqlResolver : ISiteSettingGqlResolver
             HeaderPhoneIcon= x.HeaderPhoneIcon??"",
             HeaderPhone= x.HeaderPhone??"",
             HeaderPhoneColor= x.HeaderPhoneColor??"",
-            HeaderPhoneEnabled= x.HeaderPhoneEnabled
+            HeaderPhoneEnabled= x.HeaderPhoneEnabled,
+            FooterBackgroundColor= x.FooterBackgroundColor??"",
+            FooterTextColor= x.FooterTextColor??"",
+            HeaderBackgroundColor= x.HeaderBackgroundColor??"",
+            HeaderTextColor= x.HeaderTextColor??"",
+            TextColor = x.TextColor ?? ""
         });
     }
 

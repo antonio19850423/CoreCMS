@@ -415,6 +415,106 @@ namespace Velora.Application.Seeds
             });
             await _transactionService.CommitAsync();
         }
+        private async Task<string?> GetConfiguredTemplateNameAsync()
+        {
+            var enabled = _configuration.GetValue<bool>(
+                "Seed:Templates:Enabled");
+
+            if (!enabled)
+                return null;
+
+            var templateFile = _configuration.GetValue<string>(
+                "Seed:Templates:File");
+
+            if (string.IsNullOrWhiteSpace(templateFile))
+            {
+                throw new InvalidOperationException(
+                    "Seed:Templates:File is not configured.");
+            }
+
+            var assembly = typeof(SeedJsonModel).Assembly;
+
+            var resourceName =
+                $"Velora.Application.Shared.Resources.{templateFile
+                    .Replace("/", ".")
+                    .Replace("\\", ".")}";
+
+            using var stream =
+                assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+            {
+                throw new FileNotFoundException(
+                    $"Template seed resource '{resourceName}' not found.");
+            }
+
+            var model =
+                await JsonSerializer.DeserializeAsync<TemplateSeedModel>(
+                    stream,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+            if (model == null)
+            {
+                throw new InvalidOperationException(
+                    $"Invalid template JSON: {templateFile}");
+            }
+
+            var template = model.Templates?.FirstOrDefault();
+
+            if (template == null)
+            {
+                throw new InvalidOperationException(
+                    $"No template found in '{templateFile}'.");
+            }
+
+            return template.TemplateName;
+        }
+        private async Task SeedTemplateSpecificMenusAsync(
+    List<SiteMenuCrud> existingMenus,
+    Guid? pageLinkTypeId)
+        {
+            var templateName = await GetConfiguredTemplateNameAsync();
+
+            // =========================================================
+            // Roze_Template
+            // =========================================================
+
+            if (string.Equals(
+                templateName,
+                "Roze_Template",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                var restaurantMenuPageId =
+                    await GetPageIdBySlugAsync("menu");
+
+                if (restaurantMenuPageId.HasValue)
+                {
+                    await EnsureMenuAsync(
+                        existingMenus,
+                        text: "منوی رستوران",
+                        linkTypeId: pageLinkTypeId,
+                        targetId: restaurantMenuPageId,
+                        parentId: null,
+                        sortOrder: 1,
+                        enabled: true);
+                }
+            }
+            else
+            {
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "منوی رستوران",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: await GetPageIdBySlugAsync("menu"),
+                    parentId: null);
+            }
+
+            // منوهای اختصاصی قالب‌های آینده را از اینجا اضافه کن.
+        }
+
         private async Task SeedMenusAsync()
         {
             var configurations = await _cmsConfigurationService.GetAllViews();
@@ -457,6 +557,13 @@ namespace Velora.Application.Seeds
                     sortOrder: 0,
                     enabled: true);
             }
+            // =========================================================
+            // Template Specific Menus
+            // =========================================================
+
+            await SeedTemplateSpecificMenusAsync(
+                existingMenus,
+                pageLinkTypeId);
 
             // About Us
             var aboutPageId = await GetPageIdBySlugAsync("about");
@@ -1835,7 +1942,6 @@ namespace Velora.Application.Seeds
 
                         Address2Title = siteSettings.Address2Title,
                         Address2 = siteSettings.Address2,
-
                         DefaultMetaTitle = siteSettings.DefaultMetaTitle,
                         DefaultMetaDescription = siteSettings.DefaultMetaDescription,
                         DefaultMetaKeywords = siteSettings.DefaultMetaKeywords,
@@ -1845,8 +1951,11 @@ namespace Velora.Application.Seeds
                         HeaderPhone=siteSettings.HeaderPhone,
                         Background=siteSettings.Background,
                         BackgroundGradient=siteSettings.BackgroundGradient,
-                        
-
+                        TextColor=siteSettings.TextColor,
+                        FooterBackgroundColor=siteSettings.FooterBackgroundColor,
+                        FooterTextColor=siteSettings.FooterTextColor,
+                        HeaderTextColor=siteSettings.HeaderTextColor,
+                        HeaderBackgroundColor=siteSettings.HeaderBackgroundColor,
                         IsActive = siteSettings.IsActive
                     };
 
@@ -2051,6 +2160,10 @@ namespace Velora.Application.Seeds
                 case "company":
                     selectedConfiguration =
                         configurationModel.Company;
+                    break;
+                case "dynamic":
+                    selectedConfiguration =
+                        configurationModel.Dynamic;
                     break;
 
                 case "shop":
@@ -2767,7 +2880,17 @@ namespace Velora.Application.Seeds
                                 componentTypeEntity.Id,
                                 rtl,
                                 currentSectionSortOrder);
+                        if (!string.IsNullOrWhiteSpace(component.TextColor))
+                            sectionEntity.TextColor = component.TextColor.Trim();
 
+                        if (!string.IsNullOrWhiteSpace(component.ButtonColor))
+                            sectionEntity.ButtonColor = component.ButtonColor.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.BackgroundColor))
+                            sectionEntity.BackgroundColor = component.BackgroundColor.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.BackgroundGradient))
+                            sectionEntity.BackgroundGradient = component.BackgroundGradient.Trim();
                         sectionEntity.IsActive = true;
 
                         var createdSection =

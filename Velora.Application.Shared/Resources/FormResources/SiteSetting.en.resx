@@ -264,4 +264,19 @@
   <data name="SiteSetting.HeaderPhoneEnabled" xml:space="preserve">
     <value>HeaderPhoneEnabled</value>
   </data>
+  <data name="SiteSetting.FooterBackgroundColor" xml:space="preserve">
+    <value>FooterBackgroundColor</value>
+  </data>
+  <data name="SiteSetting.FooterTextColor" xml:space="preserve">
+    <value>FooterTextColor</value>
+  </data>
+  <data name="SiteSetting.HeaderBackgroundColor" xml:space="preserve">
+    <value>HeaderBackgroundColor</value>
+  </data>
+  <data name="SiteSetting.HeaderTextColor" xml:space="preserve">
+    <value>HeaderTextColor</value>
+  </data>
+  <data name="SiteSetting.TextColor" xml:space="preserve">
+    <value>TextColor</value>
+  </data>
 </root>

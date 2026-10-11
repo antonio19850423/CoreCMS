@@ -107,6 +107,8 @@ public class SectionGqlResolver : ISectionGqlResolver
             IsActiveBrands = x.IsActiveBrands,
             ButtonColor=x.ButtonColor ??"",
             IsLatestProducts= x.IsLatestProducts,
+            TextColor=x.TextColor ??"",
+            BackgroundGradient=x.BackgroundGradient??"",
         });
     }
 

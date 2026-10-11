@@ -2039,5 +2039,1118 @@
         ]
       }
     }
+  },
+  "restaurantHero": {
+    "rules": {
+      "direction": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkText": true,
+        "linkUrl": true,
+        "subtitleColor": true,
+        "titleColor": true,
+        "descriptionColor": true,
+        "linkColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "items": [
+          {
+            "title": "طعمی که در خاطره می‌ماند.",
+            "subtitle": "طعم، تجربه، خاطره",
+            "description": "ترکیبی از طعم‌های اصیل، فضای متفاوت و تجربه‌ای که هر بار شما را به اینجا بازمی‌گرداند.",
+            "imageUrl": "/uploads/sections/Roze/01-rose-hero-restaurant-interior.jpg",
+            "imageAlt": "فضای داخلی رستوران",
+            "linkText": "مشاهده منو",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "هر میز، آغاز یک داستان است.",
+            "subtitle": "یک میز، یک داستان",
+            "description": "جایی برای گفت‌وگو، خنده و ساختن لحظه‌هایی که ارزش به خاطر سپردن دارند.",
+            "imageUrl": "/uploads/sections/Roze/02-rose-hero-elegant-dining.jpg",
+            "imageAlt": "رستوران با فضای شیک و زیبا",
+            "linkText": "درباره ما",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "از آشپزخانه تا آخرین لقمه.",
+            "subtitle": "از آشپزخانه ما",
+            "description": "مواد تازه، اجرای دقیق و توجه به جزئیاتی که تفاوت یک غذای خوب و یک تجربه ماندگار را می‌سازند.",
+            "imageUrl": "/uploads/sections/Roze/03-rose-hero-gourmet-food.jpg",
+            "imageAlt": "غذای ویژه رستوران",
+            "linkText": "غذاهای ویژه",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "امشب را متفاوت زندگی کنید.",
+            "subtitle": "برای یک شب متفاوت",
+            "description": "یک شب متفاوت را با طعم‌های خاص، فضای دلنشین و تجربه‌ای ماندگار سپری کنید.",
+            "imageUrl": "/uploads/sections/Roze/04-rose-hero-fine-dining-experience.jpg",
+            "imageAlt": "تجربه غذاخوری در رستوران",
+            "linkText": "مشاهده منو",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "items": [
+          {
+            "title": "A Taste That Stays With You.",
+            "subtitle": "Taste, Experience, Memory",
+            "description": "A combination of authentic flavors, a distinctive atmosphere, and an experience that keeps bringing you back.",
+            "imageUrl": "/uploads/sections/Roze/01-rose-hero-restaurant-interior.jpg",
+            "imageAlt": "Restaurant interior",
+            "linkText": "View Menu",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "Every Table Begins a Story.",
+            "subtitle": "One Table, One Story",
+            "description": "A place for conversations, laughter, and creating moments worth remembering.",
+            "imageUrl": "/uploads/sections/Roze/02-rose-hero-elegant-dining.jpg",
+            "imageAlt": "Elegant restaurant interior",
+            "linkText": "About Us",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "From Our Kitchen to the Last Bite.",
+            "subtitle": "From Our Kitchen",
+            "description": "Fresh ingredients, precise execution, and attention to detail that turns a good meal into a memorable experience.",
+            "imageUrl": "/uploads/sections/Roze/03-rose-hero-gourmet-food.jpg",
+            "imageAlt": "Signature restaurant dish",
+            "linkText": "Signature Dishes",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          },
+          {
+            "title": "Make Tonight Something Different.",
+            "subtitle": "For a Special Evening",
+            "description": "Enjoy a different kind of evening with distinctive flavors, an inviting atmosphere, and an experience to remember.",
+            "imageUrl": "/uploads/sections/Roze/04-rose-hero-fine-dining-experience.jpg",
+            "imageAlt": "Restaurant dining experience",
+            "linkText": "View Menu",
+            "linkUrl": "#",
+            "subtitleColor": "#D8B57A",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "rgba(255,255,255,0.8)",
+            "linkColor": "#F4EFE7"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantPhilosophy": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkText": true,
+        "linkUrl": true,
+        "linkColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "title": "غذا فقط برای خوردن نیست؛ برای تجربه کردن است.",
+        "subtitle": "فلسفه ما",
+        "description": "ما باور داریم یک غذای خوب از آشپزخانه شروع نمی‌شود؛ از انتخاب مواد اولیه، طراحی فضا، موسیقی، نور و حتی لحظه‌ای که اولین بشقاب روی میز قرار می‌گیرد شکل می‌گیرد.|هر جزئیات در رُز با یک هدف طراحی شده است؛ ساختن یک تجربه فراموش‌نشدنی.",
+        "backgroundColor": "#F4EFE7",
+        "items": [
+          {
+            "title": "۱۲+",
+            "subtitle": "سال تجربه",
+            "imageUrl": "/uploads/sections/Roze/01-rose-restaurant-philosophy.jpg",
+            "imageAlt": "فضای داخلی رستوران",
+            "linkText": "داستان ما",
+            "linkUrl": "#story",
+            "linkColor": "#8F3D3A"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "title": "Food is not just meant to be eaten; it is meant to be experienced.",
+        "subtitle": "OUR PHILOSOPHY",
+        "description": "We believe a great dish does not begin in the kitchen; it begins with the ingredients, the space, the music, the lighting, and even the moment the first plate reaches the table.|Every detail at Rose is designed with one purpose: creating an unforgettable experience.",
+        "backgroundColor": "#F4EFE7",
+        "items": [
+          {
+            "title": "12+",
+            "subtitle": "Years of experience",
+            "imageUrl": "/uploads/sections/Roze/01-rose-restaurant-philosophy.jpg",
+            "imageAlt": "Restaurant interior",
+            "linkText": "Our Story",
+            "linkUrl": "#story",
+            "linkColor": "#8F3D3A"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantMenuCategories": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "backgroundColor": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkText": true,
+        "linkUrl": true,
+        "linkColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "title": "انتخاب شما، شروع تجربه ما",
+        "subtitle": "کشف منوی ما",
+        "backgroundColor": "#E9E0D5",
+        "items": [
+          {
+            "title": "پیش‌غذا",
+            "subtitle": "شروعی برای یک تجربه متفاوت",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-starters.jpg",
+            "imageAlt": "پیش‌غذاهای رستوران",
+            "linkText": "مشاهده",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          },
+          {
+            "title": "غذاهای اصلی",
+            "subtitle": "طعم‌هایی که فراموش نمی‌شوند",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-main-courses.jpg",
+            "imageAlt": "غذاهای اصلی رستوران",
+            "linkText": "مشاهده",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          },
+          {
+            "title": "دسر",
+            "subtitle": "پایانی شیرین و ماندگار",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-desserts.jpg",
+            "imageAlt": "دسرهای رستوران",
+            "linkText": "مشاهده",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "title": "Your Choice, The Beginning of Our Experience",
+        "subtitle": "DISCOVER OUR MENU",
+        "backgroundColor": "#E9E0D5",
+        "items": [
+          {
+            "title": "Starters",
+            "subtitle": "The beginning of a different experience",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-starters.jpg",
+            "imageAlt": "Restaurant starters",
+            "linkText": "Explore",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          },
+          {
+            "title": "Main Courses",
+            "subtitle": "Flavors you will never forget",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-main-courses.jpg",
+            "imageAlt": "Restaurant main courses",
+            "linkText": "Explore",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          },
+          {
+            "title": "Desserts",
+            "subtitle": "A sweet and memorable ending",
+            "imageUrl": "/uploads/sections/Roze/rose-menu-category-desserts.jpg",
+            "imageAlt": "Restaurant desserts",
+            "linkText": "Explore",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantChefSelection": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "price": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkUrl": true,
+        "linkColor": true,
+        "backgroundColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "title": "امضای سرآشپز",
+        "subtitle": "CHEF'S SELECTION",
+        "description": "انتخابی از محبوب‌ترین غذاهای رستوران که با دقت و وسواس سرآشپز آماده می‌شوند.",
+        "backgroundColor": "#5E2424",
+        "subtitleColor": "#D8B57A",
+        "headerColor": "#FFFFFF",
+        "descriptionColor": "rgba(255,255,255,0.65)",
+        "items": [
+          {
+            "title": "استیک ویژه سرآشپز",
+            "description": "استیکی آبدار و لطیف با سس مخصوص سرآشپز و سبزیجات گریل‌شده.",
+            "price": "۸۹۰,۰۰۰ تومان",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-steak.jpg",
+            "imageAlt": "استیک ویژه سرآشپز",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "پاستای ترافل",
+            "description": "پاستای دست‌ساز با سس خامه‌ای، قارچ و عطر لطیف ترافل.",
+            "price": "۵۹۰,۰۰۰ تومان",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-truffle-pasta.jpg",
+            "imageAlt": "پاستای ترافل",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "سالاد ویژه رستوران",
+            "description": "ترکیبی تازه از سبزیجات فصل، پنیر و سس مخصوص رستوران.",
+            "price": "۳۹۰,۰۰۰ تومان",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-salad.jpg",
+            "imageAlt": "سالاد ویژه رستوران",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "برگر کلاسیک",
+            "description": "گوشت گریل‌شده، پنیر، سبزیجات تازه و سس مخصوص در نان برشته.",
+            "price": "۴۹۰,۰۰۰ تومان",
+            "imageUrl": "/uploads/sections/Roze/04-rose-chef-selection-burger.jpg",
+            "imageAlt": "برگر کلاسیک",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "title": "Chef's Signature",
+        "subtitle": "CHEF'S SELECTION",
+        "description": "A selection of the restaurant's most beloved dishes, prepared with care and precision by our chef.",
+        "backgroundColor": "#5E2424",
+        "subtitleColor": "#D8B57A",
+        "headerColor": "#FFFFFF",
+        "descriptionColor": "rgba(255,255,255,0.65)",
+        "items": [
+          {
+            "title": "Chef's Signature Steak",
+            "description": "A tender, juicy steak served with the chef's special sauce and grilled vegetables.",
+            "price": "890,000 Toman",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-steak.jpg",
+            "imageAlt": "Chef's signature steak",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "Truffle Pasta",
+            "description": "Handcrafted pasta with a creamy sauce, mushrooms, and delicate truffle aroma.",
+            "price": "590,000 Toman",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-truffle-pasta.jpg",
+            "imageAlt": "Truffle pasta",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "Restaurant Signature Salad",
+            "description": "A fresh combination of seasonal greens, cheese, and our signature dressing.",
+            "price": "390,000 Toman",
+            "imageUrl": "/uploads/sections/Roze/rose-chef-selection-salad.jpg",
+            "imageAlt": "Restaurant signature salad",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          },
+          {
+            "title": "Classic Burger",
+            "description": "Grilled beef, cheese, fresh vegetables, and our special sauce in a toasted bun.",
+            "price": "490,000 Toman",
+            "imageUrl": "/uploads/sections/Roze/04-rose-chef-selection-burger.jpg",
+            "imageAlt": "Classic burger",
+            "linkUrl": "#menu",
+            "linkColor": "#D8B57A",
+            "backgroundColor": "#48191A"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantStory": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "linkColor": true,
+        "features": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "title": "از یک آشپزخانه کوچک\nتا یک تجربه بزرگ",
+        "subtitle": "داستان ما",
+        "description": "رُز با یک ایده ساده شروع شد؛ اینکه بتوانیم غذاهایی درست کنیم که فقط خوشمزه نباشند، بلکه بخشی از یک خاطره خوب شوند.|امروز بعد از سال‌ها، همان نگاه اولیه هنوز بخش اصلی کار ماست: مواد اولیه تازه، آشپزی دقیق و احترام به مهمان.",
+        "backgroundColor": "#F4EFE7",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#665A56",
+        "items": [
+          {
+            "title": "کیفیت،\nاتفاقی نیست.",
+            "subtitle": "",
+            "imageUrl": "/uploads/sections/Roze/rose-restaurant-quality.jpg",
+            "imageAlt": "آشپزخانه و فضای رستوران",
+            "linkColor": "#8F3D3A",
+            "features": "۱۲+|سال تجربه|۸۰K+|مهمان راضی"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "title": "From a Small Kitchen\nTo a Great Experience",
+        "subtitle": "OUR STORY",
+        "description": "Rose began with a simple idea: to create food that is not only delicious, but also becomes part of a beautiful memory.|Years later, that same vision remains at the heart of what we do: fresh ingredients, precise cooking, and respect for every guest.",
+        "backgroundColor": "#F4EFE7",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#665A56",
+        "items": [
+          {
+            "title": "Quality,\nIs Never Accidental.",
+            "subtitle": "",
+            "imageUrl": "/uploads/sections/Roze/rose-restaurant-quality.jpg",
+            "imageAlt": "Restaurant kitchen and interior",
+            "linkColor": "#8F3D3A",
+            "features": "12+|Years of experience|80K+|Happy guests"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantChefCta": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "items": {
+        "linkText": true,
+        "linkUrl": true,
+        "linkColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "subtitle": "CHEF SPECIAL",
+        "title": "امشب، انتخاب را\nبه سرآشپز بسپارید.",
+        "description": "یک تجربه متفاوت با انتخاب ویژه سرآشپز، متناسب با فصل و مواد اولیه روز.",
+        "backgroundColor": "#8F3D3A",
+        "subtitleColor": "#F0DDAE",
+        "headerColor": "#FFFFFF",
+        "descriptionColor": "rgba(255,255,255,0.7)",
+        "items": [
+          {
+            "linkText": "تماس با ما",
+            "linkUrl": "#contact",
+            "linkColor": "#F4EFE7"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "subtitle": "CHEF SPECIAL",
+        "title": "Tonight, Let the Chef\nMake the Choice.",
+        "description": "A different kind of experience with a special chef's selection, inspired by the season and the freshest ingredients of the day.",
+        "backgroundColor": "#8F3D3A",
+        "subtitleColor": "#F0DDAE",
+        "headerColor": "#FFFFFF",
+        "descriptionColor": "rgba(255,255,255,0.7)",
+        "items": [
+          {
+            "linkText": "Contact Us",
+            "linkUrl": "#contact",
+            "linkColor": "#F4EFE7"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantMenu": {
+    "rules": {
+      "direction": true,
+      "headingLevel": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "textColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "linkText": true,
+      "linkUrl": true,
+      "linkColor": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "price": true,
+        "titleColor": true,
+        "descriptionColor": true,
+        "linkUrl": true,
+        "linkColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "headingLevel": "h2",
+        "title": "منوی رُز",
+        "subtitle": "منوی امروز",
+        "description": "انتخابی از غذاهای محبوب و تازه که هر روز با بهترین مواد اولیه آماده می‌شوند.",
+        "backgroundColor": "#F4EFE7",
+        "backgroundGradient": null,
+        "textColor": "#756A66",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#756A66",
+        "linkText": "مشاهده منوی کامل",
+        "linkUrl": "#menu",
+        "linkColor": "#8F3D3A",
+        "items": [
+          {
+            "title": "سوپ قارچ و خامه",
+            "description": "سوپ خامه‌ای با قارچ تازه و عطر سبزیجات معطر.",
+            "price": "۲۹۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "بروسکتا",
+            "description": "نان برشته با گوجه تازه، ریحان و روغن زیتون.",
+            "price": "۲۵۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "مرغ گریل",
+            "description": "فیله مرغ گریل‌شده با سبزیجات تازه و سس مخصوص.",
+            "price": "۴۹۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "پاستای آلفردو",
+            "description": "پاستای تازه با سس خامه‌ای، قارچ و پنیر پارمزان.",
+            "price": "۵۲۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "ماهی گریل",
+            "description": "ماهی تازه گریل‌شده با سبزیجات فصل و سس لیمویی.",
+            "price": "۶۹۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "چیزکیک زرشکی",
+            "description": "چیزکیک لطیف با سس زرشک و طعمی متعادل و تازه.",
+            "price": "۲۸۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "سالاد سزار",
+            "description": "کاهوی تازه، مرغ گریل، نان کروتان و سس سزار مخصوص.",
+            "price": "۳۹۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "استیک گوشت",
+            "description": "استیک گریل‌شده با سیب‌زمینی تنوری و سس فلفل.",
+            "price": "۸۹۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "تیرامیسو",
+            "description": "دسر ایتالیایی با قهوه، خامه لطیف و پودر کاکائو.",
+            "price": "۳۲۰,۰۰۰ تومان",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "headingLevel": "h2",
+        "title": "Rose Menu",
+        "subtitle": "TODAY'S MENU",
+        "description": "A selection of fresh and beloved dishes prepared every day with the finest ingredients.",
+        "backgroundColor": "#F4EFE7",
+        "backgroundGradient": null,
+        "textColor": "#756A66",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#756A66",
+        "linkText": "View Full Menu",
+        "linkUrl": "#menu",
+        "linkColor": "#8F3D3A",
+        "items": [
+          {
+            "title": "Creamy Mushroom Soup",
+            "description": "A creamy soup made with fresh mushrooms and aromatic herbs.",
+            "price": "290,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Bruschetta",
+            "description": "Toasted bread topped with fresh tomatoes, basil, and olive oil.",
+            "price": "250,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Grilled Chicken",
+            "description": "Grilled chicken fillet with fresh vegetables and our special sauce.",
+            "price": "490,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Alfredo Pasta",
+            "description": "Fresh pasta with creamy sauce, mushrooms, and Parmesan cheese.",
+            "price": "520,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Grilled Fish",
+            "description": "Fresh grilled fish served with seasonal vegetables and lemon sauce.",
+            "price": "690,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Barberry Cheesecake",
+            "description": "A delicate cheesecake served with a fresh and balanced barberry sauce.",
+            "price": "280,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Caesar Salad",
+            "description": "Fresh lettuce, grilled chicken, croutons, and our special Caesar dressing.",
+            "price": "390,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Beef Steak",
+            "description": "Grilled steak served with roasted potatoes and pepper sauce.",
+            "price": "890,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          },
+          {
+            "title": "Tiramisu",
+            "description": "An Italian dessert with coffee, delicate cream, and cocoa powder.",
+            "price": "320,000 Toman",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#756A66",
+            "linkUrl": "#",
+            "linkColor": "#8F3D3A"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantGallery": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "backgroundColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "items": {
+        "title": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "className": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "title": "فضای رُز",
+        "subtitle": "THE ATMOSPHERE",
+        "backgroundColor": "#E9E0D5",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "items": [
+          {
+            "title": "فضای رستوران",
+            "imageUrl": "/uploads/sections/Roze/01-rose-restaurant-interior.jpg",
+            "imageAlt": "فضای رستوران رُز",
+            "className": "col-span-2 row-span-2 min-h-[450px]"
+          },
+          {
+            "title": "غذا",
+            "imageUrl": "/uploads/sections/Roze/02-rose-restaurant-food.jpg",
+            "imageAlt": "غذای رستوران",
+            "className": "h-64"
+          },
+          {
+            "title": "فضای رستوران",
+            "imageUrl": "/uploads/sections/Roze/03-rose-restaurant-interior-detail.jpg",
+            "imageAlt": "فضای داخلی رستوران",
+            "className": "h-64"
+          },
+          {
+            "title": "جزئیات رستوران",
+            "imageUrl": "/uploads/sections/Roze/04-rose-restaurant-decor.jpg",
+            "imageAlt": "جزئیات فضای رستوران",
+            "className": "col-span-2 h-64"
+          },
+          {
+            "title": "غذای تازه",
+            "imageUrl": "/uploads/sections/Roze/05-rose-fresh-food.jpg",
+            "imageAlt": "غذای تازه رستوران",
+            "className": "h-64"
+          },
+          {
+            "title": "دسر",
+            "imageUrl": "/uploads/sections/Roze/06-rose-restaurant-dessert.jpg",
+            "imageAlt": "دسر رستوران",
+            "className": "h-64"
+          },
+          {
+            "title": "فضای گرم رستوران",
+            "imageUrl": "/uploads/sections/Roze/07-rose-fine-dining-atmosphere.jpg",
+            "imageAlt": "فضای گرم و صمیمی رستوران",
+            "className": "col-span-2 h-64"
+          },
+          {
+            "title": "تجربه رُز",
+            "imageUrl": "/uploads/sections/Roze/08-rose-restaurant-experience.jpg",
+            "imageAlt": "نمایی از فضای رستوران رُز",
+            "className": "col-span-2 row-span-2 min-h-[450px]"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "title": "The Rose Atmosphere",
+        "subtitle": "THE ATMOSPHERE",
+        "backgroundColor": "#E9E0D5",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "items": [
+          {
+            "title": "Restaurant Interior",
+            "imageUrl": "/uploads/sections/Roze/01-rose-restaurant-interior.jpg",
+            "imageAlt": "Rose restaurant interior",
+            "className": "col-span-2 row-span-2 min-h-[450px]"
+          },
+          {
+            "title": "Food",
+            "imageUrl": "/uploads/sections/Roze/02-rose-restaurant-food.jpg",
+            "imageAlt": "Restaurant food",
+            "className": "h-64"
+          },
+          {
+            "title": "Restaurant Interior",
+            "imageUrl": "/uploads/sections/Roze/03-rose-restaurant-interior-detail.jpg",
+            "imageAlt": "Restaurant interior",
+            "className": "h-64"
+          },
+          {
+            "title": "Restaurant Details",
+            "imageUrl": "/uploads/sections/Roze/04-rose-restaurant-decor.jpg",
+            "imageAlt": "Restaurant interior details",
+            "className": "col-span-2 h-64"
+          },
+          {
+            "title": "Fresh Food",
+            "imageUrl": "/uploads/sections/Roze/05-rose-fresh-food.jpg",
+            "imageAlt": "Fresh restaurant food",
+            "className": "h-64"
+          },
+          {
+            "title": "Dessert",
+            "imageUrl": "/uploads/sections/Roze/06-rose-restaurant-dessert.jpg",
+            "imageAlt": "Restaurant dessert",
+            "className": "h-64"
+          },
+          {
+            "title": "Warm Atmosphere",
+            "imageUrl": "/uploads/sections/Roze/07-rose-fine-dining-atmosphere.jpg",
+            "imageAlt": "Warm and welcoming restaurant atmosphere",
+            "className": "col-span-2 h-64"
+          },
+          {
+            "title": "The Rose Experience",
+            "imageUrl": "/uploads/sections/Roze/08-rose-restaurant-experience.jpg",
+            "imageAlt": "Rose restaurant experience",
+            "className": "col-span-2 row-span-2 min-h-[450px]"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantTestimonials": {
+    "rules": {
+      "direction": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "subtitleColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "footerText": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "price": true,
+        "backgroundColor": true,
+        "titleColor": true,
+        "descriptionColor": true,
+        "linkColor": true,
+        "iconColor": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "subtitle": "OUR GUESTS",
+        "title": "مهمانان ما چه می‌گویند؟",
+        "description": "تجربه‌ای که برای ما ارزشمند است، از نگاه مهمانانی که رُز را تجربه کرده‌اند.",
+        "backgroundColor": "#F4EFE7",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#756A66",
+        "footerText": "بعضی تجربه‌ها، فقط یک بار اتفاق نمی‌افتند.",
+        "items": [
+          {
+            "title": "سارا محمدی",
+            "subtitle": "مهمان رُز",
+            "description": "فضای فوق‌العاده زیبا، غذاهای باکیفیت و سرویس بسیار حرفه‌ای.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          },
+          {
+            "title": "علی رضایی",
+            "subtitle": "مهمان رُز",
+            "description": "یکی از بهترین تجربه‌های غذایی من بود. مخصوصاً استیک سرآشپز.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          },
+          {
+            "title": "نگار احمدی",
+            "subtitle": "مهمان رُز",
+            "description": "محیط آرام و شیک، مناسب قرارهای دوستانه و خانوادگی.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "subtitle": "OUR GUESTS",
+        "title": "What Our Guests Say",
+        "description": "An experience that matters to us, seen through the eyes of guests who have experienced Rose.",
+        "backgroundColor": "#F4EFE7",
+        "subtitleColor": "#8F3D3A",
+        "headerColor": "#3B1113",
+        "descriptionColor": "#756A66",
+        "footerText": "Some experiences are meant to be repeated.",
+        "items": [
+          {
+            "title": "Sara Mohammadi",
+            "subtitle": "Rose Guest",
+            "description": "A beautifully designed space, high-quality food, and truly professional service.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          },
+          {
+            "title": "Ali Rezaei",
+            "subtitle": "Rose Guest",
+            "description": "One of my best dining experiences. The chef's steak was especially memorable.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          },
+          {
+            "title": "Negar Ahmadi",
+            "subtitle": "Rose Guest",
+            "description": "A calm and elegant atmosphere, perfect for gatherings with friends and family.",
+            "price": "5",
+            "backgroundColor": "#FFFFFF",
+            "titleColor": "#3B1113",
+            "descriptionColor": "#3B1113",
+            "linkColor": "#D8B57A",
+            "iconColor": "#C9943D"
+          }
+        ]
+      }
+    }
+  },
+  "restaurantAbout": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageUrl2": true,
+      "imageUrl3": true,
+      "imageAlt": true,
+      "imageAlt2": true,
+      "imageAlt3": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "features": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "طعمی از عشق، روایتی از اصالت",
+        "subtitle": "در رستوران رُز، هر غذا داستانی برای گفتن دارد؛ داستانی از عطر مواد اولیه تازه، هنر آشپزی و لحظه‌هایی که در کنار عزیزانمان به خاطره تبدیل می‌شوند.",
+        "description": "ما باور داریم یک تجربه غذایی فراموش‌نشدنی، تنها به طعم غذا محدود نمی‌شود. از انتخاب مواد اولیه تا چیدمان میز و فضای دلنشین رستوران، همه‌چیز با عشق و دقت طراحی شده است تا هر بار که به رُز می‌آیید، احساس خاص بودن داشته باشید.",
+        "features": "تیم ما",
+        "imageUrl": "/uploads/sections/Roze/restaurant-interior.jpg",
+        "imageAlt": "فضای شیک و دلنشین رستوران رُز",
+        "imageUrl2": "/uploads/sections/Roze/restaurant-food.avif",
+        "imageAlt2": "غذای تازه و اشتهابرانگیز با چیدمانی زیبا",
+        "imageUrl3": "/uploads/sections/Roze/restaurant-chef.jpg",
+        "imageAlt3": "سرآشپز در حال آماده‌سازی غذا در آشپزخانه",
+        "backgroundColor": "#F4EFE7",
+        "headerColor": "#5E2424",
+        "subtitleColor": "#665858",
+        "descriptionColor": "#766765",
+        "items": [
+          {
+            "title": "هنر آشپزی",
+            "subtitle": "ترکیب خلاقیت، مواد اولیه باکیفیت و دقت در آماده‌سازی برای خلق طعم‌هایی که به یاد می‌مانند.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-interior.jpg",
+            "imageAlt": "سرآشپز در حال آماده‌سازی غذا",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "میزبانی با عشق",
+            "subtitle": "توجه به آسایش مهمانان و فراهم کردن فضایی گرم و دلنشین برای دورهمی‌های دوستانه و خانوادگی.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-food.jpg",
+            "imageAlt": "فضای داخلی رستوران با چیدمان زیبا",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "توجه به جزئیات",
+            "subtitle": "از کیفیت غذا تا زیبایی محیط، همه‌چیز با دقت انتخاب می‌شود تا تجربه‌ای خوشایند و ماندگار داشته باشید.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-chef.jpg",
+            "imageAlt": "غذای آماده‌شده با چیدمانی چشم‌نواز",
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      },
+      "ltr": {
+        "title": "A Taste of Love, A Story of Tradition",
+        "subtitle": "At Rose Restaurant, every dish tells a story of fresh ingredients, culinary artistry, and memorable moments shared with the people who matter most.",
+        "description": "We believe an unforgettable dining experience goes beyond the food itself. From carefully selected ingredients to elegant table settings and a welcoming atmosphere, every detail is thoughtfully designed to make you feel special.",
+        "features": "Our Values",
+        "imageUrl": "/uploads/sections/Roze/restaurant-interior.jpg",
+        "imageAlt": "فضای شیک و دلنشین رستوران رُز",
+        "imageUrl2": "/uploads/sections/Roze/restaurant-food.jpg",
+        "imageAlt2": "غذای تازه و اشتهابرانگیز با چیدمانی زیبا",
+        "imageUrl3": "/uploads/sections/Roze/restaurant-chef.jpg",
+        "imageAlt3": "Chef preparing a dish in the kitchen",
+        "backgroundColor": "#F4EFE7",
+        "headerColor": "#5E2424",
+        "subtitleColor": "#665858",
+        "descriptionColor": "#766765",
+        "items": [
+          {
+            "title": "Culinary Art",
+            "subtitle": "Creativity, quality ingredients, and attention to detail come together to create memorable flavors.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-interior.avif",
+            "imageAlt": "Chef preparing a dish",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Hospitality with Heart",
+            "subtitle": "We create a warm and welcoming atmosphere for family gatherings and memorable moments.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-food.avif",
+            "imageAlt": "Elegant restaurant interior",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Attention to Detail",
+            "subtitle": "From food quality to the atmosphere, every detail is carefully considered for an enjoyable experience.",
+            "imageUrl": "/uploads/sections/Roze/restaurant-chef.avif",
+            "imageAlt": "Beautifully presented food",
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
   }
 }

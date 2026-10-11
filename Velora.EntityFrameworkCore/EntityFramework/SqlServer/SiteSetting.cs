@@ -143,6 +143,21 @@ public partial class SiteSetting
     [StringLength(50)]
     public string? HeaderPhoneColor { get; set; }
 
+    [StringLength(500)]
+    public string? HeaderBackgroundColor { get; set; }
+
+    [StringLength(50)]
+    public string? HeaderTextColor { get; set; }
+
+    [StringLength(500)]
+    public string? FooterBackgroundColor { get; set; }
+
+    [StringLength(50)]
+    public string? FooterTextColor { get; set; }
+
+    [StringLength(50)]
+    public string? TextColor { get; set; }
+
     [InverseProperty("SiteSetting")]
     public virtual ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 }

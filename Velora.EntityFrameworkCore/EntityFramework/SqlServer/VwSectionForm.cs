@@ -47,7 +47,7 @@ public partial class VwSectionForm
     [StringLength(300)]
     public string? Link4Url { get; set; }
 
-    [StringLength(50)]
+    [StringLength(500)]
     public string? BackgroundColor { get; set; }
 
     [StringLength(50)]
@@ -176,4 +176,10 @@ public partial class VwSectionForm
 
     [StringLength(50)]
     public string? ButtonColor { get; set; }
+
+    [StringLength(50)]
+    public string? TextColor { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
 }

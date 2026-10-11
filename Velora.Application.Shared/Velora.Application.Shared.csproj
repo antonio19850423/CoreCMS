@@ -95,10 +95,12 @@
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\SiteSettings\Roze_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\SiteSettings\ParsaLink_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\SiteSettings\LuxuryJewelry_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\Templates.json" />
 	  <EmbeddedResource Include="Resources\Templates\LuxuryJewelry_Template.json" />
+	  <EmbeddedResource Include="Resources\Templates\Roze_Template.json" />
 	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template - Copy.json" />
 	  <EmbeddedResource Include="Resources\Templates\ParsaLink_Template.json" />
 	</ItemGroup>

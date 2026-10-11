@@ -141,6 +141,9 @@ namespace Velora.Application.Services
                     IsSpecialOffers = input.IsSpecialOffers,
                     IsLatestProducts = input.IsLatestProducts,
                     ButtonColor = input.ButtonColor,
+                    TextColor = input.TextColor,
+                    BackgroundGradient = input.BackgroundGradient,
+                    
                     
 
                 };
@@ -261,6 +264,8 @@ namespace Velora.Application.Services
                     IsSpecialOffers = input.IsSpecialOffers,
                     IsLatestProducts = input.IsLatestProducts,
                     ButtonColor = input.ButtonColor,
+                    TextColor = input.TextColor,
+                    BackgroundGradient = input.BackgroundGradient,
 
                 };
 

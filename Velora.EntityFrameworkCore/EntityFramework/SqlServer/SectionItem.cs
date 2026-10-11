@@ -169,6 +169,12 @@ public partial class SectionItem
     [StringLength(250)]
     public string? ProductSlug { get; set; }
 
+    [StringLength(50)]
+    public string? TextColor { get; set; }
+
+    [StringLength(500)]
+    public string? BackgroundGradient { get; set; }
+
     [ForeignKey("Link1TypeId")]
     [InverseProperty("SectionItemLink1Types")]
     public virtual LinkType? Link1Type { get; set; }

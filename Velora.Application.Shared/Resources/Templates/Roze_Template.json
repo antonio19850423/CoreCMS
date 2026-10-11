@@ -1,0 +1,149 @@
+﻿{
+  "templates": [
+    {
+      "templateName": "Roze_Template",
+      "pages": [
+        {
+          "pageName": "خانه",
+          "slug": "home",
+          "isPublished": false,
+          "metaTitle": "رستوران رُز | تجربه‌ای متفاوت از طعم و کیفیت",
+          "metaDescription": "رستوران رُز؛ تجربه‌ای متفاوت از غذا، طعم و فضا با استفاده از مواد اولیه تازه و ارائه غذاهایی باکیفیت در محیطی گرم و دلنشین.",
+          "metaKeywords": "رستوران رُز، رستوران رز، Roze Restaurant، رستوران تهران، غذای باکیفیت، استیک، پاستا، برگر، دسر، رزرو رستوران، منوی رستوران",
+          "components": [
+            {
+              "code": "restaurantHero",
+              "type": "restaurantHero",
+              "backgroundColor": "#241415",
+              "backgroundGradient": "linear-gradient(135deg, #241415 0%, #3B1113 60%, #5E2424 100%)",
+              "textColor": "#FFFFFF"
+            },
+            {
+              "code": "restaurantPhilosophy",
+              "type": "restaurantPhilosophy",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            },
+            {
+              "code": "restaurantMenuCategories",
+              "type": "restaurantMenuCategories",
+              "backgroundColor": "#E9E0D5",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            },
+            {
+              "code": "restaurantChefSelection",
+              "type": "restaurantChefSelection",
+              "backgroundColor": "#5E2424",
+              "backgroundGradient": "linear-gradient(135deg, #48191A 0%, #5E2424 55%, #3B1113 100%)",
+              "textColor": "#FFFFFF"
+            },
+            {
+              "code": "restaurantStory",
+              "type": "restaurantStory",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            },
+            {
+              "code": "restaurantChefCta",
+              "type": "restaurantChefCta",
+              "backgroundColor": "#8F3D3A",
+              "backgroundGradient": "linear-gradient(135deg, #8F3D3A 0%, #5E2424 100%)",
+              "textColor": "#FFFFFF"
+            },
+            {
+              "code": "restaurantMenu",
+              "type": "restaurantMenu",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            },
+            {
+              "code": "restaurantGallery",
+              "type": "restaurantGallery",
+              "backgroundColor": "#E9E0D5",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            },
+            {
+              "code": "restaurantTestimonials",
+              "type": "restaurantTestimonials",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            }
+          ]
+        },
+        {
+          "pageName": "تماس با ما",
+          "slug": "contact",
+          "isPublished": false,
+          "metaTitle": "تماس با رستوران رُز | رزرو و ارتباط با ما",
+          "metaDescription": "برای رزرو میز، دریافت اطلاعات بیشتر و ارتباط با رستوران رُز با ما در تماس باشید.",
+          "metaKeywords": "تماس با رستوران رز، رزرو رستوران، شماره تماس رستوران، آدرس رستوران رز",
+          "components": [
+            {
+              "code": "contact",
+              "type": "contact",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113",
+              "buttonColor": "#B89558"
+            }
+          ]
+        },
+        {
+          "pageName": "طرح‌بندی",
+          "slug": "layout",
+          "isPublished": false,
+          "components": [
+            {
+              "code": "footer",
+              "type": "footer",
+              "backgroundColor": "#241415",
+              "backgroundGradient": "linear-gradient(135deg, #241415 0%, #3B1113 100%)",
+              "textColor": "#F4EFE7"
+            }
+          ]
+        },
+        {
+          "pageName": "داستان ما",
+          "slug": "about",
+          "isPublished": false,
+          "metaTitle": "داستان ما | رستوران رُز",
+          "metaDescription": "با داستان رستوران رُز آشنا شوید؛ جایی که هنر آشپزی، مواد اولیه باکیفیت و میزبانی با عشق، تجربه‌ای متفاوت و به‌یادماندنی خلق می‌کنند.",
+          "metaKeywords": "داستان رستوران رز، درباره رستوران رُز، معرفی رستوران رز، رستوران لوکس، هنر آشپزی، تجربه غذایی",
+          "components": [
+            {
+              "code": "restaurantAbout",
+              "type": "restaurantAbout",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            }
+          ]
+        },
+        {
+          "pageName": "منوی رستوران",
+          "slug": "menu",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "منوی رستوران رُز | مشاهده غذاها و نوشیدنی‌ها",
+          "metaDescription": "منوی رستوران رُز را مشاهده کنید؛ مجموعه‌ای از غذاهای خوش‌طعم، پیش‌غذاها و نوشیدنی‌ها با تمرکز بر کیفیت، طعم و تجربه‌ای متفاوت.",
+          "metaKeywords": "منوی رستوران رز، منوی غذا، غذاهای رستوران رُز، پیش‌غذا، نوشیدنی، منوی رستوران لوکس",
+          "components": [
+            {
+              "code": "restaurantMenu",
+              "type": "restaurantMenu",
+              "backgroundColor": "#F4EFE7",
+              "backgroundGradient": null,
+              "textColor": "#3B1113"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

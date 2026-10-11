@@ -330,4 +330,10 @@
   <data name="Section.ButtonColor" xml:space="preserve">
     <value>رنگ دکمه</value>
   </data>
+  <data name="Section.TextColor" xml:space="preserve">
+    <value>رنگ متن</value>
+  </data>
+  <data name="Section.BackgroundGradient" xml:space="preserve">
+    <value>طیف رنگی پس‌زمینه</value>
+  </data>
 </root>
