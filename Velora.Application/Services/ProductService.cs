@@ -366,6 +366,51 @@ int ProductSize)
             return resultBytes;
         }
 
+        public async Task<ResultDto<ProductListResultDto>> GetRelatedProductsAsync(
+            string? categorySlug,
+            int count = 6,
+            Guid? excludeProductId = null)
+        {
+            try
+            {
+                count = Math.Max(count, 6);
+
+                var result = await GetProductsAsync(
+                    page: 1,
+                    pageSize: count + 1,
+                    categorySlug: categorySlug,
+                    brandSlug: null,
+                    search: null,
+                    sort: "newest",
+                    excludeProductId: excludeProductId
+                );
+
+                if (!result.Success || result.Data == null)
+                    return result;
+
+                // حذف شناسه‌های تکراری و اطمینان از حذف محصول فعلی
+                var items = result.Data.Items
+                    .Where(p => p.Id != excludeProductId)
+                    .GroupBy(p => p.Id)
+                    .Select(g => g.First())
+                    .Take(count)
+                    .ToList();
+
+                result.Data.Items = items;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<ProductListResultDto>
+                {
+                    Success = false,
+                    Message = "خطا در دریافت محصولات مرتبط",
+                    Errors = { ex.Message }
+                };
+            }
+        }
+
         public async Task<ResultDto<ProductListResultDto>> GetProductsAsync(
             int page,
             int pageSize,
@@ -374,7 +419,8 @@ int ProductSize)
             string? search,
             string sort,
             decimal? minPrice = null,
-            decimal? maxPrice = null)
+            decimal? maxPrice = null,
+           Guid? excludeProductId = null)
         {
             try
             {
@@ -393,7 +439,8 @@ int ProductSize)
 
                     .Where(x =>
                         x.IsPublished == true &&
-                        x.IsActive == true);
+                        x.IsActive == true &&
+                          (!excludeProductId.HasValue || x.Id != excludeProductId.Value));
 
 
 

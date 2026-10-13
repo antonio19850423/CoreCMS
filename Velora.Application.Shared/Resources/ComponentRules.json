@@ -11,20 +11,20 @@
     },
     "defaultData": {
       "rtl": {
-        "title": "ساخت سریع وب‌سایت‌های مدرن و حرفه‌ای",
-        "subtitle": "راهکار ساده برای طراحی و توسعه",
-        "description": "بدون نیاز به پیچیدگی، تنها با چند کلیک سایت خود را راه‌اندازی کنید",
-        "imageUrl": "/uploads/sections/defaultHero.avif",
+        "title": "راهکاری ساده برای طراحی و توسعه",
+        "subtitle": "وب‌سایت مدرن خود را سریع و حرفه‌ای بسازید",
+        "description": "از ایده تا اجرا، مسیر ساخت وب‌سایت را ساده و سریع تجربه کنید. با راهکارهای حرفه‌ای پارسا لینک، بدون پیچیدگی‌های اضافی، وب‌سایتی مدرن، سریع و متناسب با نیاز کسب‌وکار خود راه‌اندازی کنید.",
+        "imageUrl": "/uploads/sections/ParsaLink/defaultHero.jpg",
         "link1Text": "شروع کنید",
-        "link1Url": "#"
+        "link1Url": "/page/services"
       },
       "ltr": {
         "title": "Build Modern & Scalable Websites",
         "subtitle": "Simple Development Experience",
         "description": "Create fast, modern and scalable web applications easily",
-        "imageUrl": "/uploads/sections/defaultHero.avif",
+        "imageUrl": "/uploads/sections/ParsaLink/defaultHero.jpg",
         "link1Text": "Get Started",
-        "link1Url": "#"
+        "link1Url": "/page/services"
       }
     }
   },
@@ -39,10 +39,10 @@
     },
     "defaultData": {
       "rtl": {
-        "title": "سرعت بیشتر در توسعه",
+        "title": "توسعه سریع و مقیاس‌پذیر",
         "subtitle": "جریان کاری مدرن و بهینه",
-        "description": "با استفاده از معماری کامپوننتی، سریع‌تر و مقیاس‌پذیرتر توسعه دهید.",
-        "imageUrl": "/uploads/sections/feature.avif",
+        "description": "با معماری کامپوننت‌محور و ساختاری استاندارد، محصول خود را سریع‌تر توسعه دهید و بدون محدودیت برای رشد آن آماده باشید.",
+        "imageUrl": "/uploads/sections/ParsaLink/feature.jpg",
         "items": [
           {
             "name": "استقرار سریع",
@@ -134,7 +134,7 @@
         "title": "شروع در ۳ مرحله ساده",
         "subtitle": "نحوه کار",
         "description": "بدون پیچیدگی فنی، در چند مرحله کوتاه وب‌سایت خود را راه‌اندازی و مدیریت کنید.",
-        "imageUrl": "/uploads/sections/howitworkavif.avif",
+        "imageUrl": "/uploads/sections/ParsaLink/howitworkavif.jpg",
         "items": [
           {
             "title": "انتخاب قالب",
@@ -196,23 +196,23 @@
           {
             "title": "ساخت تجربه‌های مدرن",
             "subtitle": "سریع، حرفه‌ای و مقیاس‌پذیر",
-            "imageUrl": "/uploads/sections/slider1.jpg",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink4.jpg",
             "linkText": "شروع کنید",
-            "linkUrl": "#"
+            "linkUrl": "/page/services"
           },
           {
             "title": "مدیریت هوشمند",
             "subtitle": "همه چیز در یک داشبورد",
-            "imageUrl": "/uploads/sections/slider2.jpg",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink3.jpg",
             "linkText": "مشاهده",
-            "linkUrl": "#"
+            "linkUrl": "/page/services"
           },
           {
             "title": "تحلیل پیشرفته",
             "subtitle": "تصمیم‌گیری بهتر با داده",
-            "imageUrl": "/uploads/sections/slider3.jpg",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink1.jpg",
             "linkText": "شروع تحلیل",
-            "linkUrl": "#"
+            "linkUrl": "/page/services"
           }
         ]
       },
@@ -222,22 +222,22 @@
           {
             "title": "Build Modern Experiences",
             "subtitle": "Fast, scalable and professional",
-            "imageUrl": "/uploads/sections/slider1.jpg",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink4.jpg",
             "linkText": "Get Started",
-            "linkUrl": "#"
+            "linkUrl": "/page/services"
           },
           {
             "title": "Smart Management",
             "subtitle": "Everything in one dashboard",
-            "imageUrl": "/uploads/sections/slider2.jpg",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink3.jpg",
             "linkText": "View",
-            "linkUrl": "#"
+            "linkUrl": "/page/services"
           },
           {
             "title": "Advanced Analytics",
             "subtitle": "Better decisions with data",
-            "imageUrl": "/uploads/sections/slider3.jpg",
-            "linkText": "Start Analysis",
+            "imageUrl": "/uploads/sections/parsalink/ParsaLink1.jpg",
+            "linkText": "/page/services",
             "linkUrl": "#"
           }
         ]

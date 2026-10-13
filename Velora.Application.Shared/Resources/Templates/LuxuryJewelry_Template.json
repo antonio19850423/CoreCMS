@@ -81,7 +81,9 @@
           "components": [
             {
               "code": "contact",
-              "type": "contact"
+              "type": "contact",
+              "buttonColor": "#E8D5A8"
+
             }
           ]
         },

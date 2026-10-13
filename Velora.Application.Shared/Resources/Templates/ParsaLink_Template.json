@@ -1,7 +1,7 @@
 ﻿{
   "templates": [
     {
-      "templateName": "Corp_Template",
+      "templateName": "ParsaLink_Template",
       "pages": [
         {
           "pageName": "خانه",
@@ -17,11 +17,17 @@
             },
             {
               "code": "defaultHero",
-              "type": "hero"
+              "type": "hero",
+              "backgroundColor": null,
+              "backgroundGradient": null,
+              "textColor": null,
+              "subtitleColor": "#C62828",
+              "link1Color": "#C62828"
             },
             {
               "code": "feature",
-              "type": "feature"
+              "type": "feature",
+              "backgroundColor": "#FFF7F7"
             },
             {
               "code": "howItWorks",
@@ -53,7 +59,9 @@
           "components": [
             {
               "code": "contact",
-              "type": "contact"
+              "type": "contact",
+              "backgroundColor": "#ffffff",
+              "buttonColor": "#C62828"
             }
           ]
         },
@@ -63,7 +71,7 @@
           "isPublished": false,
           "components": [
             {
-              "code": "footerdefault",
+              "code": "footer",
               "type": "footer"
             }
           ]

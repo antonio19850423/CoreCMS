@@ -307,6 +307,21 @@ namespace Velora.Host.Controllers
 
         }
         [HttpGet]
+        [Route("GetRelatedProductsAsync")]
+        public async Task<IActionResult> GetRelatedProductsAsync(
+    string? categorySlug,
+    Guid? excludeProductId,
+    int count = 6)
+        {
+            var result = await _productService.GetRelatedProductsAsync(
+                categorySlug,
+                count,
+                excludeProductId
+            );
+
+            return Ok(result);
+        }
+        [HttpGet]
         [Route("GetProductDetailAsync")]
         public async Task<IActionResult> GetProductDetailAsync(
     string slug)

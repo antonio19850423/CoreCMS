@@ -8,7 +8,7 @@
     "EnableComments": false,
     "EnableSeo": false,
     "EnableCache": true,
-    "EnableFaq": false,
+    "EnableFaq": true,
     "EnablePrivacy": false,
     "EnableDynamicPages": true,
     "EnableProductCategoriesMenu": false,

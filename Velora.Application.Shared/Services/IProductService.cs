@@ -22,7 +22,12 @@ namespace Velora.Application.Shared.Services
             string? search,
             string sort,
             decimal? minPrice = null,
-            decimal? maxPrice = null);
+            decimal? maxPrice = null,
+           Guid? excludeProductId = null);
+        Task<ResultDto<ProductListResultDto>> GetRelatedProductsAsync(
+            string? categorySlug,
+            int count = 6,
+            Guid? excludeProductId = null);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

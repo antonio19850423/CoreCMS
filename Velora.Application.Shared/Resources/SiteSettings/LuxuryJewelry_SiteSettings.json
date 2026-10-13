@@ -30,11 +30,11 @@
 
     "Address2Title": "آدرس شعبه دوم",
     "Address2": "تهران، ایران",
-
+    "BackgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFFEFB 25%, #FFF9EB 55%, #FDF6E7 75%, #FFFFFF 100%)",
+    "TextColor": "#000000",
     "DefaultMetaTitle": "گالری جواهرات الماس | خرید آنلاین طلا و جواهر",
     "DefaultMetaDescription": "گالری جواهرات الماس؛ فروشگاه اینترنتی طلا و جواهر با مجموعه‌ای از زیورآلات لوکس، انگشتر، گردنبند، دستبند و گوشواره.",
     "DefaultMetaKeywords": "گالری جواهرات الماس, خرید طلا, خرید آنلاین طلا, خرید جواهر, زیورآلات, انگشتر طلا, گردنبند طلا, دستبند طلا, گوشواره طلا",
-
     "IsActive": true
   }
 }

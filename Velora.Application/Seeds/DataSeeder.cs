@@ -511,6 +511,61 @@ namespace Velora.Application.Seeds
                     targetId: await GetPageIdBySlugAsync("menu"),
                     parentId: null);
             }
+            // =========================================================
+            // ParsaLink_Template
+            // =========================================================
+
+            if (string.Equals(
+                templateName,
+                "ParsaLink_Template",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                var servicesPageId =
+                    await GetPageIdBySlugAsync("services");
+
+                if (servicesPageId.HasValue)
+                {
+                    await EnsureMenuAsync(
+                        existingMenus,
+                        text: "خدمات",
+                        linkTypeId: pageLinkTypeId,
+                        targetId: servicesPageId,
+                        parentId: null,
+                        sortOrder: 1,
+                        enabled: true);
+                }
+
+                var portfolioPageId =
+                    await GetPageIdBySlugAsync("portfolio");
+
+                if (portfolioPageId.HasValue)
+                {
+                    await EnsureMenuAsync(
+                        existingMenus,
+                        text: "نمونه کارها",
+                        linkTypeId: pageLinkTypeId,
+                        targetId: portfolioPageId,
+                        parentId: null,
+                        sortOrder: 2,
+                        enabled: true);
+                }
+            }
+            else
+            {
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "خدمات",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: await GetPageIdBySlugAsync("services"),
+                    parentId: null);
+
+                await DisableMenuAsync(
+                    existingMenus,
+                    text: "نمونه کارها",
+                    linkTypeId: pageLinkTypeId,
+                    targetId: await GetPageIdBySlugAsync("portfolio"),
+                    parentId: null);
+            }
 
             // منوهای اختصاصی قالب‌های آینده را از اینجا اضافه کن.
         }
@@ -2891,6 +2946,28 @@ namespace Velora.Application.Seeds
 
                         if (!string.IsNullOrWhiteSpace(component.BackgroundGradient))
                             sectionEntity.BackgroundGradient = component.BackgroundGradient.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.SubtitleColor))
+                            sectionEntity.SubtitleColor = component.SubtitleColor.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.HeaderColor))
+                            sectionEntity.HeaderColor = component.HeaderColor.Trim();
+
+
+                        if (!string.IsNullOrWhiteSpace(component.DescriptionColor))
+                            sectionEntity.DescriptionColor = component.DescriptionColor.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.Link1Color))
+                            sectionEntity.Link1Color = component.Link1Color.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(component.Link2Color))
+                            sectionEntity.Link2Color = component.Link2Color.Trim();
+                        if (!string.IsNullOrWhiteSpace(component.Link3Color))
+                            sectionEntity.Link3Color = component.Link3Color.Trim();
+                        if (!string.IsNullOrWhiteSpace(component.Link4Color))
+                            sectionEntity.Link4Color = component.Link4Color.Trim();
+                        if (!string.IsNullOrWhiteSpace(component.IconColor))
+                            sectionEntity.IconColor = component.IconColor.Trim();
                         sectionEntity.IsActive = true;
 
                         var createdSection =
@@ -3000,7 +3077,7 @@ namespace Velora.Application.Seeds
                             Icon = existingSection.Data.Icon,
                             IconAlt = existingSection.Data.IconAlt,
                             IconColor = existingSection.Data.IconColor,
-
+                            
                             Features = existingSection.Data.Features,
                             CopyrightText = existingSection.Data.CopyrightText,
 
@@ -3060,7 +3137,10 @@ namespace Velora.Application.Seeds
 
                             // Only these are changed by the seeder
                             SortOrder = currentSectionSortOrder,
-                            IsActive = true
+                            IsActive = true,
+                            BackgroundGradient= existingSection.Data.BackgroundGradient,
+                            ButtonColor= existingSection.Data.ButtonColor,
+                            TextColor= existingSection.Data.TextColor,
                         };
 
                         await _sectionService
