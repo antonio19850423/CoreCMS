@@ -182,4 +182,7 @@ public partial class VwSectionForm
 
     [StringLength(500)]
     public string? BackgroundGradient { get; set; }
+
+    [StringLength(500)]
+    public string? Price { get; set; }
 }

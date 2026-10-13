@@ -86,6 +86,26 @@
           "metaKeywords": "خدمات طراحی سایت، توسعه وب‌سایت، طراحی UI UX، فروشگاه اینترنتی، توسعه API، نرم افزار اختصاصی، طراحی سیستم، توسعه سامانه، CMS، خدمات برنامه نویسی",
           "components": [
             {
+              "code": "servicePricingHeader",
+              "type": "servicePricingHeader"
+            },
+            {
+              "code": "sharedHosting",
+              "type": "sharedHosting"
+            },
+            {
+              "code": "cloudHosting",
+              "type": "cloudHosting"
+            },
+            {
+              "code": "pricingNotice",
+              "type": "pricingNotice"
+            },
+            {
+              "code": "servicePricingFooter",
+              "type": "servicePricingFooter"
+            },
+            {
               "code": "templateGallery",
               "type": "gallery"
             },

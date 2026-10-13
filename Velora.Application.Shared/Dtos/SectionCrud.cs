@@ -33,7 +33,7 @@ namespace Velora.Application.Shared.Dtos
         public string? ImageAlt { get; set; }
 
         // Links
-        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 100,GroupKey = "Link1",Route = "/api/ComboBox/Pages")]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 300,GroupKey = "Link1",Route = "/api/ComboBox/Pages")]
         public string? Link1Text { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link1")]
@@ -47,7 +47,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link1TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, GroupKey = "Link1")]
         public bool? Link1OpenInNewTab { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link2", Route = "/api/ComboBox/Pages")]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link2", Route = "/api/ComboBox/Pages")]
         public string? Link2Text { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link2")]
@@ -61,7 +61,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link2TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, GroupKey = "Link2")]
         public bool? Link2OpenInNewTab { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link3", Route = "/api/ComboBox/Pages")]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link3", Route = "/api/ComboBox/Pages")]
         public string? Link3Text { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link3")]
@@ -75,7 +75,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link3TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, GroupKey = "Link3")]
         public bool? Link3OpenInNewTab { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 100, GroupKey = "Link4", Route = "/api/ComboBox/Pages")]
+        [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link4", Route = "/api/ComboBox/Pages")]
         public string? Link4Text { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = true, ShowInForm = true, MaxLength = 300, GroupKey = "Link4")]
@@ -216,6 +216,9 @@ namespace Velora.Application.Shared.Dtos
         public string? TextColor { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 58, GridOrder = 58, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? BackgroundGradient { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 59, GridOrder = 59, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+
+        public string? Price { get; set; }
 
     }
 }

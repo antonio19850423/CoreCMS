@@ -143,6 +143,7 @@ namespace Velora.Application.Services
                     ButtonColor = input.ButtonColor,
                     TextColor = input.TextColor,
                     BackgroundGradient = input.BackgroundGradient,
+                    Price=input.Price,
                     
                     
 
@@ -266,6 +267,7 @@ namespace Velora.Application.Services
                     ButtonColor = input.ButtonColor,
                     TextColor = input.TextColor,
                     BackgroundGradient = input.BackgroundGradient,
+                    Price = input.Price,
 
                 };
 

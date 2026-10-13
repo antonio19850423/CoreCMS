@@ -109,6 +109,7 @@ public class SectionGqlResolver : ISectionGqlResolver
             IsLatestProducts= x.IsLatestProducts,
             TextColor=x.TextColor ??"",
             BackgroundGradient=x.BackgroundGradient??"",
+            Price=x.Price??"",
         });
     }
 

@@ -336,4 +336,7 @@
   <data name="Section.BackgroundGradient" xml:space="preserve">
     <value>طیف رنگی پس‌زمینه</value>
   </data>
+  <data name="Section.Price" xml:space="preserve">
+    <value>قیمت</value>
+  </data>
 </root>

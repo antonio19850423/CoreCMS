@@ -1956,7 +1956,7 @@
             "imageUrl": "/uploads/sections/ParsaLink/Starter.png",
             "imageAlt": "Starter Website",
             "linkUrl": "#",
-            "price": "۲۵ میلیون تومان",
+            "price": "44 میلیون تومان",
             "backgroundColor": "#FFFFFF",
             "features": "خانه|درباره ما|تماس با ما|مدیریت محتوای پایه|مدیریت منو|مدیریت تصاویر و فایل‌ها|SEO پایه|امنیت پایه|طراحی واکنش‌گرا"
           },
@@ -1966,7 +1966,7 @@
             "imageUrl": "/uploads/sections/ParsaLink/Business.png",
             "imageAlt": "Business Website",
             "linkUrl": "#",
-            "price": "۴۰ میلیون تومان",
+            "price": "59 میلیون تومان",
             "backgroundColor": "#F5F5F5",
             "features": "تمام امکانات پلن پایه|صفحات داینامیک|مقالات|اخبار|خدمات|نمونه‌کارها|FAQ|مدیریت محتوای پیشرفته‌تر|SEO پیشرفته‌تر"
           },
@@ -1976,7 +1976,7 @@
             "imageUrl": "/uploads/sections/ParsaLink/Ecommerce.png",
             "imageAlt": "E-commerce Website",
             "linkUrl": "#",
-            "price": "۶۵ میلیون تومان",
+            "price": "115 میلیون تومان",
             "backgroundColor": "#FDF1F3",
             "features": "تمام امکانات موردنیاز سایت|محصولات|دسته‌بندی|برندها|ویژگی و تنوع محصول|سبد خرید|سفارش‌ها|موجودی|تخفیف|کوپن|مشتریان|گزارش‌ها|پرداخت آنلاین|کارت‌به‌کارت"
           },
@@ -1986,7 +1986,7 @@
             "imageUrl": "/uploads/sections/ParsaLink/Startup.png",
             "imageAlt": "Startup Digital Product",
             "linkUrl": "#",
-            "price": "از ۹۰ میلیون تومان",
+            "price": "لطفا تماس بگیرید",
             "backgroundColor": "#F1F6FC",
             "features": "طراحی UI و UX اختصاصی|توسعه امکانات اختصاصی|پنل‌های مدیریتی و کاربری اختصاصی|API و اتصال به سرویس‌های خارجی|پیاده‌سازی فرآیندهای اختصاصی کسب‌وکار|اتصال به سیستم‌ها و پلتفرم‌های خارجی|توسعه ماژول‌ها و قابلیت‌های جدید|توسعه MVP و نسخه اولیه محصول|توسعه پلتفرم و سامانه اختصاصی|داشبوردها و گزارش‌های اختصاصی|اتوماسیون فرآیندهای کسب‌وکار|توسعه زیرساخت و معماری قابل توسعه|توسعه قابلیت‌های پیشرفته و مقیاس‌پذیر"
           }
@@ -3152,5 +3152,285 @@
         ]
       }
     }
-  }
+  },
+  "servicePricingHeader": {
+      "rules": {
+        "direction": true,
+        "headingLevel": true,
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "backgroundColor": true,
+        "backgroundGradient": true,
+        "headerColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true
+      },
+      "defaultData": {
+        "rtl": {
+          "direction": "rtl",
+          "headingLevel": "h2",
+          "subtitle": "تعرفه خدمات پارسا لینک",
+          "title": "وب‌سایتی حرفه‌ای برای رشد کسب‌وکار شما",
+          "description": "با CMS اختصاصی پارسا لینک، متناسب با نیاز کسب‌وکار خود وب‌سایت بسازید. هزینه طراحی و توسعه از هزینه دامنه و زیرساخت میزبانی جداست.",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
+          "headerColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563"
+        },
+        "ltr": {
+          "direction": "ltr",
+          "headingLevel": "h2",
+          "subtitle": "PARSA LINK SERVICE PRICING",
+          "title": "A Professional Website to Grow Your Business",
+          "description": "Build a website tailored to your business with ParsaLink's custom CMS. Website design and development costs are separate from domain registration and hosting infrastructure.",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
+          "headerColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563"
+        }
+      }
+    },
+    "sharedHosting": {
+      "rules": {
+        "direction": true,
+        "componentTypeName": true,
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "icon": true,
+        "iconAlt": true,
+        "iconColor": true,
+        "backgroundColor": true,
+        "backgroundGradient": true,
+        "titleColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true,
+        "textColor": true,
+        "features": true,
+        "sortOrder": true,
+        "isActive": true
+      },
+      "defaultData": {
+        "rtl": {
+          "direction": "rtl",
+          "componentTypeName": "sharedHosting",
+          "title": "سایت‌های پایه و شرکتی",
+          "subtitle": "مناسب کسب‌وکارهای کوچک و متوسط",
+          "description": "مناسب وب‌سایت‌های معرفی کسب‌وکار و سایت‌های شرکتی با حجم اطلاعات و نیاز پردازشی کمتر.",
+          "icon": "Globe",
+          "iconAlt": "میزبانی اشتراکی",
+          "iconColor": "#374151",
+          "backgroundColor": "#F9FAFB",
+          "backgroundGradient": "",
+          "titleColor": "#111827",
+          "subtitleColor": "#6B7280",
+          "descriptionColor": "#4B5563",
+          "textColor": "#374151",
+          "features": "میزبانی روی زیرساخت اشتراکی پارسا لینک|بدون نیاز به تهیه سرور ابری اختصاصی|هزینه ثبت و تمدید دامنه بر عهده مشتری است.",
+          "sortOrder": 2,
+          "isActive": true
+        },
+        "ltr": {
+          "direction": "ltr",
+          "componentTypeName": "sharedHosting",
+          "title": "Basic and Business Websites",
+          "subtitle": "Ideal for Small and Medium Businesses",
+          "description": "Ideal for business profile websites and corporate sites with modest content and processing requirements.",
+          "icon": "Globe",
+          "iconAlt": "Shared Hosting",
+          "iconColor": "#374151",
+          "backgroundColor": "#F9FAFB",
+          "backgroundGradient": "",
+          "titleColor": "#111827",
+          "subtitleColor": "#6B7280",
+          "descriptionColor": "#4B5563",
+          "textColor": "#374151",
+          "features": "Hosted on ParsaLink shared infrastructure|No need to purchase a dedicated cloud server|Domain registration and renewal are paid by the customer.",
+          "sortOrder": 2,
+          "isActive": true
+        }
+      }
+    },
+    "cloudHosting": {
+      "rules": {
+        "direction": true,
+        "componentTypeName": true,
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "price": true,
+        "icon": true,
+        "iconAlt": true,
+        "iconColor": true,
+        "backgroundColor": true,
+        "backgroundGradient": true,
+        "titleColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true,
+        "textColor": true,
+        "features": true,
+        "link1Text": true,
+        "link2Text": true,
+        "sortOrder": true,
+        "isActive": true
+      },
+      "defaultData": {
+        "rtl": {
+          "direction": "rtl",
+          "componentTypeName": "cloudHosting",
+          "title": "فروشگاه‌های اینترنتی و استارتاپ‌ها",
+          "subtitle": "حداقل مشخصات پیشنهادی سرور ابری",
+          "description": "برای مدیریت محصولات، سفارش‌ها و اطلاعات کاربران، به زیرساخت متناسب با بار کاری و قابلیت توسعه نیاز دارید.",
+          "price": "از ۴۵ میلیون تومان در سال",
+          "icon": "Cloud",
+          "iconAlt": "سرور ابری",
+          "iconColor": "#E11D48",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
+          "titleColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "textColor": "#E11D48",
+          "features": "4 هسته CPU|16 GB RAM|100 GB فضای ذخیره‌سازی|هزینه سرور به ارائه‌دهنده و منابع انتخاب‌شده بستگی دارد.|هزینه دامنه و سرویس‌های جانبی جداگانه محاسبه می‌شود.",
+          "link1Text": "هزینه جدا از طراحی",
+          "link2Text": "هزینه سرور ابری، دامنه و سرویس‌های جانبی بر عهده مشتری است. هزینه نهایی بر اساس ارائه‌دهنده و نیازهای پروژه تعیین می‌شود.",
+          "sortOrder": 3,
+          "isActive": true
+        },
+        "ltr": {
+          "direction": "ltr",
+          "componentTypeName": "cloudHosting",
+          "title": "Online Stores and Startups",
+          "subtitle": "Recommended Minimum Cloud Server Specifications",
+          "description": "Product catalogs, orders, and customer data require scalable infrastructure suited to your workload.",
+          "price": "From 45 million toman per year",
+          "icon": "Cloud",
+          "iconAlt": "Cloud Server",
+          "iconColor": "#E11D48",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
+          "titleColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "textColor": "#E11D48",
+          "features": "4 CPU Cores|16 GB RAM|100 GB Storage|Server costs depend on the provider and selected resources.|Domain and additional services are billed separately.",
+          "link1Text": "Hosting billed separately",
+          "link2Text": "Cloud server, domain, and additional service costs are paid by the customer. Final costs depend on the provider and project requirements.",
+          "sortOrder": 3,
+          "isActive": true
+        }
+      }
+    },
+    "pricingNotice": {
+      "rules": {
+        "direction": true,
+        "componentTypeName": true,
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "icon": true,
+        "iconAlt": true,
+        "iconColor": true,
+        "backgroundColor": true,
+        "backgroundGradient": true,
+        "titleColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true,
+        "textColor": true,
+        "sortOrder": true,
+        "isActive": true
+      },
+      "defaultData": {
+        "rtl": {
+          "direction": "rtl",
+          "componentTypeName": "pricingNotice",
+          "title": "شفافیت در هزینه‌ها، از ابتدا تا راه‌اندازی",
+          "subtitle": "نکته مهم درباره هزینه‌ها",
+          "description": "قیمت پلن‌ها مربوط به طراحی و توسعه وب‌سایت است. زیرساخت مناسب بر اساس امکانات، میزان ترافیک و نیازهای فنی هر پروژه انتخاب می‌شود.",
+          "icon": "Info",
+          "iconAlt": "اطلاع‌رسانی",
+          "iconColor": "#E11D48",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "",
+          "titleColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "textColor": "#374151",
+          "sortOrder": 4,
+          "isActive": true
+        },
+        "ltr": {
+          "direction": "ltr",
+          "componentTypeName": "pricingNotice",
+          "title": "Transparent Costs from Setup to Launch",
+          "subtitle": "Important Pricing Information",
+          "description": "Plan prices cover website design and development. Infrastructure is selected according to project features, traffic, and technical requirements.",
+          "icon": "Info",
+          "iconAlt": "Information",
+          "iconColor": "#E11D48",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "",
+          "titleColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "textColor": "#374151",
+          "sortOrder": 4,
+          "isActive": true
+        }
+      }
+    },
+    "servicePricingFooter": {
+      "rules": {
+        "direction": true,
+        "headingLevel": true,
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "backgroundColor": true,
+        "backgroundGradient": true,
+        "headerColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true,
+        "link1Text": true,
+        "link1Url": true,
+        "link1Color": true,
+        "link1OpenInNewTab": true
+      },
+      "defaultData": {
+        "rtl": {
+          "direction": "rtl",
+          "headingLevel": "h3",
+          "title": "فراتر از طراحی یک وب‌سایت",
+          "description": "هدف ما ساختن ابزاری برای رشد واقعی کسب‌وکار شماست؛ از طراحی تجربه کاربری تا توسعه وب‌سایت و نرم‌افزار، ایده‌تان را به یک محصول دیجیتال کاربردی و حرفه‌ای تبدیل می‌کنیم.",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
+          "headerColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "link1Text": "مشاهده تعرفه‌ها",
+          "link1Url": "#pricing",
+          "link1Color": "#F43F5E",
+          "link1OpenInNewTab": false
+        },
+        "ltr": {
+          "direction": "ltr",
+          "headingLevel": "h3",
+          "title": "Ready to Grow Your Business Online?",
+          "subtitle": "A Plan Tailored to Your Needs",
+          "description": "Choose the right plan and contact us to review your technical requirements and project costs.",
+          "backgroundColor": "#FFFFFF",
+          "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
+          "headerColor": "#111827",
+          "subtitleColor": "#BE123C",
+          "descriptionColor": "#4B5563",
+          "link1Text": "View Pricing",
+          "link1Url": "#pricing",
+          "link1Color": "#F43F5E",
+          "link1OpenInNewTab": false
+        }
+      }
+    }
 }

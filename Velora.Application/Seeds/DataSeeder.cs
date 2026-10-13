@@ -2970,12 +2970,22 @@ namespace Velora.Application.Seeds
                             sectionEntity.IconColor = component.IconColor.Trim();
                         sectionEntity.IsActive = true;
 
-                        var createdSection =
-                            await _sectionService
-                                .CreateAsync(sectionEntity);
+                        Console.WriteLine(
+                            $"[INSERT SECTION] PageId={pageId}, " +
+                            $"ComponentTypeId={componentTypeEntity.Id}, " +
+                            $"Title={sectionEntity.Title}, " +
+                            $"SortOrder={sectionEntity.SortOrder}"
+                        );
 
-                        sectionEntity.Id =
-                            createdSection.Data.Id;
+                        var createdSection =
+                            await _sectionService.CreateAsync(sectionEntity);
+
+                        sectionEntity.Id = createdSection.Data.Id;
+
+                        await DebugCommitAsync(
+                            $"INSERT SECTION | Component={componentCode} | " +
+                            $"Page={pageSlug} | SectionId={sectionEntity.Id}"
+                        );
 
                         // -------------------------------------------------
                         // CREATE SECTION ITEMS ONLY FOR A NEW SECTION
@@ -3035,8 +3045,20 @@ namespace Velora.Application.Seeds
                                         sectionGroupItemId,
                                         itemSortOrder++);
 
-                                await _sectionItemService
-                                    .CreateAsync(sectionItem);
+                                Console.WriteLine(
+                            $"[INSERT SECTION ITEM] " +
+                            $"Component={componentCode}, " +
+                            $"Title={sectionItem.Title}, " +
+                            $"SortOrder={sectionItem.SortOrder}"
+                        );
+
+                                await _sectionItemService.CreateAsync(sectionItem);
+
+                                await DebugCommitAsync(
+                                    $"INSERT SECTION ITEM | Component={componentCode} | " +
+                                    $"Title={sectionItem.Title} | " +
+                                    $"SortOrder={sectionItem.SortOrder}"
+                                );
                             }
                         }
                     }
@@ -3141,6 +3163,7 @@ namespace Velora.Application.Seeds
                             BackgroundGradient= existingSection.Data.BackgroundGradient,
                             ButtonColor= existingSection.Data.ButtonColor,
                             TextColor= existingSection.Data.TextColor,
+                            Price= existingSection.Data.Price,
                         };
 
                         await _sectionService
@@ -3277,10 +3300,6 @@ namespace Velora.Application.Seeds
                         IsActive = false
                     };
 
-                    await _sectionService.UpdateAsync(
-                        deactivateSection,
-                        deactivateSection.Id);
-
                     await _sectionService
                         .UpdateAsync(deactivateSection, deactivateSection.Id);
                 }
@@ -3289,8 +3308,26 @@ namespace Velora.Application.Seeds
             // ---------------------------------------------------------
             // COMMIT
             // ---------------------------------------------------------
-
+            Console.WriteLine(
+    $"Seeder reached CommitAsync. Page count: {templatePages.Count}");
             await _transactionService.CommitAsync();
+        }
+        private async Task DebugCommitAsync(string operation)
+        {
+            try
+            {
+                Console.WriteLine($"[COMMIT START] {operation}");
+
+                //await _transactionService.CommitAsync();
+
+                Console.WriteLine($"[COMMIT SUCCESS] {operation}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[COMMIT FAILED] {operation}");
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
         private static string GenerateSlug(string text)
         {
@@ -3660,6 +3697,10 @@ namespace Velora.Application.Seeds
                 IsSpecialOffers= rtl?.IsSpecialOffers,
                 EnglishTitle= rtl?.EnglishTitle,
                 IsLatestProducts= rtl?.IsLatestProducts,
+                BackgroundGradient=rtl?.BackgroundGradient,
+                ButtonColor=rtl?.ButtonColor,
+                TextColor= rtl?.TextColor,
+                Price=rtl?.Price
             };
         }
         private ContentItemDto BuildContentItemDto(

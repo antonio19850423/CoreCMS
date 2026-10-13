@@ -193,6 +193,14 @@ namespace Velora.Application.Shared.Dtos
         public bool? IsActiveCategries { get; set; }
         public bool? IsLatestProducts { get; set; }
         public List<ComponentItemData>? Items { get; set; }
+        [StringLength(50)]
+        public string? ButtonColor { get; set; }
+        [StringLength(50)]
+        public string? TextColor { get; set; }
+        [StringLength(500)]
+        public string? BackgroundGradient { get; set; }
+        [StringLength(500)]
+        public string? Price { get; set; }
 
     }
 }

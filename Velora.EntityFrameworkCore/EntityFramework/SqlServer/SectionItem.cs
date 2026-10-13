@@ -56,7 +56,7 @@ public partial class SectionItem
     [StringLength(50)]
     public string? DescriptionColor { get; set; }
 
-    [StringLength(100)]
+    [StringLength(300)]
     public string? Link1Text { get; set; }
 
     [StringLength(300)]
@@ -65,7 +65,7 @@ public partial class SectionItem
     [StringLength(50)]
     public string? Link1Color { get; set; }
 
-    [StringLength(100)]
+    [StringLength(300)]
     public string? Link2Text { get; set; }
 
     [StringLength(300)]
@@ -74,7 +74,7 @@ public partial class SectionItem
     [StringLength(50)]
     public string? Link2Color { get; set; }
 
-    [StringLength(100)]
+    [StringLength(300)]
     public string? Link3Text { get; set; }
 
     [StringLength(300)]
@@ -83,7 +83,7 @@ public partial class SectionItem
     [StringLength(50)]
     public string? Link3Color { get; set; }
 
-    [StringLength(100)]
+    [StringLength(300)]
     public string? Link4Text { get; set; }
 
     [StringLength(300)]
