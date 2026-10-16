@@ -252,8 +252,14 @@ var app = builder.Build();
 app.UseCors(builder =>
 {
     builder
-        .WithOrigins("http://localhost:3000")
-        .WithOrigins("http://localhost:3001")
+            .WithOrigins(
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:3002",
+            "https://admin.parsalink.com",
+            "https://api.parsalink.com",
+            "https://parsalink.com"
+        )
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials(); // حتما این را داشته باش
@@ -280,11 +286,11 @@ var localizationOptions = new RequestLocalizationOptions()
 app.UseRequestLocalization(localizationOptions);
 app.UseErrorHandlingMiddleware();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}GetCartAsync
 
 //app.UseHttpsRedirection();
 
