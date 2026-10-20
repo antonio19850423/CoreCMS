@@ -34,5 +34,11 @@
     <ProjectReference Include="..\Velora.Application\Velora.Application.csproj" />
     <ProjectReference Include="..\Velora.Infrastructure.ORM\Velora.Infrastructure.ORM.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Update="appsettings.Production.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>

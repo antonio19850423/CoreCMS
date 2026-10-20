@@ -65,14 +65,17 @@ namespace Velora.Host.Controllers
         [Route("GetSiteInfoAsync")]
         public async Task<ResultDto<SiteInfoDto>> GetSiteInfoAsync()
         {
-            const string cacheKey = "SiteInfo";
+            var host = HttpContext.Request.Host.Host
+                .ToLowerInvariant();
 
-            if (_memoryCache.TryGetValue(
-                cacheKey,
-                out ResultDto<SiteInfoDto>? cachedResult))
-            {
-                return cachedResult!;
-            }
+            var cacheKey = $"SiteInfo:{host}";
+
+            //if (_memoryCache.TryGetValue(
+            //    cacheKey,
+            //    out ResultDto<SiteInfoDto>? cachedResult))
+            //{
+            //    return cachedResult!;
+            //}
 
             try
             {
@@ -184,10 +187,10 @@ namespace Velora.Host.Controllers
                     };
 
                 // Cache به مدت 30 دقیقه
-                _memoryCache.Set(
-                    cacheKey,
-                    result,
-                    TimeSpan.FromSeconds(1));
+                //_memoryCache.Set(
+                //    cacheKey,
+                //    result,
+                //    TimeSpan.FromMinutes(10));
 
                 return result;
             }

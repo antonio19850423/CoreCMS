@@ -302,11 +302,15 @@ namespace Velora.Application.Services
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(7)
+                SameSite = SameSiteMode.None,
+                Expires = expires,
+                Path = "/"
             };
 
-            _httpContextAccessor.HttpContext?.Response.Cookies.Append("refreshToken", token, cookieOptions);
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append(
+                "refreshToken",
+                token,
+                cookieOptions);
         }
         public async Task<ResultDto<bool>> LogoutAsync()
         {

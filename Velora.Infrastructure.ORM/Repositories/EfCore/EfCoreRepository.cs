@@ -9,18 +9,21 @@ using System.Threading.Tasks;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Repositories;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
-
+using Microsoft.Extensions.Logging;
 public class EfCoreRepository<TEntity> : ISqlRepository<TEntity> , IPosgreSqlRepository<TEntity> where TEntity : class
 {
     protected readonly DbContext _context;
     protected readonly DbSet<TEntity> _dbSet;
-
-    public EfCoreRepository(IUnitOfWork unitOfWork)
+    private readonly ILogger<EfCoreRepository<TEntity>> _logger;
+    public EfCoreRepository(
+        IUnitOfWork unitOfWork,
+        ILogger<EfCoreRepository<TEntity>> logger)
     {
+        _logger = logger;
         _context = unitOfWork.Context;
+
         _dbSet = _context.Set<TEntity>();
     }
-
     public async Task<IQueryable<TEntity>> GetAllAsync()
     {
         return _dbSet.AsNoTracking();

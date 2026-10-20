@@ -39,42 +39,80 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithExceptionDetails() // Include detailed exception data
     .WriteTo.Console() // Log to console
-    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) // Log to daily rolling file
-                                                                         //.WriteTo.Seq("http://localhost:5341") // Optional: log to Seq if running
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) 
     .CreateLogger();
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 // Add services to the container.
 
 builder.Services.AddControllers();
-var databaseSettings = builder.Configuration.GetSection("Database").Get<DatabaseSettings>();
-var dbTypeString = builder.Configuration.GetValue<string>("Database:Provider") ?? "PostgreSQL";
+var databaseSettings = builder.Configuration
+    .GetSection("Database")
+    .Get<DatabaseSettings>()
+    ?? throw new InvalidOperationException(
+        "Database settings not found in appsettings.json");
+
+if (string.IsNullOrWhiteSpace(databaseSettings.ConnectionString))
+{
+    throw new InvalidOperationException(
+        "Database:ConnectionString is missing");
+}
+
+var dbTypeString = databaseSettings.Provider;
+
+if (!string.Equals(
+        dbTypeString,
+        "SqlServer",
+        StringComparison.OrdinalIgnoreCase))
+{
+    throw new InvalidOperationException(
+        "Database:Provider must be SqlServer");
+}
+
+var provider = DatabaseType.SqlServer;
+
+builder.Services.AddDbContext<CoreCmsContext>(
+    options => options.UseSqlServer(databaseSettings.ConnectionString),
+    ServiceLifetime.Scoped);
+
 // مثال برای ASP.NET Core
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowRoseAdmin", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .WithOrigins(
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://localhost:3002",
+                "http://localhost:3003",
+                "http://localhost:3004",
+                "https://admin.parsalink.com",
+                "https://api.parsalink.com",
+                "https://parsalink.com",
+                "https://roseapi.parsalink.com",
+                "https://rose.parsalink.com",
+                "https://roseadmin.parsalink.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
 
 // تعیین نوع دیتابیس
-var provider = dbTypeString.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
-    ? DatabaseType.SqlServer
-    : DatabaseType.PostgreSql;
-if (provider == DatabaseType.SqlServer)
-{
-    builder.Services.AddDbContext<CoreCmsContext>(options =>
-        options.UseSqlServer(databaseSettings.ConnectionString), ServiceLifetime.Scoped);
-}
-else
-{
-    builder.Services.AddDbContext<VeloraPgContext>(options =>
-        options.UseNpgsql(databaseSettings.ConnectionString), ServiceLifetime.Scoped);
-}
+
+//if (provider == DatabaseType.SqlServer)
+//{
+    //builder.Services.AddDbContext<CoreCmsContext>(options =>
+    //    options.UseSqlServer(databaseSettings.ConnectionString), ServiceLifetime.Scoped);
+//}
+//else
+//{
+//    builder.Services.AddDbContext<VeloraPgContext>(options =>
+//        options.UseNpgsql(databaseSettings.ConnectionString), ServiceLifetime.Scoped);
+//}
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -249,21 +287,7 @@ builder.Services.Configure<FormOptions>(options =>
 });
 var app = builder.Build();
 // و در pipeline
-app.UseCors(builder =>
-{
-    builder
-            .WithOrigins(
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "http://localhost:3002",
-            "https://admin.parsalink.com",
-            "https://api.parsalink.com",
-            "https://parsalink.com"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials(); // حتما این را داشته باش
-});
+app.UseCors("AllowRoseAdmin");
 // ----------------------------
 // 2. Seed Data را اجرا کن
 using (var scope = app.Services.CreateScope())

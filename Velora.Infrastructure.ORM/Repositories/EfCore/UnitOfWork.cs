@@ -16,15 +16,7 @@ namespace MyApp.Orm.EfCore
         private readonly TContext _context;
         private readonly bool _useTransaction;
 
-        public EfUnitOfWork(bool useTransaction = true)
-            {
-            _contextKey = Guid.NewGuid();
-            _context = ContextQueue<TContext>.GetContext(_contextKey);
-            _useTransaction = useTransaction;
 
-            if(_useTransaction)
-                _transaction = _context.Database.BeginTransaction();
-            }
         public EfUnitOfWork(TContext context, bool useTransaction = true)
         {
             _contextKey = Guid.NewGuid();

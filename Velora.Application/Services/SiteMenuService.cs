@@ -53,7 +53,9 @@ namespace Velora.Application.Services
         }
         public async Task<IQueryable<SiteMenuCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<VwSiteMenuForm, VwSiteMenuForm, SiteMenuCrud>();
+            return await GetAllViewQueryable<
+                VwSiteMenuForm,
+                SiteMenuCrud>();
         }
         public async Task<ResultDto<SiteMenuDto>> CreateAsync(SiteMenuCrud input)
         {
