@@ -7,7 +7,8 @@
       "imageUrl": true,
       "imageAlt": true,
       "link1Text": true,
-      "link1Url": true
+      "link1Url": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -35,7 +36,15 @@
       "description": true,
       "imageUrl": true,
       "imageAlt": true,
-      "features": true
+      "features": true,
+      "isActive": true,
+      "items": {
+        "name": true,
+        "description": true,
+        "icon": true,
+        "isActive": true,
+        "sortOrder": true
+      }
     },
     "defaultData": {
       "rtl": {
@@ -123,10 +132,13 @@
       "description": true,
       "imageUrl": true,
       "imageAlt": true,
+      "isActive": true,
       "items": {
         "title": true,
         "description": true,
-        "icon": true
+        "icon": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -181,12 +193,15 @@
   "slider": {
     "rules": {
       "direction": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
         "imageUrl": true,
         "linkText": true,
-        "linkUrl": true
+        "linkUrl": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -249,6 +264,7 @@
       "title": true,
       "subtitle": true,
       "description": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -257,7 +273,9 @@
         "link1Url": true,
         "link1TypeId": true,
         "link1TargetId": true,
-        "features": true
+        "features": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -354,6 +372,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "features": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -455,6 +474,7 @@
       "contactSubmitButtonText": true,
       "mapEmbedUrl": true,
       "features": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -538,6 +558,7 @@
       "backgroundColor": true,
       "headerColor": true,
       "subtitleColor": true,
+      "isActive": true,
       "items": {
         "question": true,
         "answer": true,
@@ -627,6 +648,7 @@
       "backgroundColor": true,
       "headerColor": true,
       "subtitleColor": true,
+      "isActive": true,
       "items": {
         "question": true,
         "answer": true,
@@ -727,6 +749,7 @@
       "headerColor": true,
       "descriptionColor": true,
       "copyrightText": true,
+      "isActive": true,
       "items": {
         "sectionGroupItemCode": true,
         "SectionGroupItemId": true,
@@ -913,6 +936,7 @@
       "headerColor": true,
       "descriptionColor": true,
       "copyrightText": true,
+      "isActive": true,
       "items": {
         "sectionGroupItemCode": true,
         "SectionGroupItemId": true,
@@ -1078,7 +1102,8 @@
       "link1Text": true,
       "link1Url": true,
       "link2Text": true,
-      "link2Url": true
+      "link2Url": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1104,7 +1129,10 @@
         "description": true,
         "imageUrl": true,
         "imageAlt": true,
-        "linkUrl": true
+        "link1Url": true,
+        "link1Text": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -1118,42 +1146,60 @@
             "description": "طراحی و توسعه وب‌سایت فروشگاهی برای برند تخصصی طلا و زیورآلات با تمرکز بر طراحی لوکس و تجربه خرید آنلاین.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت فروشگاهی آرمان گالری",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder":1
           },
           {
             "title": "ویستا سازه",
             "description": "طراحی وب‌سایت شرکتی برای مجموعه ساختمانی با معرفی پروژه‌ها، خدمات تخصصی و ساختار حرفه‌ای محتوایی.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت شرکتی ویستا سازه",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder": 2
           },
           {
             "title": "پارس‌مد",
             "description": "طراحی و توسعه وب‌سایت مجموعه تجهیزات پزشکی با ساختار دسته‌بندی محصولات و رابط کاربری ساده و کاربردی.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت تجهیزات پزشکی پارس‌مد",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder": 3
           },
           {
             "title": "نیکان مارکت",
             "description": "طراحی فروشگاه اینترنتی با تمرکز بر نمایش محصولات، جستجوی سریع، دسته‌بندی کاربردی و تجربه خرید روان.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت فروشگاهی نیکان مارکت",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder": 4
           },
           {
             "title": "راهکاران نوین",
             "description": "طراحی وب‌سایت خدمات فناوری و نرم‌افزار با ساختار مدرن برای معرفی خدمات، راهکارها و پروژه‌های سازمانی.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت خدمات فناوری راهکاران نوین",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder": 5
           },
           {
             "title": "خانه سبز",
             "description": "طراحی وب‌سایت حوزه معماری و دکوراسیون داخلی با تمرکز بر نمایش پروژه‌ها، تصاویر و نمونه‌کارهای اجرایی.",
             "imageUrl": "/uploads/sections/Placeholder.jpg",
             "imageAlt": "وب‌سایت معماری و دکوراسیون خانه سبز",
-            "linkUrl": "#"
+            "link1Url": "#",
+            "link1Text": "",
+            "isActive": true,
+            "SortOrder": 6
           }
         ]
       }
@@ -1195,7 +1241,8 @@
       "subtitle": true,
       "videoUrl": true,
       "thumbnailUrl": true,
-      "description": true
+      "description": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1212,7 +1259,8 @@
       "title": true,
       "description": true,
       "imageUrl": true,
-      "imageAlt": true
+      "imageAlt": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1233,7 +1281,9 @@
     "rules": {
       "items": {
         "question": true,
-        "answer": true
+        "answer": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -1298,6 +1348,7 @@
   "luxuryJewelrySlider": {
     "rules": {
       "direction": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -1452,6 +1503,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "IsActiveCategries": true,
+      "isActive": true,
       "items": {
         "categoryName": true,
         "categoryId": true,
@@ -1494,6 +1546,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "isLatestProducts": true,
+      "isActive": true,
       "items": {
         "productId": true,
         "productName": true,
@@ -1536,6 +1589,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "isSpecialOffers": true,
+      "isActive": true,
       "items": {
         "productId": true,
         "productName": true,
@@ -1582,7 +1636,8 @@
       "descriptionColor": true,
       "iconColor": true,
       "link1Text": true,
-      "link1Url": true
+      "link1Url": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1627,6 +1682,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "isBestSellingProducts": true,
+      "isActive": true,
       "items": {
         "productId": true,
         "productName": true,
@@ -1669,6 +1725,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "isActiveBrands": true,
+      "isActive": true,
       "items": {
         "brandId": true,
         "brandName": true,
@@ -1704,6 +1761,7 @@
   "luxuryJewelryBenefits": {
     "rules": {
       "backgroundColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "description": true,
@@ -1827,6 +1885,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "isLatestNews": true,
+      "isActive": true,
       "items": {
         "link1Text": true,
         "link1Url": true,
@@ -1868,7 +1927,8 @@
       "headerColor": true,
       "subtitleColor": true,
       "descriptionColor": true,
-      "isLatestNews": true
+      "isLatestNews": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1901,7 +1961,8 @@
       "backgroundColor": true,
       "headerColor": true,
       "subtitleColor": true,
-      "descriptionColor": true
+      "descriptionColor": true,
+      "isActive": true
     },
     "defaultData": {
       "rtl": {
@@ -1999,10 +2060,13 @@
       "title": true,
       "subtitle": true,
       "description": true,
+      "isActive": true,
       "items": {
         "title": true,
         "description": true,
-        "backgroundColor": true
+        "backgroundColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2043,6 +2107,7 @@
   "restaurantHero": {
     "rules": {
       "direction": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -2054,7 +2119,9 @@
         "subtitleColor": true,
         "titleColor": true,
         "descriptionColor": true,
-        "linkColor": true
+        "linkColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2181,6 +2248,7 @@
       "subtitle": true,
       "description": true,
       "backgroundColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -2188,7 +2256,9 @@
         "imageAlt": true,
         "linkText": true,
         "linkUrl": true,
-        "linkColor": true
+        "linkColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2236,6 +2306,7 @@
       "title": true,
       "subtitle": true,
       "backgroundColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -2243,7 +2314,9 @@
         "imageAlt": true,
         "linkText": true,
         "linkUrl": true,
-        "linkColor": true
+        "linkColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2329,6 +2402,7 @@
       "subtitleColor": true,
       "headerColor": true,
       "descriptionColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "description": true,
@@ -2337,7 +2411,9 @@
         "imageAlt": true,
         "linkUrl": true,
         "linkColor": true,
-        "backgroundColor": true
+        "backgroundColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2457,13 +2533,16 @@
       "subtitleColor": true,
       "headerColor": true,
       "descriptionColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
         "imageUrl": true,
         "imageAlt": true,
         "linkColor": true,
-        "features": true
+        "features": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2519,10 +2598,13 @@
       "subtitleColor": true,
       "headerColor": true,
       "descriptionColor": true,
+      "isActive": true,
       "items": {
         "linkText": true,
         "linkUrl": true,
-        "linkColor": true
+        "linkColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2578,6 +2660,7 @@
       "linkText": true,
       "linkUrl": true,
       "linkColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "description": true,
@@ -2585,7 +2668,9 @@
         "titleColor": true,
         "descriptionColor": true,
         "linkUrl": true,
-        "linkColor": true
+        "linkColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2797,11 +2882,14 @@
       "backgroundColor": true,
       "subtitleColor": true,
       "headerColor": true,
+      "isActive": true,
       "items": {
         "title": true,
         "imageUrl": true,
         "imageAlt": true,
-        "className": true
+        "className": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -2934,6 +3022,7 @@
       "headerColor": true,
       "descriptionColor": true,
       "footerText": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -2943,7 +3032,9 @@
         "titleColor": true,
         "descriptionColor": true,
         "linkColor": true,
-        "iconColor": true
+        "iconColor": true,
+        "isActive": true,
+        "sortOrder": true
       }
     },
     "defaultData": {
@@ -3057,6 +3148,7 @@
       "subtitleColor": true,
       "descriptionColor": true,
       "features": true,
+      "isActive": true,
       "items": {
         "title": true,
         "subtitle": true,
@@ -3154,18 +3246,19 @@
     }
   },
   "servicePricingHeader": {
-      "rules": {
-        "direction": true,
-        "headingLevel": true,
-        "title": true,
-        "subtitle": true,
-        "description": true,
-        "backgroundColor": true,
-        "backgroundGradient": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true
-      },
+    "rules": {
+      "direction": true,
+      "headingLevel": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "isActive": true
+    },
       "defaultData": {
         "rtl": {
           "direction": "rtl",
@@ -3397,7 +3490,8 @@
         "link1Text": true,
         "link1Url": true,
         "link1Color": true,
-        "link1OpenInNewTab": true
+        "link1OpenInNewTab": true,
+        "isActive": true
       },
       "defaultData": {
         "rtl": {

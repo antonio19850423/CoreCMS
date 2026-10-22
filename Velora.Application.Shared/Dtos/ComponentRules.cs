@@ -14,5 +14,7 @@ namespace Velora.Application.Shared.Dtos
         public bool Image { get; set; } = true;
         public bool LinkText { get; set; } = true;
         public bool LinkUrl { get; set; } = true;
+        public bool IsActive { get; set; } = true;
+        public bool SortOrder { get; set; } = true;
     }
 }

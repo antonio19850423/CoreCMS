@@ -87,12 +87,17 @@ builder.Services.AddCors(options =>
                 "http://localhost:3002",
                 "http://localhost:3003",
                 "http://localhost:3004",
+                "http://localhost:3005",
+                "http://localhost:3006",
                 "https://admin.parsalink.com",
                 "https://api.parsalink.com",
                 "https://parsalink.com",
                 "https://roseapi.parsalink.com",
                 "https://rose.parsalink.com",
-                "https://roseadmin.parsalink.com"
+                "https://roseadmin.parsalink.com",
+                "https://luxury.parsalink.com",
+                "https://luxuryadmin.parsalink.com",
+                "https://luxuryapi.parsalink.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
