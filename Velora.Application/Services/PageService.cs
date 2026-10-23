@@ -363,12 +363,12 @@ int pageSize)
                                         !string.IsNullOrWhiteSpace(i.Link1Text)
                                             ? i.Link1Text
                                             : i.Title,
-
+                                    
                                     Url = i.Link1Url,
                                     ImageAlt = i.ImageAlt,
                                     ImageUrl = i.ImageUrl,
                                     LinkColor = i.Link1Color,
-
+                                    Subtitle = i.Subtitle,
                                     IsInternalLink =
                                         i.Link1Type != null &&
                                         i.Link1Type.Code != "EXTERNAL",

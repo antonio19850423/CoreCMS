@@ -34,7 +34,7 @@ namespace Velora.Application.Shared.Dtos
         public string? AvatarUrl { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? AvatarAlt { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
 
         public string? Icon { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]

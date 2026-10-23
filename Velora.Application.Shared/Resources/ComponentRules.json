@@ -477,7 +477,6 @@
       "isActive": true,
       "items": {
         "title": true,
-        "subtitle": true,
         "isActive": true,
         "sortOrder": true
       }

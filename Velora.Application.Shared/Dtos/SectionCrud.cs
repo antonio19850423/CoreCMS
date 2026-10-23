@@ -89,7 +89,7 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Link4TypeId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Link, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, GroupKey = "Link4")]
         public bool? Link4OpenInNewTab { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, MaxLength = 150)]
         public string? Icon { get; set; }
         // Icon
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = true, MaxLength = 150)]

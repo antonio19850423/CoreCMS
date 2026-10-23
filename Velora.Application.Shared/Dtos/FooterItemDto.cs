@@ -31,5 +31,6 @@ namespace Velora.Application.Shared.Dtos
         public string ImageAlt { get; set; }
 
         public int Order { get; set; }
+        public string? Subtitle { get; set; }
     }
 }

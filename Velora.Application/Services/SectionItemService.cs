@@ -30,13 +30,14 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly ISectionItemService _roleSectionItemService;
         protected readonly ICurrentUserService _currentUserService;
+        protected readonly ILinkResolverService _linkResolverService;
         public SectionItemService(
               ISqlRepository<SqlSectionItem> sqlRepository,
               IPosgreSqlRepository<SqlSectionItem> pgRepository,
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
+              ICurrentUserService currentUserService, ILinkResolverService linkResolverService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -46,7 +47,8 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
+            _linkResolverService = linkResolverService;
         }
         public async Task<IQueryable<SectionItemCrud>> GetAllViews()
         {
@@ -65,6 +67,10 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
+                var link2Url = await _linkResolverService.GetUrlAsync(input.Link2TypeId, input.Link2TargetId, input.Link2Url);
+                var link3Url = await _linkResolverService.GetUrlAsync(input.Link3TypeId, input.Link3TargetId, input.Link3Url);
+                var link4Url = await _linkResolverService.GetUrlAsync(input.Link4TypeId, input.Link4TargetId, input.Link4Url);
                 var SectionItem = new SectionItemDto
                 {
                     AvatarAlt = input.AvatarAlt,
@@ -84,25 +90,25 @@ namespace Velora.Application.Services
                     Link1TypeId = input.Link1TypeId,
                     Link1OpenInNewTab = input.Link1OpenInNewTab,
                     Link1Text = input.Link1Text,
-                    Link1Url = input.Link1Url,
+                    Link1Url = link1Url,
                     Link2Color = input.Link2Color,
                     Link2TargetId = input.Link2TargetId,
                     Link2TypeId = input.Link2TypeId,
                     Link2OpenInNewTab = input.Link2OpenInNewTab,
                     Link2Text = input.Link2Text,
-                    Link2Url = input.Link2Url,
+                    Link2Url = link2Url,
                     Link3Color = input.Link3Color,
                     Link3TargetId = input.Link3TargetId,
                     Link3TypeId = input.Link3TypeId,
                     Link3OpenInNewTab = input.Link3OpenInNewTab,
                     Link3Text = input.Link3Text,
-                    Link3Url = input.Link3Url,
+                    Link3Url = link3Url,
                     Link4Color = input.Link4Color,
                     Link4TargetId = input.Link4TargetId,
                     Link4TypeId = input.Link4TypeId,
                     Link4OpenInNewTab = input.Link4OpenInNewTab,
                     Link4Text = input.Link4Text,
-                    Link4Url = input.Link4Url,
+                    Link4Url = link4Url,
                     Price = input.Price,
                     SectionId=input.ParentId,
                     SortOrder=input.SortOrder,
