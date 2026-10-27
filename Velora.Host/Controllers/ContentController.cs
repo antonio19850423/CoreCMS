@@ -30,11 +30,12 @@ namespace Velora.Host.Controllers
         private readonly IShippingMethodCityService _shippingMethodCityService;
         private readonly ISiteMenuService _siteMenuService;
         private readonly IMemoryCache _memoryCache;
+        private readonly ISitemapService _sitemapService;
+        
 
 
 
-
-        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService, IBankAccountService bankAccountService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, ISiteMenuService siteMenuService, IMemoryCache memoryCache)
+        public ContentController(IContentService ContentService, IPageService pageService, IContactService contactService, IProductService productService, IProductCategoryService productCategoryService, IProductBrandService productBrandService, IProductReviewService productReviewService, IProductQuestionService productQuestionService, IBankAccountService bankAccountService, IShippingMethodService shippingMethodService, IShippingMethodCityService shippingMethodCityService, ISiteMenuService siteMenuService, IMemoryCache memoryCache, ISitemapService sitemapService)
         {
 
             _contentService = ContentService;
@@ -50,6 +51,7 @@ namespace Velora.Host.Controllers
             _shippingMethodCityService= shippingMethodCityService;
             _siteMenuService= siteMenuService;
             _memoryCache=memoryCache;
+            _sitemapService=sitemapService;
         }
 
 
@@ -537,6 +539,19 @@ namespace Velora.Host.Controllers
                     .SearchAsync(search);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetSitemapUrlsAsync")]
+        public async Task<IActionResult> GetSitemapUrlsAsync()
+        {
+            var result = await _sitemapService.GetSitemapUrlsAsync();
+
+            return Ok(new ResultDto<List<SitemapUrlDto>>
+            {
+                Success = true,
+                Data = result
+            });
         }
     }
 }

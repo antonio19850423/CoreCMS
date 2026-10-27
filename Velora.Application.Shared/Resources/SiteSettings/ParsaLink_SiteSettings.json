@@ -1,7 +1,7 @@
 ﻿{
   "SiteSettings": {
     "SiteName": "پارسا لینک",
-    "DomainName": "localhost",
+    "DomainName": "localhost:3000",
 
     "LogoUrl": "/uploads/sections/ParsaLink/parsa-link-logo.png",
     "LogoAlt": "لوگوی پارسا لینک",
