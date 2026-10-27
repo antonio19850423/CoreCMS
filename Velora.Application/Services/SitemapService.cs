@@ -208,75 +208,18 @@ namespace Velora.Application.Services
             return result;
         }
 
-        private async Task<string> GetSiteBaseUrlAsync()
+        private Task<string> GetSiteBaseUrlAsync()
         {
-            var siteSettingsFile =
-                _configuration.GetValue<string>(
-                    "Seed:SiteSettings:File");
+            var baseUrl = _configuration["Seed:SiteSettings:BaseUrl"];
 
-            if (string.IsNullOrWhiteSpace(siteSettingsFile))
+            if (string.IsNullOrWhiteSpace(baseUrl))
             {
                 throw new InvalidOperationException(
-                    "Seed:SiteSettings:File is not configured.");
+                    "Seed:SiteSettings:BaseUrl در appsettings.json پیدا نشد."
+                );
             }
 
-            // همان اسمبلی‌ای که فایل‌های Seed در آن قرار دارند
-            var assembly = typeof(SeedJsonModel).Assembly;
-
-            var resourceName =
-                $"Velora.Application.Shared.Resources.{siteSettingsFile
-                    .Replace("/", ".")
-                    .Replace("\\", ".")}";
-
-            using var stream =
-                assembly.GetManifestResourceStream(resourceName);
-
-            if (stream == null)
-            {
-                throw new FileNotFoundException(
-                    $"SiteSettings resource '{resourceName}' not found.");
-            }
-
-            using var document = await JsonDocument.ParseAsync(stream);
-
-            if (!document.RootElement.TryGetProperty(
-                    "SiteSettings", out var settingsElement) ||
-                !settingsElement.TryGetProperty(
-                    "DomainName", out var domainElement))
-            {
-                throw new InvalidOperationException(
-                    "SiteSettings.DomainName was not found.");
-            }
-
-            var domain = domainElement.GetString()?.Trim();
-
-            if (string.IsNullOrWhiteSpace(domain))
-            {
-                throw new InvalidOperationException(
-                    "SiteSettings.DomainName is empty.");
-            }
-
-            // اگر دامنه خودش پروتکل داشت، همان را نگه می‌داریم
-            if (Uri.TryCreate(domain, UriKind.Absolute, out var absoluteUri) &&
-                (absoluteUri.Scheme == Uri.UriSchemeHttp ||
-                 absoluteUri.Scheme == Uri.UriSchemeHttps))
-            {
-                return absoluteUri.GetLeftPart(UriPartial.Authority)
-                    .TrimEnd('/');
-            }
-
-            const string scheme = "https";
-
-            if (scheme != Uri.UriSchemeHttp &&
-                scheme != Uri.UriSchemeHttps)
-            {
-                throw new InvalidOperationException(
-                    "Seed:SiteSettings:Scheme must be http or https.");
-            }
-
-            domain = domain.TrimEnd('/');
-
-            return $"{scheme}://{domain}";
+            return Task.FromResult(baseUrl.Trim().TrimEnd('/'));
         }
 
         private static void AddUrl(

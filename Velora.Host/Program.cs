@@ -42,6 +42,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day) 
     .CreateLogger();
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Host.UseSerilog();
 // Add services to the container.
 
