@@ -1,0 +1,58 @@
+﻿{
+  "SiteSettings": {
+    "SiteName": "کلینیک زیبایی و پوست آوینا",
+    "DomainName": "localhost",
+
+    "LogoUrl": "/uploads/sections/skinclinic/SkinClinic-Logo.png",
+    "LogoAlt": "لوگوی کلینیک پوست و زیبایی",
+
+    "DarkLogoUrl": "/uploads/sections/skinclinic/SkinClinic-Logo.png",
+    "DarkLogoAlt": "لوگوی کلینیک پوست و زیبایی",
+
+    "FaviconUrl": "/uploads/sections/skinclinic/SkinClinic-Logo.ico",
+
+    "PhoneTitle": "رزرو نوبت و مشاوره",
+    "Phone": "021-00000000",
+
+    "Phone2Title": "شماره تماس دوم",
+    "Phone2": "021-11111111",
+
+    "MobileTitle": "شماره موبایل",
+    "Mobile": "09120000000",
+
+    "FaxTitle": "فکس",
+    "Fax": "021-22222222",
+
+    "Email": "info@skinclinic.ir",
+
+    "AddressTitle": "آدرس کلینیک",
+    "Address": "تهران، ایران",
+
+    "Address2Title": "آدرس شعبه دوم",
+    "Address2": "تهران، ایران",
+
+    "HeaderPhoneIcon": "◉",
+    "HeaderPhone": "021-00000000|09120000000",
+    "HeaderPhoneColor": "#2879D8",
+    "HeaderPhoneEnabled": true,
+
+    "Background": "#142F4D",
+    "BackgroundGradient": "linear-gradient(115deg, #f7fbff 0%, #ffffff 35%, #edf6ff 65%, #e4f0ff 100%)",
+
+    "HeaderBackgroundColor": "#174A78",
+    "HeaderTextColor": "white",
+
+    "FooterBackgroundColor": "#174A78",
+    "FooterTextColor": "white",
+
+    "TextColor": "#142F4D",
+
+    "DefaultMetaTitle": "کلینیک تخصصی پوست و زیبایی | مراقبت و جوان‌سازی پوست",
+
+    "DefaultMetaDescription": "کلینیک تخصصی پوست و زیبایی با ارائه خدمات مراقبتی، جوان‌سازی و مشاوره تخصصی، همراه شما برای داشتن پوستی سالم، شاداب و زیبا.",
+
+    "DefaultMetaKeywords": "کلینیک پوست، کلینیک زیبایی، مراقبت پوست، جوان‌سازی پوست، درمان آکنه، مشاوره پوست، خدمات زیبایی، سلامت پوست، پاکسازی پوست",
+
+    "IsActive": true
+  }
+}

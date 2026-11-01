@@ -1,0 +1,157 @@
+﻿{
+  "templates": [
+    {
+      "templateName": "SkinClinic_Template",
+      "pages": [
+        {
+          "pageName": "خانه",
+          "slug": "home",
+          "isPublished": false,
+          "metaTitle": "کلینیک تخصصی پوست و زیبایی | مراقبت و جوان‌سازی پوست",
+          "metaDescription": "کلینیک تخصصی پوست و زیبایی با ارائه خدمات مراقبتی، جوان‌سازی و مشاوره تخصصی، همراه شما برای داشتن پوستی سالم و شاداب.",
+          "metaKeywords": "کلینیک پوست، کلینیک زیبایی، مراقبت پوست، جوان‌سازی پوست، درمان آکنه، مشاوره پوست، خدمات زیبایی",
+          "components": [
+            {
+              "code": "skinClinicHero",
+              "type": "skinClinicHero",
+              "backgroundColor": "#142F4D",
+              "backgroundGradient": "linear-gradient(135deg, #10263F 0%, #183D60 55%, #2879D8 100%)",
+              "textColor": "#FFFFFF",
+              "buttonColor": "#2879D8"
+            },
+            {
+              "code": "skinClinicTrust",
+              "type": "skinClinicTrust",
+              "backgroundColor": "#FFFFFF",
+              "backgroundGradient": null,
+              "textColor": "#142F4D"
+            },
+            {
+              "code": "skinClinicServices",
+              "type": "skinClinicServices",
+              "backgroundColor": "#EFF7FF",
+              "backgroundGradient": "linear-gradient(180deg, #F5FAFF 0%, #EAF4FF 100%)",
+              "textColor": "#142F4D",
+              "buttonColor": "#2879D8"
+            },
+            {
+              "code": "skinClinicPhilosophy",
+              "type": "skinClinicPhilosophy",
+              "backgroundColor": "#FFFFFF",
+              "backgroundGradient": null,
+              "textColor": "#142F4D"
+            },
+            {
+              "code": "skinClinicConcerns",
+              "type": "skinClinicConcerns",
+              "backgroundColor": "#EAF4FF",
+              "backgroundGradient": "linear-gradient(135deg, #EAF4FF 0%, #F5FAFF 100%)",
+              "textColor": "#142F4D"
+            },
+            {
+              "code": "skinClinicApproach",
+              "type": "skinClinicApproach",
+              "backgroundColor": "#142F4D",
+              "backgroundGradient": "linear-gradient(135deg, #142F4D 0%, #1B456B 100%)",
+              "textColor": "#FFFFFF",
+              "buttonColor": "#5BA5F5"
+            },
+            {
+              "code": "skinClinicFaq",
+              "type": "skinClinicFaq",
+              "backgroundColor": "#FFFFFF",
+              "backgroundGradient": null,
+              "textColor": "#142F4D"
+            },
+            {
+              "code": "skinClinicContact",
+              "type": "skinClinicContact",
+              "backgroundColor": "#EFF7FF",
+              "backgroundGradient": "linear-gradient(135deg, #EAF4FF 0%, #F5FAFF 55%, #FFFFFF 100%)",
+              "textColor": "#142F4D",
+              "buttonColor": "#2879D8"
+            }
+          ]
+        },
+        {
+          "pageName": "تماس با ما",
+          "slug": "contact",
+          "isPublished": false,
+          "metaTitle": "تماس با کلینیک پوست و زیبایی | رزرو نوبت و مشاوره",
+          "metaDescription": "برای دریافت مشاوره تخصصی، اطلاع از خدمات و رزرو نوبت با کلینیک پوست و زیبایی در ارتباط باشید.",
+          "metaKeywords": "تماس با کلینیک پوست، رزرو نوبت کلینیک زیبایی، مشاوره پوست، آدرس کلینیک پوست",
+          "components": [
+            {
+              "code": "contact",
+              "type": "contact",
+              "backgroundColor": "#ffffff",
+              "buttonColor": "#C62828"
+            }
+          ]
+        },
+        {
+          "pageName": "طرح‌بندی",
+          "slug": "layout",
+          "isPublished": false,
+          "components": [
+            {
+              "code": "footer",
+              "type": "footer",
+              "backgroundColor": "#10263F",
+              "backgroundGradient": "linear-gradient(135deg, #10263F 0%, #142F4D 65%, #1B456B 100%)",
+              "textColor": "#EFF7FF"
+            }
+          ]
+        },
+        {
+          "pageName": "درباره ما",
+          "slug": "about",
+          "isPublished": false,
+          "metaTitle": "درباره کلینیک | معرفی تیم تخصصی پوست و زیبایی",
+          "metaDescription": "با کلینیک تخصصی پوست و زیبایی، رویکرد درمانی، تیم متخصص و خدمات مراقبت پوستی ما بیشتر آشنا شوید.",
+          "metaKeywords": "درباره کلینیک پوست، معرفی کلینیک زیبایی، تیم متخصص پوست، مراقبت تخصصی پوست",
+          "components": [
+            {
+              "code": "about",
+              "type": "about"
+            }
+          ]
+        },
+        {
+          "pageName": "خدمات کلینیک",
+          "slug": "services",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "خدمات کلینیک پوست و زیبایی | معرفی خدمات تخصصی",
+          "metaDescription": "با خدمات تخصصی کلینیک پوست و زیبایی آشنا شوید و متناسب با نیازهای پوستی خود، بهترین روش مراقبتی را انتخاب کنید.",
+          "metaKeywords": "خدمات کلینیک پوست، خدمات زیبایی، جوان‌سازی پوست، درمان لک، درمان آکنه، مراقبت پوستی",
+          "components": [
+            {
+              "code": "SkinClinicServices",
+              "type": "SkinClinicServices",
+              "backgroundColor": "#EFF7FF",
+              "backgroundGradient": "linear-gradient(180deg, #F5FAFF 0%, #EAF4FF 100%)",
+              "textColor": "#142F4D",
+              "buttonColor": "#2879D8"
+            },
+            {
+              "code": "SkinClinicConcerns",
+              "type": "SkinClinicConcerns",
+              "backgroundColor": "#FFFFFF",
+              "backgroundGradient": null,
+              "textColor": "#142F4D"
+            },
+            {
+              "code": "SkinClinicContact",
+              "type": "SkinClinicContact",
+              "backgroundColor": "#142F4D",
+              "backgroundGradient": "linear-gradient(135deg, #142F4D 0%, #2879D8 100%)",
+              "textColor": "#FFFFFF",
+              "buttonColor": "#5BA5F5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

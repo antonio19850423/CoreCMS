@@ -1148,7 +1148,7 @@
             "link1Url": "#",
             "link1Text": "",
             "isActive": true,
-            "SortOrder":1
+            "SortOrder": 1
           },
           {
             "title": "ویستا سازه",
@@ -3258,272 +3258,943 @@
       "descriptionColor": true,
       "isActive": true
     },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "headingLevel": "h2",
-          "subtitle": "تعرفه خدمات پارسا لینک",
-          "title": "وب‌سایتی حرفه‌ای برای رشد کسب‌وکار شما",
-          "description": "با CMS اختصاصی پارسا لینک، متناسب با نیاز کسب‌وکار خود وب‌سایت بسازید. هزینه طراحی و توسعه از هزینه دامنه و زیرساخت میزبانی جداست.",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
-          "headerColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563"
-        },
-        "ltr": {
-          "direction": "ltr",
-          "headingLevel": "h2",
-          "subtitle": "PARSA LINK SERVICE PRICING",
-          "title": "A Professional Website to Grow Your Business",
-          "description": "Build a website tailored to your business with ParsaLink's custom CMS. Website design and development costs are separate from domain registration and hosting infrastructure.",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
-          "headerColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563"
-        }
-      }
-    },
-    "sharedHosting": {
-      "rules": {
-        "direction": true,
-        "componentTypeName": true,
-        "title": true,
-        "subtitle": true,
-        "description": true,
-        "icon": true,
-        "iconAlt": true,
-        "iconColor": true,
-        "backgroundColor": true,
-        "backgroundGradient": true,
-        "titleColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "textColor": true,
-        "features": true,
-        "sortOrder": true,
-        "isActive": true
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "headingLevel": "h2",
+        "subtitle": "تعرفه خدمات پارسا لینک",
+        "title": "وب‌سایتی حرفه‌ای برای رشد کسب‌وکار شما",
+        "description": "با CMS اختصاصی پارسا لینک، متناسب با نیاز کسب‌وکار خود وب‌سایت بسازید. هزینه طراحی و توسعه از هزینه دامنه و زیرساخت میزبانی جداست.",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
+        "headerColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563"
       },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "componentTypeName": "sharedHosting",
-          "title": "سایت‌های پایه و شرکتی",
-          "subtitle": "مناسب کسب‌وکارهای کوچک و متوسط",
-          "description": "مناسب وب‌سایت‌های معرفی کسب‌وکار و سایت‌های شرکتی با حجم اطلاعات و نیاز پردازشی کمتر.",
-          "icon": "Globe",
-          "iconAlt": "میزبانی اشتراکی",
-          "iconColor": "#374151",
-          "backgroundColor": "#F9FAFB",
-          "backgroundGradient": "",
-          "titleColor": "#111827",
-          "subtitleColor": "#6B7280",
-          "descriptionColor": "#4B5563",
-          "textColor": "#374151",
-          "features": "میزبانی روی زیرساخت اشتراکی پارسا لینک|بدون نیاز به تهیه سرور ابری اختصاصی|هزینه ثبت و تمدید دامنه بر عهده مشتری است.",
-          "sortOrder": 2,
-          "isActive": true
-        },
-        "ltr": {
-          "direction": "ltr",
-          "componentTypeName": "sharedHosting",
-          "title": "Basic and Business Websites",
-          "subtitle": "Ideal for Small and Medium Businesses",
-          "description": "Ideal for business profile websites and corporate sites with modest content and processing requirements.",
-          "icon": "Globe",
-          "iconAlt": "Shared Hosting",
-          "iconColor": "#374151",
-          "backgroundColor": "#F9FAFB",
-          "backgroundGradient": "",
-          "titleColor": "#111827",
-          "subtitleColor": "#6B7280",
-          "descriptionColor": "#4B5563",
-          "textColor": "#374151",
-          "features": "Hosted on ParsaLink shared infrastructure|No need to purchase a dedicated cloud server|Domain registration and renewal are paid by the customer.",
-          "sortOrder": 2,
-          "isActive": true
-        }
-      }
-    },
-    "cloudHosting": {
-      "rules": {
-        "direction": true,
-        "componentTypeName": true,
-        "title": true,
-        "subtitle": true,
-        "description": true,
-        "price": true,
-        "icon": true,
-        "iconAlt": true,
-        "iconColor": true,
-        "backgroundColor": true,
-        "backgroundGradient": true,
-        "titleColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "textColor": true,
-        "features": true,
-        "link1Text": true,
-        "link2Text": true,
-        "sortOrder": true,
-        "isActive": true
-      },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "componentTypeName": "cloudHosting",
-          "title": "فروشگاه‌های اینترنتی و استارتاپ‌ها",
-          "subtitle": "حداقل مشخصات پیشنهادی سرور ابری",
-          "description": "برای مدیریت محصولات، سفارش‌ها و اطلاعات کاربران، به زیرساخت متناسب با بار کاری و قابلیت توسعه نیاز دارید.",
-          "price": "از ۴۵ میلیون تومان در سال",
-          "icon": "Cloud",
-          "iconAlt": "سرور ابری",
-          "iconColor": "#E11D48",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
-          "titleColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "textColor": "#E11D48",
-          "features": "4 هسته CPU|16 GB RAM|100 GB فضای ذخیره‌سازی|هزینه سرور به ارائه‌دهنده و منابع انتخاب‌شده بستگی دارد.|هزینه دامنه و سرویس‌های جانبی جداگانه محاسبه می‌شود.",
-          "link1Text": "هزینه جدا از طراحی",
-          "link2Text": "هزینه سرور ابری، دامنه و سرویس‌های جانبی بر عهده مشتری است. هزینه نهایی بر اساس ارائه‌دهنده و نیازهای پروژه تعیین می‌شود.",
-          "sortOrder": 3,
-          "isActive": true
-        },
-        "ltr": {
-          "direction": "ltr",
-          "componentTypeName": "cloudHosting",
-          "title": "Online Stores and Startups",
-          "subtitle": "Recommended Minimum Cloud Server Specifications",
-          "description": "Product catalogs, orders, and customer data require scalable infrastructure suited to your workload.",
-          "price": "From 45 million toman per year",
-          "icon": "Cloud",
-          "iconAlt": "Cloud Server",
-          "iconColor": "#E11D48",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
-          "titleColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "textColor": "#E11D48",
-          "features": "4 CPU Cores|16 GB RAM|100 GB Storage|Server costs depend on the provider and selected resources.|Domain and additional services are billed separately.",
-          "link1Text": "Hosting billed separately",
-          "link2Text": "Cloud server, domain, and additional service costs are paid by the customer. Final costs depend on the provider and project requirements.",
-          "sortOrder": 3,
-          "isActive": true
-        }
-      }
-    },
-    "pricingNotice": {
-      "rules": {
-        "direction": true,
-        "componentTypeName": true,
-        "title": true,
-        "subtitle": true,
-        "description": true,
-        "icon": true,
-        "iconAlt": true,
-        "iconColor": true,
-        "backgroundColor": true,
-        "backgroundGradient": true,
-        "titleColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "textColor": true,
-        "sortOrder": true,
-        "isActive": true
-      },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "componentTypeName": "pricingNotice",
-          "title": "شفافیت در هزینه‌ها، از ابتدا تا راه‌اندازی",
-          "subtitle": "نکته مهم درباره هزینه‌ها",
-          "description": "قیمت پلن‌ها مربوط به طراحی و توسعه وب‌سایت است. زیرساخت مناسب بر اساس امکانات، میزان ترافیک و نیازهای فنی هر پروژه انتخاب می‌شود.",
-          "icon": "Info",
-          "iconAlt": "اطلاع‌رسانی",
-          "iconColor": "#E11D48",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "",
-          "titleColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "textColor": "#374151",
-          "sortOrder": 4,
-          "isActive": true
-        },
-        "ltr": {
-          "direction": "ltr",
-          "componentTypeName": "pricingNotice",
-          "title": "Transparent Costs from Setup to Launch",
-          "subtitle": "Important Pricing Information",
-          "description": "Plan prices cover website design and development. Infrastructure is selected according to project features, traffic, and technical requirements.",
-          "icon": "Info",
-          "iconAlt": "Information",
-          "iconColor": "#E11D48",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "",
-          "titleColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "textColor": "#374151",
-          "sortOrder": 4,
-          "isActive": true
-        }
-      }
-    },
-    "servicePricingFooter": {
-      "rules": {
-        "direction": true,
-        "headingLevel": true,
-        "title": true,
-        "subtitle": true,
-        "description": true,
-        "backgroundColor": true,
-        "backgroundGradient": true,
-        "headerColor": true,
-        "subtitleColor": true,
-        "descriptionColor": true,
-        "link1Text": true,
-        "link1Url": true,
-        "link1Color": true,
-        "link1OpenInNewTab": true,
-        "isActive": true
-      },
-      "defaultData": {
-        "rtl": {
-          "direction": "rtl",
-          "headingLevel": "h3",
-          "title": "فراتر از طراحی یک وب‌سایت",
-          "description": "هدف ما ساختن ابزاری برای رشد واقعی کسب‌وکار شماست؛ از طراحی تجربه کاربری تا توسعه وب‌سایت و نرم‌افزار، ایده‌تان را به یک محصول دیجیتال کاربردی و حرفه‌ای تبدیل می‌کنیم.",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
-          "headerColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "link1Text": "مشاهده تعرفه‌ها",
-          "link1Url": "#pricing",
-          "link1Color": "#F43F5E",
-          "link1OpenInNewTab": false
-        },
-        "ltr": {
-          "direction": "ltr",
-          "headingLevel": "h3",
-          "title": "Ready to Grow Your Business Online?",
-          "subtitle": "A Plan Tailored to Your Needs",
-          "description": "Choose the right plan and contact us to review your technical requirements and project costs.",
-          "backgroundColor": "#FFFFFF",
-          "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
-          "headerColor": "#111827",
-          "subtitleColor": "#BE123C",
-          "descriptionColor": "#4B5563",
-          "link1Text": "View Pricing",
-          "link1Url": "#pricing",
-          "link1Color": "#F43F5E",
-          "link1OpenInNewTab": false
-        }
+      "ltr": {
+        "direction": "ltr",
+        "headingLevel": "h2",
+        "subtitle": "PARSA LINK SERVICE PRICING",
+        "title": "A Professional Website to Grow Your Business",
+        "description": "Build a website tailored to your business with ParsaLink's custom CMS. Website design and development costs are separate from domain registration and hosting infrastructure.",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFFFFF 0%, #FFF7FA 55%, #F3F4F6 100%)",
+        "headerColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563"
       }
     }
+  },
+  "sharedHosting": {
+    "rules": {
+      "direction": true,
+      "componentTypeName": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "icon": true,
+      "iconAlt": true,
+      "iconColor": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "titleColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "textColor": true,
+      "features": true,
+      "sortOrder": true,
+      "isActive": true
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "componentTypeName": "sharedHosting",
+        "title": "سایت‌های پایه و شرکتی",
+        "subtitle": "مناسب کسب‌وکارهای کوچک و متوسط",
+        "description": "مناسب وب‌سایت‌های معرفی کسب‌وکار و سایت‌های شرکتی با حجم اطلاعات و نیاز پردازشی کمتر.",
+        "icon": "Globe",
+        "iconAlt": "میزبانی اشتراکی",
+        "iconColor": "#374151",
+        "backgroundColor": "#F9FAFB",
+        "backgroundGradient": "",
+        "titleColor": "#111827",
+        "subtitleColor": "#6B7280",
+        "descriptionColor": "#4B5563",
+        "textColor": "#374151",
+        "features": "میزبانی روی زیرساخت اشتراکی پارسا لینک|بدون نیاز به تهیه سرور ابری اختصاصی|هزینه ثبت و تمدید دامنه بر عهده مشتری است.",
+        "sortOrder": 2,
+        "isActive": true
+      },
+      "ltr": {
+        "direction": "ltr",
+        "componentTypeName": "sharedHosting",
+        "title": "Basic and Business Websites",
+        "subtitle": "Ideal for Small and Medium Businesses",
+        "description": "Ideal for business profile websites and corporate sites with modest content and processing requirements.",
+        "icon": "Globe",
+        "iconAlt": "Shared Hosting",
+        "iconColor": "#374151",
+        "backgroundColor": "#F9FAFB",
+        "backgroundGradient": "",
+        "titleColor": "#111827",
+        "subtitleColor": "#6B7280",
+        "descriptionColor": "#4B5563",
+        "textColor": "#374151",
+        "features": "Hosted on ParsaLink shared infrastructure|No need to purchase a dedicated cloud server|Domain registration and renewal are paid by the customer.",
+        "sortOrder": 2,
+        "isActive": true
+      }
+    }
+  },
+  "cloudHosting": {
+    "rules": {
+      "direction": true,
+      "componentTypeName": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "price": true,
+      "icon": true,
+      "iconAlt": true,
+      "iconColor": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "titleColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "textColor": true,
+      "features": true,
+      "link1Text": true,
+      "link2Text": true,
+      "sortOrder": true,
+      "isActive": true
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "componentTypeName": "cloudHosting",
+        "title": "فروشگاه‌های اینترنتی و استارتاپ‌ها",
+        "subtitle": "حداقل مشخصات پیشنهادی سرور ابری",
+        "description": "برای مدیریت محصولات، سفارش‌ها و اطلاعات کاربران، به زیرساخت متناسب با بار کاری و قابلیت توسعه نیاز دارید.",
+        "price": "از ۴۵ میلیون تومان در سال",
+        "icon": "Cloud",
+        "iconAlt": "سرور ابری",
+        "iconColor": "#E11D48",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
+        "titleColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "textColor": "#E11D48",
+        "features": "4 هسته CPU|16 GB RAM|100 GB فضای ذخیره‌سازی|هزینه سرور به ارائه‌دهنده و منابع انتخاب‌شده بستگی دارد.|هزینه دامنه و سرویس‌های جانبی جداگانه محاسبه می‌شود.",
+        "link1Text": "هزینه جدا از طراحی",
+        "link2Text": "هزینه سرور ابری، دامنه و سرویس‌های جانبی بر عهده مشتری است. هزینه نهایی بر اساس ارائه‌دهنده و نیازهای پروژه تعیین می‌شود.",
+        "sortOrder": 3,
+        "isActive": true
+      },
+      "ltr": {
+        "direction": "ltr",
+        "componentTypeName": "cloudHosting",
+        "title": "Online Stores and Startups",
+        "subtitle": "Recommended Minimum Cloud Server Specifications",
+        "description": "Product catalogs, orders, and customer data require scalable infrastructure suited to your workload.",
+        "price": "From 45 million toman per year",
+        "icon": "Cloud",
+        "iconAlt": "Cloud Server",
+        "iconColor": "#E11D48",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFF1F5 0%, #FFFFFF 55%, #F9FAFB 100%)",
+        "titleColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "textColor": "#E11D48",
+        "features": "4 CPU Cores|16 GB RAM|100 GB Storage|Server costs depend on the provider and selected resources.|Domain and additional services are billed separately.",
+        "link1Text": "Hosting billed separately",
+        "link2Text": "Cloud server, domain, and additional service costs are paid by the customer. Final costs depend on the provider and project requirements.",
+        "sortOrder": 3,
+        "isActive": true
+      }
+    }
+  },
+  "pricingNotice": {
+    "rules": {
+      "direction": true,
+      "componentTypeName": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "icon": true,
+      "iconAlt": true,
+      "iconColor": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "titleColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "textColor": true,
+      "sortOrder": true,
+      "isActive": true
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "componentTypeName": "pricingNotice",
+        "title": "شفافیت در هزینه‌ها، از ابتدا تا راه‌اندازی",
+        "subtitle": "نکته مهم درباره هزینه‌ها",
+        "description": "قیمت پلن‌ها مربوط به طراحی و توسعه وب‌سایت است. زیرساخت مناسب بر اساس امکانات، میزان ترافیک و نیازهای فنی هر پروژه انتخاب می‌شود.",
+        "icon": "Info",
+        "iconAlt": "اطلاع‌رسانی",
+        "iconColor": "#E11D48",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "",
+        "titleColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "textColor": "#374151",
+        "sortOrder": 4,
+        "isActive": true
+      },
+      "ltr": {
+        "direction": "ltr",
+        "componentTypeName": "pricingNotice",
+        "title": "Transparent Costs from Setup to Launch",
+        "subtitle": "Important Pricing Information",
+        "description": "Plan prices cover website design and development. Infrastructure is selected according to project features, traffic, and technical requirements.",
+        "icon": "Info",
+        "iconAlt": "Information",
+        "iconColor": "#E11D48",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "",
+        "titleColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "textColor": "#374151",
+        "sortOrder": 4,
+        "isActive": true
+      }
+    }
+  },
+  "servicePricingFooter": {
+    "rules": {
+      "direction": true,
+      "headingLevel": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "link1Text": true,
+      "link1Url": true,
+      "link1Color": true,
+      "link1OpenInNewTab": true,
+      "isActive": true
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "headingLevel": "h3",
+        "title": "فراتر از طراحی یک وب‌سایت",
+        "description": "هدف ما ساختن ابزاری برای رشد واقعی کسب‌وکار شماست؛ از طراحی تجربه کاربری تا توسعه وب‌سایت و نرم‌افزار، ایده‌تان را به یک محصول دیجیتال کاربردی و حرفه‌ای تبدیل می‌کنیم.",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
+        "headerColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "link1Text": "مشاهده تعرفه‌ها",
+        "link1Url": "#pricing",
+        "link1Color": "#F43F5E",
+        "link1OpenInNewTab": false
+      },
+      "ltr": {
+        "direction": "ltr",
+        "headingLevel": "h3",
+        "title": "Ready to Grow Your Business Online?",
+        "subtitle": "A Plan Tailored to Your Needs",
+        "description": "Choose the right plan and contact us to review your technical requirements and project costs.",
+        "backgroundColor": "#FFFFFF",
+        "backgroundGradient": "linear-gradient(135deg, #FFF7FA 0%, #FFFFFF 100%)",
+        "headerColor": "#111827",
+        "subtitleColor": "#BE123C",
+        "descriptionColor": "#4B5563",
+        "link1Text": "View Pricing",
+        "link1Url": "#pricing",
+        "link1Color": "#F43F5E",
+        "link1OpenInNewTab": false
+      }
+    }
+  },
+  "skinClinicHero": {
+    "rules": {
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "link1Text": true,
+      "link1Url": true,
+      "link2Text": true,
+      "link2Url": true,
+      "link3Text": true,
+      "headingLevel": true,
+      "direction": true,
+      "isActive": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "title": "زیبایی طبیعی،\nبا مراقبت آگاهانه",
+        "subtitle": "مراقبت تخصصی پوست و مو",
+        "description": "برای شناخت بهتر پوستتان، انتخاب روش مناسب و ساختن یک برنامه مراقبتی متناسب با نیازهای واقعی شما.",
+        "link1Text": "دریافت وقت مشاوره",
+        "link1Url": "#contact",
+        "link2Text": "آشنایی با خدمات",
+        "link2Url": "#services",
+        "link3Text": "انتخاب آگاهانه، مراقبت متناسب با شما",
+        "headingLevel": "h1",
+        "direction": "rtl",
+        "items": [
+          {
+            "title": "زیبایی طبیعی،\nبا مراقبت آگاهانه",
+            "subtitle": "مراقبت تخصصی پوست و مو",
+            "description": "برای شناخت بهتر پوستتان، انتخاب روش مناسب و ساختن یک برنامه مراقبتی متناسب با نیازهای واقعی شما.",
+            "imageUrl": "/uploads/sections/skinclinic/c0af0819d13febaf502c1802020b449a.jpg",
+            "imageAlt": "فضای آرام و مینیمال مراقبت از پوست"
+          },
+          {
+            "title": "هر پوست،\nداستان خودش را دارد",
+            "subtitle": "پوست سالم از شناخت درست آغاز می‌شود",
+            "description": "از بررسی نوع پوست تا انتخاب روش مراقبت، تصمیم‌ها باید بر پایه ارزیابی تخصصی و انتظارات واقع‌بینانه باشند.",
+            "imageUrl": "/uploads/sections/skinclinic/c0af0819d13febaf502c1802020b449a.jpg",
+            "imageAlt": "محیط تمیز و حرفه‌ای خدمات مراقبت پوست"
+          },
+          {
+            "title": "با انتخاب‌های درست،\nاز پوستتان مراقبت کنید",
+            "subtitle": "مسیر مراقبت، متناسب با شما",
+            "description": "در فضایی حرفه‌ای درباره دغدغه‌های پوست و مو گفت‌وگو کنید و با آگاهی از گزینه‌ها، مسیر مناسب خود را بشناسید.",
+            "imageUrl": "/uploads/sections/skinclinic/483bb615631758f1b8bc2b2010aa3417.jpg",
+            "imageAlt": "محصولات مراقبت از پوست با چیدمان مینیمال"
+          }
+        ]
+      },
+      "ltr": {
+        "title": "Natural Beauty,\nThoughtful Skincare",
+        "subtitle": "Professional Skin & Hair Care",
+        "description": "Discover your skin's needs, explore suitable treatments and build a personalized skincare routine based on your individual goals.",
+        "link1Text": "Book a Consultation",
+        "link1Url": "#contact",
+        "link2Text": "Explore Services",
+        "link2Url": "#services",
+        "link3Text": "Informed Choices, Personalized Care",
+        "headingLevel": "h1",
+        "direction": "ltr",
+        "items": [
+          {
+            "title": "Natural Beauty,\nThoughtful Skincare",
+            "subtitle": "Professional Skin & Hair Care",
+            "description": "Discover your skin's needs, explore suitable treatments and build a personalized skincare routine based on your individual goals.",
+            "imageUrl": "/uploads/sections/skinclinic/hero-1.jpg",
+            "imageAlt": "Calm and minimal skincare environment"
+          },
+          {
+            "title": "Every Skin Has\nIts Own Story",
+            "subtitle": "Healthy Skin Starts with Understanding",
+            "description": "From understanding your skin type to choosing suitable treatments, every decision should be based on professional assessment and realistic expectations.",
+            "imageUrl": "/uploads/sections/skinclinic/65e0c620c342806ba02f35dc1c45c6d6.jpg",
+            "imageAlt": "Professional skincare treatment environment"
+          },
+          {
+            "title": "Care for Your Skin\nWith Confidence",
+            "subtitle": "A Personalized Skincare Journey",
+            "description": "Explore your skin concerns in a professional environment and discover suitable care options through informed decisions.",
+            "imageUrl": "/uploads/sections/skinclinic/483bb615631758f1b8bc2b2010aa3417.jpg",
+            "imageAlt": "Minimal skincare products arrangement"
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicTrust": {
+    "rules": {
+      "direction": true,
+      "isActive": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "direction": "rtl",
+        "items": [
+          {
+            "title": "ارزیابی پیش از انتخاب روش",
+            "subtitle": "تصمیم‌گیری بر اساس نیاز و شرایط فردی",
+            "sortOrder": 1
+          },
+          {
+            "title": "توضیح شفاف گزینه‌ها",
+            "subtitle": "آشنایی با روند، مراقبت‌ها و محدودیت‌ها",
+            "sortOrder": 2
+          },
+          {
+            "title": "توجه به تجربه مراجعه‌کننده",
+            "subtitle": "ارتباط روشن در تمام مراحل مراجعه",
+            "sortOrder": 3
+          }
+        ]
+      },
+      "ltr": {
+        "direction": "ltr",
+        "items": [
+          {
+            "title": "Assessment Before Treatment",
+            "subtitle": "Decisions based on individual needs and conditions",
+            "sortOrder": 1
+          },
+          {
+            "title": "Clear Explanation of Options",
+            "subtitle": "Understanding procedures, care and limitations",
+            "sortOrder": 2
+          },
+          {
+            "title": "Patient Experience Matters",
+            "subtitle": "Clear communication throughout every step",
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicServices": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "imageUrl": true,
+        "imageAlt": true,
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "title": "مراقبت تخصصی،\nمتناسب با نیاز پوست شما",
+        "subtitle": "خدمات تخصصی پوست و مو",
+        "description": "هر مسیر مراقبتی با شناخت دغدغه شما آغاز می‌شود. خدمات و روش مناسب پس از بررسی شرایط فردی و گفت‌وگو درباره انتظارات انتخاب می‌شوند.",
+        "items": [
+          {
+            "title": "جوان‌سازی و شادابی پوست",
+            "subtitle": "SKIN REJUVENATION",
+            "description": "روش‌های تخصصی برای کمک به بهبود ظاهر پوست، افزایش شادابی و کاهش نشانه‌های خستگی و افزایش سن.",
+            "imageUrl": "",
+            "imageAlt": "خدمات جوان‌سازی و شادابی پوست",
+            "link1Url": "#contact",
+            "sortOrder": 1
+          },
+          {
+            "title": "پاکسازی و مراقبت پوست",
+            "subtitle": "SKIN CARE",
+            "description": "مراقبت اصولی و متناسب با نوع پوست برای کمک به حفظ سلامت، لطافت و شفافیت طبیعی آن.",
+            "imageUrl": "",
+            "imageAlt": "خدمات پاکسازی و مراقبت تخصصی پوست",
+            "link1Url": "#contact",
+            "sortOrder": 2
+          },
+          {
+            "title": "درمان مشکلات پوستی",
+            "subtitle": "SKIN TREATMENT",
+            "description": "بررسی تخصصی مشکلات پوستی و انتخاب روش مناسب با توجه به شرایط و نیازهای هر مراجعه‌کننده.",
+            "imageUrl": "",
+            "imageAlt": "خدمات بررسی و درمان مشکلات پوستی",
+            "link1Url": "#contact",
+            "sortOrder": 3
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "title": "Expert Care,\nDesigned for Your Skin",
+        "subtitle": "OUR SERVICES",
+        "description": "Every skincare journey begins with understanding your concerns. The right services and treatments are selected after assessing your individual needs and discussing your expectations.",
+        "items": [
+          {
+            "title": "Skin Rejuvenation",
+            "subtitle": "SKIN REJUVENATION",
+            "description": "Specialized treatments designed to improve skin appearance, restore radiance and address visible signs of fatigue and aging.",
+            "imageUrl": "",
+            "imageAlt": "Skin rejuvenation and radiance treatments",
+            "link1Url": "#contact",
+            "sortOrder": 1
+          },
+          {
+            "title": "Skin Cleansing & Care",
+            "subtitle": "SKIN CARE",
+            "description": "Thoughtful skincare tailored to your skin type to help maintain its health, softness and natural clarity.",
+            "imageUrl": "",
+            "imageAlt": "Professional skin cleansing and care services",
+            "link1Url": "#contact",
+            "sortOrder": 2
+          },
+          {
+            "title": "Skin Treatments",
+            "subtitle": "SKIN TREATMENT",
+            "description": "Professional assessment of skin concerns and selection of suitable treatments based on each patient's individual needs.",
+            "imageUrl": "",
+            "imageAlt": "Professional skin assessment and treatment services",
+            "link1Url": "#contact",
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
+  },
+  "skinClinicPhilosophy": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "title": "درباره ما،\nمراقبتی فراتر از زیبایی",
+        "subtitle": "ABOUT OUR CLINIC",
+        "description": "ما باور داریم مراقبت از پوست با شناخت درست آغاز می‌شود. به همین دلیل تلاش می‌کنیم با بررسی نیازهای فردی و ارائه راهکارهای متناسب، تجربه‌ای آگاهانه و حرفه‌ای برای شما فراهم کنیم.",
+        "imageUrl": "/uploads/sections/skinclinic/418264f54286632114c9a59377e3b263.jpg",
+        "imageAlt": "فضای آرام و حرفه‌ای کلینیک پوست و زیبایی",
+        "items": [
+          {
+            "title": "ارزیابی دقیق و تخصصی",
+            "description": "شناخت شرایط پوست و بررسی نیازهای هر مراجعه‌کننده پیش از انتخاب روش مراقبتی",
+            "sortOrder": 1
+          },
+          {
+            "title": "مراقبت متناسب با شما",
+            "description": "انتخاب راهکارهای مراقبتی بر اساس شرایط فردی و انتظارات واقع‌بینانه",
+            "sortOrder": 2
+          },
+          {
+            "title": "شفافیت در ارائه خدمات",
+            "description": "توضیح روشن درباره روش‌ها، مراحل انجام و مراقبت‌های موردنیاز",
+            "sortOrder": 3
+          },
+          {
+            "title": "همراهی در مسیر مراقبت",
+            "description": "توجه به تجربه مراجعه‌کننده و ارائه راهنمایی در مراحل مختلف مراقبت",
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "title": "About Us,\nCare Beyond Beauty",
+        "subtitle": "ABOUT OUR CLINIC",
+        "description": "We believe that effective skincare begins with understanding. Our approach focuses on individual needs and personalized solutions to create a thoughtful and professional experience for every patient.",
+        "imageUrl": "/uploads/sections/skinclinic/418264f54286632114c9a59377e3b263.jpg",
+        "imageAlt": "A calm and professional skin and beauty clinic",
+        "items": [
+          {
+            "title": "Professional Assessment",
+            "description": "Understanding each patient's skin condition and individual needs before choosing a treatment approach",
+            "sortOrder": 1
+          },
+          {
+            "title": "Personalized Care",
+            "description": "Selecting suitable skincare solutions based on individual conditions and realistic expectations",
+            "sortOrder": 2
+          },
+          {
+            "title": "Transparent Services",
+            "description": "Clear explanations of available treatments, procedures and required aftercare",
+            "sortOrder": 3
+          },
+          {
+            "title": "Ongoing Guidance",
+            "description": "Supporting the patient experience with helpful guidance throughout the skincare journey",
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicConcerns": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "icon": true,
+        "link1Url": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "title": "از دغدغه پوستتان\nشروع کنیم",
+        "subtitle": "چه موضوعی برای شما اهمیت بیشتری دارد؟",
+        "description": "هر تغییری از یک پرسش شروع می‌شود. موضوعی را که بیشتر به آن فکر می‌کنید انتخاب کنید تا درباره مسیرهای قابل بررسی بیشتر بدانید.",
+        "items": [
+          {
+            "title": "جوان‌سازی و کاهش چین‌وچروک",
+            "subtitle": "SKIN REJUVENATION",
+            "description": "آشنایی با روش‌های مراقبتی و درمانی برای بهبود ظاهر خطوط و نشانه‌های افزایش سن.",
+            "icon": "✳",
+            "link1Url": "#contact",
+            "sortOrder": 1
+          },
+          {
+            "title": "لک و ناهماهنگی رنگ پوست",
+            "subtitle": "SKIN PIGMENTATION",
+            "description": "بررسی عوامل ایجاد لک و شناخت راهکارهای مناسب برای کمک به یکنواخت‌تر شدن رنگ پوست.",
+            "icon": "◈",
+            "link1Url": "#contact",
+            "sortOrder": 2
+          },
+          {
+            "title": "جوش و جای آکنه",
+            "subtitle": "ACNE & SCARS",
+            "description": "شناخت وضعیت پوست و بررسی گزینه‌های مراقبتی برای کنترل آکنه و بهبود ظاهر جای جوش.",
+            "icon": "✧",
+            "link1Url": "#contact",
+            "sortOrder": 3
+          },
+          {
+            "title": "خشکی و کم‌آبی پوست",
+            "subtitle": "SKIN HYDRATION",
+            "description": "بررسی نیازهای پوست و انتخاب مراقبت‌های مناسب برای حفظ رطوبت و لطافت طبیعی آن.",
+            "icon": "❋",
+            "link1Url": "#contact",
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "title": "Let's Start with\nYour Skin Concerns",
+        "subtitle": "WHAT WOULD YOU LIKE TO FOCUS ON?",
+        "description": "Every improvement begins with a question. Choose the concern that matters most to you to explore the options worth considering.",
+        "items": [
+          {
+            "title": "Skin Rejuvenation",
+            "subtitle": "SKIN REJUVENATION",
+            "description": "Explore skincare and treatment options designed to improve the appearance of fine lines and visible signs of aging.",
+            "icon": "✳",
+            "link1Url": "#contact",
+            "sortOrder": 1
+          },
+          {
+            "title": "Dark Spots & Uneven Tone",
+            "subtitle": "SKIN PIGMENTATION",
+            "description": "Understand the causes of pigmentation and explore suitable approaches for a more even-looking complexion.",
+            "icon": "◈",
+            "link1Url": "#contact",
+            "sortOrder": 2
+          },
+          {
+            "title": "Acne & Acne Scars",
+            "subtitle": "ACNE & SCARS",
+            "description": "Assess your skin condition and explore suitable care options for managing acne and improving the appearance of acne scars.",
+            "icon": "✧",
+            "link1Url": "#contact",
+            "sortOrder": 3
+          },
+          {
+            "title": "Dry & Dehydrated Skin",
+            "subtitle": "SKIN HYDRATION",
+            "description": "Understand your skin's needs and explore suitable care to maintain its natural moisture and softness.",
+            "icon": "❋",
+            "link1Url": "#contact",
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicApproach": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "title": "شروع یک مسیر روشن\nدر سه مرحله",
+        "subtitle": "مراحل مراجعه شما",
+        "description": "پیش از انتخاب هر روش، فرصت دارید نیاز خود را مطرح کنید، پاسخ بگیرید و با آگاهی بیشتری درباره ادامه مسیر تصمیم بگیرید.",
+        "items": [
+          {
+            "title": "گفت‌وگو و شناخت نیازها",
+            "description": "در ابتدا درباره دغدغه‌ها، انتظارات و سابقه مراقبتی شما گفت‌وگو می‌کنیم تا شناخت دقیق‌تری از نیازهایتان به دست آوریم.",
+            "sortOrder": 1
+          },
+          {
+            "title": "ارزیابی و بررسی گزینه‌ها",
+            "description": "شرایط شما بررسی می‌شود و روش‌های قابل انتخاب، مزایا، محدودیت‌ها و مراقبت‌های موردنیاز توضیح داده می‌شوند.",
+            "sortOrder": 2
+          },
+          {
+            "title": "انتخاب مسیر مناسب",
+            "description": "با آگاهی از گزینه‌های موجود و متناسب با شرایط خود، درباره مسیر مراقبتی مناسب تصمیم می‌گیرید.",
+            "sortOrder": 3
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "title": "A Clear Journey\nin Three Simple Steps",
+        "subtitle": "YOUR VISIT, STEP BY STEP",
+        "description": "Before choosing any treatment, you have the opportunity to share your concerns, get clear answers and make an informed decision about your next steps.",
+        "items": [
+          {
+            "title": "Consultation & Understanding",
+            "description": "We begin by discussing your concerns, expectations and skincare history to better understand your individual needs.",
+            "sortOrder": 1
+          },
+          {
+            "title": "Assessment & Available Options",
+            "description": "Your needs are assessed, and suitable options, their benefits, limitations and aftercare requirements are explained.",
+            "sortOrder": 2
+          },
+          {
+            "title": "Choosing Your Path",
+            "description": "With a clear understanding of the available options, you can make an informed decision about the care that suits you.",
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicFaq": {
+    "rules": {
+      "isActive": true,
+      "direction": true,
+      "headingLevel": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "link1Text": true,
+      "link1Url": true,
+      "items": {
+        "question": true,
+        "answer": true,
+        "title": true,
+        "description": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "direction": "rtl",
+        "headingLevel": "h2",
+        "title": "پیش از مراجعه،\nپاسخ پرسش‌هایتان را بخوانید",
+        "subtitle": "پرسش‌های متداول",
+        "description": "اگر سؤال دیگری دارید، هنگام درخواست وقت آن را مطرح کنید تا در زمان هماهنگی راهنمایی شوید.",
+        "link1Text": "ارتباط با مطب",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "question": "چطور می‌توانم برای دریافت خدمات وقت بگیرم؟",
+            "answer": "می‌توانید از طریق بخش تماس با ما درخواست خود را ثبت کنید تا برای هماهنگی زمان مراجعه با شما ارتباط بگیریم.",
+            "sortOrder": 1
+          },
+          {
+            "question": "آیا پیش از انتخاب روش درمانی مشاوره انجام می‌شود؟",
+            "answer": "بله، ابتدا شرایط و نیازهای شما بررسی می‌شود و سپس گزینه‌های مناسب، مزایا و محدودیت‌های هر روش برایتان توضیح داده خواهد شد.",
+            "sortOrder": 2
+          },
+          {
+            "question": "چطور متوجه شوم کدام روش برای پوست من مناسب است؟",
+            "answer": "انتخاب روش مناسب به نوع پوست، شرایط فردی، سوابق مراقبتی و انتظارات شما بستگی دارد. ارزیابی تخصصی به تصمیم‌گیری آگاهانه کمک می‌کند.",
+            "sortOrder": 3
+          },
+          {
+            "question": "آیا پس از انجام خدمات به مراقبت خاصی نیاز دارم؟",
+            "answer": "بسته به نوع خدمت، ممکن است مراقبت‌های مشخصی لازم باشد. توصیه‌های مربوط به مراقبت قبل و بعد از انجام خدمات در اختیار شما قرار می‌گیرد.",
+            "sortOrder": 4
+          },
+          {
+            "question": "آیا نتایج خدمات برای همه افراد یکسان است؟",
+            "answer": "خیر، نتایج می‌توانند با توجه به شرایط پوست، ویژگی‌های فردی و نوع روش انتخاب‌شده متفاوت باشند. درباره نتایج واقع‌بینانه در جلسه مشاوره صحبت می‌شود.",
+            "sortOrder": 5
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "direction": "ltr",
+        "headingLevel": "h2",
+        "title": "Before Your Visit,\nFind Your Answers Here",
+        "subtitle": "FREQUENTLY ASKED QUESTIONS",
+        "description": "Have another question? Feel free to ask when requesting an appointment so our team can guide you through the process.",
+        "link1Text": "Contact the Clinic",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "question": "How can I book an appointment?",
+            "answer": "You can submit your request through the contact section. Our team will then get in touch to coordinate a suitable appointment time.",
+            "sortOrder": 1
+          },
+          {
+            "question": "Will I receive a consultation before choosing a treatment?",
+            "answer": "Yes. Your needs and individual circumstances are assessed first, and suitable options, benefits and limitations are explained before you make a decision.",
+            "sortOrder": 2
+          },
+          {
+            "question": "How do I know which treatment is right for my skin?",
+            "answer": "The right approach depends on your skin type, individual condition, skincare history and expectations. A professional assessment can help you make an informed choice.",
+            "sortOrder": 3
+          },
+          {
+            "question": "Will I need special aftercare following a treatment?",
+            "answer": "Depending on the service, specific aftercare may be recommended. You will receive guidance on the care required before and after your treatment.",
+            "sortOrder": 4
+          },
+          {
+            "question": "Are treatment results the same for everyone?",
+            "answer": "No. Results can vary depending on individual skin conditions, personal characteristics and the selected treatment. Realistic expectations will be discussed during your consultation.",
+            "sortOrder": 5
+          }
+        ]
+      }
+    }
+  },
+  "SkinClinicContact": {
+    "rules": {
+      "isActive": true,
+      "direction": true,
+      "headingLevel": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "link1Text": true,
+      "link2Text": true,
+      "englishTitle": true,
+      "features": true,
+      "contactFirstNameLabel": true,
+      "contactLastNameLabel": true,
+      "contactEmailLabel": true,
+      "contactSubmitButtonText": true,
+      "items": {
+        "title": true,
+        "question": true,
+        "subtitle": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "direction": "rtl",
+        "headingLevel": "h2",
+        "title": "برای شروع مراقبت،\nبا ما در ارتباط باشید",
+        "subtitle": "رزرو وقت و مشاوره",
+        "description": "اگر درباره خدمات کلینیک پرسشی دارید یا می‌خواهید برای دریافت مشاوره و رزرو وقت اقدام کنید، اطلاعات خود را ثبت کنید تا با شما تماس بگیریم.",
+        "link1Text": "تهران، محدوده مطب",
+        "link2Text": "شنبه تا پنجشنبه، ۹ تا ۱۸",
+        "englishTitle": "درخواست مشاوره",
+        "features": "فرم زیر را تکمیل کنید تا برای بررسی درخواست و هماهنگی زمان مناسب با شما تماس بگیریم.",
+        "contactFirstNameLabel": "نام و نام خانوادگی",
+        "contactLastNameLabel": "شماره تماس",
+        "contactEmailLabel": "موضوع درخواست",
+        "contactSubmitButtonText": "ثبت درخواست مشاوره",
+        "items": [
+          {
+            "title": "مشاوره و ارزیابی پوست",
+            "sortOrder": 1
+          },
+          {
+            "title": "جوان‌سازی و مراقبت پوست",
+            "sortOrder": 2
+          },
+          {
+            "title": "درمان مشکلات پوستی",
+            "sortOrder": 3
+          },
+          {
+            "title": "سایر خدمات و پرسش‌ها",
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "direction": "ltr",
+        "headingLevel": "h2",
+        "title": "Let's Talk About\nYour Skincare Journey",
+        "subtitle": "BOOK AN APPOINTMENT",
+        "description": "Have questions about our services or ready to book a consultation? Share your details and our team will get in touch with you.",
+        "link1Text": "Tehran, Clinic Location",
+        "link2Text": "Saturday to Thursday, 9 AM – 6 PM",
+        "englishTitle": "Request a Consultation",
+        "features": "Complete the form below and our team will contact you to discuss your request and arrange a suitable appointment.",
+        "contactFirstNameLabel": "Full Name",
+        "contactLastNameLabel": "Phone Number",
+        "contactEmailLabel": "Consultation Topic",
+        "contactSubmitButtonText": "Submit Your Request",
+        "items": [
+          {
+            "title": "Skin Consultation & Assessment",
+            "sortOrder": 1
+          },
+          {
+            "title": "Skin Rejuvenation & Care",
+            "sortOrder": 2
+          },
+          {
+            "title": "Skin Treatments",
+            "sortOrder": 3
+          },
+          {
+            "title": "Other Services & Questions",
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  }
 }
