@@ -76,7 +76,7 @@ namespace Velora.Application.Shared.Dtos
         public int SortOrder { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 22, GridOrder = 22, ShowInGrid = false, ShowInForm = false)]
-        public Guid ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
