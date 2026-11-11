@@ -95,6 +95,8 @@ namespace Velora.Application.Services
                     SourceUrl = input.SourceUrl,
                     ImageDetailAlt = input.ImageDetailAlt,
                     ImageDetailUrl = input.ImageDetailUrl,
+                    IsPublished = input.IsPublished,
+                    
 
                 };
 
@@ -196,6 +198,7 @@ namespace Velora.Application.Services
                     SourceUrl = input.SourceUrl,
                     ImageDetailUrl = input.ImageDetailUrl,
                     ImageDetailAlt = input.ImageDetailAlt,
+                    IsPublished = input.IsPublished,
                 };
 
                 var ContentItemResult = await UpdateAsync(updateDto, input.Id);

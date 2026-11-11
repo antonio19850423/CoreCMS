@@ -73,6 +73,8 @@ public partial class VwContentItemForm
     [StringLength(250)]
     public string? ImageDetailAlt { get; set; }
 
+    public bool IsPublished { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

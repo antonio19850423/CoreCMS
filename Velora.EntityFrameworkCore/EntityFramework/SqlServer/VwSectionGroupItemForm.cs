@@ -11,11 +11,10 @@ public partial class VwSectionGroupItemForm
 {
     public Guid Id { get; set; }
 
-    [StringLength(50)]
-    [Unicode(false)]
+    [StringLength(150)]
     public string Code { get; set; } = null!;
 
-    [StringLength(50)]
+    [StringLength(150)]
     public string Name { get; set; } = null!;
 
     [StringLength(300)]
@@ -29,7 +28,7 @@ public partial class VwSectionGroupItemForm
 
     public Guid? GroupId { get; set; }
 
-    [StringLength(50)]
+    [StringLength(150)]
     public string? GroupName { get; set; }
 
     public int SortOrder { get; set; }

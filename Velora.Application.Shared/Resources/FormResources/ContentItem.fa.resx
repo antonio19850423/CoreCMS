@@ -207,4 +207,7 @@
   <data name="ContentItem.ImageDetailAlt" xml:space="preserve">
     <value>متن جایگزین تصویر جزئیات</value>
   </data>
+  <data name="ContentItem.IsPublish" xml:space="preserve">
+    <value>منتشر شود ؟</value>
+  </data>
 </root>

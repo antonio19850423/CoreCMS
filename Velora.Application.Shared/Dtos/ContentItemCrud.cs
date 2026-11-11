@@ -71,6 +71,8 @@ namespace Velora.Application.Shared.Dtos
         public string? SourceUrl { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 20, GridOrder = 20, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
+        public bool IsPublished { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }

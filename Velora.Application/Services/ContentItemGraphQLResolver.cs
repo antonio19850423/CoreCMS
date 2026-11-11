@@ -62,7 +62,10 @@ public class ContentItemGqlResolver : IContentItemGqlResolver
             TagIds=x.TagIds??"",
             TagNames=x.TagNames??"",
             SourceTitle=x.SourceTitle ??"",
-            SourceUrl=x.SourceUrl ??""
+            SourceUrl=x.SourceUrl ??"",
+            ImageDetailAlt=x.ImageDetailAlt ??"",
+            ImageDetailUrl=x.ImageDetailUrl ??"",
+            IsPublished=x.IsPublished
         });
     }
 
