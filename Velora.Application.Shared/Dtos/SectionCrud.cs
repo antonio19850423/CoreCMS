@@ -219,6 +219,14 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 59, GridOrder = 59, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
 
         public string? Price { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 60, GridOrder = 60, ShowInGrid = false, ShowInForm = true, MaxLength = 250)]
+
+        public string? SecondaryTitle { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 60, GridOrder = 60, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+
+        public string? SecondaryDescription { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 61, GridOrder = 61, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        public string? EnglishSubtitle { get; set; }
 
     }
 }

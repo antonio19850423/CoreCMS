@@ -339,4 +339,13 @@
   <data name="Section.Price" xml:space="preserve">
     <value>قیمت</value>
   </data>
+  <data name="Section.SecondaryTitle" xml:space="preserve">
+    <value>عنوان دوم</value>
+  </data>
+  <data name="Section.SecondaryDescription" xml:space="preserve">
+    <value>توضیحات دوم</value>
+  </data>
+  <data name="Section.EnglishSubtitle" xml:space="preserve">
+    <value>عنوان انگلیسی</value>
+  </data>
 </root>

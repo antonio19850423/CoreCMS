@@ -144,6 +144,9 @@ namespace Velora.Application.Services
                     TextColor = input.TextColor,
                     BackgroundGradient = input.BackgroundGradient,
                     Price=input.Price,
+                    SecondaryDescription=input.SecondaryDescription,
+                    SecondaryTitle=input.SecondaryTitle,
+                    EnglishSubtitle=input.EnglishSubtitle,
                     
                     
 
@@ -268,6 +271,9 @@ namespace Velora.Application.Services
                     TextColor = input.TextColor,
                     BackgroundGradient = input.BackgroundGradient,
                     Price = input.Price,
+                    SecondaryTitle = input.SecondaryTitle,
+                    SecondaryDescription = input.SecondaryDescription,
+                    EnglishSubtitle = input.EnglishSubtitle,
 
                 };
 

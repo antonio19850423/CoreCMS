@@ -96,6 +96,7 @@
 	  <EmbeddedResource Include="Resources\SeedData.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\SiteSettings\DadMehr_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\SiteSettings\SkinClinic_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\SiteSettings\Roze_SiteSettings.json" />
 	  <EmbeddedResource Include="Resources\SiteSettings\ParsaLink_SiteSettings.json" />
@@ -262,6 +263,10 @@
 
 	<ItemGroup>
 	  <EditorConfigFiles Remove="E:\Afe\Projects\CoreCMS\Velora.Application.Shared\Resources\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Templates\DadMehr_Template.json" />
 	</ItemGroup>
 
 </Project>

@@ -190,5 +190,11 @@ namespace Velora.Application.Shared.Dtos
         public string? BackgroundGradient { get; set; }
         [StringLength(500)]
         public string? Price { get; set; }
+        [StringLength(250)]
+        public string? SecondaryTitle { get; set; }
+
+        public string? SecondaryDescription { get; set; }
+        [StringLength(500)]
+        public string? EnglishSubtitle { get; set; }
     }
 }

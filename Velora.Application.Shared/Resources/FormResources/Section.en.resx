@@ -339,4 +339,13 @@
   <data name="Section.Price" xml:space="preserve">
     <value>Price</value>
   </data>
+  <data name="Section.SecondaryTitle" xml:space="preserve">
+    <value>SecondaryTitle</value>
+  </data>
+  <data name="Section.SecondaryDescription" xml:space="preserve">
+    <value>SecondaryDescription</value>
+  </data>
+  <data name="Section.EnglishSubtitle" xml:space="preserve">
+    <value>EnglishSubtitle</value>
+  </data>
 </root>

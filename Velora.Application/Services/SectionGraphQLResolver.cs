@@ -110,6 +110,9 @@ public class SectionGqlResolver : ISectionGqlResolver
             TextColor=x.TextColor ??"",
             BackgroundGradient=x.BackgroundGradient??"",
             Price=x.Price??"",
+            SecondaryDescription=x.SecondaryDescription??"",
+            SecondaryTitle=x.SecondaryTitle??"",
+            EnglishSubtitle=x.EnglishSubtitle??""
         });
     }
 

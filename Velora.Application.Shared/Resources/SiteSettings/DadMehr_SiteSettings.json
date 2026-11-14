@@ -1,0 +1,58 @@
+﻿{
+  "SiteSettings": {
+    "SiteName": "دفتر حقوقی دادمهر",
+    "DomainName": "localhost",
+
+    "LogoUrl": "/uploads/sections/dadmehr/Dadmehr-Logo.png",
+    "LogoAlt": "لوگوی دفتر حقوقی دادمهر",
+
+    "DarkLogoUrl": "/uploads/sections/dadmehr/Dadmehr-Logo.png",
+    "DarkLogoAlt": "لوگوی دفتر حقوقی دادمهر",
+
+    "FaviconUrl": "/uploads/sections/dadmehr/Dadmehr-Logo.ico",
+
+    "PhoneTitle": "مشاوره و خدمات حقوقی",
+    "Phone": "021-00000000",
+
+    "Phone2Title": "شماره تماس دوم",
+    "Phone2": "021-11111111",
+
+    "MobileTitle": "شماره همراه",
+    "Mobile": "09120000000",
+
+    "FaxTitle": "فکس",
+    "Fax": "021-22222222",
+
+    "Email": "info@dadmehr.ir",
+
+    "AddressTitle": "نشانی دفتر حقوقی",
+    "Address": "تهران، ایران",
+
+    "Address2Title": "نشانی دفتر دوم",
+    "Address2": "تهران، ایران",
+
+    "HeaderPhoneIcon": "◉",
+    "HeaderPhone": "021-00000000|09120000000",
+    "HeaderPhoneColor": "#BD8964",
+    "HeaderPhoneEnabled": true,
+
+    "Background": "#173B32",
+    "BackgroundGradient": "linear-gradient(115deg, #F8F7F4 0%, #FFFFFF 38%, #F1EEE8 72%, #E8E1D7 100%)",
+
+    "HeaderBackgroundColor": "#173B32",
+    "HeaderTextColor": "#FFFFFF",
+
+    "FooterBackgroundColor": "#173B32",
+    "FooterTextColor": "#FFFFFF",
+
+    "TextColor": "#263C35",
+
+    "DefaultMetaTitle": "دفتر حقوقی دادمهر | مشاوره و خدمات حقوقی تخصصی",
+
+    "DefaultMetaDescription": "دفتر حقوقی دادمهر با رویکردی مبتنی بر دانش حقوقی، بررسی دقیق مسائل و ارائه راهکارهای حقوقی، همراه شما در تصمیم‌گیری‌های آگاهانه و پیگیری امور حقوقی است.",
+
+    "DefaultMetaKeywords": "دفتر حقوقی دادمهر، وکیل، مشاوره حقوقی، خدمات حقوقی، وکالت، دعاوی حقوقی، دعاوی ملکی، امور قراردادها، مشاوره حقوقی تخصصی",
+
+    "IsActive": true
+  }
+}

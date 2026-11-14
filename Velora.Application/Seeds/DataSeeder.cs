@@ -14,6 +14,7 @@ using Velora.Application.Shared.Attributes;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Path = System.IO.Path;
@@ -2560,7 +2561,7 @@ namespace Velora.Application.Seeds
                     "ComponentRules.json not found.");
             }
 
-            var componentRules =
+            var deserializedRules =
                 await JsonSerializer.DeserializeAsync<
                     Dictionary<string, ComponentRuleModel>>(
                         componentStream,
@@ -2568,6 +2569,17 @@ namespace Velora.Application.Seeds
                         {
                             PropertyNameCaseInsensitive = true
                         });
+
+            if (deserializedRules == null)
+            {
+                throw new InvalidOperationException(
+                    "Invalid ComponentRules JSON.");
+            }
+
+            var componentRules =
+                new Dictionary<string, ComponentRuleModel>(
+                    deserializedRules,
+                    StringComparer.OrdinalIgnoreCase);
 
             if (componentRules == null)
             {
@@ -2935,39 +2947,41 @@ namespace Velora.Application.Seeds
                                 componentTypeEntity.Id,
                                 rtl,
                                 currentSectionSortOrder);
-                        if (!string.IsNullOrWhiteSpace(component.TextColor))
-                            sectionEntity.TextColor = component.TextColor.Trim();
+                        ApplySeedDefaults.Apply(sectionEntity,component);
 
-                        if (!string.IsNullOrWhiteSpace(component.ButtonColor))
-                            sectionEntity.ButtonColor = component.ButtonColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.TextColor))
+                        //    sectionEntity.TextColor = component.TextColor.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.BackgroundColor))
-                            sectionEntity.BackgroundColor = component.BackgroundColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.ButtonColor))
+                        //    sectionEntity.ButtonColor = component.ButtonColor.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.BackgroundGradient))
-                            sectionEntity.BackgroundGradient = component.BackgroundGradient.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.BackgroundColor))
+                        //    sectionEntity.BackgroundColor = component.BackgroundColor.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.SubtitleColor))
-                            sectionEntity.SubtitleColor = component.SubtitleColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.BackgroundGradient))
+                        //    sectionEntity.BackgroundGradient = component.BackgroundGradient.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.HeaderColor))
-                            sectionEntity.HeaderColor = component.HeaderColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.SubtitleColor))
+                        //    sectionEntity.SubtitleColor = component.SubtitleColor.Trim();
+
+                        //if (!string.IsNullOrWhiteSpace(component.HeaderColor))
+                        //    sectionEntity.HeaderColor = component.HeaderColor.Trim();
 
 
-                        if (!string.IsNullOrWhiteSpace(component.DescriptionColor))
-                            sectionEntity.DescriptionColor = component.DescriptionColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.DescriptionColor))
+                        //    sectionEntity.DescriptionColor = component.DescriptionColor.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.Link1Color))
-                            sectionEntity.Link1Color = component.Link1Color.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.Link1Color))
+                        //    sectionEntity.Link1Color = component.Link1Color.Trim();
 
-                        if (!string.IsNullOrWhiteSpace(component.Link2Color))
-                            sectionEntity.Link2Color = component.Link2Color.Trim();
-                        if (!string.IsNullOrWhiteSpace(component.Link3Color))
-                            sectionEntity.Link3Color = component.Link3Color.Trim();
-                        if (!string.IsNullOrWhiteSpace(component.Link4Color))
-                            sectionEntity.Link4Color = component.Link4Color.Trim();
-                        if (!string.IsNullOrWhiteSpace(component.IconColor))
-                            sectionEntity.IconColor = component.IconColor.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.Link2Color))
+                        //    sectionEntity.Link2Color = component.Link2Color.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.Link3Color))
+                        //    sectionEntity.Link3Color = component.Link3Color.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.Link4Color))
+                        //    sectionEntity.Link4Color = component.Link4Color.Trim();
+                        //if (!string.IsNullOrWhiteSpace(component.IconColor))
+                        //    sectionEntity.IconColor = component.IconColor.Trim();
                         sectionEntity.IsActive = true;
 
                         Console.WriteLine(
@@ -2993,74 +3007,111 @@ namespace Velora.Application.Seeds
                         // Existing SectionItems are never touched.
                         // -------------------------------------------------
 
-                        int itemSortOrder = 1;
 
-                        var sectionGroupCache =
-                            new Dictionary<string, Guid>(
-                                StringComparer.OrdinalIgnoreCase);
 
-                        if (rtl?.Items != null)
-                        {
-                            foreach (var item in rtl.Items)
-                            {
-                                Guid? sectionGroupItemId = null;
+                        // -------------------------------------------------
+                        // CREATE SECTION ITEMS ONLY FOR A NEW SECTION
+                        // -------------------------------------------------
 
-                                if (!string.IsNullOrWhiteSpace(
-                                        item.SectionGroupItemCode))
-                                {
-                                    if (!sectionGroupCache.TryGetValue(
-                                            item.SectionGroupItemCode,
-                                            out var cachedId))
-                                    {
-                                        var groupResult =
-                                            await _sectionGroupItemService
-                                                .FirstOrDefaultAsync<
-                                                    SqlSectionGroupItem>(
-                                                    x =>
-                                                        x.Code ==
-                                                        item.SectionGroupItemCode);
+                        var defaultItems = rtl?.Items;
+                        var templateItems = component.Items;
 
-                                        if (groupResult.Data != null)
-                                        {
-                                            cachedId =
-                                                groupResult.Data.Id;
+                        var isLayoutFooter =
+                            pageSlug.Equals("layout", StringComparison.OrdinalIgnoreCase) &&
+                            componentCode.Equals("footer", StringComparison.OrdinalIgnoreCase);
 
-                                            sectionGroupCache[
-                                                item.SectionGroupItemCode] =
-                                                cachedId;
-                                        }
-                                    }
+                        // برای فوتر از ComponentRules استفاده می‌کنیم
+                        // برای سایر کامپوننت‌ها از Items موجود در JSON قالب
+                        var itemCount = isLayoutFooter
+                            ? defaultItems?.Count ?? 0
+                            : templateItems?.Count ?? 0;
 
-                                    if (cachedId != Guid.Empty)
-                                    {
-                                        sectionGroupItemId =
-                                            cachedId;
-                                    }
-                                }
-
-                                var sectionItem =
-                                    BuildSectionItemDto(
-                                        sectionEntity.Id,
-                                        item,
-                                        sectionGroupItemId,
-                                        itemSortOrder++);
-
-                                Console.WriteLine(
-                            $"[INSERT SECTION ITEM] " +
-                            $"Component={componentCode}, " +
-                            $"Title={sectionItem.Title}, " +
-                            $"SortOrder={sectionItem.SortOrder}"
+                        var sectionGroupCache = new Dictionary<string, Guid>(
+                            StringComparer.OrdinalIgnoreCase
                         );
 
-                                await _sectionItemService.CreateAsync(sectionItem);
+                        for (int i = 0; i < itemCount; i++)
+                        {
+                            var templateItem =
+                                templateItems != null && i < templateItems.Count
+                                    ? templateItems[i]
+                                    : null;
 
-                                await DebugCommitAsync(
-                                    $"INSERT SECTION ITEM | Component={componentCode} | " +
-                                    $"Title={sectionItem.Title} | " +
-                                    $"SortOrder={sectionItem.SortOrder}"
+                            var defaultItem =
+                                defaultItems != null && i < defaultItems.Count
+                                    ? defaultItems[i]
+                                    : null;
+
+                            Guid? sectionGroupItemId = null;
+
+                            // گروه فقط برای آیتم‌هایی که در ComponentRules گروه دارند
+                            var groupCode = defaultItem?.SectionGroupItemCode;
+
+                            if (!string.IsNullOrWhiteSpace(groupCode))
+                            {
+                                if (!sectionGroupCache.TryGetValue(groupCode, out var groupId))
+                                {
+                                    var groupResult =
+                                        await _sectionGroupItemService
+                                            .FirstOrDefaultAsync<SqlSectionGroupItem>(
+                                                x => x.Code == groupCode
+                                            );
+
+                                    if (groupResult.Data == null)
+                                    {
+                                        throw new Exception(
+                                            $"Section group '{groupCode}' was not found."
+                                        );
+                                    }
+
+                                    groupId = groupResult.Data.Id;
+                                    sectionGroupCache[groupCode] = groupId;
+                                }
+
+                                sectionGroupItemId = groupId;
+                            }
+
+                            // ابتدا DTO را از اطلاعات پیش‌فرض می‌سازیم
+                            SectionItemDto sectionItem;
+
+                            if (defaultItem != null)
+                            {
+                                sectionItem = BuildSectionItemDto(
+                                    sectionEntity.Id,
+                                    defaultItem,
+                                    sectionGroupItemId,
+                                    sortOrder: i + 1
                                 );
                             }
+                            else
+                            {
+                                sectionItem = new SectionItemDto
+                                {
+                                    SectionId = sectionEntity.Id,
+                                    SectionGroupItemId = sectionGroupItemId,
+                                    SortOrder = i + 1,
+                                    IsActive = true
+                                };
+                            }
+
+                            // اطلاعات اختصاصی آیتم از JSON قالب اعمال می‌شود
+                            // برای فوتر این مرحله اجرا نمی‌شود
+                            if (!isLayoutFooter && templateItem != null)
+                            {
+                                ApplySeedDefaults.Apply(
+                                    sectionItem,
+                                    templateItem
+                                );
+                            }
+
+                            await _sectionItemService.CreateAsync(sectionItem);
+
+                            await DebugCommitAsync(
+                                $"INSERT SECTION ITEM | Component={componentCode} | " +
+                                $"Page={pageSlug} | Index={i + 1}"
+                            );
                         }
+
                     }
                     else
                     {

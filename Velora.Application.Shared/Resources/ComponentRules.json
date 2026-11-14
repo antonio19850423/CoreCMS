@@ -3573,14 +3573,14 @@
             "title": "هر پوست،\nداستان خودش را دارد",
             "subtitle": "پوست سالم از شناخت درست آغاز می‌شود",
             "description": "از بررسی نوع پوست تا انتخاب روش مراقبت، تصمیم‌ها باید بر پایه ارزیابی تخصصی و انتظارات واقع‌بینانه باشند.",
-            "imageUrl": "/uploads/sections/skinclinic/c0af0819d13febaf502c1802020b449a.jpg",
+            "imageUrl": "/uploads/sections/skinclinic/65e0c620c342806ba02f35dc1c45c6d6.jpg",
             "imageAlt": "محیط تمیز و حرفه‌ای خدمات مراقبت پوست"
           },
           {
             "title": "با انتخاب‌های درست،\nاز پوستتان مراقبت کنید",
             "subtitle": "مسیر مراقبت، متناسب با شما",
             "description": "در فضایی حرفه‌ای درباره دغدغه‌های پوست و مو گفت‌وگو کنید و با آگاهی از گزینه‌ها، مسیر مناسب خود را بشناسید.",
-            "imageUrl": "/uploads/sections/skinclinic/483bb615631758f1b8bc2b2010aa3417.jpg",
+            "imageUrl": "/uploads/sections/skinclinic/c79343dd935b22f996f2193e09c1a2e3.jpg",
             "imageAlt": "محصولات مراقبت از پوست با چیدمان مینیمال"
           }
         ]
@@ -3705,7 +3705,7 @@
             "title": "جوان‌سازی و شادابی پوست",
             "subtitle": "SKIN REJUVENATION",
             "description": "روش‌های تخصصی برای کمک به بهبود ظاهر پوست، افزایش شادابی و کاهش نشانه‌های خستگی و افزایش سن.",
-            "imageUrl": "",
+            "imageUrl": "/uploads/sections/skinclinic/photo-1608248543803-ba4f8c70ae0b.avif",
             "imageAlt": "خدمات جوان‌سازی و شادابی پوست",
             "link1Url": "#contact",
             "sortOrder": 1
@@ -3714,7 +3714,7 @@
             "title": "پاکسازی و مراقبت پوست",
             "subtitle": "SKIN CARE",
             "description": "مراقبت اصولی و متناسب با نوع پوست برای کمک به حفظ سلامت، لطافت و شفافیت طبیعی آن.",
-            "imageUrl": "",
+            "imageUrl": "/uploads/sections/skinclinic/photo-1570172619644-dfd03ed5d881.avif",
             "imageAlt": "خدمات پاکسازی و مراقبت تخصصی پوست",
             "link1Url": "#contact",
             "sortOrder": 2
@@ -3723,7 +3723,7 @@
             "title": "درمان مشکلات پوستی",
             "subtitle": "SKIN TREATMENT",
             "description": "بررسی تخصصی مشکلات پوستی و انتخاب روش مناسب با توجه به شرایط و نیازهای هر مراجعه‌کننده.",
-            "imageUrl": "",
+            "imageUrl": "/uploads/sections/skinclinic/photo-1556229010-6c3f2c9ca5f8.avif",
             "imageAlt": "خدمات بررسی و درمان مشکلات پوستی",
             "link1Url": "#contact",
             "sortOrder": 3
@@ -4192,6 +4192,562 @@
           {
             "title": "Other Services & Questions",
             "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "DadmehrServices": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "englishTitle": true,
+      "secondaryTitle": true,
+      "secondaryDescription": true,
+      "link1Text": true,
+      "link1Url": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "icon": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "subtitle": "PRACTICE AREAS",
+        "title": "مسئله شما، نقطه شروع بررسی حقوقی است",
+        "description": "حوزه‌های مختلف حقوقی نیازمند بررسی متناسب با شرایط هر موضوع هستند. خدمات زیر نمونه‌ای از زمینه‌های فعالیت دفتر است.",
+        "englishTitle": "OUR SERVICES",
+        "secondaryTitle": "شناخت دقیق مسئله، پیش از انتخاب راهکار",
+        "secondaryDescription": "هر تصمیم حقوقی به شناخت شرایط، بررسی مدارک و درک گزینه‌های موجود نیاز دارد. موضوع خود را مطرح کنید تا امکان بررسی اولیه و مسیر مناسب مشاوره مشخص شود.",
+        "link1Text": "مطرح کردن موضوع",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "title": "حقوق کسب‌وکار",
+            "description": "تنظیم قراردادها، اختلافات تجاری و بررسی ریسک‌های حقوقی فعالیت‌های اقتصادی",
+            "icon": "↗",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "امور ملکی",
+            "description": "بررسی معاملات، اختلافات مالکیت، تعهدات قراردادی و مسائل حقوقی املاک",
+            "icon": "⌂",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "دعاوی حقوقی",
+            "description": "بررسی مستندات، ارزیابی راهکارهای قانونی و پیگیری مسئولانه موضوعات حقوقی",
+            "icon": "§",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "حقوق خانواده",
+            "description": "ارائه مشاوره در موضوعات خانواده با رعایت محرمانگی و توجه به شرایط پرونده",
+            "icon": "◇",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "subtitle": "PRACTICE AREAS",
+        "title": "Your Legal Matter, The Starting Point of Every Review",
+        "description": "Different areas of law require an approach tailored to the circumstances of each matter. The following are examples of the firm's practice areas.",
+        "englishTitle": "OUR SERVICES",
+        "secondaryTitle": "Understanding the Matter Before Choosing a Solution",
+        "secondaryDescription": "Every legal decision requires understanding the circumstances, reviewing documents and identifying available options. Share your matter to determine the appropriate initial review and consultation path.",
+        "link1Text": "Discuss Your Matter",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "title": "Business Law",
+            "description": "Contract drafting, commercial disputes and legal risk assessment for business activities.",
+            "icon": "↗",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Real Estate Law",
+            "description": "Review of property transactions, ownership disputes, contractual obligations and real estate matters.",
+            "icon": "⌂",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Civil Litigation",
+            "description": "Document review, assessment of legal options and responsible handling of civil disputes.",
+            "icon": "§",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "Family Law",
+            "description": "Legal consultation on family matters with confidentiality and attention to each case's circumstances.",
+            "icon": "◇",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "DadmehrProcess": {
+    "rules": {
+      "isActive": true,
+      "title": true,
+      "subtitle": true,
+      "description": true,
+      "backgroundColor": true,
+      "backgroundGradient": true,
+      "textColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "iconColor": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "iconColor": true,
+        "titleColor": true,
+        "descriptionColor": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "subtitle": "THE PROCESS",
+        "title": "شروع همکاری، ساده و روشن",
+        "description": "از بیان اولیه موضوع تا بررسی گزینه‌ها، هر مرحله با توضیح روشن دنبال می‌شود.",
+        "backgroundColor": "#173B32",
+        "backgroundGradient": "linear-gradient(180deg, #173B32 0%, #102F28 100%)",
+        "textColor": "#FFFFFF",
+        "headerColor": "#FFFFFF",
+        "subtitleColor": "#BD8964",
+        "descriptionColor": "#D0D8D2",
+        "iconColor": "#BD8964",
+        "items": [
+          {
+            "title": "شرح موضوع",
+            "description": "درخواست خود را ثبت کنید و اطلاعات اولیه را در میان بگذارید.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "بررسی اولیه",
+            "description": "موضوع و مستندات اولیه برای تعیین نیازهای مشاوره بررسی می‌شوند.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "توضیح گزینه‌ها",
+            "description": "در جلسه مشاوره، مسیرهای قابل بررسی و مراحل احتمالی توضیح داده می‌شوند.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "subtitle": "THE PROCESS",
+        "title": "A Clear and Straightforward Process",
+        "description": "From the initial discussion to reviewing available options, every step is explained clearly.",
+        "backgroundColor": "#173B32",
+        "backgroundGradient": "linear-gradient(180deg, #173B32 0%, #102F28 100%)",
+        "textColor": "#FFFFFF",
+        "headerColor": "#FFFFFF",
+        "subtitleColor": "#BD8964",
+        "descriptionColor": "#D0D8D2",
+        "iconColor": "#BD8964",
+        "items": [
+          {
+            "title": "Share Your Matter",
+            "description": "Submit your request and share the initial information about your legal matter.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Initial Review",
+            "description": "Your matter and initial documents are reviewed to identify your consultation needs.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Explaining Your Options",
+            "description": "During the consultation, available approaches and potential next steps are explained.",
+            "iconColor": "#BD8964",
+            "titleColor": "#FFFFFF",
+            "descriptionColor": "#D0D8D2",
+            "isActive": true,
+            "sortOrder": 3
+          }
+        ]
+      }
+    }
+  },
+  "DadmehrApproach": {
+    "rules": {
+      "isActive": true,
+      "imageUrl": true,
+      "imageAlt": true,
+      "englishTitle": true,
+      "englishSubtitle": true,
+      "subtitle": true,
+      "description": true,
+      "title": true,
+      "features": true,
+      "secondaryDescription": true,
+      "link1Text": true,
+      "link1Url": true,
+      "link1Color": true,
+      "link1OpenInNewTab": true,
+      "items": {
+        "title": true,
+        "description": true,
+        "icon": true,
+        "iconColor": true,
+        "titleColor": true,
+        "descriptionColor": true,
+        "isActive": true,
+        "sortOrder": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "imageUrl": "/uploads/sections/dadmehr/18c203a928f21647df90ef05852d1504.jpg",
+        "imageAlt": "فضای حرفه‌ای گفت‌وگو و بررسی موضوعات کاری",
+        "englishTitle": "EST. / LEGAL PRACTICE",
+        "englishSubtitle": "OUR APPROACH",
+        "subtitle": "درک مسئله، پیش از انتخاب مسیر",
+        "description": "رویکردی دقیق و مسئولانه",
+        "title": "هر مسئله حقوقی، فراتر از چند ماده قانونی است",
+        "features": "پشت هر موضوع حقوقی، شرایط، اسناد و دغدغه‌هایی وجود دارد که باید با دقت بررسی شوند. شناخت این جزئیات، نقطه شروع یک تصمیم آگاهانه است.",
+        "secondaryDescription": "رویکرد ما بر شنیدن دقیق موضوع، بررسی مدارک و توضیح روشن گزینه‌های قابل بررسی استوار است. مسیر هر پرونده متفاوت است و نتیجه آن به شرایط و مستندات وابسته خواهد بود.",
+        "link1Text": "آشنایی با خدمات",
+        "link1Url": "#contact",
+        "link1OpenInNewTab": false,
+        "items": [
+          {
+            "title": "بررسی دقیق",
+            "description": "توجه به اسناد و جزئیات",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "ارتباط شفاف",
+            "description": "بیان روشن گزینه‌ها",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "توجه به شرایط شما",
+            "description": "شناخت نیازها و اولویت‌ها",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "محرمانگی",
+            "description": "احترام به اطلاعات شخصی",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "imageUrl": "/uploads/sections/dadmehr/18c203a928f21647df90ef05852d1504.jpg",
+        "imageAlt": "Professional workspace for discussion and legal consultation",
+        "englishTitle": "EST. / LEGAL PRACTICE",
+        "englishSubtitle": "OUR APPROACH",
+        "subtitle": "Understanding Before Choosing a Path",
+        "description": "A precise and responsible approach",
+        "title": "Every Legal Matter Goes Beyond a Set of Legal Articles",
+        "features": "Behind every legal matter are circumstances, documents and concerns that deserve careful consideration. Understanding these details is the starting point for making an informed decision.",
+        "secondaryDescription": "Our approach is based on listening carefully, reviewing documents and clearly explaining the available options. Every case is different, and its outcome depends on its circumstances and supporting evidence.",
+        "link1Text": "Explore Our Services",
+        "link1Url": "#contact",
+        "link1OpenInNewTab": false,
+        "items": [
+          {
+            "title": "Detailed Review",
+            "description": "Careful attention to documents and details",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 1
+          },
+          {
+            "title": "Clear Communication",
+            "description": "Explaining available options clearly",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 2
+          },
+          {
+            "title": "Your Individual Needs",
+            "description": "Understanding your needs and priorities",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 3
+          },
+          {
+            "title": "Confidentiality",
+            "description": "Respecting your personal information",
+            "icon": "✳",
+            "iconColor": "#BD8964",
+            "titleColor": "#173B32",
+            "descriptionColor": "#68766F",
+            "isActive": true,
+            "sortOrder": 4
+          }
+        ]
+      }
+    }
+  },
+  "DadmehrQuote": {
+    "rules": {
+      "isActive": true,
+      "headingLevel": true,
+      "title": true,
+      "description": true,
+      "subtitle": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "descriptionColor": true,
+      "subtitleColor": true,
+      "iconColor": true
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "headingLevel": "h2",
+        "backgroundColor": "#e7d7c7",
+        "headerColor": "#173b32",
+        "descriptionColor": "#68766f",
+        "subtitleColor": "#173b32",
+        "iconColor": "#bd8964",
+        "title": "تصمیم آگاهانه، از شناخت دقیق مسئله و درک روشن گزینه‌ها آغاز می‌شود",
+        "description": "رویکرد دفتر حقوقی دادمهر به مشاوره حقوقی"
+      },
+      "ltr": {
+        "isActive": true,
+        "headingLevel": "h2",
+        "backgroundColor": "#e7d7c7",
+        "headerColor": "#173b32",
+        "descriptionColor": "#68766f",
+        "subtitleColor": "#173b32",
+        "iconColor": "#bd8964",
+        "title": "Informed Decisions Begin with Understanding the Issue and Evaluating Available Options",
+        "description": "The Legal Consultation Approach of Dadmehr Law Office",
+        "subtitle": "The Legal Consultation Approach of Dadmehr Law Office"
+      }
+    }
+  },
+  "DadmehrInsights": {
+    "rules": {
+      "isActive": true,
+      "headingLevel": true,
+      "subtitle": true,
+      "title": true,
+      "description": true,
+      "backgroundColor": true,
+      "headerColor": true,
+      "subtitleColor": true,
+      "descriptionColor": true,
+      "link1Text": true,
+      "link1Url": true,
+      "items": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "backgroundColor": true,
+        "titleColor": true,
+        "subtitleColor": true,
+        "descriptionColor": true,
+        "iconColor": true,
+        "link1Text": true,
+        "link1Url": true,
+        "link1Color": true,
+        "link1OpenInNewTab": true,
+        "sortOrder": true,
+        "isActive": true
+      }
+    },
+    "defaultData": {
+      "rtl": {
+        "isActive": true,
+        "headingLevel": "h2",
+        "subtitle": "LEGAL JOURNAL",
+        "title": "نگاهی دقیق‌تر به دنیای حقوق",
+        "description": "مطالب آموزشی برای آشنایی بیشتر با موضوعات حقوقی و آماده شدن برای تصمیم‌های مهم.",
+        "backgroundColor": "#f8f7f4",
+        "headerColor": "#173b32",
+        "subtitleColor": "#bd8964",
+        "descriptionColor": "#68766f",
+        "link1Text": "درخواست راهنمایی",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "subtitle": "قراردادها",
+            "title": "پیش از امضای یک قرارداد چه مواردی را بررسی کنیم؟",
+            "description": "آشنایی با نکات کلیدی و پرسش‌هایی که پیش از اقدام حقوقی بهتر است به آن‌ها توجه شود.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "درخواست راهنمایی",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 1,
+            "isActive": true
+          },
+          {
+            "subtitle": "امور ملکی",
+            "title": "چرا بررسی دقیق اسناد در معاملات ملکی اهمیت دارد؟",
+            "description": "آشنایی با نکات کلیدی و پرسش‌هایی که پیش از اقدام حقوقی بهتر است به آن‌ها توجه شود.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "درخواست راهنمایی",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 2,
+            "isActive": true
+          },
+          {
+            "subtitle": "کسب‌وکار",
+            "title": "چگونه ریسک‌های حقوقی یک همکاری تجاری را بشناسیم؟",
+            "description": "آشنایی با نکات کلیدی و پرسش‌هایی که پیش از اقدام حقوقی بهتر است به آن‌ها توجه شود.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "درخواست راهنمایی",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 3,
+            "isActive": true
+          }
+        ]
+      },
+      "ltr": {
+        "isActive": true,
+        "headingLevel": "h2",
+        "subtitle": "LEGAL JOURNAL",
+        "title": "A Closer Look at the World of Law",
+        "description": "Educational articles to help you understand legal topics and prepare for important decisions.",
+        "backgroundColor": "#f8f7f4",
+        "headerColor": "#173b32",
+        "subtitleColor": "#bd8964",
+        "descriptionColor": "#68766f",
+        "link1Text": "Request Guidance",
+        "link1Url": "#contact",
+        "items": [
+          {
+            "subtitle": "Contracts",
+            "title": "What Should You Review Before Signing a Contract?",
+            "description": "Key points and questions worth considering before taking legal action.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "Request Guidance",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 1,
+            "isActive": true
+          },
+          {
+            "subtitle": "Real Estate",
+            "title": "Why Is Reviewing Documents Important in Real Estate Transactions?",
+            "description": "Key points and questions worth considering before taking legal action.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "Request Guidance",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 2,
+            "isActive": true
+          },
+          {
+            "subtitle": "Business",
+            "title": "How Can You Identify the Legal Risks of a Business Partnership?",
+            "description": "Key points and questions worth considering before taking legal action.",
+            "backgroundColor": "#173b32",
+            "titleColor": "#173b32",
+            "subtitleColor": "#d8c2aa",
+            "descriptionColor": "#68766f",
+            "iconColor": "#bd8964",
+            "link1Text": "Request Guidance",
+            "link1Url": "#contact",
+            "link1Color": "#173b32",
+            "link1OpenInNewTab": false,
+            "sortOrder": 3,
+            "isActive": true
           }
         ]
       }

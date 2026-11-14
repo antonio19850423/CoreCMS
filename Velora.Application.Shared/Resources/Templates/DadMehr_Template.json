@@ -1,0 +1,217 @@
+﻿{
+  "templates": [
+    {
+      "templateName": "LawOffice_Template",
+      "pages": [
+        {
+          "pageName": "خانه",
+          "slug": "home",
+          "isPublished": false,
+          "metaTitle": "دفتر وکالت دادمهر | مشاوره و خدمات حقوقی تخصصی",
+          "metaDescription": "دفتر وکالت دادمهر با رویکردی مبتنی بر دانش حقوقی، بررسی دقیق مستندات و شفافیت در ارائه راهکارها، همراه شما در شناخت و پیگیری مسائل حقوقی است.",
+          "metaKeywords": "دفتر وکالت، وکیل، مشاوره حقوقی، خدمات حقوقی، وکیل ملکی، وکیل قراردادها، دعاوی حقوقی، حقوق کسب‌وکار",
+          "components": [
+            {
+              "code": "skinClinicHero",
+              "type": "skinClinicHero",
+              "backgroundColor": "#F5F1E8",
+              "backgroundGradient": "linear-gradient(135deg, #F5F1E8 0%, #FFFDF8 55%, #EDE5D8 100%)",
+              "textColor": "#202B26",
+              "buttonColor": "#173B32",
+              "title": "قانون را\nشفاف‌تر ببینید",
+              "subtitle": "A DIFFERENT VIEW OF LAW",
+              "description": "تصمیم‌های حقوقی مهم، به بررسی دقیق و شناخت مسیرهای پیش رو نیاز دارند. ما کمک می‌کنیم موضوع خود را بهتر بشناسید، گزینه‌های موجود را بررسی کنید و آگاهانه‌تر تصمیم بگیرید.",
+              "link1Text": "شروع گفت‌وگو",
+              "link1Url": "#contact",
+              "link2Text": "مشاهده خدمات",
+              "link2Url": "#services",
+              "link3Text": "مشاوره روشن، بررسی مسئولانه و احترام به محرمانگی",
+              "headingLevel": "h1",
+              "direction": "rtl",
+              "isActive": true,
+              "items": [
+                {
+                  "title": "نگاهی متفاوت به قانون",
+                  "subtitle": "LEGAL EXPERTISE",
+                  "description": "بررسی دقیق مسائل حقوقی و شناخت جزئیاتی که می‌توانند در تصمیم‌گیری شما تأثیرگذار باشند.",
+                  "imageUrl": "/uploads/sections/dadmehr/4aba5018f24e6fcf1ad36eeae6048a37.jpg",
+                  "imageAlt": "فضای حرفه‌ای و رسمی دفتر وکالت",
+                  "isActive": true,
+                  "sortOrder": 1
+                },
+                {
+                  "title": "شفافیت در مسیر حقوقی",
+                  "subtitle": "CLARITY & TRANSPARENCY",
+                  "description": "شناخت گزینه‌های موجود و بررسی مسیرهای پیش رو برای رسیدن به تصمیمی آگاهانه.",
+                  "imageUrl": "/uploads/sections/dadmehr/714d9c068b8ff69fb0ce895e626e91ce.jpg",
+                  "imageAlt": "کتاب‌ها و اسناد حقوقی روی میز کار",
+                  "isActive": true,
+                  "sortOrder": 2
+                },
+                {
+                  "title": "اعتماد، مسئولیت و محرمانگی",
+                  "subtitle": "LAW · JUSTICE · TRUST",
+                  "description": "مشاوره روشن، بررسی مسئولانه و احترام به محرمانگی در تمام مراحل ارتباط حقوقی.",
+                  "imageUrl": "/uploads/sections/dadmehr/be082901cd705230057848b259e10423.jpg",
+                  "imageAlt": "فضای مشاوره و گفت‌وگوی حرفه‌ای حقوقی",
+                  "isActive": true,
+                  "sortOrder": 3
+                }
+              ]
+            },
+            {
+              "code": "skinClinicTrust",
+              "type": "skinClinicTrust",
+              "backgroundColor": "#173B32",
+              "backgroundGradient": "linear-gradient(135deg, #173B32 0%, #285448 100%)",
+              "textColor": "#FFFFFF",
+              "headerColor": "#FFFFFF",
+              "subtitleColor": "#D9E8DF",
+              "descriptionColor": "#D9E8DF",
+              "items": [
+                {
+                  "title": "نگاه تحلیلی",
+                  "subtitle": "بررسی جزئیات و مستندات",
+                  "icon": "↗",
+                  "iconColor": "#D9E8DF",
+                  "isActive": true,
+                  "sortOrder": 1
+                },
+                {
+                  "title": "ارتباط شفاف",
+                  "subtitle": "توضیح گزینه‌ها و مراحل احتمالی",
+                  "icon": "◈",
+                  "iconColor": "#D9E8DF",
+                  "isActive": true,
+                  "sortOrder": 2
+                },
+                {
+                  "title": "محرمانگی اطلاعات",
+                  "subtitle": "توجه به حریم خصوصی مراجعان",
+                  "icon": "§",
+                  "iconColor": "#D9E8DF",
+                  "isActive": true,
+                  "sortOrder": 3
+                }
+              ]
+            },
+            {
+              "code": "dadmehrServices",
+              "type": "dadmehrServices"
+            },
+            {
+              "code": "dadmehrApproach",
+              "type": "dadmehrApproach"
+            },
+            {
+              "code": "dadmehrProcess",
+              "type": "dadmehrProcess"
+            },
+            {
+              "code": "dadmehrQuote",
+              "type": "dadmehrQuote"
+            },
+            {
+              "code": "dadmehrInsights",
+              "type": "dadmehrInsights"
+            }
+          ]
+        },
+        {
+          "pageName": "تماس با ما",
+          "slug": "contact",
+          "isPublished": false,
+          "metaTitle": "تماس با دفتر وکالت دادمهر | دریافت مشاوره حقوقی",
+          "metaDescription": "برای دریافت مشاوره حقوقی، طرح موضوع پرونده و آشنایی با خدمات دفتر وکالت دادمهر با ما در ارتباط باشید.",
+          "metaKeywords": "تماس با وکیل، تماس با دفتر وکالت، مشاوره حقوقی، رزرو مشاوره وکیل، آدرس دفتر وکالت",
+          "components": [
+            {
+              "code": "contact",
+              "type": "contact",
+              "backgroundColor": "#FFFDF8",
+              "buttonColor": "#cab691",
+              "textColor": "#202B26"
+            }
+          ]
+        },
+        {
+          "pageName": "طرح‌بندی",
+          "slug": "layout",
+          "isPublished": false,
+          "components": [
+            {
+              "code": "footer",
+              "type": "footer",
+              "backgroundColor": "#173B32",
+              "backgroundGradient": "linear-gradient(135deg, #173B32 0%, #285448 65%, #202B26 100%)",
+              "textColor": "#F5F1E8"
+            }
+          ]
+        },
+        {
+          "pageName": "درباره ما",
+          "slug": "about",
+          "isPublished": false,
+          "metaTitle": "درباره دفتر وکالت دادمهر | رویکرد و ارزش‌های حقوقی",
+          "metaDescription": "با دفتر وکالت دادمهر، رویکرد حرفه‌ای، ارزش‌ها و شیوه بررسی و پیگیری موضوعات حقوقی بیشتر آشنا شوید.",
+          "metaKeywords": "درباره دفتر وکالت، معرفی وکیل، رویکرد حقوقی، مشاوره تخصصی حقوقی، دفتر حقوقی دادمهر",
+          "components": [
+            {
+              "code": "about",
+              "type": "about"
+            }
+          ]
+        },
+        {
+          "pageName": "خدمات حقوقی",
+          "slug": "services",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "خدمات حقوقی دفتر وکالت دادمهر | امور ملکی، قراردادها و دعاوی",
+          "metaDescription": "با خدمات حقوقی دفتر وکالت دادمهر در زمینه حقوق کسب‌وکار، امور ملکی، دعاوی حقوقی و حقوق خانواده آشنا شوید.",
+          "metaKeywords": "خدمات حقوقی، وکیل قراردادها، وکیل ملکی، دعاوی حقوقی، وکیل خانواده، حقوق کسب‌وکار، مشاوره حقوقی",
+          "components": [
+            {
+              "code": "SkinClinicServices",
+              "type": "SkinClinicServices",
+              "backgroundColor": "#FFFDF8",
+              "backgroundGradient": "linear-gradient(180deg, #FFFDF8 0%, #F5F1E8 100%)",
+              "textColor": "#202B26",
+              "buttonColor": "#173B32"
+            },
+            {
+              "code": "SkinClinicConcerns",
+              "type": "SkinClinicConcerns",
+              "backgroundColor": "#F5F1E8",
+              "backgroundGradient": "linear-gradient(135deg, #F5F1E8 0%, #FFFDF8 100%)",
+              "textColor": "#202B26"
+            },
+            {
+              "code": "SkinClinicContact",
+              "type": "SkinClinicContact",
+              "backgroundColor": "#173B32",
+              "backgroundGradient": "linear-gradient(135deg, #173B32 0%, #285448 100%)",
+              "textColor": "#FFFFFF",
+              "buttonColor": "#BD8964"
+            }
+          ]
+        },
+        {
+          "pageName": "مقالات حقوقی",
+          "slug": "articles",
+          "isPublished": false,
+          "IsDynamic": true,
+          "metaTitle": "مقالات حقوقی دادمهر | دانشنامه و آگاهی حقوقی",
+          "metaDescription": "مطالب و مقالات حقوقی درباره قراردادها، معاملات ملکی، اختلافات تجاری و موضوعات حقوقی با هدف افزایش آگاهی و کمک به تصمیم‌گیری آگاهانه.",
+          "metaKeywords": "مقالات حقوقی، دانشنامه حقوقی، آموزش حقوق، قراردادها، معاملات ملکی، حقوق کسب‌وکار، دعاوی حقوقی",
+          "components": [
+            {
+              "code": "articleHero",
+              "type": "hero"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

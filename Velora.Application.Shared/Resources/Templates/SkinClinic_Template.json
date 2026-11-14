@@ -85,7 +85,8 @@
               "code": "contact",
               "type": "contact",
               "backgroundColor": "#ffffff",
-              "buttonColor": "#C62828"
+              "buttonColor": "#174A78",
+              "textColor": "white"
             }
           ]
         },
