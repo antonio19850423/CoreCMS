@@ -14,10 +14,62 @@
             {
               "code": "skinClinicHero",
               "type": "skinClinicHero",
-              "backgroundColor": "#142F4D",
-              "backgroundGradient": "linear-gradient(135deg, #10263F 0%, #183D60 55%, #2879D8 100%)",
-              "textColor": "#FFFFFF",
-              "buttonColor": "#2879D8"
+              "isActive": true,
+              "direction": "rtl",
+              "headingLevel": "h1",
+
+              "title": "زیبایی طبیعی،\nبا مراقبت آگاهانه",
+              "subtitle": "مراقبت تخصصی پوست و مو",
+              "description": "برای شناخت بهتر پوستتان، انتخاب روش مناسب و ساختن یک برنامه مراقبتی متناسب با نیازهای واقعی شما.",
+
+              "link1Text": "دریافت وقت مشاوره",
+              "link1Url": "#contact",
+              "link2Text": "آشنایی با خدمات",
+              "link2Url": "#services",
+              "link3Text": "انتخاب آگاهانه، مراقبت متناسب با شما",
+              "backgroundColor": "#EAF5FF",
+              "backgroundGradient": "linear-gradient(135deg, #EAF5FF 0%, #D8ECFF 55%, #C5E2FF 100%)",
+              "textColor": "#000000",
+              "headerColor": "#000000",
+              "subtitleColor": "#2879D8",
+              "descriptionColor": "#000000",
+              "buttonColor": "#2879D8",
+              "buttonHoverColor": "#1D5FAE",
+              "link1Color": "#2879D8",
+              "link2Color": "#000000",
+              "inkColor": "#000000",
+              "mutedColor": "#666666",
+              "primaryColor": "#2879D8",
+              "borderColor": "rgba(40, 121, 216, 0.2)",
+              "items": [
+                {
+                  "title": "زیبایی طبیعی،\nبا مراقبت آگاهانه",
+                  "subtitle": "مراقبت تخصصی پوست و مو",
+                  "description": "برای شناخت بهتر پوستتان، انتخاب روش مناسب و ساختن یک برنامه مراقبتی متناسب با نیازهای واقعی شما.",
+                  "imageUrl": "/uploads/sections/skinclinic/c0af0819d13febaf502c1802020b449a.jpg",
+                  "imageAlt": "فضای آرام و مینیمال مراقبت از پوست",
+                  "isActive": true,
+                  "sortOrder": 1
+                },
+                {
+                  "title": "هر پوست،\nداستان خودش را دارد",
+                  "subtitle": "پوست سالم از شناخت درست آغاز می‌شود",
+                  "description": "از بررسی نوع پوست تا انتخاب روش مراقبت، تصمیم‌ها باید بر پایه ارزیابی تخصصی و انتظارات واقع‌بینانه باشند.",
+                  "imageUrl": "/uploads/sections/skinclinic/65e0c620c342806ba02f35dc1c45c6d6.jpg",
+                  "imageAlt": "محیط تمیز و حرفه‌ای خدمات مراقبت پوست",
+                  "isActive": true,
+                  "sortOrder": 2
+                },
+                {
+                  "title": "با انتخاب‌های درست،\nاز پوستتان مراقبت کنید",
+                  "subtitle": "مسیر مراقبت، متناسب با شما",
+                  "description": "در فضایی حرفه‌ای درباره دغدغه‌های پوست و مو گفت‌وگو کنید و با آگاهی از گزینه‌ها، مسیر مناسب خود را بشناسید.",
+                  "imageUrl": "/uploads/sections/skinclinic/c79343dd935b22f996f2193e09c1a2e3.jpg",
+                  "imageAlt": "محصولات مراقبت از پوست با چیدمان مینیمال",
+                  "isActive": true,
+                  "sortOrder": 3
+                }
+              ]
             },
             {
               "code": "skinClinicTrust",
@@ -29,10 +81,54 @@
             {
               "code": "skinClinicServices",
               "type": "skinClinicServices",
+              "isActive": true,
+              "direction": "rtl",
+              "title": "مراقبت تخصصی،\nمتناسب با نیاز پوست شما",
+              "subtitle": "خدمات تخصصی پوست و مو",
+              "description": "هر مسیر مراقبتی با شناخت دغدغه شما آغاز می‌شود. خدمات و روش مناسب پس از بررسی شرایط فردی و گفت‌وگو درباره انتظارات انتخاب می‌شوند.",
               "backgroundColor": "#EFF7FF",
               "backgroundGradient": "linear-gradient(180deg, #F5FAFF 0%, #EAF4FF 100%)",
               "textColor": "#142F4D",
-              "buttonColor": "#2879D8"
+              "headerColor": "#142F4D",
+              "subtitleColor": "#2879D8",
+              "descriptionColor": "#536B82",
+              "buttonColor": "#2879D8",
+              "buttonHoverColor": "#1D5FAE",
+              "link1Color": "#2879D8",
+              "link2Color": "#142F4D",
+              "borderColor": "rgba(40, 121, 216, 0.18)",
+              "items": [
+                {
+                  "title": "جوان‌سازی و شادابی پوست",
+                  "subtitle": "SKIN REJUVENATION",
+                  "description": "روش‌های تخصصی برای کمک به بهبود ظاهر پوست، افزایش شادابی و کاهش نشانه‌های خستگی و افزایش سن.",
+                  "imageUrl": "/uploads/sections/skinclinic/photo-1608248543803-ba4f8c70ae0b.avif",
+                  "imageAlt": "خدمات جوان‌سازی و شادابی پوست",
+                  "link1Url": "#contact",
+                  "isActive": true,
+                  "sortOrder": 1
+                },
+                {
+                  "title": "پاکسازی و مراقبت پوست",
+                  "subtitle": "SKIN CARE",
+                  "description": "مراقبت اصولی و متناسب با نوع پوست برای کمک به حفظ سلامت، لطافت و شفافیت طبیعی آن.",
+                  "imageUrl": "/uploads/sections/skinclinic/photo-1570172619644-dfd03ed5d881.avif",
+                  "imageAlt": "خدمات پاکسازی و مراقبت تخصصی پوست",
+                  "link1Url": "#contact",
+                  "isActive": true,
+                  "sortOrder": 2
+                },
+                {
+                  "title": "درمان مشکلات پوستی",
+                  "subtitle": "SKIN TREATMENT",
+                  "description": "بررسی تخصصی مشکلات پوستی و انتخاب روش مناسب با توجه به شرایط و نیازهای هر مراجعه‌کننده.",
+                  "imageUrl": "/uploads/sections/skinclinic/photo-1556229010-6c3f2c9ca5f8.avif",
+                  "imageAlt": "خدمات بررسی و درمان مشکلات پوستی",
+                  "link1Url": "#contact",
+                  "isActive": true,
+                  "sortOrder": 3
+                }
+              ]
             },
             {
               "code": "skinClinicPhilosophy",

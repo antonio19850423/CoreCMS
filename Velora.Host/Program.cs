@@ -92,6 +92,8 @@ builder.Services.AddCors(options =>
                 "http://localhost:3006",
                 "http://localhost:3007",
                 "http://localhost:3008",
+                "http://localhost:3009",
+                "http://localhost:3010",
                 "https://admin.parsalink.com",
                 "https://api.parsalink.com",
                 "https://parsalink.com",
@@ -103,7 +105,10 @@ builder.Services.AddCors(options =>
                 "https://luxuryapi.parsalink.com",
                 "https://skinclinic.parsalink.com",
                 "https://skinclinicapi.parsalink.com",
-                "https://skinclinicadmin.parsalink.com"
+                "https://skinclinicadmin.parsalink.com",
+                "https://dadmehr.parsalink.com",
+                "https://dadmehrapi.parsalink.com",
+                "https://dadmehradmin.parsalink.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
