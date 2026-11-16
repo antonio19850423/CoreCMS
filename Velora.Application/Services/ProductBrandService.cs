@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -256,6 +256,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductBrandCrud?> GetProductBrandById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductBrandView, ProductBrandCrud>(id);
         }
 
         public async Task<ResultDto<List<ProductBrandOptionDto>>> GetProductBrandsAsync()

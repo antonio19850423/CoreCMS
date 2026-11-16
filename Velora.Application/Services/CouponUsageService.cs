@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -815,6 +815,11 @@ int CouponUsageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<CouponUsageCrud?> GetCouponUsageById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlCouponUsageView, CouponUsageCrud>(id);
         }
 
         public async Task<(bool IsValid, string? Message)> ValidateCouponAsync(

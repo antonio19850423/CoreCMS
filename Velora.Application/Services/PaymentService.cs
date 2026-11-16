@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -406,6 +406,11 @@ int PaymentSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PaymentCrud?> GetPaymentById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPaymentView, PaymentCrud>(id);
         }
 
 

@@ -129,6 +129,10 @@ namespace Velora.Application.Services
                 return _mapper.Map<IEnumerable<RoleDto>>(list);
             }
         }
+        public async Task<RoleCrud?> GetRoleById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlRole, RoleCrud>(id);
+        }
 
 
 

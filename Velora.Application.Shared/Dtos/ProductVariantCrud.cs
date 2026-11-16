@@ -20,9 +20,9 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 150, IsRequired = true, ShowInSelectBox = true)]
         public string Name { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, IsRequired = true, ShowInSelectBox = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, IsRequired = true, ShowInSelectBox = true,InputMask =InputMasks.Currency)]
         public decimal Price { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, IsRequired = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, IsRequired = true, InputMask = InputMasks.Currency)]
         public decimal? ComparePrice { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
         public string? Image { get; set; }

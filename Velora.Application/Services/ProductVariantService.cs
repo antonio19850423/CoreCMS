@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -88,7 +88,6 @@ namespace Velora.Application.Services
                 var ProductVariantResult = await CreateAsync(ProductVariant);
                 if (!ProductVariantResult.Success)
                     return ProductVariantResult;
-                await _transactionService.CommitAsync();
                 return ProductVariantResult;
             }
             catch (Exception ex)
@@ -266,6 +265,52 @@ int ProductVariantSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductVariantCrud?> GetProductVariantById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductVariantView, ProductVariantCrud>(id);
+        }
+        public async Task<ResultDto<ProductVariantCrud>> CreateWithViewAsync(ProductVariantCrud input)
+        {
+            var validation = await _modelValidationService.ValidateAsync(input);
+
+            if (!validation.Success)
+            {
+                return new ResultDto<ProductVariantCrud>
+                {
+                    Success = false,
+                    Message = await _messageService.Value.GetMessageAsync(
+                        LocalizationKeys.ValidationFailed,
+                        "Form has errors. Please fix them."),
+                    Errors = validation.Data
+                };
+            }
+
+            var ProductVariant = new ProductVariantDto
+            {
+                SortOrder = input.SortOrder,
+                Name = input.Name,
+                Price = input.Price,
+                Barcode = input.Barcode,
+                Image = input.Image,
+                IsActive = input.IsActive,
+                ProductId = input.ParentId,
+                IsDefault = input.IsDefault,
+                Sku = input.Sku,
+                ComparePrice = input.ComparePrice
+            };
+            // Auto SortOrder
+            if (ProductVariant.SortOrder <= 0)
+            {
+                ProductVariant.SortOrder = (await Query()
+                    .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+            }
+            return await CreateWithViewAsync(
+                ProductVariant,
+                GetProductVariantById,
+                x => x.Id
+            );
         }
     }
 

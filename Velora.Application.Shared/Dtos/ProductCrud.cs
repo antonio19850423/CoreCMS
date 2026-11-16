@@ -72,7 +72,7 @@ namespace Velora.Application.Shared.Dtos
             SelectDisplayFields = "[\"name\",\"code\"]")]
         public string? ProductTypeName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true ,InputMask = InputMasks.Currency)]
         public decimal Price { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true, MaxLength = 100, IsRequired = false)]
@@ -90,10 +90,10 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 16, GridOrder = 16, ShowInGrid = true, ShowInForm = false)]
         public decimal? Weight { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
+        [ResourceColumn(FieldType = FieldTypes.Image, IsRequired = true, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
         public string? MainImage { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Image, IsRequired = true, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = true, MaxLength = 200)]
         public string? Thumbnail { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 19, GridOrder = 19, ShowInGrid = true, ShowInForm = true)]
@@ -118,5 +118,6 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 26, GridOrder = 26, ShowInGrid = true, ShowInForm = false)]
         public int ViewCount { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

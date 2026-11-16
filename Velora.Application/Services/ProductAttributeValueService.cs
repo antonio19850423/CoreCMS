@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -255,6 +255,11 @@ int ProductAttributeValueSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductAttributeValueCrud?> GetProductAttributeValueById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductAttributeValueView, ProductAttributeValueCrud>(id);
         }
     }
 

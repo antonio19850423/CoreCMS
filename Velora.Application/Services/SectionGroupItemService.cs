@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -291,6 +291,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<SectionGroupItemCrud?> GetSectionGroupItemById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlSectionGroupItemView, SectionGroupItemCrud>(id);
         }
 
 

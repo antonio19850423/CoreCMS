@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -269,6 +269,11 @@ int BankAccountSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<BankAccountCrud?> GetBankAccountById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlBankAccountView, BankAccountCrud>(id);
         }
 
     }

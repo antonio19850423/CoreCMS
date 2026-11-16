@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -261,6 +261,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<SmsLogCrud?> GetSmsLogById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlSmsLogView, SmsLogCrud>(id);
         }
 
 

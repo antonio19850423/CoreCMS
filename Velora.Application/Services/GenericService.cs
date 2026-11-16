@@ -493,5 +493,92 @@ namespace Velora.Application.Services
                 storedProcedureName,
                 parameters);
         }
+        public async Task<TResult?> GetSqlViewByIdQueryable<SqlView, TResult>(Guid id)
+where SqlView : class
+where TResult : class
+        {
+            try
+            {
+                var query = _sqlRepository.GetViewQueryable<SqlView>();
+
+                return await query
+                    .Where(x => EF.Property<Guid>(x, "Id") == id)
+                    .ProjectTo<TResult>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = await _messageService.Value
+                    .GetMessageAsync(LocalizationKeys.ActionFailed, "Unknown error");
+
+                throw new Exception(errorMessage, ex);
+            }
+        }
+        protected async Task<ResultDto<TView>> CommitAndGetAsync<TCreate, TView>(
+    ResultDto<TCreate> createResult,
+    Func<TCreate, Guid> getId,
+    Func<Guid, Task<TView?>> getById)
+    where TCreate : class
+    where TView : class
+        {
+            if (!createResult.Success || createResult.Data == null)
+            {
+                return new ResultDto<TView>
+                {
+                    Success = false,
+                    Message = createResult.Message,
+                    Errors = createResult.Errors
+                };
+            }
+
+            try
+            {
+                // ثبت نهایی اطلاعات
+                await GetRepository().CommitAsync();
+
+                // دریافت اطلاعات کامل از View
+                var id = getId(createResult.Data);
+                var view = await getById(id);
+
+                if (view == null)
+                {
+                    return new ResultDto<TView>
+                    {
+                        Success = false,
+                        Message = "اطلاعات ثبت شد، اما اطلاعات کامل برای نمایش پیدا نشد"
+                    };
+                }
+
+                return new ResultDto<TView>
+                {
+                    Success = true,
+                    Message = createResult.Message,
+                    Data = view
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<TView>
+                {
+                    Success = false,
+                    Message = "اطلاعات ثبت شد، اما دریافت اطلاعات کامل با خطا مواجه شد",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+        protected async Task<ResultDto<TView>> CreateWithViewAsync<TView>(
+    TDto dto,
+    Func<Guid, Task<TView?>> getById,
+    Func<TDto, Guid> getId)
+    where TView : class
+        {
+            var createResult = await CreateAsync(dto);
+
+            return await CommitAndGetAsync(
+                createResult,
+                getId,
+                getById
+            );
+        }
     }
 }

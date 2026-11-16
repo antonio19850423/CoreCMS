@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -288,6 +288,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PageCrud?> GetPageById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPageView, PageCrud>(id);
         }
 
         public async Task<ResultDto<FooterDto>> GetFooterAsync()

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -259,6 +259,11 @@ int PaymentStatusLogSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PaymentStatusLogCrud?> GetPaymentStatusLogById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPaymentStatusLogView, PaymentStatusLogCrud>(id);
         }
     }
 

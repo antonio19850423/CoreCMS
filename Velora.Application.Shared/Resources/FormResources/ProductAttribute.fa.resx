@@ -144,4 +144,7 @@
   <data name="ProductAttribute.Code" xml:space="preserve">
     <value>کد</value>
   </data>
+  <data name="ProductAttribute.Id" xml:space="preserve">
+    <value>کد انحصاری</value>
+  </data>
 </root>

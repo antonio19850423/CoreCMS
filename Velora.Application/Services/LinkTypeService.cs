@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -241,6 +241,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<LinkTypeCrud?> GetLinkTypeById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlLinkTypeView, LinkTypeCrud>(id);
         }
         public async Task<ResultDto<List<LinkTypeDto>>> AddRangeAsync(List<LinkTypeDto> inputs)
         {

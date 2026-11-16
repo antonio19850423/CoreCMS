@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -658,6 +658,11 @@ int ProductReviewSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductReviewCrud?> GetProductReviewById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductReviewView, ProductReviewCrud>(id);
         }
 
     }

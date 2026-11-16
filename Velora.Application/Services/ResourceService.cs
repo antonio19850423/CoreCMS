@@ -226,6 +226,10 @@ namespace Velora.Application.Services
             }
 
         }
+        public async Task<ResourceCrud?> GetResourceById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlResourcesView, ResourceCrud>(id);
+        }
 
 
     }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -352,6 +352,11 @@ int ContentItemSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ContentItemCrud?> GetContentItemById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlContentItemView, ContentItemCrud>(id);
         }
 
         public async Task<PagedResultDto<ContentItemListDto>> GetPagedAsync(

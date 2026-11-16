@@ -64,22 +64,29 @@ namespace Velora.Host.Controllers
         }
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create([FromBody] ProductFileCrud ProductFile)
+        public async Task<IActionResult> Create([FromBody] ProductFileCrud productFile)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<ProductFileDto>
+                return BadRequest(new ResultDto<ProductFileCrud>
                 {
                     Success = false,
                     Message = "Invalid model",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
                 });
 
-            var result = await _ProductFileService.CreateAsync(ProductFile);
+            var result = await _ProductFileService.CreateWithViewAsync(productFile);
+
             if (!result.Success)
                 return BadRequest(result);
-
             await _transactionService.CommitAsync();
-            return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = result.Data!.Id },
+                result
+            );
         }
         [HttpPut]
         [Route("Update")]

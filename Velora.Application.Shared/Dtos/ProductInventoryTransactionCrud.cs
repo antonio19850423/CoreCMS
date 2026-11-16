@@ -19,12 +19,12 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)] 
         public string? Note { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = true, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true,
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true,
         ServiceName = "",
         LinkedFieldCode = "OperationTypeName",
         Route = "/api/ComboBox/OperationTypes")]
         public byte OperationType { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = true, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = false,
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = false,
             ServiceName = "",
             LinkedFieldCode = "OperationType",
             Route = "/api/ComboBox/OperationTypes")]

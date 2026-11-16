@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +25,7 @@ int pageSize);
     string? search = null,
     string? contentType = null,
     string sort = "newest");
-    }
+    
+        Task<ContentItemCrud?> GetContentItemById(Guid id);
+}
 }

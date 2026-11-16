@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -266,6 +266,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<UserOtpCrud?> GetUserOtpById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlUserOtpView, UserOtpCrud>(id);
         }
         public async Task<UserOtpCrud?> GetLatestOtpAsync(
             string mobile,

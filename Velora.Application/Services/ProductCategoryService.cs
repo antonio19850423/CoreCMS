@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -261,6 +261,11 @@ int ProductCategorySize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductCategoryCrud?> GetProductCategoryById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductCategoryView, ProductCategoryCrud>(id);
         }
 
         public async Task<List<ProductCategoryTreeDto>> GetProductCategoryTreeAsync()

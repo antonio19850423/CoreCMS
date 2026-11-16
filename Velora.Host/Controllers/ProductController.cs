@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Velora.Application.Services;
 using Velora.Application.Shared;
@@ -38,7 +39,7 @@ namespace Velora.Host.Controllers
     {
         private readonly IProductService _ProductService;
         private readonly ITransactionService _transactionService;
-
+        private readonly IMapper _mapper;
         public ProductController(IProductService ProductService, ITransactionService transactionService)
         {
             _ProductService = ProductService;
@@ -67,7 +68,7 @@ namespace Velora.Host.Controllers
         public async Task<IActionResult> Create([FromBody] ProductCrud Product)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<ProductDto>
+                return BadRequest(new ResultDto<ProductCrud>
                 {
                     Success = false,
                     Message = "Invalid model",
@@ -79,7 +80,15 @@ namespace Velora.Host.Controllers
                 return BadRequest(result);
 
             await _transactionService.CommitAsync();
-            return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
+            // دریافت اطلاعات کامل محصول بعد از ثبت تراکنش
+            var createdProduct = await _ProductService.GetProductById(result.Data!.Id);
+
+            if (createdProduct == null)
+                return NotFound("محصول ثبت شد، اما اطلاعات View آن پیدا نشد");
+
+            result.Data = createdProduct;
+
+            return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, result);
         }
         [HttpPut]
         [Route("Update")]

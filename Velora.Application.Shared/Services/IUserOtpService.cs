@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,5 +21,7 @@ int pageSize);
         Task<UserOtpCrud?> GetLatestOtpAsync(
             string mobile,
             int purpose);
-    }
+    
+        Task<UserOtpCrud?> GetUserOtpById(Guid id);
+}
 }

@@ -1,0 +1,414 @@
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Velora.Application.Shared.Constants;
+using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Enums;
+using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Repositories;
+using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
+using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+
+namespace Velora.Application.Services
+{
+    public class PaymentService : GenericService<SqlPayment, SqlPayment, PaymentDto>, IPaymentService
+    {
+        private readonly ISqlRepository<SqlPayment> _sqlrepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ITransactionService _transactionService;
+        private readonly IModelValidationService _modelValidationService;
+        protected readonly Lazy<ILocalizationMessageService> _messageService;
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _config;
+        private readonly Lazy<IExcelTemplateService> _excelTemplateService;
+        private readonly IPaymentService _rolePaymentService;
+        protected readonly ICurrentUserService _currentUserService;
+        protected readonly IDiscountService _discountService;
+        protected readonly IPaymentStatusLogService _paymentStatusLogService;
+        protected readonly IRoleService _roleService;
+        protected readonly Lazy<IShoppingCartService> _shoppingCartService;
+        public PaymentService(
+              ISqlRepository<SqlPayment> sqlRepository,
+              IPosgreSqlRepository<SqlPayment> pgRepository,
+              IMapper mapper,
+              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
+              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
+              ICurrentUserService currentUserService, IDiscountService discountService, IPaymentStatusLogService paymentStatusLogService, Lazy<IShoppingCartService> shoppingCartService, IRoleService roleService)
+              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        {
+            _mapper = mapper;
+            _transactionService = transactionService;
+            _messageService = messageService;
+            _modelValidationService = modelValidationService;
+            _env = env;
+            _config = config;
+            _excelTemplateService = excelTemplateService;
+            _currentUserService = currentUserService;
+            _discountService = discountService;
+            _paymentStatusLogService = paymentStatusLogService;
+            _shoppingCartService = shoppingCartService;
+            _roleService = roleService;
+        }
+        public async Task<IQueryable<PaymentCrud>> GetAllViews()
+        {
+            return await GetAllViewQueryable<SqlPaymentView, SqlPaymentView, PaymentCrud>();
+        }
+
+        public async Task<ResultDto<PaymentDto>> CreateAsync(PaymentCrud input)
+        {
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            try
+            {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+
+
+
+                var Payment = new PaymentDto
+                {
+                 Amount=input.PaymentAmount.Value,
+                 BankAccountId=input.BankAccountId,
+                 GatewayId=input.GatewayId,
+                 GatewayTrackingCode=input.GatewayTrackingCode,
+                 GatewayTransactionId=input.GatewayTransactionId,
+                 PaidAt=DateTime.Now,
+                 PaymentMethod=input.PaymentMethod.Value,
+                 PaymentStatus=input.PaymentStatus.Value,
+                 ReceiptFile=input.ReceiptFile,
+                 ShoppingCartId=input.ShoppingCartId
+                };
+
+                var PaymentResult = await CreateAsync(Payment);
+                if (!PaymentResult.Success)
+                    return PaymentResult;
+                await _transactionService.CommitAsync();
+                return PaymentResult;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+                var result = new ResultDto<PaymentDto>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                };
+                result.Errors.Add(ex.Message);
+                return result;
+            }
+        }
+
+        public async Task<ResultDto<PaymentDto>> UpdateAsync(PaymentCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
+            try
+            {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
+                if (input.Id == null)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.IdRequired)
+                    };
+                }
+
+                var validation = await _modelValidationService.ValidateAsync(input);
+
+                if (!validation.Success)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.ValidationFailed,
+                            "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                }
+
+                var currentPayment =  Query().FirstOrDefault(c=>c.Id == input.Id);
+
+                if (currentPayment == null)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "پرداخت مورد نظر پیدا نشد."
+                    };
+                }
+                var shoppingCart = await _shoppingCartService.Value.GetByIdAsync(currentPayment.ShoppingCartId);
+
+                if (!shoppingCart.Success && shoppingCart.Data == null)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = "سبد خرید / سفارش مورد نظر پیدا نشد."
+                    };
+                }
+                var oldOrderStatus = shoppingCart.Data.OrderStatus;
+                var newOrderStatus = input.OrderStatus;
+
+                var orderStatusChanged = oldOrderStatus != newOrderStatus;
+
+
+                var shoppingCartInput = _mapper.Map<SqlShoppingCart>(shoppingCart.Data);
+
+                shoppingCartInput.OrderStatus = newOrderStatus.Value;
+
+                var shoppingCartResult =
+                    await _shoppingCartService.Value.UpdateAsync(shoppingCartInput, shoppingCartInput.Id);
+
+                if (!shoppingCartResult.Success)
+                {
+                    return new ResultDto<PaymentDto>
+                    {
+                        Success = false,
+                        Message = shoppingCartResult.Message,
+                        Errors = shoppingCartResult.Errors
+                    };
+                }
+                // وضعیت واقعی قبل از تغییر
+                var oldStatus = currentPayment.PaymentStatus;
+
+                // وضعیت جدید
+                var newStatus = input.PaymentStatus.Value;
+
+                // آیا وضعیت پرداخت تغییر کرده؟
+                var paymentStatusChanged = oldStatus != newStatus;
+
+
+
+                var updateDto = new PaymentDto
+                {
+                    Id = input.Id,
+                    PaymentMethod = currentPayment.PaymentMethod,
+                    GatewayTrackingCode = input.GatewayTrackingCode,
+                    GatewayTransactionId = input.GatewayTransactionId,
+                    PaidAt = DateTime.Now,
+                    PaymentStatus = newStatus,
+                    ReceiptFile = input.ReceiptFile,
+                    ShoppingCartId= currentPayment.ShoppingCartId,
+                    Description = input.Description,
+                    
+                };
+
+                var paymentResult = await UpdateAsync(updateDto, input.Id);
+
+                if (!paymentResult.Success)
+                    return paymentResult;
+
+                // فقط در صورت تغییر وضعیت، لاگ ثبت شود
+                if (paymentStatusChanged)
+                {
+                    var paymentStatusLog = new PaymentStatusLogDto
+                    {
+                        PaymentId = currentPayment.Id,
+                        OldStatus = oldStatus,
+                        NewStatus = newStatus,
+                        Description = input.Description
+                    };
+
+                    var logResult =
+                        await _paymentStatusLogService.CreateAsync(paymentStatusLog);
+
+                    if (!logResult.Success)
+                    {
+                        await _transactionService.RollbackAsync();
+                        return new ResultDto<PaymentDto>
+                        {
+                            Success = false,
+                            Message = logResult.Message,
+                            Errors = logResult.Errors
+                        };
+                    }
+                }
+
+                await _transactionService.CommitAsync();
+                // ارسال پیامک
+                /// ارسال پیامک بعد از paymentStatusChanged / orderStatusChanged
+                /// برای کاربر در آینده انجام شود 
+                return paymentResult;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<PaymentDto>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
+        public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
+        {
+
+            var createdPayments= new List<PaymentDto>();
+            var errors = new List<string>();
+            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
+            try
+            {
+                var roleCodes = _currentUserService.GetRoleCodes();
+                var isAdminOrDeveloper =
+                            roleCodes.Contains("ADMIN") ||
+                            roleCodes.Contains("DEV");
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<BulkInsertResult>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
+                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var Payments = dt.ToModelList<PaymentCrud>();
+
+                for (int i = 0; i < Payments.Count; i++)
+                {
+                    var Payment = Payments[i];
+                    var context = rowContexts[i];
+
+                    var createResult = await CreateAsync(Payment);
+
+                    if (createResult.Success && createResult.Data != null)
+                    {
+                        createdPayments.Add(createResult.Data);
+                    }
+                    else
+                    {
+                        string errorMsg =
+                            createResult.Errors != null && createResult.Errors.Any()
+                                ? string.Join("; ", createResult.Errors)
+                                : !string.IsNullOrWhiteSpace(createResult.Message)
+                                    ? createResult.Message
+                                    : "Unknown error";
+
+                        dt.SetRowError(context.DataTableRowIndex, errorMsg);
+                        errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
+                    }
+                }
+
+                await _transactionService.CommitAsync();
+
+                string? errorFileUrl = null;
+                if (errors.Any())
+                {
+                    errorFileUrl = dt.SaveErrorExcel(_env.WebRootPath!, _config);
+                }
+
+                return new ResultDto<BulkInsertResult>
+                {
+                    Success = errors.Count == 0,
+                    Message = errors.Count == 0
+                        ? successMessage
+                        : errorFileTitle,
+                    Data = new BulkInsertResult
+                    {
+                        InsertedCount = createdPayments.Count,
+                        ErrorCount = errors.Count,
+                        ErrorFileUrl = errorFileUrl
+                    },
+                    Errors = errors
+                };
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+                return new ResultDto<BulkInsertResult>
+                {
+                    Success = false,
+                    Message = errorFileTitle,
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+        public async Task<byte[]> ExportAsync(
+bool exportCurrentPayment,
+int PaymentNumber,
+int PaymentSize)
+        {
+            // 1️⃣ گرفتن همه داده‌ها از query
+            var query = await GetAllViews(); // IQueryable<Resource>
+
+            // 2️⃣ Paging و Mapping به DTO
+            List<PaymentCrud> data;
+
+            if (exportCurrentPayment)
+            {
+                data = query
+                    .Skip((PaymentNumber - 1) * PaymentSize)
+                    .Take(PaymentSize)
+                    .ToList();
+            }
+            else
+            {
+                data = query.ToList();
+            }
+            var resource = _mapper.Map<List<PaymentCrud>>(data);
+
+            // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
+                LookupEntities.Payment, // نام مدل DTO
+                data.Count + 5
+            );
+
+            // 4️⃣ پر کردن داده‌ها در Template با Extension Method
+            var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
+
+            return resultBytes;
+        }
+
+
+    }
+
+}

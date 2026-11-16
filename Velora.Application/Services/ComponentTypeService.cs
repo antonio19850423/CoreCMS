@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -235,6 +235,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ComponentTypeCrud?> GetComponentTypeById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlComponentTypeView, ComponentTypeCrud>(id);
         }
 
 

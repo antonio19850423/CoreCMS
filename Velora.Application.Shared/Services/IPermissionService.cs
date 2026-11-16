@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +18,7 @@ int pageNumber,
 int pageSize);
         Task<PermissionDto?> GetByResourceIdAsync(Guid resourceId);
         Task<HashSet<string>> GetAllowedMenuResourceIdsAsync();
-    }
+    
+        Task<PermissionCrud?> GetPermissionById(Guid id);
+}
 }

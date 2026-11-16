@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +17,7 @@ namespace Velora.Application.Shared.Services
 bool exportCurrentSectionItem,
 int SectionItemNumber,
 int SectionItemSize);
-    }
+    
+        Task<SectionItemCrud?> GetSectionItemById(Guid id);
+}
 }

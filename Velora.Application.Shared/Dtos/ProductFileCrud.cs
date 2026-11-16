@@ -14,7 +14,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder =1, ShowInGrid = false, ShowInForm = false, MaxLength = 30, IsRequired = true)]
-        public string MediaType { get; set; } = null!;
+        public string MediaType { get; set; } = "Image"!;
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder =2, GridOrder =2, ShowInGrid = true, ShowInForm = true, MaxLength = 200, IsRequired = true)]
         public string? Title { get; set; }

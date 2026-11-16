@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -293,6 +293,11 @@ int CouponSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<CouponCrud?> GetCouponById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlCouponView, CouponCrud>(id);
         }
 
         public async Task<SqlCoupon?> GetByCodeAsync(string couponCode)

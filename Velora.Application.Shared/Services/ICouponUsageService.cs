@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +36,7 @@ int pageSize);
 CouponDto coupon,
 Guid shoppingCartId,
 Guid? userId);
-    }
+    
+        Task<CouponUsageCrud?> GetCouponUsageById(Guid id);
+}
 }

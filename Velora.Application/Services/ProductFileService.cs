@@ -15,6 +15,7 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -265,6 +266,52 @@ int ProductFileSize)
 
             return resultBytes;
         }
+        public async Task<ResultDto<ProductFileCrud>> CreateWithViewAsync(
+        ProductFileCrud input)
+        {
+            var validation = await _modelValidationService.ValidateAsync(input);
+
+            if (!validation.Success)
+            {
+                return new ResultDto<ProductFileCrud>
+                {
+                    Success = false,
+                    Message = await _messageService.Value.GetMessageAsync(
+                        LocalizationKeys.ValidationFailed,
+                        "Form has errors. Please fix them."),
+                    Errors = validation.Data
+                };
+            }
+
+            var dto = new ProductFileDto
+            {
+                Title = input.Title,
+                Alt = input.Alt,
+                FileUrl = input.FileUrl,
+                IsActive = input.IsActive,
+                IsMain = input.IsMain,
+                MediaType = input.MediaType,
+                ProductId = input.ParentId,
+                SortOrder = input.SortOrder,
+                ThumbnailUrl = input.ThumbnailUrl
+            };
+            // Auto SortOrder
+            if (dto.SortOrder <= 0)
+            {
+                dto.SortOrder = (await Query()
+                    .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+            }
+            return await CreateWithViewAsync(
+                dto,
+                GetProductFileById,
+                x => x.Id
+            );
+        }
+        public async Task<ProductFileCrud?> GetProductFileById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductFileView, ProductFileCrud>(id);
+        }
     }
+
 
 }

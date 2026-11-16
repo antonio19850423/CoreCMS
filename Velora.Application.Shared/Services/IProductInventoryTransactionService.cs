@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +26,7 @@ bool exportCurrentPage,
 int pageNumber,
 int pageSize);
         Task<IQueryable<SqlProductInventoryTransactionView>> GetInventoryTransactionQuery();
-    }
+    
+        Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id);
+}
 }

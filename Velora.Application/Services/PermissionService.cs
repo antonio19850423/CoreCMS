@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -323,6 +323,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PermissionCrud?> GetPermissionById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPermissionView, PermissionCrud>(id);
         }
 
         public async Task<PermissionDto?> GetByResourceIdAsync(Guid resourceId)

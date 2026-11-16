@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -448,6 +448,11 @@ int DiscountSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<DiscountCrud?> GetDiscountById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlDiscountView, DiscountCrud>(id);
         }
 
         private async Task<bool> HasDateOverlapAsync(

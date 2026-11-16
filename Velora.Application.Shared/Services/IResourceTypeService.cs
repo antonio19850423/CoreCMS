@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,8 @@ namespace Velora.Application.Shared.Services
     {
         Task<ResultDto<ResourceTypeDto>> CreateAsync(ResourceTypeCrud input);
         Task<ResultDto<ResourceTypeDto>> UpdateAsync(ResourceTypeCrud input);
-    }
+    
+        Task<ResourceTypeCrud?> GetResourceTypeById(Guid id);
+}
 
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -262,6 +262,11 @@ int PaymentGatewaySize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PaymentGatewayCrud?> GetPaymentGatewayById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPaymentGatewayView, PaymentGatewayCrud>(id);
         }
 
     }

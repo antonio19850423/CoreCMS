@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -257,6 +257,11 @@ int ContentCategorySize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ContentCategoryCrud?> GetContentCategoryById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlContentCategoryView, ContentCategoryCrud>(id);
         }
 
 

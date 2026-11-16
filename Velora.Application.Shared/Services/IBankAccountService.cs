@@ -14,6 +14,7 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<BankAccountDto>> UpdateAsync(BankAccountCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<IQueryable<BankAccountCrud>> GetBankAccountsBySiteInfoId(Guid siteInfoId);
+        Task<BankAccountCrud?> GetBankAccountById(Guid id);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,
 int pageNumber,

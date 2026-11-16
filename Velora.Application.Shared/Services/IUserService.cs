@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -23,5 +23,7 @@ int pageSize);
     CancellationToken cancellationToken = default);
         Task<UserDto?> GetByMobileNumberAsync(
     string mobileNumber);
-    }
+    
+        Task<UserCrud?> GetUserById(Guid id);
+}
 }

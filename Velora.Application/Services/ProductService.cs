@@ -65,25 +65,96 @@ namespace Velora.Application.Services
         {
             return await GetAllViewQueryable<SqlProductView, SqlProductView, ProductCrud>();
         }
-
-        public async Task<ResultDto<ProductDto>> CreateAsync(ProductCrud input)
+        private async Task<List<string>> ValidateProductUniquenessAsync(
+    ProductCrud input,
+    Guid? excludeId = null)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var errors = new List<string>();
+
+            var products = Query();
+
+            if (excludeId.HasValue)
+            {
+                products = products.Where(x => x.Id != excludeId.Value);
+            }
+
+            // نام محصول
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                var name = input.Name.Trim();
+
+                if (await products.AnyAsync(x => x.Name == name))
+                    errors.Add("این نام محصول قبلاً ثبت شده است");
+            }
+
+            // بارکد (اختیاری)
+            if (!string.IsNullOrWhiteSpace(input.Barcode))
+            {
+                var barcode = input.Barcode.Trim();
+
+                if (await products.AnyAsync(x => x.Barcode == barcode))
+                    errors.Add("این بارکد قبلاً برای محصول دیگری ثبت شده است");
+            }
+
+            // کد کالا (SKU)
+            if (!string.IsNullOrWhiteSpace(input.Sku))
+            {
+                var sku = input.Sku.Trim();
+
+                if (await products.AnyAsync(x => x.Sku == sku))
+                    errors.Add("این کد کالا قبلاً ثبت شده است");
+            }
+
+            // اسلاگ
+            if (!string.IsNullOrWhiteSpace(input.Slug))
+            {
+                var slug = input.Slug.Trim();
+
+                if (await products.AnyAsync(x => x.Slug == slug))
+                    errors.Add("این اسلاگ قبلاً برای محصول دیگری ثبت شده است");
+            }
+
+            return errors;
+        }
+        public async Task<ResultDto<ProductCrud>> CreateAsync(ProductCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
             try
             {
+                // Validation
                 var validation = await _modelValidationService.ValidateAsync(input);
+
                 if (!validation.Success)
-                    return new ResultDto<ProductDto>
+                {
+                    return new ResultDto<ProductCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.ValidationFailed,
+                            "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                }
 
+                // Uniqueness validation
+                var uniqueErrors = await ValidateProductUniquenessAsync(input);
 
-
-                var Product = new ProductDto
+                if (uniqueErrors.Any())
                 {
+                    return new ResultDto<ProductCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات محصول تکراری است",
+                        Errors = uniqueErrors
+                    };
+                }
+
+                // Map input to ProductDto
+                var product = new ProductDto
+                {
+                    Id = Guid.NewGuid(),
                     SortOrder = input.SortOrder,
                     Barcode = input.Barcode,
                     BrandId = input.BrandId,
@@ -102,55 +173,90 @@ namespace Velora.Application.Services
                     Slug = input.Slug,
                     Summary = input.Summary,
                     Thumbnail = input.Thumbnail,
-                    Weight = input.Weight,
-                    
+                    Weight = input.Weight
                 };
 
-                var ProductResult = await CreateAsync(Product);
-                if (!ProductResult.Success)
-                    return ProductResult;
-                var ProductId = ProductResult.Data.Id;
-
-
-                var ProductTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                       .Select(Guid.Parse)
-                       .ToList();
-
-                var ProductTags = await _productTagMappingService.GetByProductTagMappingsAsync(ProductId);
-
-                var tagsToRemove = ProductTags
-                    .Where(r => !ProductTagIds.Contains(r.ProductTagId))
-                    .ToList();
-
-                foreach (var r in tagsToRemove)
+                // Auto SortOrder
+                if (product.SortOrder <= 0)
                 {
-                    await _productTagMappingService.DeleteAsync(r.Id);
+                    product.SortOrder = (await Query()
+                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
                 }
 
-                if (ProductTagIds!=null&&ProductTagIds.Any())
+                // Create Product
+                var productResult = await CreateAsync(product);
+
+                if (!productResult.Success || productResult.Data == null)
                 {
-                    foreach (var Tag in ProductTagIds)
+                    return new ResultDto<ProductCrud>
                     {
-                        var ProductTag = new ProductTagMappingDto
-                        {
-                            ProductTagId = Tag,
-                            ProductId = ProductId
-                        };
-                        await _productTagMappingService.CreateAsync(ProductTag);
-                    }
-
+                        Success = false,
+                        Message = productResult.Message,
+                        Errors = productResult.Errors
+                    };
                 }
-                return ProductResult;
+
+                var productId = productResult.Data.Id;
+
+                // Parse Product Tags
+                var productTagIds = input.ProductTagIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => Guid.Parse(x.Trim()))
+                    .ToHashSet() ?? new HashSet<Guid>();
+
+                // Get Existing Tags
+                var existingTags = await _productTagMappingService
+                    .GetByProductTagMappingsAsync(productId);
+
+                var existingTagIds = existingTags
+                    .Select(x => x.ProductTagId)
+                    .ToHashSet();
+
+                // Remove Unselected Tags
+                foreach (var tag in existingTags.Where(x => !productTagIds.Contains(x.ProductTagId)))
+                {
+                    var deleteResult = await _productTagMappingService.DeleteAsync(tag.Id);
+
+                    if (!deleteResult.Success)
+                        throw new Exception(deleteResult.Message);
+                }
+
+                // Add New Tags
+                foreach (var tagId in productTagIds.Except(existingTagIds))
+                {
+                    var tagResult = await _productTagMappingService.CreateAsync(
+                        new ProductTagMappingDto
+                        {
+                            ProductId = productId,
+                            ProductTagId = tagId
+                        });
+
+                    if (!tagResult.Success)
+                        throw new Exception(tagResult.Message);
+                }
+
+                // Return Result
+                var output = _mapper.Map<ProductCrud>(productResult.Data);
+
+                output.ProductTagIds = string.Join(",", productTagIds);
+
+                return new ResultDto<ProductCrud>
+                {
+                    Success = true,
+                    Message = productResult.Message,
+                    Data = output
+                };
             }
             catch (Exception ex)
             {
-                var result = new ResultDto<ProductDto>
+                await _transactionService.RollbackAsync();
+
+                return new ResultDto<ProductCrud>
                 {
                     Success = false,
                     Message = errorMessage,
+                    Errors = { ex.Message }
                 };
-                result.Errors.Add(ex.Message);
-                return result;
             }
         }
 
@@ -261,7 +367,7 @@ namespace Velora.Application.Services
         }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProducts= new List<ProductDto>();
+            var createdProducts= new List<ProductCrud>();
             var errors = new List<string>();
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
@@ -1133,6 +1239,10 @@ int ProductSize)
                 Success = true,
                 Data = result
             };
+        }
+        public async Task<ProductCrud?> GetProductById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductView, ProductCrud>(id);
         }
     }
 

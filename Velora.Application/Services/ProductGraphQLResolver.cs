@@ -33,7 +33,7 @@ public class ProductGqlResolver : IProductGqlResolver
     {
         var query = await _ProductService
             .GetAllViewQueryable<SqlProductView, SqlProductView, ProductCrud>();
-        return query.Select(x => new ProductCrud
+        return query.OrderByDescending(c=>c.SortOrder).ThenBy(c=>c.CreatedAt).Select(x => new ProductCrud
         {
             Id = x.Id,
             IsActive = x.IsActive,
@@ -63,6 +63,7 @@ public class ProductGqlResolver : IProductGqlResolver
             ViewCount = x.ViewCount,
             ProductTagIds=x.ProductTagIds??"",
             ProductTagNames=x.ProductTagNames??"",
+            CreatedAt=x.CreatedAt,
         });
     }
 

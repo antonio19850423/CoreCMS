@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +18,7 @@ namespace Velora.Application.Shared.Services
 bool exportCurrentPage,
 int pageNumber,
 int pageSize);
-    }
+    
+        Task<PaymentCrud?> GetPaymentById(Guid id);
+}
 }

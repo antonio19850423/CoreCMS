@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -575,6 +575,11 @@ int ProductQuestionSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductQuestionCrud?> GetProductQuestionById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductQuestionView, ProductQuestionCrud>(id);
         }
 
     }

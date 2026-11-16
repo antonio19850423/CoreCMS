@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,5 +30,7 @@ int pageSize);
         Task<ResultDto<ContentItemListDto>> GetContentDetailAsync(
                     string contentType,
                     string slug);
-    }
+    
+        Task<PageCrud?> GetPageById(Guid id);
+}
 }

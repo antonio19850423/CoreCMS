@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -325,6 +325,11 @@ int ShoppingCartSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ShoppingCartCrud?> GetShoppingCartById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlShoppingCartView, ShoppingCartCrud>(id);
         }
 
         public async Task<ResultDto<ShoppingCartViewDto>> GetCartAsync(

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -376,6 +376,11 @@ int NewsletterSubscriberSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<NewsletterSubscriberCrud?> GetNewsletterSubscriberById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlNewsletterSubscriberView, NewsletterSubscriberCrud>(id);
         }
 
 

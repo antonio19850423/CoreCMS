@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +19,7 @@ namespace Velora.Application.Shared.Services
     int pageNumber,
     int pageSize);
         Task<ResourceDto?> GetByCodeAsync(string code);
-    }
+    
+        Task<ResourceCrud?> GetResourceById(Guid id);
+}
 }

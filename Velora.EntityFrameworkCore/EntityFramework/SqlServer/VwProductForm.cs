@@ -73,6 +73,8 @@ public partial class VwProductForm
     [StringLength(300)]
     public string? MainImage { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 

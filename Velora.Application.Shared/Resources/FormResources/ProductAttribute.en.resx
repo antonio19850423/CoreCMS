@@ -144,4 +144,7 @@
   <data name="ProductAttribute.Code" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="ProductAttribute.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
 </root>

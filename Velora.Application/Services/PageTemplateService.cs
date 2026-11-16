@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -233,6 +233,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<PageTemplateCrud?> GetPageTemplateById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlPageTemplateView, PageTemplateCrud>(id);
         }
 
 

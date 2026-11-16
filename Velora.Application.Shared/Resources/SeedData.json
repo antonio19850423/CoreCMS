@@ -815,16 +815,6 @@
                     "fa": "واریانت‌ها"
                   },
                   "Order": 3
-                },
-                {
-                  "Type": "TAB",
-                  "Code": "PRODUCT_TAB_PRODUCTINVENTORYTRANSACTION",
-                  "Name": "Product Inventory Transaction Management",
-                  "DisplayName": {
-                    "en": "Product Inventory Transaction Management",
-                    "fa": "تراکنش موجودی محصول"
-                  },
-                  "Order": 3
                 }
               ]
             }

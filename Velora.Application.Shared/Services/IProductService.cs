@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ namespace Velora.Application.Shared.Services
     public interface IProductService : IGenericService<SqlProduct, SqlProduct, ProductDto>, IBaseService
     {
         Task<IQueryable<ProductCrud>> GetAllViews();
-        Task<ResultDto<ProductDto>> CreateAsync(ProductCrud input);
+        Task<ResultDto<ProductCrud>> CreateAsync(ProductCrud input);
         Task<ResultDto<ProductDto>> UpdateAsync(ProductCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<ResultDto<ProductDetailViewDto>> GetProductDetailAsync(string? slug);
@@ -33,5 +33,6 @@ bool exportCurrentPage,
 int pageNumber,
 int pageSize);
         Task<ResultDto<List<ProductSearchDto>>> SearchAsync(string search);
-    }
+        Task<ProductCrud?> GetProductById(Guid id);
+}
 }

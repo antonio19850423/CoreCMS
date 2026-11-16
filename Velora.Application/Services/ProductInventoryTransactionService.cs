@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -452,6 +452,11 @@ int ProductInventoryTransactionSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>(id);
         }
     }
 

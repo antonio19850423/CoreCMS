@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
         Task<ResultDto<List<CityDto>>> GetCitiesByStateIdAsync(
     Guid stateId);
-    }
+    
+        Task<CityCrud?> GetCityById(Guid id);
+}
 }

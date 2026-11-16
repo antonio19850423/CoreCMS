@@ -13,7 +13,71 @@
           "components": [
             {
               "code": "luxuryJewelrySlider",
-              "type": "hero"
+              "type": "hero",
+              "isActive": true,
+              "direction": "rtl",
+              "items": [
+                {
+                  "title": "درخشش ماندگار",
+                  "subtitle": "زیبایی که فراتر از زمان می‌درخشد",
+                  "imageUrl": "/uploads/sections/jewelry-slider-01.jpg",
+                  "imageAlt": "مجموعه جواهرات لوکس",
+                  "link1Text": "مشاهده مجموعه",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 1
+                },
+                {
+                  "title": "ظرافت بی‌زمان",
+                  "subtitle": "انتخابی برای سلیقه‌های متمایز",
+                  "imageUrl": "/uploads/sections/jewelry-slider-02.jpg",
+                  "imageAlt": "مجموعه جواهرات ظریف",
+                  "link1Text": "کشف مجموعه",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 2
+                },
+                {
+                  "title": "امضای خاص شما",
+                  "subtitle": "جزئیاتی که سبک شما را تعریف می‌کنند",
+                  "imageUrl": "/uploads/sections/jewelry-slider-03.jpg",
+                  "imageAlt": "جواهرات خاص و لوکس",
+                  "link1Text": "مشاهده محصولات",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 3
+                },
+                {
+                  "title": "شکوه در جزئیات",
+                  "subtitle": "ترکیبی از هنر، ظرافت و درخشش",
+                  "imageUrl": "/uploads/sections/jewelry-slider-04.jpg",
+                  "imageAlt": "طلا و جواهرات لوکس",
+                  "link1Text": "مشاهده مجموعه",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 4
+                },
+                {
+                  "title": "برای لحظه‌های خاص",
+                  "subtitle": "جواهری برای ماندگارترین خاطرات",
+                  "imageUrl": "/uploads/sections/jewelry-slider-05.jpg",
+                  "imageAlt": "جواهرات برای مناسبت‌های خاص",
+                  "link1Text": "کشف مجموعه",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 5
+                },
+                {
+                  "title": "زیبایی که می‌ماند",
+                  "subtitle": "انتخابی ماندگار برای امروز و فردا",
+                  "imageUrl": "/uploads/sections/jewelry-slider-06.jpg",
+                  "imageAlt": "مجموعه طلا و جواهرات ماندگار",
+                  "link1Text": "مشاهده مجموعه",
+                  "link1Url": "/products",
+                  "isActive": true,
+                  "sortOrder": 6
+                }
+              ]
             },
             {
               "code": "luxuryJewelryCategories",

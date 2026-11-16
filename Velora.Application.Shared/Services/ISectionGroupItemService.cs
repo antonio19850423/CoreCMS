@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -19,5 +19,7 @@ bool exportCurrentPage,
 int pageNumber,
 int pageSize);
         Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetFooterSectionGroupItemsAsync();
-    }
+    
+        Task<SectionGroupItemCrud?> GetSectionGroupItemById(Guid id);
+}
 }

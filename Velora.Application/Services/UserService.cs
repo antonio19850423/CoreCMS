@@ -1,4 +1,4 @@
-﻿
+
 using AutoMapper;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting;
@@ -384,6 +384,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<UserCrud?> GetUserById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlUserDetailView, UserCrud>(id);
         }
         public async Task<UserDto?> GetByMobileNumberAsync(
           string mobileNumber)

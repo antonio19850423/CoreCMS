@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -249,6 +249,11 @@ int ShippingMethodCitySize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<ShippingMethodCityCrud?> GetShippingMethodCityById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlShippingMethodCityView, ShippingMethodCityCrud>(id);
         }
 
     }

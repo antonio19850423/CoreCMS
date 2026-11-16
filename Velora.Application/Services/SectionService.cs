@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -400,6 +400,11 @@ int SectionSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<SectionCrud?> GetSectionById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlSectionView, SectionCrud>(id);
         }
 
 

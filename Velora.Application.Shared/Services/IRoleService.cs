@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,5 +13,7 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<RoleDto>> CreateAsync(RoleCrud input);
         Task<ResultDto<RoleDto>> UpdateAsync(RoleCrud input);
         Task<IEnumerable<RoleDto>> GetByNamesAsync(List<string> roles);
-    }
+    
+        Task<RoleCrud?> GetRoleById(Guid id);
+}
 }

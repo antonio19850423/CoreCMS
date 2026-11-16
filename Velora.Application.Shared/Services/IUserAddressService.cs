@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,5 +21,7 @@ int pageSize);
         Task<ResultDto<IEnumerable<UserAddressDto>>> GetUserAddressesAsync();
         Task<ResultDto<UserAddressDto?>> GetUserAddressByIdAsync(
       Guid addressId);
-    }
+    
+        Task<UserAddressCrud?> GetUserAddressById(Guid id);
+}
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -346,6 +346,11 @@ int pageSize)
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
 
             return resultBytes;
+        }
+
+        public async Task<SiteSettingCrud?> GetSiteSettingById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlSiteSettingView, SiteSettingCrud>(id);
         }
 
 
