@@ -69,7 +69,17 @@ namespace Velora.Application.Services
                         Errors = validation.Data
                     };
 
+                var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
 
+                if (uniqueErrors.Any())
+                {
+                    return new ResultDto<ProductAttributeValueDto>
+                    {
+                        Success = false,
+                        Message = "این ویژگی قبلاً برای این محصول ثبت شده است",
+                        Errors = uniqueErrors
+                    };
+                }
 
                 var ProductAttributeValue = new ProductAttributeValueDto
                 {
@@ -260,6 +270,79 @@ int ProductAttributeValueSize)
         public async Task<ProductAttributeValueCrud?> GetProductAttributeValueById(Guid id)
         {
             return await GetSqlViewByIdQueryable<SqlProductAttributeValueView, ProductAttributeValueCrud>(id);
+        }
+        public async Task<ResultDto<ProductAttributeValueCrud>> CreateWithViewAsync(
+    ProductAttributeValueCrud input)
+        {
+            var validation = await _modelValidationService.ValidateAsync(input);
+
+            if (!validation.Success)
+            {
+                return new ResultDto<ProductAttributeValueCrud>
+                {
+                    Success = false,
+                    Message = await _messageService.Value.GetMessageAsync(
+                        LocalizationKeys.ValidationFailed,
+                        "Form has errors. Please fix them."),
+                    Errors = validation.Data
+                };
+            }
+            var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
+
+            if (uniqueErrors.Any())
+            {
+                return new ResultDto<ProductAttributeValueCrud>
+                {
+                    Success = false,
+                    Message = "این ویژگی قبلاً برای این محصول ثبت شده است",
+                    Errors = uniqueErrors
+                };
+            }
+            var productAttributeValue = new ProductAttributeValueDto
+            {
+                SortOrder = input.SortOrder,
+                ProductAttributeId = input.ProductAttributeId,
+                ProductId = input.ParentId,
+                Value = input.Value
+            };
+
+            // Auto SortOrder
+            if (productAttributeValue.SortOrder <= 0)
+            {
+                productAttributeValue.SortOrder = (await Query()
+                    .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+            }
+
+            return await CreateWithViewAsync(
+                productAttributeValue,
+                GetProductAttributeValueById,
+                x => x.Id
+            );
+        }
+        private async Task<List<string>> ValidateProductAttributeValueUniquenessAsync(
+    ProductAttributeValueCrud input,
+    Guid? excludeId = null)
+        {
+            var errors = new List<string>();
+
+            var query = Query();
+
+            if (excludeId.HasValue)
+            {
+                query = query.Where(x => x.Id != excludeId.Value);
+            }
+
+            var exists = await query.AnyAsync(x =>
+                x.ProductId == input.ParentId &&
+                x.ProductAttributeId == input.ProductAttributeId
+            );
+
+            if (exists)
+            {
+                errors.Add("این ویژگی قبلاً برای این محصول ثبت شده است");
+            }
+
+            return errors;
         }
     }
 

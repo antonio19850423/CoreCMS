@@ -33,7 +33,7 @@ public class ProductInventoryTransactionGqlResolver : IProductInventoryTransacti
     {
         var query = await _ProductInventoryTransactionService
             .GetAllViewQueryable<SqlProductInventoryTransactionView, SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>();
-        return query.Select(x => new ProductInventoryTransactionCrud
+        return query.OrderByDescending(c => c.UpdatedAt ?? c.CreatedAt).Select(x => new ProductInventoryTransactionCrud
         {
             Id = x.Id,
             ParentId = x.ParentId,
@@ -52,7 +52,11 @@ public class ProductInventoryTransactionGqlResolver : IProductInventoryTransacti
             CreatedByName= x.CreatedByName??"",
             ReasonCode=x.ReasonCode??"",
             ReasonName=x.ReasonName??"",
-            ShouldInsert = x.ShouldInsert   
+            ShouldInsert = x.ShouldInsert ,
+            CreatedAt= x.CreatedAt,
+            UpdatedAt= x.UpdatedAt,
+            UpdatedAtPersian=x.UpdatedAtPersian??"",
+            UpdatedByName= x.UpdatedByName??""
         });
     }
 

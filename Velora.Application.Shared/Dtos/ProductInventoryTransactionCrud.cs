@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid Id { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, IsRequired = true)]
-        public int ChangeQuantity { get; set; }
+        public int? ChangeQuantity { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 500, IsRequired = true)] 
         public string? Note { get; set; }
@@ -23,7 +23,7 @@ namespace Velora.Application.Shared.Dtos
         ServiceName = "",
         LinkedFieldCode = "OperationTypeName",
         Route = "/api/ComboBox/OperationTypes")]
-        public byte OperationType { get; set; }
+        public byte? OperationType { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = false,
             ServiceName = "",
             LinkedFieldCode = "OperationType",
@@ -35,7 +35,7 @@ namespace Velora.Application.Shared.Dtos
     LinkedFieldCode = "ReasonName",
     Route = "/api/ComboBox/InventoryTransactionReasons",
     SelectDisplayFields = "[\"name\",\"code\"]")]
-        public Guid ReasonId { get; set; }
+        public Guid? ReasonId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.SelectBox, IsRequired = true, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = false,
            EntityName = LookupEntities.InventoryTransactionReason,
            ServiceName = "inventoryTransactionReasonView",
@@ -89,6 +89,14 @@ namespace Velora.Application.Shared.Dtos
 
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 12, GridOrder = 12, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 13, GridOrder = 13, ShowInGrid = true, ShowInForm = false)]
+        public string UpdatedAtPersian { get; set; }
+
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 14, GridOrder = 14, ShowInGrid = true, ShowInForm = false)]
+        public string? UpdatedByName { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
     }
 }

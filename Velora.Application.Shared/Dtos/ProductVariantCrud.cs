@@ -21,7 +21,7 @@ namespace Velora.Application.Shared.Dtos
         public string Name { get; set; } = null!;
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true, IsRequired = true, ShowInSelectBox = true,InputMask =InputMasks.Currency)]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, IsRequired = true, InputMask = InputMasks.Currency)]
         public decimal? ComparePrice { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 6, GridOrder = 6, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]

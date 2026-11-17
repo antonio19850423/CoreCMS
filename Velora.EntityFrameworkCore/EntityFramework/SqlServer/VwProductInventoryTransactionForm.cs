@@ -21,7 +21,7 @@ public partial class VwProductInventoryTransactionForm
     [StringLength(6)]
     public string OperationTypeName { get; set; } = null!;
 
-    public Guid ParentId { get; set; }
+    public Guid ProductId { get; set; }
 
     [StringLength(200)]
     public string? ProductName { get; set; }
@@ -46,6 +46,18 @@ public partial class VwProductInventoryTransactionForm
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 
+
+
+
     [StringLength(201)]
     public string? CreatedByName { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    [StringLength(19)]
+    public string? UpdatedAtPersian { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    [StringLength(201)]
+    public string? UpdatedByName { get; set; }
 }

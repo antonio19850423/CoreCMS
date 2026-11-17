@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ProductInventoryTransactionCrud>> GetAllViews();
         Task<ResultDto<ProductInventoryTransactionDto>> CreateAsync(ProductInventoryTransactionCrud input);
-        Task<ResultDto<ProductInventoryTransactionDto>> UpdateAsync(ProductInventoryTransactionCrud input);
+        Task<ResultDto<ProductInventoryTransactionCrud>> UpdateAsync(ProductInventoryTransactionCrud input);
         Task<int> GetAvailableQuantityAsync(
     Guid productId,
     Guid? productVariantId = null);
@@ -28,5 +28,7 @@ int pageSize);
         Task<IQueryable<SqlProductInventoryTransactionView>> GetInventoryTransactionQuery();
     
         Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id);
+        Task<ResultDto<ProductInventoryTransactionCrud>> CreateWithViewAsync(
+            ProductInventoryTransactionCrud input);
 }
 }

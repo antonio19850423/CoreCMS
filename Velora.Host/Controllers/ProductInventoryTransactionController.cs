@@ -74,7 +74,7 @@ namespace Velora.Host.Controllers
                     Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
                 });
 
-            var result = await _ProductInventoryTransactionService.CreateAsync(ProductInventoryTransaction);
+            var result = await _ProductInventoryTransactionService.CreateWithViewAsync(ProductInventoryTransaction);
             if (!result.Success)
                 return BadRequest(result);
 
@@ -104,6 +104,11 @@ namespace Velora.Host.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            return StatusCode(501, new
+            {
+                Success = false,
+                Message = "حذف تراکنش موجودی فعلاً غیرفعال است."
+            });
             var result = await _ProductInventoryTransactionService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);
@@ -117,6 +122,11 @@ namespace Velora.Host.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 50_000_000)] // 50 MB
         public async Task<IActionResult> BulkInsert()
         {
+            return StatusCode(501, new
+            {
+                Success = false,
+                Message = "ورود گروهی تراکنش موجودی فعلاً غیرفعال است."
+            });
             // اطمینان از اینکه فرم ارسال شده
             if (!Request.HasFormContentType)
                 return BadRequest(new { Message = "Invalid content type, expected multipart/form-data." });

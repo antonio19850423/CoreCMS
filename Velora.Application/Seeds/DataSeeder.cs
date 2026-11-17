@@ -5707,7 +5707,7 @@ int sortOrder)
                 await transactionsQuery
                     .FirstOrDefaultAsync(
                         x =>
-                            x.ParentId == productId &&
+                            x.ProductId == productId &&
                             x.ProductVariantId == variantId &&
                             x.ReasonId == reasonId);
 

@@ -63,6 +63,10 @@ public partial class ProductInventoryTransaction
 
     public Guid ReasonId { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
+    public Guid? UpdatedBy { get; set; }
+
     [ForeignKey("ProductId")]
     [InverseProperty("ProductInventoryTransactions")]
     public virtual Product Product { get; set; } = null!;

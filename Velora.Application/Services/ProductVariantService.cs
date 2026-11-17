@@ -75,7 +75,7 @@ namespace Velora.Application.Services
                 {
                     SortOrder = input.SortOrder,
                     Name = input.Name,
-                    Price = input.Price,
+                    Price = input.Price??0,
                     Barcode = input.Barcode,
                     Image = input.Image,
                     IsActive = input.IsActive,
@@ -131,7 +131,7 @@ namespace Velora.Application.Services
                     Id = input.Id,
                     SortOrder = input.SortOrder,
                     Name = input.Name,
-                    Price = input.Price,
+                    Price = input.Price ?? 0,
                     Barcode = input.Barcode,
                     Image = input.Image,
                     IsActive = input.IsActive,
@@ -291,7 +291,7 @@ int ProductVariantSize)
             {
                 SortOrder = input.SortOrder,
                 Name = input.Name,
-                Price = input.Price,
+                Price = input.Price ?? 0,
                 Barcode = input.Barcode,
                 Image = input.Image,
                 IsActive = input.IsActive,

@@ -34,7 +34,8 @@ namespace Velora.Application.Services
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IPaymentService _paymentService;
         protected readonly IShoppingCartItemService _shoppingCartItemService;
-        
+        private readonly IProductVariantService _productVariantService;
+
 
         public ProductInventoryTransactionService(
               ISqlRepository<SqlProductInventoryTransaction> sqlRepository,
@@ -42,7 +43,7 @@ namespace Velora.Application.Services
               IMapper mapper,
               IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
               Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IPaymentService paymentService, IShoppingCartItemService shoppingCartItemService)
+              ICurrentUserService currentUserService, IPaymentService paymentService, IShoppingCartItemService shoppingCartItemService, IProductVariantService productVariantService)
               : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
@@ -55,6 +56,7 @@ namespace Velora.Application.Services
             _currentUserService = currentUserService;
             _paymentService = paymentService;
             _shoppingCartItemService = shoppingCartItemService;
+            _productVariantService = productVariantService;
         }
         public async Task<IQueryable<ProductInventoryTransactionCrud>> GetAllViews()
         {
@@ -84,14 +86,12 @@ namespace Velora.Application.Services
 
                 var ProductInventoryTransaction = new ProductInventoryTransactionDto
                 {
-                    ChangeQuantity= input.ChangeQuantity,
+                    ChangeQuantity= input.ChangeQuantity.Value,
                     Note= input.Note,
-                    OperationType= input.OperationType,
-                    ProductId = input.ParentId != Guid.Empty
-            ? input.ParentId
-            : input.ProductId,
+                    OperationType= input.OperationType.Value,
+                    ProductId =  input.ProductId,
                     ProductVariantId =input.ProductVariantId,
-                    ReasonId=input.ReasonId,
+                    ReasonId=input.ReasonId.Value,
                     ReferenceDetailId=input.ReferenceDetailId,
                     ReferenceId=input.ReferenceId,
 
@@ -114,57 +114,106 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<ProductInventoryTransactionDto>> UpdateAsync(ProductInventoryTransactionCrud input)
+        public async Task<ResultDto<ProductInventoryTransactionCrud>> UpdateAsync(
+            ProductInventoryTransactionCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
+
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductInventoryTransactionDto>
+                    return new ResultDto<ProductInventoryTransactionCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
+
                 if (!validation.Success)
-                    return new ResultDto<ProductInventoryTransactionDto>
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.ValidationFailed,
+                            "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                }
 
-                // 1️⃣ به‌روزرسانی کاربر
+                // دریافت تراکنش قبلی
+                var existingTransaction = await GetByIdAsync(input.Id);
+
+                if (existingTransaction == null || existingTransaction.Data == null)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "تراکنش موجودی موردنظر پیدا نشد."
+                    };
+                }
+
+                var existingData = existingTransaction.Data;
+
+                // فقط فیلدهای مجاز برای ویرایش تغییر می‌کنند
                 var updateDto = new ProductInventoryTransactionDto
                 {
-                    Id = input.Id,
-                    ChangeQuantity = input.ChangeQuantity,
+                    Id = existingData.Id,
+                    ProductId = existingData.ProductId,
+                    ProductVariantId = existingData.ProductVariantId,
+                    OperationType = existingData.OperationType,
+                    ChangeQuantity = existingData.ChangeQuantity,
+
                     Note = input.Note,
-                    OperationType = input.OperationType,
-                    ProductId = input.ParentId != Guid.Empty
-            ? input.ParentId
-            : input.ProductId,
-                    ProductVariantId = input.ProductVariantId,
-                    ReasonId = input.ReasonId,
-                    ReferenceDetailId = input.ReferenceDetailId,
+                    ReasonId = input.ReasonId.Value,
                     ReferenceId = input.ReferenceId,
+                    ReferenceDetailId = input.ReferenceDetailId
                 };
 
-                var ProductInventoryTransactionResult = await UpdateAsync(updateDto, input.Id);
-                if (!ProductInventoryTransactionResult.Success)
-                    return ProductInventoryTransactionResult;
+                var updateResult = await UpdateAsync(updateDto, input.Id);
 
-                return ProductInventoryTransactionResult;
+                if (!updateResult.Success)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = updateResult.Message,
+                        Errors = updateResult.Errors
+                    };
+                }
+
+                // دریافت View نهایی
+                var viewResult = await GetProductInventoryTransactionById(input.Id);
+
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات تراکنش پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductInventoryTransactionCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
-                var result = new ResultDto<ProductInventoryTransactionDto>
+                var result = new ResultDto<ProductInventoryTransactionCrud>
                 {
                     Success = false,
-                    Message = errorMessage,
+                    Message = errorMessage
                 };
+
                 result.Errors.Add(ex.Message);
                 return result;
             }
@@ -259,13 +308,13 @@ namespace Velora.Application.Services
             var quantity =
                 await transactions
                 .SumAsync(x =>
-                    x.OperationType == 1
+                    x.OperationType.Value == 1
                     ? x.ChangeQuantity
                     : -x.ChangeQuantity);
 
 
 
-            return quantity;
+            return quantity.Value;
         }
 
 
@@ -458,6 +507,123 @@ int ProductInventoryTransactionSize)
         {
             return await GetSqlViewByIdQueryable<SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>(id);
         }
+
+        public async Task<ResultDto<ProductInventoryTransactionCrud>> CreateWithViewAsync(
+            ProductInventoryTransactionCrud input)
+        {
+            var validation = await _modelValidationService.ValidateAsync(input);
+
+            if (!validation.Success)
+            {
+                return new ResultDto<ProductInventoryTransactionCrud>
+                {
+                    Success = false,
+                    Message = await _messageService.Value.GetMessageAsync(
+                        LocalizationKeys.ValidationFailed,
+                        "Form has errors. Please fix them."),
+                    Errors = validation.Data
+                };
+            }
+
+            Guid? productId = input.ParentId != Guid.Empty
+                ? input.ParentId
+                : input.ProductId;
+
+            // اگر واریانت انتخاب شده، محصول اصلی آن را پیدا کن
+            if (input.ProductVariantId.HasValue &&
+                input.ProductVariantId.Value != Guid.Empty)
+            {
+                var variant = await _productVariantService.GetByIdAsync(input.ProductVariantId);
+
+                if (variant == null || variant.Data == null)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "تنوع محصول معتبر نیست.",
+                        Errors = new List<string>
+        {
+             "تنوع محصول معتبر نیست."
+        }
+                    };
+                }
+
+                productId = variant.Data.ProductId;
+
+                if (productId == Guid.Empty)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "محصول مرتبط با تنوع انتخاب‌شده معتبر نیست.",
+                        Errors = new List<string>
+                {
+                    "ProductId برای تنوع محصول پیدا نشد."
+                }
+                    };
+                }
+            }
+            else
+            {
+                // انتخاب محصول بدون واریانت
+                input.ProductVariantId = null;
+            }
+
+            // بررسی انتخاب محصول یا واریانت
+            if (!productId.HasValue || productId.Value == Guid.Empty)
+            {
+                return new ResultDto<ProductInventoryTransactionCrud>
+                {
+                    Success = false,
+                    Message = "محصول یا تنوع محصول باید مقدار داشته باشد.",
+                    Errors = new List<string>
+            {
+                "محصول یا تنوع محصول باید مقدار داشته باشد."
+            }
+                };
+            }
+
+            // بررسی موجودی فقط برای عملیات کاهشی
+            if (input.OperationType == 2)
+            {
+                var availableInventory = await GetInventoryAsync(
+                    productId.Value,
+                    input.ProductVariantId
+                );
+
+                if (input.ChangeQuantity > availableInventory)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = $"امکان کاهش {input.ChangeQuantity} عدد وجود ندارد. حداکثر تعداد قابل کاهش در حال حاضر {availableInventory} عدد است.",
+                        Errors = new List<string>
+                {
+                    $"موجودی قابل کاهش: {availableInventory}"
+                }
+                    };
+                }
+            }
+
+            var productInventoryTransaction = new ProductInventoryTransactionDto
+            {
+                ChangeQuantity = input.ChangeQuantity.Value,
+                Note = input.Note,
+                OperationType = input.OperationType.Value,
+                ProductId = productId.Value,
+                ProductVariantId = input.ProductVariantId,
+                ReasonId = input.ReasonId.Value,
+                ReferenceDetailId = input.ReferenceDetailId,
+                ReferenceId = input.ReferenceId
+            };
+
+            return await CreateWithViewAsync(
+                productInventoryTransaction,
+                GetProductInventoryTransactionById,
+                x => x.Id
+            );
+        }
+
     }
 
 }
