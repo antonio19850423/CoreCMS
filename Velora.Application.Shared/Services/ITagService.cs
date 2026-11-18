@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<TagCrud?> GetTagById(Guid id);
+
+        Task<ResultDto<TagCrud>> CreateAdvancedAsync(TagCrud input);
 }
 }

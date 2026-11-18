@@ -111,7 +111,65 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<CouponCrud>> CreateAdvancedAsync(
+    CouponCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                if (await IsCouponCodeDuplicateAsync(input.Code))
+                {
+                    return new ResultDto<CouponCrud>
+                    {
+                        Success = false,
+                        Message = "کد کوپن تکراری است."
+                    };
+                }
+
+                var coupon = new CouponDto
+                {
+                    CouponType = input.CouponType,
+                    CanCombineWithDiscount = input.CanCombineWithDiscount,
+                    CouponValue = input.CouponValue,
+                    MaximumDiscountAmount = input.MaximumDiscountAmount,
+                    MinimumOrderAmount = input.MinimumOrderAmount,
+                    Code = input.Code,
+                    EndDate = input.EndDate,
+                    IsActive = input.IsActive,
+                    IsSingleUsePerUser = input.IsSingleUsePerUser,
+                    StartDate = input.StartDate,
+                    UsageLimit = input.UsageLimit,
+                    UsedCount = input.UsedCount
+                };
+
+                var result = await CreateWithViewAsync(
+                    coupon,
+                    GetCouponById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<CouponCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<CouponDto>> UpdateAsync(CouponCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

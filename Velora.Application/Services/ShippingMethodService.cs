@@ -99,7 +99,52 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ShippingMethodCrud>> CreateAdvancedAsync(
+    ShippingMethodCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var shippingMethod = new ShippingMethodDto
+                {
+                    Description = input.Description,
+                    IsActive = input.IsActive,
+                    EstimatedDays = input.EstimatedDays,
+                    IsDefault = input.IsDefault,
+                    IsNationwide = input.IsNationwide,
+                    Name = input.Name,
+                    Price = input.Price,
+                    SortOrder = input.SortOrder
+                };
+
+                var result = await CreateWithViewAsync(
+                    shippingMethod,
+                    GetShippingMethodById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ShippingMethodCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ShippingMethodDto>> UpdateAsync(ShippingMethodCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

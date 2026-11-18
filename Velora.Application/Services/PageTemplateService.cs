@@ -85,7 +85,48 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<PageTemplateCrud>> CreateAdvancedAsync(
+    PageTemplateCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var pageTemplate = new PageTemplateDto
+                {
+                    Name = input.Name,
+                    Code = input.Code,
+                    IsActive = input.IsActive,
+                    Description = input.Description
+                };
+
+                var result = await CreateWithViewAsync(
+                    pageTemplate,
+                    GetPageTemplateById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<PageTemplateCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<PageTemplateDto>> UpdateAsync(PageTemplateCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

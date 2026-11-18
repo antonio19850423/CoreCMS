@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<StateCrud?> GetStateById(Guid id);
+
+        Task<ResultDto<StateCrud>> CreateAdvancedAsync(StateCrud input);
 }
 }

@@ -20,5 +20,7 @@ int pageSize);
         Task<ResultDto<List<LinkTypeDto>>> AddRangeAsync(List<LinkTypeDto> inputs);
     
         Task<LinkTypeCrud?> GetLinkTypeById(Guid id);
+
+        Task<ResultDto<LinkTypeCrud>> CreateAdvancedAsync(LinkTypeCrud input);
 }
 }

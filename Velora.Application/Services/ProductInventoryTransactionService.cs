@@ -113,7 +113,126 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id)
+        {
+            return await GetSqlViewByIdQueryable<SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>(id);
+        }
 
+        public async Task<ResultDto<ProductInventoryTransactionCrud>> CreateAdvancedAsync(
+            ProductInventoryTransactionCrud input)
+        {
+            var validation = await _modelValidationService.ValidateAsync(input);
+
+            if (!validation.Success)
+            {
+                return new ResultDto<ProductInventoryTransactionCrud>
+                {
+                    Success = false,
+                    Message = await _messageService.Value.GetMessageAsync(
+                        LocalizationKeys.ValidationFailed,
+                        "Form has errors. Please fix them."),
+                    Errors = validation.Data
+                };
+            }
+
+            Guid? productId = input.ParentId != Guid.Empty
+                ? input.ParentId
+                : input.ProductId;
+
+            // اگر واریانت انتخاب شده، محصول اصلی آن را پیدا کن
+            if (input.ProductVariantId.HasValue &&
+                input.ProductVariantId.Value != Guid.Empty)
+            {
+                var variant = await _productVariantService.GetByIdAsync(input.ProductVariantId);
+
+                if (variant == null || variant.Data == null)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "تنوع محصول معتبر نیست.",
+                        Errors = new List<string>
+        {
+             "تنوع محصول معتبر نیست."
+        }
+                    };
+                }
+
+                productId = variant.Data.ProductId;
+
+                if (productId == Guid.Empty)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = "محصول مرتبط با تنوع انتخاب‌شده معتبر نیست.",
+                        Errors = new List<string>
+                {
+                    "ProductId برای تنوع محصول پیدا نشد."
+                }
+                    };
+                }
+            }
+            else
+            {
+                // انتخاب محصول بدون واریانت
+                input.ProductVariantId = null;
+            }
+
+            // بررسی انتخاب محصول یا واریانت
+            if (!productId.HasValue || productId.Value == Guid.Empty)
+            {
+                return new ResultDto<ProductInventoryTransactionCrud>
+                {
+                    Success = false,
+                    Message = "محصول یا تنوع محصول باید مقدار داشته باشد.",
+                    Errors = new List<string>
+            {
+                "محصول یا تنوع محصول باید مقدار داشته باشد."
+            }
+                };
+            }
+
+            // بررسی موجودی فقط برای عملیات کاهشی
+            if (input.OperationType == 2)
+            {
+                var availableInventory = await GetInventoryAsync(
+                    productId.Value,
+                    input.ProductVariantId
+                );
+
+                if (input.ChangeQuantity > availableInventory)
+                {
+                    return new ResultDto<ProductInventoryTransactionCrud>
+                    {
+                        Success = false,
+                        Message = $"امکان کاهش {input.ChangeQuantity} عدد وجود ندارد. حداکثر تعداد قابل کاهش در حال حاضر {availableInventory} عدد است.",
+                        Errors = new List<string>
+                {
+                    $"موجودی قابل کاهش: {availableInventory}"
+                }
+                    };
+                }
+            }
+
+            var productInventoryTransaction = new ProductInventoryTransactionDto
+            {
+                ChangeQuantity = input.ChangeQuantity.Value,
+                Note = input.Note,
+                OperationType = input.OperationType.Value,
+                ProductId = productId.Value,
+                ProductVariantId = input.ProductVariantId,
+                ReasonId = input.ReasonId.Value,
+                ReferenceDetailId = input.ReferenceDetailId,
+                ReferenceId = input.ReferenceId
+            };
+
+            return await CreateWithViewAsync(
+                productInventoryTransaction,
+                GetProductInventoryTransactionById,
+                x => x.Id
+            );
+        }
         public async Task<ResultDto<ProductInventoryTransactionCrud>> UpdateAsync(
             ProductInventoryTransactionCrud input)
         {
@@ -503,126 +622,7 @@ int ProductInventoryTransactionSize)
             return resultBytes;
         }
 
-        public async Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id)
-        {
-            return await GetSqlViewByIdQueryable<SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>(id);
-        }
 
-        public async Task<ResultDto<ProductInventoryTransactionCrud>> CreateWithViewAsync(
-            ProductInventoryTransactionCrud input)
-        {
-            var validation = await _modelValidationService.ValidateAsync(input);
-
-            if (!validation.Success)
-            {
-                return new ResultDto<ProductInventoryTransactionCrud>
-                {
-                    Success = false,
-                    Message = await _messageService.Value.GetMessageAsync(
-                        LocalizationKeys.ValidationFailed,
-                        "Form has errors. Please fix them."),
-                    Errors = validation.Data
-                };
-            }
-
-            Guid? productId = input.ParentId != Guid.Empty
-                ? input.ParentId
-                : input.ProductId;
-
-            // اگر واریانت انتخاب شده، محصول اصلی آن را پیدا کن
-            if (input.ProductVariantId.HasValue &&
-                input.ProductVariantId.Value != Guid.Empty)
-            {
-                var variant = await _productVariantService.GetByIdAsync(input.ProductVariantId);
-
-                if (variant == null || variant.Data == null)
-                {
-                    return new ResultDto<ProductInventoryTransactionCrud>
-                    {
-                        Success = false,
-                        Message = "تنوع محصول معتبر نیست.",
-                        Errors = new List<string>
-        {
-             "تنوع محصول معتبر نیست."
-        }
-                    };
-                }
-
-                productId = variant.Data.ProductId;
-
-                if (productId == Guid.Empty)
-                {
-                    return new ResultDto<ProductInventoryTransactionCrud>
-                    {
-                        Success = false,
-                        Message = "محصول مرتبط با تنوع انتخاب‌شده معتبر نیست.",
-                        Errors = new List<string>
-                {
-                    "ProductId برای تنوع محصول پیدا نشد."
-                }
-                    };
-                }
-            }
-            else
-            {
-                // انتخاب محصول بدون واریانت
-                input.ProductVariantId = null;
-            }
-
-            // بررسی انتخاب محصول یا واریانت
-            if (!productId.HasValue || productId.Value == Guid.Empty)
-            {
-                return new ResultDto<ProductInventoryTransactionCrud>
-                {
-                    Success = false,
-                    Message = "محصول یا تنوع محصول باید مقدار داشته باشد.",
-                    Errors = new List<string>
-            {
-                "محصول یا تنوع محصول باید مقدار داشته باشد."
-            }
-                };
-            }
-
-            // بررسی موجودی فقط برای عملیات کاهشی
-            if (input.OperationType == 2)
-            {
-                var availableInventory = await GetInventoryAsync(
-                    productId.Value,
-                    input.ProductVariantId
-                );
-
-                if (input.ChangeQuantity > availableInventory)
-                {
-                    return new ResultDto<ProductInventoryTransactionCrud>
-                    {
-                        Success = false,
-                        Message = $"امکان کاهش {input.ChangeQuantity} عدد وجود ندارد. حداکثر تعداد قابل کاهش در حال حاضر {availableInventory} عدد است.",
-                        Errors = new List<string>
-                {
-                    $"موجودی قابل کاهش: {availableInventory}"
-                }
-                    };
-                }
-            }
-
-            var productInventoryTransaction = new ProductInventoryTransactionDto
-            {
-                ChangeQuantity = input.ChangeQuantity.Value,
-                Note = input.Note,
-                OperationType = input.OperationType.Value,
-                ProductId = productId.Value,
-                ProductVariantId = input.ProductVariantId,
-                ReasonId = input.ReasonId.Value,
-                ReferenceDetailId = input.ReferenceDetailId,
-                ReferenceId = input.ReferenceId
-            };
-
-            return await CreateWithViewAsync(
-                productInventoryTransaction,
-                GetProductInventoryTransactionById,
-                x => x.Id
-            );
-        }
 
     }
 

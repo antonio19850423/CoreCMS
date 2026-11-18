@@ -34,5 +34,7 @@ int pageNumber,
 int pageSize);
         Task<ResultDto<List<ProductSearchDto>>> SearchAsync(string search);
         Task<ProductCrud?> GetProductById(Guid id);
+
+        Task<ResultDto<ProductCrud>> CreateAdvancedAsync(ProductCrud input);
 }
 }

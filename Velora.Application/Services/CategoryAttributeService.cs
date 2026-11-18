@@ -93,7 +93,47 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<CategoryAttributeCrud>> CreateAdvancedAsync(
+    CategoryAttributeCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var categoryAttribute = new CategoryAttributeDto
+                {
+                    AttributeId = input.AttributeId,
+                    CategoryId = input.CategoryId,
+                    SortOrder = input.SortOrder
+                };
+
+                var result = await CreateWithViewAsync(
+                    categoryAttribute,
+                    GetCategoryAttributeById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<CategoryAttributeCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<CategoryAttributeDto>> UpdateAsync(CategoryAttributeCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

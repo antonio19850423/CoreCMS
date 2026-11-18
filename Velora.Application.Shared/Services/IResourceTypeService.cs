@@ -13,6 +13,8 @@ namespace Velora.Application.Shared.Services
         Task<ResultDto<ResourceTypeDto>> UpdateAsync(ResourceTypeCrud input);
     
         Task<ResourceTypeCrud?> GetResourceTypeById(Guid id);
+
+        Task<ResultDto<ResourceTypeCrud>> CreateAdvancedAsync(ResourceTypeCrud input);
 }
 
 }

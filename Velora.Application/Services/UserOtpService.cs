@@ -103,7 +103,54 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<UserOtpCrud>> CreateAdvancedAsync(
+    UserOtpCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var userOtp = new UserOtpDto
+                {
+                    AttemptCount = input.AttemptCount,
+                    CodeHash = input.CodeHash,
+                    ExpiresAt = input.ExpiresAt,
+                    IsUsed = input.IsUsed,
+                    MaxAttempts = input.MaxAttempts,
+                    Mobile = input.Mobile,
+                    Purpose = input.Purpose,
+                    UsedAt = input.UsedAt,
+                    IsVerified = input.IsVerified,
+                    VerifiedAt = input.VerifiedAt
+                };
+
+                var result = await CreateWithViewAsync(
+                    userOtp,
+                    GetUserOtpById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<UserOtpCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<UserOtpDto>> UpdateAsync(UserOtpCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

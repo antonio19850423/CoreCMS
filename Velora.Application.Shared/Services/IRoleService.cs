@@ -15,5 +15,7 @@ namespace Velora.Application.Shared.Services
         Task<IEnumerable<RoleDto>> GetByNamesAsync(List<string> roles);
     
         Task<RoleCrud?> GetRoleById(Guid id);
+
+        Task<ResultDto<RoleCrud>> CreateAdvancedAsync(RoleCrud input);
 }
 }

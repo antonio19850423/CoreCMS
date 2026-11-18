@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<SiteMenuCrud?> GetSiteMenuById(Guid id);
+
+        Task<ResultDto<SiteMenuCrud>> CreateAdvancedAsync(SiteMenuCrud input);
 }
 }

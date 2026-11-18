@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<NewsletterSubscriberCrud?> GetNewsletterSubscriberById(Guid id);
+
+        Task<ResultDto<NewsletterSubscriberCrud>> CreateAdvancedAsync(NewsletterSubscriberCrud input);
 }
 }

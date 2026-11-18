@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<SmsLogCrud?> GetSmsLogById(Guid id);
+
+        Task<ResultDto<SmsLogCrud>> CreateAdvancedAsync(SmsLogCrud input);
 }
 }

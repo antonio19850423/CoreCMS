@@ -15,6 +15,7 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -61,14 +62,18 @@ namespace Velora.Application.Services
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
+
                 if (!validation.Success)
+                {
                     return new ResultDto<ProductAttributeValueDto>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(
+                            LocalizationKeys.ValidationFailed,
+                            "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
+                }
                 var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
 
                 if (uniqueErrors.Any())
@@ -80,20 +85,24 @@ namespace Velora.Application.Services
                         Errors = uniqueErrors
                     };
                 }
-
                 var ProductAttributeValue = new ProductAttributeValueDto
                 {
                     SortOrder = input.SortOrder,
                     ProductAttributeId = input.ProductAttributeId,
-                    ProductId=input.ParentId,
-                    Value = input.Value,
-                    
+                    ProductId = input.ParentId,
+                    Value = input.Value
                 };
+
+                // Auto SortOrder
+                if (ProductAttributeValue.SortOrder <= 0)
+                {
+                    ProductAttributeValue.SortOrder = (await Query()
+                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
 
                 var ProductAttributeValueResult = await CreateAsync(ProductAttributeValue);
                 if (!ProductAttributeValueResult.Success)
                     return ProductAttributeValueResult;
-                await _transactionService.CommitAsync();
                 return ProductAttributeValueResult;
             }
             catch (Exception ex)
@@ -271,7 +280,7 @@ int ProductAttributeValueSize)
         {
             return await GetSqlViewByIdQueryable<SqlProductAttributeValueView, ProductAttributeValueCrud>(id);
         }
-        public async Task<ResultDto<ProductAttributeValueCrud>> CreateWithViewAsync(
+        public async Task<ResultDto<ProductAttributeValueCrud>> CreateAdvancedAsync(
     ProductAttributeValueCrud input)
         {
             var validation = await _modelValidationService.ValidateAsync(input);

@@ -27,5 +27,7 @@ int pageSize);
     string sort = "newest");
     
         Task<ContentItemCrud?> GetContentItemById(Guid id);
+
+        Task<ResultDto<ContentItemCrud>> CreateAdvancedAsync(ContentItemCrud input);
 }
 }

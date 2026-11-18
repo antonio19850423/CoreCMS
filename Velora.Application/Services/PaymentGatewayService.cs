@@ -102,7 +102,56 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<PaymentGatewayCrud>> CreateAdvancedAsync(
+    PaymentGatewayCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var providerType = (PaymentProvider)input.ProviderType;
+
+                var paymentGateway = new PaymentGatewayDto
+                {
+                    CallbackUrl = input.CallbackUrl,
+                    Description = input.Description,
+                    DisplayOrder = input.DisplayOrder,
+                    GatewayCode = providerType.GetCode(),
+                    IsActive = input.IsActive,
+                    IsDefault = input.IsDefault,
+                    LogoUrl = input.LogoUrl,
+                    Name = input.Name,
+                    ProviderType = input.ProviderType,
+                    SettingsJson = input.SettingsJson
+                };
+
+                var result = await CreateWithViewAsync(
+                    paymentGateway,
+                    GetPaymentGatewayById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<PaymentGatewayCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<PaymentGatewayDto>> UpdateAsync(PaymentGatewayCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

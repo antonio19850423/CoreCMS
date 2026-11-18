@@ -102,7 +102,53 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<UserAddressCrud>> CreateAdvancedAsync(
+    UserAddressCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var userAddress = new UserAddressDto
+                {
+                    Address = input.Address,
+                    CityId = input.CityId,
+                    IsActive = input.IsActive,
+                    IsDefault = input.IsDefault,
+                    PhoneNumber = input.PhoneNumber,
+                    PostalCode = input.PostalCode,
+                    ProvinceId = input.ProvinceId,
+                    Title = input.Title,
+                    UserId = input.UserId
+                };
+
+                var result = await CreateWithViewAsync(
+                    userAddress,
+                    GetUserAddressById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<UserAddressCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<UserAddressDto>> UpdateAsync(UserAddressCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

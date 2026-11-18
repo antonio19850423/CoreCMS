@@ -68,7 +68,48 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ResourceTypeCrud>> CreateAdvancedAsync(
+    ResourceTypeCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var resourceType = new ResourceTypeDto
+                {
+                    Code = input.Code,
+                    DisplayName = input.DisplayName,
+                    Description = input.Description,
+                    Name = input.Name
+                };
+
+                var result = await CreateWithViewAsync(
+                    resourceType,
+                    GetResourceTypeById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ResourceTypeCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ResourceTypeDto>> UpdateAsync(ResourceTypeCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

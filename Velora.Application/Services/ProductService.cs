@@ -259,7 +259,124 @@ namespace Velora.Application.Services
                 };
             }
         }
+        public async Task<ResultDto<ProductCrud>> CreateAdvancedAsync(
+    ProductCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var uniqueErrors = await ValidateProductUniquenessAsync(input);
+
+                if (uniqueErrors.Any())
+                {
+                    return new ResultDto<ProductCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات محصول تکراری است",
+                        Errors = uniqueErrors
+                    };
+                }
+
+                var product = new ProductDto
+                {
+                    Id = Guid.NewGuid(),
+                    SortOrder = input.SortOrder,
+                    Barcode = input.Barcode,
+                    BrandId = input.BrandId,
+                    CategoryId = input.CategoryId,
+                    Description = input.Description,
+                    IsActive = input.IsActive,
+                    IsFeatured = input.IsFeatured,
+                    IsPublished = input.IsPublished,
+                    MainImage = input.MainImage,
+                    Name = input.Name,
+                    Price = input.Price,
+                    ProductTypeId = input.ProductTypeId,
+                    SeoDescription = input.SeoDescription,
+                    SeoTitle = input.SeoTitle,
+                    Sku = input.Sku,
+                    Slug = input.Slug,
+                    Summary = input.Summary,
+                    Thumbnail = input.Thumbnail,
+                    Weight = input.Weight
+                };
+
+                if (product.SortOrder <= 0)
+                {
+                    product.SortOrder = (await Query()
+                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
+
+                var productResult = await CreateWithViewAsync(
+                    product,
+                    GetProductById,
+                    x => x.Id
+                );
+
+                if (!productResult.Success || productResult.Data == null)
+                    return productResult;
+
+                var productId = productResult.Data.Id;
+
+                var productTagIds = input.ProductTagIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => Guid.Parse(x.Trim()))
+                    .ToHashSet() ?? new HashSet<Guid>();
+
+                var existingTags = await _productTagMappingService
+                    .GetByProductTagMappingsAsync(productId);
+
+                var existingTagIds = existingTags
+                    .Select(x => x.ProductTagId)
+                    .ToHashSet();
+
+                foreach (var tag in existingTags.Where(
+                    x => !productTagIds.Contains(x.ProductTagId)))
+                {
+                    var deleteResult = await _productTagMappingService
+                        .DeleteAsync(tag.Id);
+
+                    if (!deleteResult.Success)
+                        throw new Exception(deleteResult.Message);
+                }
+
+                foreach (var tagId in productTagIds.Except(existingTagIds))
+                {
+                    var tagResult = await _productTagMappingService.CreateAsync(
+                        new ProductTagMappingDto
+                        {
+                            ProductId = productId,
+                            ProductTagId = tagId
+                        });
+
+                    if (!tagResult.Success)
+                        throw new Exception(tagResult.Message);
+                }
+
+                productResult.Data.ProductTagIds = string.Join(",", productTagIds);
+
+                if (productResult.Success)
+                    productResult.Message = successMessage;
+
+                return productResult;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductDto>> UpdateAsync(ProductCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

@@ -96,7 +96,50 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<TagCrud>> CreateAdvancedAsync(
+    TagCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var tag = new TagDto
+                {
+                    Slug = input.Slug,
+                    SortOrder = input.SortOrder.Value,
+                    Color = input.Color,
+                    Name = input.Name,
+                    IsActive = input.IsActive.Value,
+                    Description = input.Description
+                };
+
+                var result = await CreateWithViewAsync(
+                    tag,
+                    GetTagById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<TagCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<TagDto>> UpdateAsync(TagCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

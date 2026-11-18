@@ -38,5 +38,7 @@ Guid shoppingCartId,
 Guid? userId);
     
         Task<CouponUsageCrud?> GetCouponUsageById(Guid id);
+
+        Task<ResultDto<CouponUsageCrud>> CreateAdvancedAsync(CouponUsageCrud input);
 }
 }

@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<ContentCategoryCrud?> GetContentCategoryById(Guid id);
+
+        Task<ResultDto<ContentCategoryCrud>> CreateAdvancedAsync(ContentCategoryCrud input);
 }
 }

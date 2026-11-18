@@ -28,5 +28,7 @@ int pageNumber,
 int pageSize);
     
         Task<ProductQuestionCrud?> GetProductQuestionById(Guid id);
+
+        Task<ResultDto<ProductQuestionCrud>> CreateAdvancedAsync(ProductQuestionCrud input);
 }
 }

@@ -37,5 +37,9 @@ namespace Velora.Application.Shared.Services
             string storedProcedureName,
             params object[] parameters)
             where TResult : class;
+        Task<ResultDto<TView>> CommitAndGetViewAsync<TSource, TView>(
+    ResultDto<TSource> result,
+    Func<TSource, Guid> getId,
+    Func<Guid, Task<TView?>> getById);
         }
     }

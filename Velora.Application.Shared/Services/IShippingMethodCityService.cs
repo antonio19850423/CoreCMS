@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<ShippingMethodCityCrud?> GetShippingMethodCityById(Guid id);
+
+        Task<ResultDto<ShippingMethodCityCrud>> CreateAdvancedAsync(ShippingMethodCityCrud input);
 }
 }

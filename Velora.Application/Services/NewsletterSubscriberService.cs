@@ -93,7 +93,47 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<NewsletterSubscriberCrud>> CreateAdvancedAsync(
+NewsletterSubscriberCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var NewsletterSubscriber = new NewsletterSubscriberDto
+                {
+                    Email = input.Email,
+                    IsActive = input.IsActive,
+                    IsConfirmed = input.IsConfirmed,
+                };
+
+                var result = await CreateWithViewAsync(
+                    NewsletterSubscriber,
+                    GetNewsletterSubscriberById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<NewsletterSubscriberCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<NewsletterSubscriberDto>> UpdateAsync(NewsletterSubscriberCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

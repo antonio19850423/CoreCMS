@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<PaymentStatusLogCrud?> GetPaymentStatusLogById(Guid id);
+
+        Task<ResultDto<PaymentStatusLogCrud>> CreateAdvancedAsync(PaymentStatusLogCrud input);
 }
 }

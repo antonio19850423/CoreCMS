@@ -21,5 +21,7 @@ int pageSize);
         Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> GetFooterSectionGroupItemsAsync();
     
         Task<SectionGroupItemCrud?> GetSectionGroupItemById(Guid id);
+
+        Task<ResultDto<SectionGroupItemCrud>> CreateAdvancedAsync(SectionGroupItemCrud input);
 }
 }

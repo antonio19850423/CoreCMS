@@ -25,5 +25,7 @@ int pageSize);
     string mobileNumber);
     
         Task<UserCrud?> GetUserById(Guid id);
+
+        Task<ResultDto<UserCrud>> CreateAdvancedAsync(UserCrud input);
 }
 }

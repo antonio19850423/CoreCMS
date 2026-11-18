@@ -103,7 +103,53 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductFileCrud>> CreateAdvancedAsync(
+    ProductFileCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var productFile = new ProductFileDto
+                {
+                    Title = input.Title,
+                    Alt = input.Alt,
+                    FileUrl = input.FileUrl,
+                    IsActive = input.IsActive,
+                    IsMain = input.IsMain,
+                    MediaType = input.MediaType,
+                    ProductId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    ThumbnailUrl = input.ThumbnailUrl
+                };
+
+                var result = await CreateWithViewAsync(
+                    productFile,
+                    GetProductFileById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductFileCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductFileDto>> UpdateAsync(ProductFileCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

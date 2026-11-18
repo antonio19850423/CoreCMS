@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<CategoryAttributeCrud?> GetCategoryAttributeById(Guid id);
+
+        Task<ResultDto<CategoryAttributeCrud>> CreateAdvancedAsync(CategoryAttributeCrud input);
 }
 }

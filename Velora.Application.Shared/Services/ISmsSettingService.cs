@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<SmsSettingCrud?> GetSmsSettingById(Guid id);
+
+        Task<ResultDto<SmsSettingCrud>> CreateAdvancedAsync(SmsSettingCrud input);
 }
 }

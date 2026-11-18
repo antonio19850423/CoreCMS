@@ -95,7 +95,48 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ShippingMethodCityCrud>> CreateAdvancedAsync(
+    ShippingMethodCityCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var shippingMethodCity = new ShippingMethodCityDto
+                {
+                    IsActive = input.IsActive,
+                    SortOrder = input.SortOrder,
+                    ShippingMethodId = input.ParentId,
+                    CityId = input.CityId
+                };
+
+                var result = await CreateWithViewAsync(
+                    shippingMethodCity,
+                    GetShippingMethodCityById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ShippingMethodCityCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ShippingMethodCityDto>> UpdateAsync(ShippingMethodCityCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

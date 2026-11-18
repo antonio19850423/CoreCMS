@@ -535,7 +535,19 @@ where TResult : class
             {
                 // ثبت نهایی اطلاعات
                 await GetRepository().CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto<TView>
+                {
+                    Success = false,
+                    Message = "ثبت اطلاعات با خطا مواجه شد",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
 
+            try
+            {
                 // دریافت اطلاعات کامل از View
                 var id = getId(createResult.Data);
                 var view = await getById(id);
@@ -545,7 +557,7 @@ where TResult : class
                     return new ResultDto<TView>
                     {
                         Success = false,
-                        Message = "اطلاعات ثبت شد، اما اطلاعات کامل برای نمایش پیدا نشد"
+                        Message = "اطلاعات ثبت شد، اما امکان دریافت اطلاعات کامل وجود ندارد"
                     };
                 }
 
@@ -561,7 +573,7 @@ where TResult : class
                 return new ResultDto<TView>
                 {
                     Success = false,
-                    Message = "اطلاعات ثبت شد، اما دریافت اطلاعات کامل با خطا مواجه شد",
+                    Message = "اطلاعات ثبت شد، اما در دریافت اطلاعات کامل خطایی رخ داد",
                     Errors = new List<string> { ex.Message }
                 };
             }
@@ -579,6 +591,33 @@ where TResult : class
                 getId,
                 getById
             );
+        }
+
+        public async Task<ResultDto<TView>> CommitAndGetViewAsync<TSource, TView>(
+    ResultDto<TSource> result,
+    Func<TSource, Guid> getId,
+    Func<Guid, Task<TView?>> getById)
+        {
+            if (!result.Success)
+            {
+                return new ResultDto<TView>
+                {
+                    Success = false,
+                    Message = result.Message,
+                    Errors = result.Errors
+                };
+            }
+
+            await GetRepository().CommitAsync();
+
+            var view = await getById(getId(result.Data));
+
+            return new ResultDto<TView>
+            {
+                Success = true,
+                Message = result.Message,
+                Data = view
+            };
         }
     }
 }

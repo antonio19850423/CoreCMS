@@ -23,5 +23,7 @@ int pageSize);
       Guid addressId);
     
         Task<UserAddressCrud?> GetUserAddressById(Guid id);
+
+        Task<ResultDto<UserAddressCrud>> CreateAdvancedAsync(UserAddressCrud input);
 }
 }

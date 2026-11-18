@@ -28,7 +28,7 @@ int pageSize);
         Task<IQueryable<SqlProductInventoryTransactionView>> GetInventoryTransactionQuery();
     
         Task<ProductInventoryTransactionCrud?> GetProductInventoryTransactionById(Guid id);
-        Task<ResultDto<ProductInventoryTransactionCrud>> CreateWithViewAsync(
+        Task<ResultDto<ProductInventoryTransactionCrud>> CreateAdvancedAsync(
             ProductInventoryTransactionCrud input);
 }
 }

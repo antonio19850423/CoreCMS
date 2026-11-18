@@ -73,7 +73,7 @@ namespace Velora.Application.Services
 
                 var ProductVariant = new ProductVariantDto
                 {
-                    SortOrder = input.SortOrder,
+                    SortOrder = input.SortOrder??0,
                     Name = input.Name,
                     Price = input.Price??0,
                     Barcode = input.Barcode,
@@ -129,7 +129,7 @@ namespace Velora.Application.Services
                 var updateDto = new ProductVariantDto
                 {
                     Id = input.Id,
-                    SortOrder = input.SortOrder,
+                    SortOrder = input.SortOrder ?? 0,
                     Name = input.Name,
                     Price = input.Price ?? 0,
                     Barcode = input.Barcode,
@@ -271,7 +271,7 @@ int ProductVariantSize)
         {
             return await GetSqlViewByIdQueryable<SqlProductVariantView, ProductVariantCrud>(id);
         }
-        public async Task<ResultDto<ProductVariantCrud>> CreateWithViewAsync(ProductVariantCrud input)
+        public async Task<ResultDto<ProductVariantCrud>> CreateAdvancedAsync(ProductVariantCrud input)
         {
             var validation = await _modelValidationService.ValidateAsync(input);
 
@@ -289,7 +289,7 @@ int ProductVariantSize)
 
             var ProductVariant = new ProductVariantDto
             {
-                SortOrder = input.SortOrder,
+                SortOrder = input.SortOrder ?? 0,
                 Name = input.Name,
                 Price = input.Price ?? 0,
                 Barcode = input.Barcode,
@@ -306,11 +306,54 @@ int ProductVariantSize)
                 ProductVariant.SortOrder = (await Query()
                     .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
             }
+            // Uniqueness validation
+            var uniqueErrors = await ValidateProductVariantUniquenessAsync(input);
+
+            if (uniqueErrors.Any())
+            {
+                return new ResultDto<ProductVariantCrud>
+                {
+                    Success = false,
+                    Message = "اطلاعات محصول تکراری است",
+                    Errors = uniqueErrors
+                };
+            }
             return await CreateWithViewAsync(
                 ProductVariant,
                 GetProductVariantById,
                 x => x.Id
             );
+        }
+        private async Task<List<string>> ValidateProductVariantUniquenessAsync(
+    ProductVariantCrud input,
+    Guid? excludeId = null)
+        {
+            var errors = new List<string>();
+
+            var productVariants = Query();
+
+            if (excludeId.HasValue)
+            {
+                productVariants = productVariants.Where(x => x.Id != excludeId.Value);
+            }
+
+            // کد کالا (SKU)
+            if (!string.IsNullOrWhiteSpace(input.Sku))
+            {
+                var sku = input.Sku.Trim();
+
+                if (await productVariants.AnyAsync(x => x.Sku == sku))
+                    errors.Add("این کد SKU قبلاً ثبت شده است");
+            }
+            if (!string.IsNullOrWhiteSpace(input.Barcode))
+            {
+                var sku = input.Barcode.Trim();
+
+                if (await productVariants.AnyAsync(x => x.Barcode == sku))
+                    errors.Add("این کد بارکد قبلاً ثبت شده است");
+            }
+
+            return errors;
         }
     }
 

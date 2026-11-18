@@ -124,7 +124,80 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<DiscountItemCrud>> CreateAdvancedAsync(
+    DiscountItemCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var validationMessage = await ValidateDiscountItemAsync(
+                    input.ParentId.Value,
+                    input.ProductVariantId,
+                    input.ProductId,
+                    input.ProductBrandId,
+                    input.ProductCategoryId
+                );
+
+                if (validationMessage != null)
+                {
+                    return new ResultDto<DiscountItemCrud>
+                    {
+                        Success = false,
+                        Message = validationMessage
+                    };
+                }
+
+                var discountItem = new DiscountItemDto
+                {
+                    DiscountId = input.ParentId.Value,
+
+                    ProductId = input.ProductId == Guid.Empty
+                        ? null
+                        : input.ProductId,
+
+                    ProductBrandId = input.ProductBrandId == Guid.Empty
+                        ? null
+                        : input.ProductBrandId,
+
+                    ProductCategoryId = input.ProductCategoryId == Guid.Empty
+                        ? null
+                        : input.ProductCategoryId,
+
+                    ProductVariantId = input.ProductVariantId == Guid.Empty
+                        ? null
+                        : input.ProductVariantId,
+
+                    SortOrder = input.SortOrder
+                };
+
+                var result = await CreateWithViewAsync(
+                    discountItem,
+                    GetDiscountItemById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<DiscountItemCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<DiscountItemDto>> UpdateAsync(DiscountItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

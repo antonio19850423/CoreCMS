@@ -19,7 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<ProductVariantCrud?> GetProductVariantById(Guid id);
-        Task<ResultDto<ProductVariantCrud>> CreateWithViewAsync(
-        ProductVariantCrud input);
-    }
+    
+        Task<ResultDto<ProductVariantCrud>> CreateAdvancedAsync(ProductVariantCrud input);
+}
 }

@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<InventoryTransactionReasonCrud?> GetInventoryTransactionReasonById(Guid id);
+
+        Task<ResultDto<InventoryTransactionReasonCrud>> CreateAdvancedAsync(InventoryTransactionReasonCrud input);
 }
 }

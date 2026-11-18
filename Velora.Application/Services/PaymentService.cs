@@ -125,7 +125,69 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<PaymentCrud>> CreateAdvancedAsync(
+    PaymentCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var roleCodes = _currentUserService.GetRoleCodes();
+
+                var isAdminOrDeveloper =
+                    roleCodes.Contains("ADMIN") ||
+                    roleCodes.Contains("DEV");
+
+                if (!isAdminOrDeveloper)
+                {
+                    return new ResultDto<PaymentCrud>
+                    {
+                        Success = false,
+                        Message = "شما اجازه تغییر وضعیت سفارش را ندارید."
+                    };
+                }
+
+                var payment = new PaymentDto
+                {
+                    Amount = input.PaymentAmount.Value,
+                    BankAccountId = input.BankAccountId,
+                    GatewayId = input.GatewayId,
+                    GatewayTrackingCode = input.GatewayTrackingCode,
+                    GatewayTransactionId = input.GatewayTransactionId,
+                    PaidAt = DateTime.Now,
+                    PaymentMethod = input.PaymentMethod.Value,
+                    PaymentStatus = input.PaymentStatus.Value,
+                    ReceiptFile = input.ReceiptFile,
+                    ShoppingCartId = input.ShoppingCartId
+                };
+
+                var result = await CreateWithViewAsync(
+                    payment,
+                    GetPaymentById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<PaymentCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<PaymentDto>> UpdateAsync(PaymentCrud input)
         {
             var (successMessage, errorMessage) =

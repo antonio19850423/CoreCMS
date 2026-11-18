@@ -21,5 +21,7 @@ namespace Velora.Application.Shared.Services
         Task<ResourceDto?> GetByCodeAsync(string code);
     
         Task<ResourceCrud?> GetResourceById(Guid id);
+
+        Task<ResultDto<ResourceCrud>> CreateAdvancedAsync(ResourceCrud input);
 }
 }

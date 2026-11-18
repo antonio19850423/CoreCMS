@@ -37,7 +37,7 @@ namespace Velora.Application.Shared.Dtos
         public string? Barcode { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 10, GridOrder = 10, ShowInGrid = true, ShowInForm = true, IsRequired = true)]
-        public int SortOrder { get; set; }
+        public int? SortOrder { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }
 

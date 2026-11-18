@@ -105,7 +105,61 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SiteMenuCrud>> CreateAdvancedAsync(
+    SiteMenuCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var link1Url = await _linkResolverService.GetUrlAsync(
+                    input.Link1TypeId,
+                    input.Link1TargetId,
+                    input.Link1Url
+                );
+
+                var siteMenu = new SiteMenuDto
+                {
+                    Icon = input.Icon,
+                    IconColor = input.IconColor,
+                    IsActive = input.IsActive,
+                    Link1Color = input.Link1Color,
+                    Link1OpenInNewTab = input.Link1OpenInNewTab,
+                    Link1TargetId = input.Link1TargetId,
+                    Link1Text = input.Link1Text,
+                    Link1TypeId = input.Link1TypeId,
+                    Link1Url = link1Url,
+                    ParentId = input.ParentId,
+                    SortOrder = input.SortOrder
+                };
+
+                var result = await CreateWithViewAsync(
+                    siteMenu,
+                    GetSiteMenuById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SiteMenuCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SiteMenuDto>> UpdateAsync(SiteMenuCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

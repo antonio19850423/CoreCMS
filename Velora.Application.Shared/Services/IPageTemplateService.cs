@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<PageTemplateCrud?> GetPageTemplateById(Guid id);
+
+        Task<ResultDto<PageTemplateCrud>> CreateAdvancedAsync(PageTemplateCrud input);
 }
 }

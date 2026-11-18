@@ -171,7 +171,132 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SectionCrud>> CreateAdvancedAsync(
+    SectionCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var link1Url = await _linkResolverService.GetUrlAsync(
+                    input.Link1TypeId, input.Link1TargetId, input.Link1Url);
+
+                var link2Url = await _linkResolverService.GetUrlAsync(
+                    input.Link2TypeId, input.Link2TargetId, input.Link2Url);
+
+                var link3Url = await _linkResolverService.GetUrlAsync(
+                    input.Link3TypeId, input.Link3TargetId, input.Link3Url);
+
+                var link4Url = await _linkResolverService.GetUrlAsync(
+                    input.Link4TypeId, input.Link4TargetId, input.Link4Url);
+
+                var section = new SectionDto
+                {
+                    ColumnsCount = input.ColumnsCount,
+                    ComponentTypeId = input.ComponentTypeId,
+                    Description = input.Description,
+                    ImageUrl = input.ImageUrl,
+                    IsActive = input.IsActive,
+                    PageId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    Subtitle = input.Subtitle,
+                    Title = input.Title,
+                    ImageAlt = input.ImageAlt,
+                    IconAlt = input.IconAlt,
+                    Icon = input.Icon,
+                    Features = input.Features,
+                    BackgroundColor = input.BackgroundColor,
+                    ContactEmailLabel = input.ContactEmailLabel,
+                    ContactFirstNameLabel = input.ContactFirstNameLabel,
+                    ContactLastNameLabel = input.ContactLastNameLabel,
+                    ContactMessageLabel = input.ContactMessageLabel,
+                    ContactSubmitButtonText = input.ContactSubmitButtonText,
+                    CopyrightText = input.CopyrightText,
+                    DescriptionColor = input.DescriptionColor,
+                    HeaderColor = input.HeaderColor,
+                    IconColor = input.IconColor,
+                    ImageAlt2 = input.ImageAlt2,
+                    ImageAlt3 = input.ImageAlt3,
+                    ImageAlt4 = input.ImageAlt4,
+                    ImageUrl2 = input.ImageUrl2,
+                    ImageUrl3 = input.ImageUrl3,
+                    ImageUrl4 = input.ImageUrl4,
+
+                    Link1Color = input.Link1Color,
+                    Link1TargetId = input.Link1TargetId,
+                    Link1TypeId = input.Link1TypeId,
+                    Link1OpenInNewTab = input.Link1OpenInNewTab,
+                    Link1Text = input.Link1Text,
+                    Link1Url = link1Url,
+
+                    Link2Color = input.Link2Color,
+                    Link2TargetId = input.Link2TargetId,
+                    Link2TypeId = input.Link2TypeId,
+                    Link2OpenInNewTab = input.Link2OpenInNewTab,
+                    Link2Text = input.Link2Text,
+                    Link2Url = link2Url,
+
+                    Link3Color = input.Link3Color,
+                    Link3TargetId = input.Link3TargetId,
+                    Link3TypeId = input.Link3TypeId,
+                    Link3OpenInNewTab = input.Link3OpenInNewTab,
+                    Link3Text = input.Link3Text,
+                    Link3Url = link3Url,
+
+                    Link4Color = input.Link4Color,
+                    Link4TargetId = input.Link4TargetId,
+                    Link4TypeId = input.Link4TypeId,
+                    Link4OpenInNewTab = input.Link4OpenInNewTab,
+                    Link4Text = input.Link4Text,
+                    Link4Url = link4Url,
+
+                    MapEmbedUrl = input.MapEmbedUrl,
+                    SubtitleColor = input.SubtitleColor,
+                    ThumbnailUrl = input.ThumbnailUrl,
+                    VideoUrl = input.VideoUrl,
+                    EnglishTitle = input.EnglishTitle,
+                    IsActiveBrands = input.IsActiveBrands,
+                    IsActiveCategries = input.IsActiveCategries,
+                    IsBestSellingProducts = input.IsBestSellingProducts,
+                    IsLatestNews = input.IsLatestNews,
+                    IsSpecialOffers = input.IsSpecialOffers,
+                    IsLatestProducts = input.IsLatestProducts,
+                    ButtonColor = input.ButtonColor,
+                    TextColor = input.TextColor,
+                    BackgroundGradient = input.BackgroundGradient,
+                    Price = input.Price,
+                    SecondaryDescription = input.SecondaryDescription,
+                    SecondaryTitle = input.SecondaryTitle,
+                    EnglishSubtitle = input.EnglishSubtitle
+                };
+
+                var result = await CreateWithViewAsync(
+                    section,
+                    GetSectionById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SectionCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SectionDto>> UpdateAsync(SectionCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

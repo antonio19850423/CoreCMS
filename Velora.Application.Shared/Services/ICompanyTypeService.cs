@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<ComponentTypeCrud?> GetComponentTypeById(Guid id);
+
+        Task<ResultDto<ComponentTypeCrud>> CreateAdvancedAsync(ComponentTypeCrud input);
 }
 }

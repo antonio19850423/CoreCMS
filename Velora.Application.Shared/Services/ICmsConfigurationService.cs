@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<CmsConfigurationCrud?> GetCmsConfigurationById(Guid id);
+
+        Task<ResultDto<CmsConfigurationCrud>> CreateAdvancedAsync(CmsConfigurationCrud input);
 }
 }

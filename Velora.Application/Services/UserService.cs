@@ -158,7 +158,98 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<UserCrud>> CreateAdvancedAsync(
+    UserCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var user = new UserDto
+                {
+                    Email = input.Email,
+                    IsActive = input.IsActive ?? true,
+                    Password = input.Password ?? BCrypt.Net.BCrypt.HashPassword(input.Password),
+                    PhoneNumber = input.PhoneNumber,
+                    UserName = input.UserName,
+                    MobileNumber = input.MobileNumber,
+                    NationalCode = input.NationalCode
+                };
+
+                var userResult = await CreateWithViewAsync(
+                    user,
+                    GetUserById,
+                    x => x.Id
+                );
+
+                if (!userResult.Success)
+                    return userResult;
+
+                var userId = userResult.Data.Id;
+
+                var userProfile = new UserProfileDto
+                {
+                    Address = input.Address,
+                    Firstname = input.FirstName,
+                    Lastname = input.LastName,
+                    Userid = userId.Value,
+                    ProfileImage = input.ProfileImage,
+                    Age = input.Age
+                };
+
+                await _userProfileService.CreateAsync(userProfile);
+
+                var roleIds = input.RoleIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(Guid.Parse)
+                    .ToList() ?? new List<Guid>();
+
+                var userRoles = await _userRoleService.GetByUserRolesAsync(userId.Value);
+
+                var rolesToRemove = userRoles
+                    .Where(r => !roleIds.Contains(r.Roleid))
+                    .ToList();
+
+                foreach (var role in rolesToRemove)
+                {
+                    await _userRoleService.DeleteAsync(role.Id);
+                }
+
+                if (roleIds.Any())
+                {
+                    foreach (var roleId in roleIds)
+                    {
+                        var userRole = new UserRoleDto
+                        {
+                            Roleid = roleId,
+                            Userid = userId.Value
+                        };
+
+                        await _userRoleService.CreateAsync(userRole);
+                    }
+                }
+
+                if (userResult.Success)
+                    userResult.Message = successMessage;
+
+                return userResult;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<UserCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<UserDto>> UpdateAsync(UserCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

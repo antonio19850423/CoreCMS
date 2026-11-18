@@ -99,7 +99,50 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductReviewCrud>> CreateAdvancedAsync(
+    ProductReviewCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var productReview = new ProductReviewDto
+                {
+                    Title = input.Title,
+                    Comment = input.Comment,
+                    IsApproved = input.IsApproved,
+                    UserId = input.UserId,
+                    ProductId = input.ProductId,
+                    Rate = input.Rate
+                };
+
+                var result = await CreateWithViewAsync(
+                    productReview,
+                    GetProductReviewById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductReviewCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductReviewDto>> UpdateAsync(ProductReviewCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

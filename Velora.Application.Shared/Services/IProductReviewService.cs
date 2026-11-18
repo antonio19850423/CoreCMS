@@ -29,5 +29,7 @@ int pageNumber,
 int pageSize);
     
         Task<ProductReviewCrud?> GetProductReviewById(Guid id);
+
+        Task<ResultDto<ProductReviewCrud>> CreateAdvancedAsync(ProductReviewCrud input);
 }
 }

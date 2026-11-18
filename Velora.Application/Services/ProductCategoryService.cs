@@ -99,7 +99,54 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductCategoryCrud>> CreateAdvancedAsync(
+            ProductCategoryCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var productCategory = new ProductCategoryDto
+                {
+                    Icon = input.Icon,
+                    IconColor = input.IconColor,
+                    IsActive = input.IsActive,
+                    Description = input.Description,
+                    Name = input.Name,
+                    Slug = input.Slug,
+                    ParentId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    SeoDescription = input.SeoDescription,
+                    SeoTitle = input.SeoTitle
+                };
+
+                var result = await CreateWithViewAsync(
+                    productCategory,
+                    GetProductCategoryById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductCategoryCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductCategoryDto>> UpdateAsync(ProductCategoryCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

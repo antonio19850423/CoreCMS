@@ -21,5 +21,7 @@ int pageSize);
         Task<ProductFileCrud?> GetProductFileById(Guid id);
         Task<ResultDto<ProductFileCrud>> CreateWithViewAsync(
         ProductFileCrud input);
+
+        Task<ResultDto<ProductFileCrud>> CreateAdvancedAsync(ProductFileCrud input);
 }
 }

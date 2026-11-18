@@ -105,7 +105,56 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ShoppingCartItemCrud>> CreateAdvancedAsync(
+    ShoppingCartItemCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var shoppingCartItem = new ShoppingCartItemDto
+                {
+                    DiscountAmount = input.DiscountAmount ?? 0,
+                    DiscountId = input.DiscountId,
+                    DiscountItemId = input.DiscountItemId,
+                    DiscountType = input.DiscountType,
+                    DiscountValue = input.DiscountValue,
+                    FinalUnitPrice = input.FinalUnitPrice ?? 0,
+                    ProductId = input.ProductId.Value,
+                    ProductTypeId = input.ProductTypeId,
+                    Quantity = input.Quantity ?? 0,
+                    ShoppingCartId = input.ShoppingCartId.Value,
+                    UnitPrice = input.UnitPrice ?? 0,
+                    VariantId = input.VariantId
+                };
+
+                var result = await CreateWithViewAsync(
+                    shoppingCartItem,
+                    GetShoppingCartItemById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ShoppingCartItemCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ShoppingCartItemDto>> UpdateAsync(ShoppingCartItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

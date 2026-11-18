@@ -100,7 +100,52 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SmsLogCrud>> CreateAdvancedAsync(
+    SmsLogCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var smsLog = new SmsLogDto
+                {
+                    ErrorMessage = input.ErrorMessage,
+                    IsSuccess = input.IsSuccess,
+                    Message = input.Message,
+                    Mobile = input.Mobile,
+                    Provider = input.Provider,
+                    ProviderMessageId = input.ProviderMessageId,
+                    SmsType = input.SmsType,
+                    SentAt = DateTime.Now
+                };
+
+                var result = await CreateWithViewAsync(
+                    smsLog,
+                    GetSmsLogById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SmsLogCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SmsLogDto>> UpdateAsync(SmsLogCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

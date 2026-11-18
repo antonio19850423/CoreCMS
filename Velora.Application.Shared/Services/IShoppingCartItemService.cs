@@ -20,5 +20,7 @@ int pageNumber,
 int pageSize);
     
         Task<ShoppingCartItemCrud?> GetShoppingCartItemById(Guid id);
+
+        Task<ResultDto<ShoppingCartItemCrud>> CreateAdvancedAsync(ShoppingCartItemCrud input);
 }
 }

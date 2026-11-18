@@ -120,7 +120,73 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<DiscountCrud>> CreateAdvancedAsync(
+    DiscountCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                if (input.StartDate >= input.EndDate)
+                {
+                    return new ResultDto<DiscountCrud>
+                    {
+                        Success = false,
+                        Message = "تاریخ پایان باید بعد از تاریخ شروع باشد."
+                    };
+                }
+
+                var hasOverlap = await HasDateOverlapAsync(
+                    input.StartDate,
+                    input.EndDate
+                );
+
+                if (hasOverlap)
+                {
+                    return new ResultDto<DiscountCrud>
+                    {
+                        Success = false,
+                        Message = "بازه زمانی این تخفیف با یک تخفیف فعال دیگر تداخل دارد."
+                    };
+                }
+
+                var discount = new DiscountDto
+                {
+                    DiscountType = input.DiscountType,
+                    DiscountValue = input.DiscountValue,
+                    EndDate = input.EndDate,
+                    IsActive = input.IsActive,
+                    Name = input.Name,
+                    StartDate = input.StartDate
+                };
+
+                var result = await CreateWithViewAsync(
+                    discount,
+                    GetDiscountById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<DiscountCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<DiscountDto>> UpdateAsync(DiscountCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

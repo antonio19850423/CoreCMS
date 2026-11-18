@@ -74,7 +74,7 @@ namespace Velora.Host.Controllers
                     Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
                 });
 
-            var result = await _ProductAttributeValueService.CreateWithViewAsync(ProductAttributeValue);
+            var result = await _ProductAttributeValueService.CreateAdvancedAsync(ProductAttributeValue);
             if (!result.Success)
                 return BadRequest(result);
 

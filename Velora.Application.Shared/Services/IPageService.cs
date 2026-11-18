@@ -32,5 +32,7 @@ int pageSize);
                     string slug);
     
         Task<PageCrud?> GetPageById(Guid id);
+
+        Task<ResultDto<PageCrud>> CreateAdvancedAsync(PageCrud input);
 }
 }

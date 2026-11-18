@@ -94,7 +94,48 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<LinkTypeCrud>> CreateAdvancedAsync(
+LinkTypeCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var LinkType = new LinkTypeDto
+                {
+                    Code = input.Code,
+                    IsActive = input.IsActive,
+                    Name = input.Name,
+                    SortOrder = input.SortOrder,
+                };
+
+                var result = await CreateWithViewAsync(
+                    LinkType,
+                    GetLinkTypeById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<LinkTypeCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<LinkTypeDto>> UpdateAsync(LinkTypeCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

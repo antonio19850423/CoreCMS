@@ -93,7 +93,45 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<StateCrud>> CreateAdvancedAsync(
+    StateCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var state = new StateDto
+                {
+                    Name = input.StateTitle
+                };
+
+                var result = await CreateWithViewAsync(
+                    state,
+                    GetStateById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<StateCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<StateDto>> UpdateAsync(StateCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

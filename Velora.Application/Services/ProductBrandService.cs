@@ -97,7 +97,51 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductBrandCrud>> CreateAdvancedAsync(
+    ProductBrandCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var productBrand = new ProductBrandDto
+                {
+                    Slug = input.Slug,
+                    SortOrder = input.SortOrder.Value,
+                    Website = input.Website,
+                    Logo = input.Logo,
+                    Name = input.Name,
+                    IsActive = input.IsActive.Value,
+                    Description = input.Description
+                };
+
+                var result = await CreateWithViewAsync(
+                    productBrand,
+                    GetProductBrandById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductBrandCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductBrandDto>> UpdateAsync(ProductBrandCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

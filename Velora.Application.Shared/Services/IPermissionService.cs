@@ -20,5 +20,7 @@ int pageSize);
         Task<HashSet<string>> GetAllowedMenuResourceIdsAsync();
     
         Task<PermissionCrud?> GetPermissionById(Guid id);
+
+        Task<ResultDto<PermissionCrud>> CreateAdvancedAsync(PermissionCrud input);
 }
 }

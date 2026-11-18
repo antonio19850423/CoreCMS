@@ -21,5 +21,7 @@ int pageNumber,
 int pageSize);
     
         Task<CouponCrud?> GetCouponById(Guid id);
+
+        Task<ResultDto<CouponCrud>> CreateAdvancedAsync(CouponCrud input);
 }
 }

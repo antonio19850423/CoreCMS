@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<PaymentGatewayCrud?> GetPaymentGatewayById(Guid id);
+
+        Task<ResultDto<PaymentGatewayCrud>> CreateAdvancedAsync(PaymentGatewayCrud input);
 }
 }

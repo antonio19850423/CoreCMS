@@ -151,7 +151,100 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ContentItemCrud>> CreateAdvancedAsync(
+    ContentItemCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var contentItem = new ContentItemDto
+                {
+                    Title = input.Title,
+                    Content = input.Content,
+                    Summary = input.Summary,
+                    PublishedAt = input.PublishedAt,
+                    PageId = input.ParentId,
+                    ImageUrl = input.ImageUrl,
+                    ImageAlt = input.ImageAlt,
+                    ExternalUrl = input.ExternalUrl,
+                    AuthorAvatarUrl = input.AuthorAvatarUrl,
+                    AuthorName = input.AuthorName,
+                    AuthorTitle = input.AuthorTitle,
+                    CategoryId = input.CategoryId,
+                    ContentType = input.ContentType,
+                    IsActive = input.IsActive,
+                    SortOrder = input.SortOrder,
+                    Slug = input.Slug,
+                    SourceTitle = input.SourceTitle,
+                    SourceUrl = input.SourceUrl,
+                    ImageDetailAlt = input.ImageDetailAlt,
+                    ImageDetailUrl = input.ImageDetailUrl,
+                    IsPublished = input.IsPublished
+                };
+
+                var result = await CreateWithViewAsync(
+                    contentItem,
+                    GetContentItemById,
+                    x => x.Id
+                );
+
+                if (!result.Success)
+                    return result;
+
+                var contentItemId = result.Data.Id;
+
+                var tagIds = input.TagIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(Guid.Parse)
+                    .ToList() ?? new List<Guid>();
+
+                var contentItemTags =
+                    await _contentItemTagService.GetByContentItemTagsAsync(contentItemId);
+
+                var tagsToRemove = contentItemTags
+                    .Where(r => !tagIds.Contains(r.TagId))
+                    .ToList();
+
+                foreach (var tag in tagsToRemove)
+                {
+                    await _contentItemTagService.DeleteAsync(tag.Id);
+                }
+
+                if (tagIds.Any())
+                {
+                    foreach (var tagId in tagIds)
+                    {
+                        var contentItemTag = new ContentItemTagDto
+                        {
+                            TagId = tagId,
+                            ContentItemId = contentItemId
+                        };
+
+                        await _contentItemTagService.CreateAsync(contentItemTag);
+                    }
+                }
+
+                result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ContentItemCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ContentItemDto>> UpdateAsync(ContentItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

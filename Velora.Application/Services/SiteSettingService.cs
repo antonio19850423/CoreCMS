@@ -142,7 +142,94 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SiteSettingCrud>> CreateAdvancedAsync(
+    SiteSettingCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var siteSetting = new SiteSettingDto
+                {
+                    Address = input.Address,
+                    Address2 = input.Address2,
+                    Address2Title = input.Address2Title,
+                    AddressTitle = input.AddressTitle,
+                    DarkLogoAlt = input.DarkLogoAlt,
+                    DarkLogoUrl = input.DarkLogoUrl,
+                    DefaultMetaDescription = input.DefaultMetaDescription,
+                    DefaultMetaKeywords = input.DefaultMetaKeywords,
+                    DefaultMetaTitle = input.DefaultMetaTitle,
+                    DomainName = input.DomainName,
+                    Email = input.Email,
+                    FaviconUrl = input.FaviconUrl,
+                    Fax = input.Fax,
+                    FaxTitle = input.FaxTitle,
+                    IsActive = input.IsActive,
+                    LogoAlt = input.LogoAlt,
+                    LogoUrl = input.LogoUrl,
+                    Mobile = input.Mobile,
+                    MobileTitle = input.MobileTitle,
+                    Phone = input.Phone,
+                    Phone2 = input.Phone2,
+                    PhoneTitle = input.PhoneTitle,
+                    Phone2Title = input.Phone2Title,
+                    SiteName = input.SiteName,
+                    SmtpHost = input.SmtpHost,
+                    SmtpPort = input.SmtpPort,
+                    SmtpUserName = input.SmtpUserName,
+                    SmtpPassword = input.SmtpPassword,
+                    SmtpEnableSsl = input.SmtpEnableSsl,
+                    OtpCodeLength = input.OtpCodeLength,
+                    OtpExpirationMinutes = input.OtpExpirationMinutes,
+                    OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
+                    OtpMaxVerifyAttempts = input.OtpMaxVerifyAttempts,
+                    OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
+                    DutyPercentage = input.DutyPercentage,
+                    TaxPercentage = input.TaxPercentage,
+                    HasDuty = input.HasDuty,
+                    HasTax = input.HasTax,
+                    HasCardToCardPayment = input.HasCardToCardPayment,
+                    Background = input.Background,
+                    BackgroundGradient = input.BackgroundGradient,
+                    HeaderPhone = input.HeaderPhone,
+                    HeaderPhoneColor = input.HeaderPhoneColor,
+                    HeaderPhoneEnabled = input.HeaderPhoneEnabled,
+                    HeaderPhoneIcon = input.HeaderPhoneIcon,
+                    FooterBackgroundColor = input.FooterBackgroundColor,
+                    HeaderBackgroundColor = input.HeaderBackgroundColor,
+                    HeaderTextColor = input.HeaderTextColor,
+                    FooterTextColor = input.FooterTextColor,
+                    TextColor = input.TextColor
+                };
+
+                var result = await CreateWithViewAsync(
+                    siteSetting,
+                    GetSiteSettingById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SiteSettingCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SiteSettingDto>> UpdateAsync(SiteSettingCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

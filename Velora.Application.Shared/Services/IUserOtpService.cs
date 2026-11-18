@@ -23,5 +23,7 @@ int pageSize);
             int purpose);
     
         Task<UserOtpCrud?> GetUserOtpById(Guid id);
+
+        Task<ResultDto<UserOtpCrud>> CreateAdvancedAsync(UserOtpCrud input);
 }
 }

@@ -109,7 +109,54 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<BankAccountCrud>> CreateAdvancedAsync(
+            BankAccountCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var bankAccount = new BankAccountDto
+                {
+                    IsActive = input.IsActive,
+                    SiteSettingId = input.ParentId,
+                    AccountNumber = input.AccountNumber,
+                    AccountOwnerName = input.AccountOwnerName,
+                    BankName = input.BankName,
+                    CardNumber = input.CardNumber,
+                    Description = input.Description,
+                    DisplayOrder = input.DisplayOrder,
+                    IsDefault = input.IsDefault,
+                    ShebaNumber = input.ShebaNumber
+                };
+
+                var result = await CreateWithViewAsync(
+                    bankAccount,
+                    GetBankAccountById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<BankAccountCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<BankAccountDto>> UpdateAsync(BankAccountCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

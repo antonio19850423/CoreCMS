@@ -22,5 +22,7 @@ int pageSize);
     Guid stateId);
     
         Task<CityCrud?> GetCityById(Guid id);
+
+        Task<ResultDto<CityCrud>> CreateAdvancedAsync(CityCrud input);
 }
 }

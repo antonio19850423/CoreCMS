@@ -19,5 +19,7 @@ int pageNumber,
 int pageSize);
     
         Task<SiteSettingCrud?> GetSiteSettingById(Guid id);
+
+        Task<ResultDto<SiteSettingCrud>> CreateAdvancedAsync(SiteSettingCrud input);
 }
 }

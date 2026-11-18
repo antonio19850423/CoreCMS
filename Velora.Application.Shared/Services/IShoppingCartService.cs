@@ -104,6 +104,8 @@ int pageSize);
         Task<IQueryable<MyOrderDetailQuery>> MyOrderDetailQuery();
     
         Task<ShoppingCartCrud?> GetShoppingCartById(Guid id);
+
+        Task<ResultDto<ShoppingCartCrud>> CreateAdvancedAsync(ShoppingCartCrud input);
 }
 
 }

@@ -106,7 +106,62 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<CmsConfigurationCrud>> CreateAdvancedAsync(
+    CmsConfigurationCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var cmsConfiguration = new CmsConfigurationDto
+                {
+                    DefaultTheme = input.DefaultTheme,
+                    EnableBlog = input.EnableBlog,
+                    EnableCache = input.EnableCache,
+                    EnableComments = input.EnableComments,
+                    EnableMultiLanguage = input.EnableMultiLanguage,
+                    EnableNews = input.EnableNews,
+                    EnableSeo = input.EnableSeo,
+                    EnableShop = input.EnableShop,
+                    IsActive = input.IsActive,
+                    SiteType = input.SiteType,
+                    EnableDynamicPages = input.EnableDynamicPages,
+                    EnableFaq = input.EnableFaq,
+                    EnablePrivacy = input.EnablePrivacy,
+                    EnableProductBrandsMenu = input.EnableProductBrandsMenu,
+                    EnableProductCategoriesMenu = input.EnableProductCategoriesMenu,
+                    EnableProductSearchMenu = input.EnableProductSearchMenu,
+                    EnableUserRegistration = input.EnableUserRegistration,
+                    EnableUserLogin = input.EnableUserLogin
+                };
+
+                var result = await CreateWithViewAsync(
+                    cmsConfiguration,
+                    GetCmsConfigurationById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<CmsConfigurationCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<CmsConfigurationDto>> UpdateAsync(CmsConfigurationCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

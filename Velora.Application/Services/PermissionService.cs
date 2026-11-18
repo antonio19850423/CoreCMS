@@ -130,7 +130,82 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<PermissionCrud>> CreateAdvancedAsync(
+    PermissionCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var permission = new PermissionDto
+                {
+                    Actions = input.Actions.Value,
+                    ResourceId = input.ResourceId.Value,
+                    IsActive = input.IsActive ?? true
+                };
+
+                var result = await CreateWithViewAsync(
+                    permission,
+                    GetPermissionById,
+                    x => x.Id
+                );
+
+                if (!result.Success)
+                    return result;
+
+                var permissionId = result.Data.Id;
+
+                var roleIds = input.RoleIds?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(Guid.Parse)
+                    .ToList() ?? new List<Guid>();
+
+                // دریافت نقش‌های فعلی مجوز
+                var permissionRoles =
+                    await _rolePermissionService.GetByPermissionRolesAsync(permissionId.Value);
+
+                // حذف نقش‌هایی که در لیست جدید وجود ندارند
+                var rolesToRemove = permissionRoles
+                    .Where(r => !roleIds.Contains(r.RoleId))
+                    .ToList();
+
+                foreach (var role in rolesToRemove)
+                {
+                    await _rolePermissionService.DeleteAsync(role.Id);
+                }
+
+                // افزودن نقش‌های جدید
+                foreach (var roleId in roleIds)
+                {
+                    var permissionRole = new RolePermissionDto
+                    {
+                        RoleId = roleId,
+                        PermissionId = permissionId.Value
+                    };
+
+                    await _rolePermissionService.CreateAsync(permissionRole);
+                }
+
+                result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<PermissionCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<PermissionDto>> UpdateAsync(PermissionCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

@@ -149,7 +149,67 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ShoppingCartCrud>> CreateAdvancedAsync(
+    ShoppingCartCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var shoppingCart = new ShoppingCartDto
+                {
+                    AddressId = input.AddressId,
+                    CartToken = input.CartToken,
+                    CouponCode = input.CouponCode,
+                    CouponDiscountAmount = input.CouponDiscountAmount,
+                    CouponId = input.CouponId,
+                    Description = input.Description,
+                    ExpireAt = input.ExpireAt,
+                    FinalAmount = input.FinalAmount,
+                    OrderCode = input.OrderCode,
+                    OrderedAt = input.OrderedAt,
+                    PaidAt = input.PaidAt,
+                    PaymentMethod = input.PaymentMethod,
+                    ReceiverFirstName = input.ReceiverFirstName,
+                    ReceiverLastName = input.ReceiverLastName,
+                    ReceiverNationalCode = input.ReceiverNationalCode,
+                    ReceiverPhone = input.ReceiverPhone,
+                    ShippingMethodId = input.ShippingMethodId,
+                    ShippingPrice = input.ShippingPrice,
+                    Status = input.Status,
+                    UserId = input.UserId,
+                    AddressText = input.AddressText,
+                    ShippingMethodName = input.ShippingMethodName,
+                    OrderStatus = input.OrderStatus
+                };
+
+                var result = await CreateWithViewAsync(
+                    shoppingCart,
+                    GetShoppingCartById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ShoppingCartCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ShoppingCartDto>> UpdateAsync(ShoppingCartCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

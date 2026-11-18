@@ -19,5 +19,7 @@ int SectionItemNumber,
 int SectionItemSize);
     
         Task<SectionItemCrud?> GetSectionItemById(Guid id);
+
+        Task<ResultDto<SectionItemCrud>> CreateAdvancedAsync(SectionItemCrud input);
 }
 }

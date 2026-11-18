@@ -74,7 +74,7 @@ namespace Velora.Host.Controllers
                     Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
                 });
 
-            var result = await _ProductInventoryTransactionService.CreateWithViewAsync(ProductInventoryTransaction);
+            var result = await _ProductInventoryTransactionService.CreateAdvancedAsync(ProductInventoryTransaction);
             if (!result.Success)
                 return BadRequest(result);
 

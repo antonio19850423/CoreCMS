@@ -130,7 +130,52 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SectionGroupItemCrud>> CreateAdvancedAsync(
+    SectionGroupItemCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var sectionGroupItem = new SectionGroupItemDto
+                {
+                    Code = input.Code,
+                    Name = input.Name,
+                    Color = input.Color,
+                    Description = input.Description,
+                    GroupId = input.GroupId,
+                    Icon = input.Icon,
+                    IsActive = input.IsActive,
+                    SortOrder = input.SortOrder
+                };
+
+                var result = await CreateWithViewAsync(
+                    sectionGroupItem,
+                    GetSectionGroupItemById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SectionGroupItemCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SectionGroupItemDto>> UpdateAsync(SectionGroupItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

@@ -150,7 +150,114 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<SectionItemCrud>> CreateAdvancedAsync(
+    SectionItemCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var link1Url = await _linkResolverService.GetUrlAsync(
+                    input.Link1TypeId, input.Link1TargetId, input.Link1Url);
+
+                var link2Url = await _linkResolverService.GetUrlAsync(
+                    input.Link2TypeId, input.Link2TargetId, input.Link2Url);
+
+                var link3Url = await _linkResolverService.GetUrlAsync(
+                    input.Link3TypeId, input.Link3TargetId, input.Link3Url);
+
+                var link4Url = await _linkResolverService.GetUrlAsync(
+                    input.Link4TypeId, input.Link4TargetId, input.Link4Url);
+
+                var sectionItem = new SectionItemDto
+                {
+                    AvatarAlt = input.AvatarAlt,
+                    AvatarUrl = input.AvatarUrl,
+                    BackgroundColor = input.BackgroundColor,
+                    Description = input.Description,
+                    DescriptionColor = input.DescriptionColor,
+                    Title = input.Title,
+                    Icon = input.Icon,
+                    IconAlt = input.IconAlt,
+                    IconColor = input.IconColor,
+                    ImageAlt = input.ImageAlt,
+                    IsActive = input.IsActive,
+                    ImageUrl = input.ImageUrl,
+
+                    Link1Color = input.Link1Color,
+                    Link1TargetId = input.Link1TargetId,
+                    Link1TypeId = input.Link1TypeId,
+                    Link1OpenInNewTab = input.Link1OpenInNewTab,
+                    Link1Text = input.Link1Text,
+                    Link1Url = link1Url,
+
+                    Link2Color = input.Link2Color,
+                    Link2TargetId = input.Link2TargetId,
+                    Link2TypeId = input.Link2TypeId,
+                    Link2OpenInNewTab = input.Link2OpenInNewTab,
+                    Link2Text = input.Link2Text,
+                    Link2Url = link2Url,
+
+                    Link3Color = input.Link3Color,
+                    Link3TargetId = input.Link3TargetId,
+                    Link3TypeId = input.Link3TypeId,
+                    Link3OpenInNewTab = input.Link3OpenInNewTab,
+                    Link3Text = input.Link3Text,
+                    Link3Url = link3Url,
+
+                    Link4Color = input.Link4Color,
+                    Link4TargetId = input.Link4TargetId,
+                    Link4TypeId = input.Link4TypeId,
+                    Link4OpenInNewTab = input.Link4OpenInNewTab,
+                    Link4Text = input.Link4Text,
+                    Link4Url = link4Url,
+
+                    Price = input.Price,
+                    SectionId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    Subtitle = input.Subtitle,
+                    SubtitleColor = input.SubtitleColor,
+                    TitleColor = input.TitleColor,
+                    Features = input.Features,
+                    SectionGroupItemId = input.SectionGroupItemId,
+                    Question = input.Question,
+                    Role = input.Role,
+                    Name = input.Name,
+                    BrandId = input.BrandId,
+                    CategoryId = input.CategoryId,
+                    Answer = input.Answer,
+                    ProductId = input.ProductId,
+                    TextColor = input.TextColor,
+                    BackgroundGradient = input.BackgroundGradient
+                };
+
+                var result = await CreateWithViewAsync(
+                    sectionItem,
+                    GetSectionItemById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<SectionItemCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<SectionItemDto>> UpdateAsync(SectionItemCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

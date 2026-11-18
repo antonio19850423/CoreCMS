@@ -67,7 +67,47 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<RoleCrud>> CreateAdvancedAsync(
+    RoleCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var role = new RoleDto
+                {
+                    Code = input.Code,
+                    Description = input.Description,
+                    Name = input.Name
+                };
+
+                var result = await CreateWithViewAsync(
+                    role,
+                    GetRoleById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<RoleCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<RoleDto>> UpdateAsync(RoleCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();

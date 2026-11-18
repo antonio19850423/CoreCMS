@@ -97,7 +97,51 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        public async Task<ResultDto<ProductTagCrud>> CreateAdvancedAsync(
+    ProductTagCrud input)
+        {
+            var (successMessage, errorMessage) =
+                await _messageService.Value.GetSaveMessagesAsync();
 
+            try
+            {
+                var productTag = new ProductTagDto
+                {
+                    Slug = input.Slug,
+                    SortOrder = input.SortOrder.Value,
+                    Color = input.Color,
+                    Name = input.Name,
+                    IsActive = input.IsActive.Value,
+                    Description = input.Description,
+                    TextColor = input.TextColor
+                };
+
+                var result = await CreateWithViewAsync(
+                    productTag,
+                    GetProductTagById,
+                    x => x.Id
+                );
+
+                if (result.Success)
+                    result.Message = successMessage;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _transactionService.RollbackAsync();
+
+                var result = new ResultDto<ProductTagCrud>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
+
+                result.Errors.Add(ex.Message);
+
+                return result;
+            }
+        }
         public async Task<ResultDto<ProductTagDto>> UpdateAsync(ProductTagCrud input)
         {
             var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
