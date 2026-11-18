@@ -10,7 +10,7 @@ namespace Velora.Application.Shared.Services
     public interface IResourceTypeService:IGenericService<SqlResourceType, PgResourcetype, ResourceTypeDto>, IBaseService
     {
         Task<ResultDto<ResourceTypeDto>> CreateAsync(ResourceTypeCrud input);
-        Task<ResultDto<ResourceTypeDto>> UpdateAsync(ResourceTypeCrud input);
+        Task<ResultDto<ResourceTypeCrud>> UpdateAsync(ResourceTypeCrud input);
     
         Task<ResourceTypeCrud?> GetResourceTypeById(Guid id);
 

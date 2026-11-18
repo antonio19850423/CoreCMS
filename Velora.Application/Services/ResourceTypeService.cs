@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,28 +19,18 @@ namespace Velora.Application.Services
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
         protected readonly Lazy<ILocalizationMessageService> _messageService;
-
-        public ResourceTypeService(
-              ISqlRepository<SqlResourceType> sqlRepository,
-              IPosgreSqlRepository<PgResourcetype> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration,
-              Lazy<ILocalizationMessageService> messageService,
-              ITransactionService transactionService
-            , ICurrentUserService currentUserService
-              )
-              : base(sqlRepository, pgRepository, mapper, configuration,messageService, currentUserService)
+        public ResourceTypeService(ISqlRepository<SqlResourceType> sqlRepository, IPosgreSqlRepository<PgResourcetype> pgRepository, IMapper mapper, IConfiguration configuration, Lazy<ILocalizationMessageService> messageService, ITransactionService transactionService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _messageService = messageService;
             _transactionService = transactionService;
         }
+
         public async Task<ResultDto<ResourceTypeDto>> CreateAsync(ResourceTypeCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-              
                 var resourceType = new ResourceTypeDto
                 {
                     Code = input.Code,
@@ -48,11 +38,9 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name,
                 };
-
                 var result = await CreateAsync(resourceType);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -68,12 +56,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ResourceTypeCrud>> CreateAdvancedAsync(
-    ResourceTypeCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ResourceTypeCrud>> CreateAdvancedAsync(ResourceTypeCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var resourceType = new ResourceTypeDto
@@ -83,41 +69,32 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name
                 };
-
-                var result = await CreateWithViewAsync(
-                    resourceType,
-                    GetResourceTypeById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(resourceType, GetResourceTypeById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ResourceTypeCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ResourceTypeDto>> UpdateAsync(ResourceTypeCrud input)
+
+        public async Task<ResultDto<ResourceTypeCrud>> UpdateAsync(ResourceTypeCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ResourceTypeDto>
+                    return new ResultDto<ResourceTypeCrud>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -131,19 +108,41 @@ namespace Velora.Application.Services
                     Code = input.Code,
                     Name = input.Name,
                     Description = input.Description,
-                    DisplayName= input.DisplayName,
+                    DisplayName = input.DisplayName,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<ResourceTypeCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetResourceTypeById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ResourceTypeCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ResourceTypeCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ResourceTypeDto>
+                var result = new ResultDto<ResourceTypeCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -152,10 +151,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResourceTypeCrud?> GetResourceTypeById(Guid id)
         {
             return await GetSqlViewByIdQueryable<SqlResourceType, ResourceTypeCrud>(id);
         }
     }
-
 }

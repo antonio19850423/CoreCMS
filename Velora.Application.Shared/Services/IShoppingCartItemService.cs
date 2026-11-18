@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ShoppingCartItemCrud>> GetAllViews();
         Task<ResultDto<ShoppingCartItemDto>> CreateAsync(ShoppingCartItemCrud input);
-        Task<ResultDto<ShoppingCartItemDto>> UpdateAsync(ShoppingCartItemCrud input);
+        Task<ResultDto<ShoppingCartItemCrud>> UpdateAsync(ShoppingCartItemCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

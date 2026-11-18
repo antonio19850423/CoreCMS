@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<NewsletterSubscriberCrud>> GetAllViews();
         Task<ResultDto<NewsletterSubscriberDto>> CreateAsync(NewsletterSubscriberCrud input);
-        Task<ResultDto<NewsletterSubscriberDto>> UpdateAsync(NewsletterSubscriberCrud input);
+        Task<ResultDto<NewsletterSubscriberCrud>> UpdateAsync(NewsletterSubscriberCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<ResultDto<NewsletterSubscriberDto>> SubscribeAsync(string email);
         Task<byte[]> ExportAsync(

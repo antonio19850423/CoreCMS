@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<CategoryAttributeCrud>> GetAllViews();
         Task<ResultDto<CategoryAttributeDto>> CreateAsync(CategoryAttributeCrud input);
-        Task<ResultDto<CategoryAttributeDto>> UpdateAsync(CategoryAttributeCrud input);
+        Task<ResultDto<CategoryAttributeCrud>> UpdateAsync(CategoryAttributeCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

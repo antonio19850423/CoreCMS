@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly ICouponService _roleCouponService;
         protected readonly ICurrentUserService _currentUserService;
-        public CouponService(
-              ISqlRepository<SqlCoupon> sqlRepository,
-              IPosgreSqlRepository<SqlCoupon> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public CouponService(ISqlRepository<SqlCoupon> sqlRepository, IPosgreSqlRepository<SqlCoupon> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -48,15 +41,17 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<CouponCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<VwCouponForm, VwCouponForm, CouponCrud>();
         }
+
         public async Task<ResultDto<CouponDto>> CreateAsync(CouponCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -75,6 +70,7 @@ namespace Velora.Application.Services
                         Message = "کد کوپن تکراری است."
                     };
                 }
+
                 var Coupon = new CouponDto
                 {
                     CouponType = input.CouponType,
@@ -83,19 +79,16 @@ namespace Velora.Application.Services
                     MaximumDiscountAmount = input.MaximumDiscountAmount,
                     MinimumOrderAmount = input.MinimumOrderAmount,
                     Code = input.Code,
-                    EndDate=input.EndDate,
-                    IsActive=input.IsActive,
-                    IsSingleUsePerUser=input.IsSingleUsePerUser,
-                    StartDate=input.StartDate,
-                    UsageLimit=input.UsageLimit,
-                    UsedCount=input.UsedCount,
-
+                    EndDate = input.EndDate,
+                    IsActive = input.IsActive,
+                    IsSingleUsePerUser = input.IsSingleUsePerUser,
+                    StartDate = input.StartDate,
+                    UsageLimit = input.UsageLimit,
+                    UsedCount = input.UsedCount,
                 };
-
                 var result = await CreateAsync(Coupon);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -111,12 +104,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<CouponCrud>> CreateAdvancedAsync(
-    CouponCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<CouponCrud>> CreateAdvancedAsync(CouponCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (await IsCouponCodeDuplicateAsync(input.Code))
@@ -143,49 +134,41 @@ namespace Velora.Application.Services
                     UsageLimit = input.UsageLimit,
                     UsedCount = input.UsedCount
                 };
-
-                var result = await CreateWithViewAsync(
-                    coupon,
-                    GetCouponById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(coupon, GetCouponById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<CouponCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<CouponDto>> UpdateAsync(CouponCrud input)
+
+        public async Task<ResultDto<CouponCrud>> UpdateAsync(CouponCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<CouponCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<CouponCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
@@ -193,12 +176,13 @@ namespace Velora.Application.Services
                     };
                 if (await IsCouponCodeDuplicateAsync(input.Code, input.Id))
                 {
-                    return new ResultDto<CouponDto>
+                    return new ResultDto<CouponCrud>
                     {
                         Success = false,
                         Message = "کد کوپن تکراری است."
                     };
                 }
+
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new CouponDto
                 {
@@ -215,19 +199,40 @@ namespace Velora.Application.Services
                     StartDate = input.StartDate,
                     UsageLimit = input.UsageLimit,
                     UsedCount = input.UsedCount,
-
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<CouponCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetCouponById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<CouponCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<CouponCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<CouponDto>
+                var result = new ResultDto<CouponCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -236,44 +241,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdCoupons= new List<CouponDto>();
+            var createdCoupons = new List<CouponDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var Coupons = dt.ToModelList<CouponCrud>();
-
                 for (int i = 0; i < Coupons.Count; i++)
                 {
                     var Coupon = Coupons[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(Coupon);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdCoupons.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -283,9 +279,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdCoupons.Count,
@@ -302,54 +296,40 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
-        private async Task<bool> IsCouponCodeDuplicateAsync(
-    string code,
-    Guid? id = null)
+
+        private async Task<bool> IsCouponCodeDuplicateAsync(string code, Guid? id = null)
         {
-            return await Query().AnyAsync(x =>
-                x.Code == code &&
-                (!id.HasValue || x.Id != id.Value)
-            );
+            return await Query().AnyAsync(x => x.Code == code && (!id.HasValue || x.Id != id.Value));
         }
 
-
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentCoupon,
-int CouponNumber,
-int CouponSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentCoupon, int CouponNumber, int CouponSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<CouponCrud> data;
-
             if (exportCurrentCoupon)
             {
-                data = query
-                    .Skip((CouponNumber - 1) * CouponSize)
-                    .Take(CouponSize)
-                    .ToList();
+                data = query.Skip((CouponNumber - 1) * CouponSize).Take(CouponSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<CouponCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.Coupon, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.Coupon, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -362,13 +342,8 @@ int CouponSize)
         {
             if (string.IsNullOrWhiteSpace(couponCode))
                 return null;
-
             couponCode = couponCode.Trim();
-
-            return await Query()
-                .FirstOrDefaultAsync(x => x.Code == couponCode);
+            return await Query().FirstOrDefaultAsync(x => x.Code == couponCode);
         }
-
     }
-
 }

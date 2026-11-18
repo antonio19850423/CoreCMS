@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<BankAccountCrud>> GetAllViews();
         Task<ResultDto<BankAccountDto>> CreateAsync(BankAccountCrud input);
-        Task<ResultDto<BankAccountDto>> UpdateAsync(BankAccountCrud input);
+        Task<ResultDto<BankAccountCrud>> UpdateAsync(BankAccountCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<IQueryable<BankAccountCrud>> GetBankAccountsBySiteInfoId(Guid siteInfoId);
         Task<BankAccountCrud?> GetBankAccountById(Guid id);

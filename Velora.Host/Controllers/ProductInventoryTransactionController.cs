@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Velora.Application.Services;
 using Velora.Application.Shared;
@@ -38,13 +38,11 @@ namespace Velora.Host.Controllers
     {
         private readonly IProductInventoryTransactionService _ProductInventoryTransactionService;
         private readonly ITransactionService _transactionService;
-
         public ProductInventoryTransactionController(IProductInventoryTransactionService ProductInventoryTransactionService, ITransactionService transactionService)
         {
             _ProductInventoryTransactionService = ProductInventoryTransactionService;
             _transactionService = transactionService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -59,60 +57,41 @@ namespace Velora.Host.Controllers
             var result = await _ProductInventoryTransactionService.GetByIdAsync(id);
             if (!result.Success)
                 return NotFound(result);
-
             return Ok(result);
         }
+
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] ProductInventoryTransactionCrud ProductInventoryTransaction)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<ProductInventoryTransactionDto>
-                {
-                    Success = false,
-                    Message = "Invalid model",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-                });
-
+                return BadRequest(new ResultDto<ProductInventoryTransactionDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             var result = await _ProductInventoryTransactionService.CreateAdvancedAsync(ProductInventoryTransaction);
             if (!result.Success)
                 return BadRequest(result);
-
             await _transactionService.CommitAsync();
             return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
         }
+
         [HttpPut]
         [Route("Update")]
         public async Task<IActionResult> Update([FromBody] ProductInventoryTransactionCrud dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<ProductInventoryTransactionDto>
-                {
-                    Success = false,
-                    Message = "Invalid model",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-                });
-
+                return BadRequest(new ResultDto<ProductInventoryTransactionDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             var result = await _ProductInventoryTransactionService.UpdateAsync(dto);
             if (!result.Success)
                 return NotFound(result);
-
-            await _transactionService.CommitAsync();
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return StatusCode(501, new
-            {
-                Success = false,
-                Message = "حذف تراکنش موجودی فعلاً غیرفعال است."
-            });
+            return StatusCode(501, new { Success = false, Message = "حذف تراکنش موجودی فعلاً غیرفعال است." });
             var result = await _ProductInventoryTransactionService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);
-
             await _transactionService.CommitAsync();
             return Ok(result);
         }
@@ -122,41 +101,24 @@ namespace Velora.Host.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 50_000_000)] // 50 MB
         public async Task<IActionResult> BulkInsert()
         {
-            return StatusCode(501, new
-            {
-                Success = false,
-                Message = "ورود گروهی تراکنش موجودی فعلاً غیرفعال است."
-            });
+            return StatusCode(501, new { Success = false, Message = "ورود گروهی تراکنش موجودی فعلاً غیرفعال است." });
             // اطمینان از اینکه فرم ارسال شده
             if (!Request.HasFormContentType)
                 return BadRequest(new { Message = "Invalid content type, expected multipart/form-data." });
-
             var form = await Request.ReadFormAsync();
             var file = form.Files.FirstOrDefault();
-
             if (file == null || file.Length == 0)
                 return BadRequest(new { Message = "File is required." });
-
             using var stream = file.OpenReadStream();
             var result = await _ProductInventoryTransactionService.BulkInsertAsync(stream);
-
             var bulkResult = new BulkInsertResult
             {
                 InsertedCount = result.Data?.InsertedCount ?? 0,
                 ErrorCount = result.Data?.ErrorCount ?? 0,
                 ErrorFileUrl = result.Data.ErrorFileUrl
-
             };
-
             await _transactionService.CommitAsync();
-
-            return Ok(new ResultDto<BulkInsertResult>
-            {
-                Success = result.Success,
-                Message = result.Message,
-                Data = bulkResult,
-                Errors = result.Errors
-            });
+            return Ok(new ResultDto<BulkInsertResult> { Success = result.Success, Message = result.Message, Data = bulkResult, Errors = result.Errors });
         }
 
         // 2️⃣ اکشن POST
@@ -166,15 +128,10 @@ namespace Velora.Host.Controllers
         {
             if (request == null)
                 return BadRequest(new { Success = false, Message = "Invalid request" });
-
             byte[] fileBytes;
             try
             {
-                fileBytes = await _ProductInventoryTransactionService.ExportAsync(
-                    request.ExportCurrentPage,
-                    request.PageNumber,
-                    request.PageSize
-                );
+                fileBytes = await _ProductInventoryTransactionService.ExportAsync(request.ExportCurrentPage, request.PageNumber, request.PageSize);
             }
             catch (Exception ex)
             {
@@ -182,11 +139,7 @@ namespace Velora.Host.Controllers
             }
 
             var fileName = $"file_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-            return File(
-                fileBytes,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                fileName
-            );
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
     }
 }

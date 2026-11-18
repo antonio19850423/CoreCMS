@@ -31,14 +31,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductCategoryService _roleProductCategoryService;
         protected readonly ICurrentUserService _currentUserService;
-        public ProductCategoryService(
-              ISqlRepository<SqlProductCategory> sqlRepository,
-              IPosgreSqlRepository<SqlProductCategory> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductCategoryService(ISqlRepository<SqlProductCategory> sqlRepository, IPosgreSqlRepository<SqlProductCategory> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -47,15 +40,17 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ProductCategoryCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<VwProductCategoryForm, VwProductCategoryForm, ProductCategoryCrud>();
         }
+
         public async Task<ResultDto<ProductCategoryDto>> CreateAsync(ProductCategoryCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -68,22 +63,20 @@ namespace Velora.Application.Services
                     };
                 var ProductCategory = new ProductCategoryDto
                 {
-                 Icon = input.Icon,
-                 IconColor = input.IconColor,
-                 IsActive = input.IsActive,
-                 Description = input.Description,
-                 Name = input.Name,
-                 Slug = input.Slug,
-                 ParentId = input.ParentId,
-                 SortOrder = input.SortOrder,
-                 SeoDescription = input.SeoDescription,
-                 SeoTitle = input.SeoTitle,
+                    Icon = input.Icon,
+                    IconColor = input.IconColor,
+                    IsActive = input.IsActive,
+                    Description = input.Description,
+                    Name = input.Name,
+                    Slug = input.Slug,
+                    ParentId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    SeoDescription = input.SeoDescription,
+                    SeoTitle = input.SeoTitle,
                 };
-
                 var result = await CreateAsync(ProductCategory);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -99,12 +92,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ProductCategoryCrud>> CreateAdvancedAsync(
-            ProductCategoryCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductCategoryCrud>> CreateAdvancedAsync(ProductCategoryCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var productCategory = new ProductCategoryDto
@@ -120,55 +111,46 @@ namespace Velora.Application.Services
                     SeoDescription = input.SeoDescription,
                     SeoTitle = input.SeoTitle
                 };
-
-                var result = await CreateWithViewAsync(
-                    productCategory,
-                    GetProductCategoryById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(productCategory, GetProductCategoryById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ProductCategoryCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ProductCategoryDto>> UpdateAsync(ProductCategoryCrud input)
+
+        public async Task<ResultDto<ProductCategoryCrud>> UpdateAsync(ProductCategoryCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductCategoryDto>
+                    return new ResultDto<ProductCategoryCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductCategoryDto>
+                    return new ResultDto<ProductCategoryCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new ProductCategoryDto
                 {
@@ -184,17 +166,39 @@ namespace Velora.Application.Services
                     SeoTitle = input.SeoTitle,
                     SeoDescription = input.SeoDescription,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<ProductCategoryCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetProductCategoryById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductCategoryCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductCategoryCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ProductCategoryDto>
+                var result = new ResultDto<ProductCategoryCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -203,44 +207,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProductCategorys= new List<ProductCategoryDto>();
+            var createdProductCategorys = new List<ProductCategoryDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ProductCategorys = dt.ToModelList<ProductCategoryCrud>();
-
                 for (int i = 0; i < ProductCategorys.Count; i++)
                 {
                     var ProductCategory = ProductCategorys[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ProductCategory);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProductCategorys.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -250,9 +245,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProductCategorys.Count,
@@ -269,44 +262,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentProductCategory,
-int ProductCategoryNumber,
-int ProductCategorySize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentProductCategory, int ProductCategoryNumber, int ProductCategorySize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductCategoryCrud> data;
-
             if (exportCurrentProductCategory)
             {
-                data = query
-                    .Skip((ProductCategoryNumber - 1) * ProductCategorySize)
-                    .Take(ProductCategorySize)
-                    .ToList();
+                data = query.Skip((ProductCategoryNumber - 1) * ProductCategorySize).Take(ProductCategorySize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductCategoryCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ProductCategory, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ProductCategory, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -317,57 +301,15 @@ int ProductCategorySize)
 
         public async Task<List<ProductCategoryTreeDto>> GetProductCategoryTreeAsync()
         {
-
             var query = await GetAllViews();
-
-
-            var categories =
-                 query
-                .Where(x => x.IsActive)
-                .OrderBy(x => x.SortOrder)
-                .ToList();
-
-
-
-            var tree =
-                BuildTree(categories, null);
-
-
+            var categories = query.Where(x => x.IsActive).OrderBy(x => x.SortOrder).ToList();
+            var tree = BuildTree(categories, null);
             return tree;
-
         }
 
-        private List<ProductCategoryTreeDto> BuildTree(
-    List<ProductCategoryCrud> categories,
-    Guid? parentId)
+        private List<ProductCategoryTreeDto> BuildTree(List<ProductCategoryCrud> categories, Guid? parentId)
         {
-
-            return categories
-                .Where(x => x.ParentId == parentId)
-                .Select(x => new ProductCategoryTreeDto
-                {
-
-                    Id = x.Id,
-
-                    Name = x.Name,
-
-                    Slug = x.Slug,
-
-                    ParentId = x.ParentId,
-
-
-                    Children =
-                        BuildTree(
-                            categories,
-                            x.Id
-                        )
-
-                })
-                .ToList();
-
+            return categories.Where(x => x.ParentId == parentId).Select(x => new ProductCategoryTreeDto { Id = x.Id, Name = x.Name, Slug = x.Slug, ParentId = x.ParentId, Children = BuildTree(categories, x.Id) }).ToList();
         }
-
-
     }
-
 }

@@ -33,14 +33,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductQuestionService _roleProductQuestionService;
         protected readonly ICurrentUserService _currentUserService;
-        public ProductQuestionService(
-              ISqlRepository<SqlProductQuestion> sqlRepository,
-              IPosgreSqlRepository<SqlProductQuestion> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductQuestionService(ISqlRepository<SqlProductQuestion> sqlRepository, IPosgreSqlRepository<SqlProductQuestion> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -51,6 +44,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ProductQuestionCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlProductQuestionView, SqlProductQuestionView, ProductQuestionCrud>();
@@ -58,7 +52,7 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<ProductQuestionDto>> CreateAsync(ProductQuestionCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -69,21 +63,16 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
-
                 var ProductQuestion = new ProductQuestionDto
                 {
                     IsAnswered = input.IsAnswered,
                     Answer = input.Answer,
                     AnsweredBy = input.AnsweredBy,
-                    Question=input.Question,
-                    IsApproved  = input.IsApproved,
+                    Question = input.Question,
+                    IsApproved = input.IsApproved,
                     UserId = input.UserId,
                     ProductId = input.ProductId
-
                 };
-
                 var ProductQuestionResult = await CreateAsync(ProductQuestion);
                 await _transactionService.CommitAsync();
                 return ProductQuestionResult;
@@ -100,12 +89,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ProductQuestionCrud>> CreateAdvancedAsync(
-    ProductQuestionCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductQuestionCrud>> CreateAdvancedAsync(ProductQuestionCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var productQuestion = new ProductQuestionDto
@@ -118,55 +105,46 @@ namespace Velora.Application.Services
                     UserId = input.UserId,
                     ProductId = input.ProductId
                 };
-
-                var result = await CreateWithViewAsync(
-                    productQuestion,
-                    GetProductQuestionById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(productQuestion, GetProductQuestionById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ProductQuestionCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ProductQuestionDto>> UpdateAsync(ProductQuestionCrud input)
+
+        public async Task<ResultDto<ProductQuestionCrud>> UpdateAsync(ProductQuestionCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductQuestionDto>
+                    return new ResultDto<ProductQuestionCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductQuestionDto>
+                    return new ResultDto<ProductQuestionCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ProductQuestionDto
                 {
@@ -179,15 +157,39 @@ namespace Velora.Application.Services
                     UserId = input.UserId,
                     ProductId = input.ProductId
                 };
-
                 var ProductQuestionResult = await UpdateAsync(updateDto, input.Id);
+                if (!ProductQuestionResult.Success)
+                {
+                    return new ResultDto<ProductQuestionCrud>
+                    {
+                        Success = false,
+                        Message = ProductQuestionResult.Message,
+                        Errors = ProductQuestionResult.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return ProductQuestionResult;
+                var viewResult = await GetProductQuestionById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductQuestionCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductQuestionCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ProductQuestionDto>
+                var result = new ResultDto<ProductQuestionCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -197,301 +199,173 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<bool> HasRecentQuestionAsync(
-    Guid productId)
+        public async Task<bool> HasRecentQuestionAsync(Guid productId)
         {
-            var userId =
-                _currentUserService.GetUserId();
-
+            var userId = _currentUserService.GetUserId();
             if (userId == Guid.Empty)
             {
                 return false;
             }
 
-
-            var fromDate =
-                DateTime.Now.AddHours(-24);
-
-
-            return await Query()
-                .AnyAsync(x =>
-                    x.ProductId == productId &&
-                    x.UserId == userId &&
-                    x.CreatedAt >= fromDate);
+            var fromDate = DateTime.Now.AddHours(-24);
+            return await Query().AnyAsync(x => x.ProductId == productId && x.UserId == userId && x.CreatedAt >= fromDate);
         }
-        public async Task<ResultDto<ProductQuestionDto>> CreateUserQuestionAsync(
-    CreateProductQuestionDto input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductQuestionDto>> CreateUserQuestionAsync(CreateProductQuestionDto input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 // ========================================
                 // Validation
                 // ========================================
-
                 if (input == null)
                 {
-                    throw new BusinessException(
-                        "اطلاعات سؤال ارسال نشده است.");
+                    throw new BusinessException("اطلاعات سؤال ارسال نشده است.");
                 }
-
 
                 // ========================================
                 // ProductId
                 // ========================================
-
                 if (input.ProductId == Guid.Empty)
                 {
-                    throw new BusinessException(
-                        "محصول انتخاب نشده است.");
+                    throw new BusinessException("محصول انتخاب نشده است.");
                 }
-
 
                 // ========================================
                 // Question
                 // ========================================
-
                 if (string.IsNullOrWhiteSpace(input.Question))
                 {
-                    throw new BusinessException(
-                        "متن سؤال الزامی است.");
+                    throw new BusinessException("متن سؤال الزامی است.");
                 }
-
 
                 // حذف فاصله‌های ابتدا و انتهای متن
-
-                input.Question =
-                    input.Question.Trim();
-
-
+                input.Question = input.Question.Trim();
                 // حداقل طول سؤال
-
                 if (input.Question.Length < 3)
                 {
-                    throw new BusinessException(
-                        "متن سؤال باید حداقل ۳ کاراکتر باشد.");
+                    throw new BusinessException("متن سؤال باید حداقل ۳ کاراکتر باشد.");
                 }
-
 
                 // حداکثر طول سؤال
-
                 if (input.Question.Length > 1000)
                 {
-                    throw new BusinessException(
-                        "متن سؤال نمی‌تواند بیشتر از ۱۰۰۰ کاراکتر باشد.");
+                    throw new BusinessException("متن سؤال نمی‌تواند بیشتر از ۱۰۰۰ کاراکتر باشد.");
                 }
-
 
                 // ========================================
                 // Authentication
                 // ========================================
-
-                var userId =
-                    _currentUserService.GetUserId();
-
+                var userId = _currentUserService.GetUserId();
                 if (userId == Guid.Empty)
                 {
-                    throw new BusinessException(
-                        "کاربر احراز هویت نشده است.");
+                    throw new BusinessException("کاربر احراز هویت نشده است.");
                 }
-
 
                 // ========================================
                 // Recent Question
                 // ========================================
-
-                var hasRecentQuestion =
-                    await HasRecentQuestionAsync(
-                        input.ProductId);
-
+                var hasRecentQuestion = await HasRecentQuestionAsync(input.ProductId);
                 if (hasRecentQuestion)
                 {
-                    throw new BusinessException(
-                        "شما در ۲۴ ساعت گذشته برای این محصول سؤال ثبت کرده‌اید.");
+                    throw new BusinessException("شما در ۲۴ ساعت گذشته برای این محصول سؤال ثبت کرده‌اید.");
                 }
-
 
                 // ========================================
                 // Create Question
                 // ========================================
-
-                var productQuestion =
-                    new ProductQuestionDto
-                    {
-                        ProductId = input.ProductId,
-
-                        Question = input.Question,
-
-                        // از Backend دریافت می‌شود
-                        UserId = userId,
-
-                        // سؤال جدید ابتدا باید تأیید شود
-                        IsApproved = false,
-
-                        // هنوز پاسخی داده نشده
-                        IsAnswered = false,
-
-                        Answer = null,
-
-                        AnsweredBy = null
-                    };
-
-
-                var productQuestionResult =
-                    await CreateAsync(productQuestion);
-
-
+                var productQuestion = new ProductQuestionDto
+                {
+                    ProductId = input.ProductId,
+                    Question = input.Question,
+                    // از Backend دریافت می‌شود
+                    UserId = userId,
+                    // سؤال جدید ابتدا باید تأیید شود
+                    IsApproved = false,
+                    // هنوز پاسخی داده نشده
+                    IsAnswered = false,
+                    Answer = null,
+                    AnsweredBy = null
+                };
+                var productQuestionResult = await CreateAsync(productQuestion);
                 await _transactionService.CommitAsync();
-
-
                 return productQuestionResult;
             }
             catch (BusinessException)
             {
                 await _transactionService.RollbackAsync();
-
                 throw;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
-                var result =
-                    new ResultDto<ProductQuestionDto>
-                    {
-                        Success = false,
-
-                        Message = errorMessage
-                    };
-
+                var result = new ResultDto<ProductQuestionDto>
+                {
+                    Success = false,
+                    Message = errorMessage
+                };
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
 
-        public async Task<ResultDto<ProductQuestionListResultDto>>
-    GetUserQuestionsAsync(
-        Guid productId,
-        int page,
-        int pageSize)
+        public async Task<ResultDto<ProductQuestionListResultDto>> GetUserQuestionsAsync(Guid productId, int page, int pageSize)
         {
             try
             {
                 // ========================================
                 // Validation
                 // ========================================
-
                 if (productId == Guid.Empty)
                 {
-                    throw new BusinessException(
-                        "محصول انتخاب نشده است.");
+                    throw new BusinessException("محصول انتخاب نشده است.");
                 }
-
 
                 if (page < 1)
                 {
                     page = 1;
                 }
 
-
                 if (pageSize < 1)
                 {
                     pageSize = 10;
                 }
-
 
                 if (pageSize > 50)
                 {
                     pageSize = 50;
                 }
 
-
                 // ========================================
                 // Query
                 // ========================================
-
-                var query =
-                    (await GetAllViews())
-                    .Where(x =>
-                        x.IsApproved &&
-                        x.ProductId == productId);
-
-
+                var query = (await GetAllViews()).Where(x => x.IsApproved && x.ProductId == productId);
                 // ========================================
                 // Sort
                 // ========================================
-
-                query =
-                    query.OrderByDescending(
-                        x => x.CreatedAt);
-
-
+                query = query.OrderByDescending(x => x.CreatedAt);
                 // ========================================
                 // Total Count
                 // ========================================
-
-                var total =
-                    await query.CountAsync();
-
-
+                var total = await query.CountAsync();
                 // ========================================
                 // Pagination
                 // ========================================
-
-                var questions =
-                    await query
-                        .Skip(
-                            (page - 1) *
-                            pageSize)
-                        .Take(pageSize)
-                        .Select(x =>
-                            new ProductQuestionListDto
-                            {
-                                Id = x.Id,
-
-                                ProductId =
-                                    x.ProductId,
-
-                                Question =
-                                    x.Question,
-
-                                Answer =
-                                    x.Answer,
-
-                                IsAnswered =
-                                    x.IsAnswered,
-
-                                UserName =
-                                    x.UserName,
-
-                                PersianDate =
-                                    x.CreatedAtPersian ?? ""
-                            })
-                        .ToListAsync();
-
-
+                var questions = await query.Skip((page - 1) * pageSize).Take(pageSize).Select(x => new ProductQuestionListDto { Id = x.Id, ProductId = x.ProductId, Question = x.Question, Answer = x.Answer, IsAnswered = x.IsAnswered, UserName = x.UserName, PersianDate = x.CreatedAtPersian ?? "" }).ToListAsync();
                 // ========================================
                 // Result
                 // ========================================
-
                 return new ResultDto<ProductQuestionListResultDto>
                 {
                     Success = true,
-
-                    Data =
-                        new ProductQuestionListResultDto
-                        {
-                            Items = questions,
-
-                            TotalCount = total,
-
-                            Page = page,
-
-                            PageSize = pageSize
-                        }
+                    Data = new ProductQuestionListResultDto
+                    {
+                        Items = questions,
+                        TotalCount = total,
+                        Page = page,
+                        PageSize = pageSize
+                    }
                 };
             }
             catch (BusinessException)
@@ -503,55 +377,43 @@ namespace Velora.Application.Services
                 return new ResultDto<ProductQuestionListResultDto>
                 {
                     Success = false,
-
-                    Message =
-                        "خطا در دریافت سؤالات کاربران",
-
+                    Message = "خطا در دریافت سؤالات کاربران",
                     Errors =
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProductQuestions= new List<ProductQuestionDto>();
+            var createdProductQuestions = new List<ProductQuestionDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ProductQuestions = dt.ToModelList<ProductQuestionCrud>();
-
                 for (int i = 0; i < ProductQuestions.Count; i++)
                 {
                     var ProductQuestion = ProductQuestions[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ProductQuestion);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProductQuestions.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -561,9 +423,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProductQuestions.Count,
@@ -580,44 +440,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentProductQuestion,
-int ProductQuestionNumber,
-int ProductQuestionSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentProductQuestion, int ProductQuestionNumber, int ProductQuestionSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductQuestionCrud> data;
-
             if (exportCurrentProductQuestion)
             {
-                data = query
-                    .Skip((ProductQuestionNumber - 1) * ProductQuestionSize)
-                    .Take(ProductQuestionSize)
-                    .ToList();
+                data = query.Skip((ProductQuestionNumber - 1) * ProductQuestionSize).Take(ProductQuestionSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductQuestionCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ProductQuestion, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ProductQuestion, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -625,7 +476,5 @@ int ProductQuestionSize)
         {
             return await GetSqlViewByIdQueryable<SqlProductQuestionView, ProductQuestionCrud>(id);
         }
-
     }
-
 }

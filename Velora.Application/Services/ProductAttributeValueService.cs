@@ -33,14 +33,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductAttributeValueService _roleProductAttributeValueService;
         protected readonly ICurrentUserService _currentUserService;
-        public ProductAttributeValueService(
-              ISqlRepository<SqlProductAttributeValue> sqlRepository,
-              IPosgreSqlRepository<SqlProductAttributeValue> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductAttributeValueService(ISqlRepository<SqlProductAttributeValue> sqlRepository, IPosgreSqlRepository<SqlProductAttributeValue> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -51,6 +44,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ProductAttributeValueCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlProductAttributeValueView, SqlProductAttributeValueView, ProductAttributeValueCrud>();
@@ -58,24 +52,21 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<ProductAttributeValueDto>> CreateAsync(ProductAttributeValueCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
-
                 if (!validation.Success)
                 {
                     return new ResultDto<ProductAttributeValueDto>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(
-                            LocalizationKeys.ValidationFailed,
-                            "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
                 }
-                var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
 
+                var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
                 if (uniqueErrors.Any())
                 {
                     return new ResultDto<ProductAttributeValueDto>
@@ -85,6 +76,7 @@ namespace Velora.Application.Services
                         Errors = uniqueErrors
                     };
                 }
+
                 var ProductAttributeValue = new ProductAttributeValueDto
                 {
                     SortOrder = input.SortOrder,
@@ -92,12 +84,10 @@ namespace Velora.Application.Services
                     ProductId = input.ParentId,
                     Value = input.Value
                 };
-
                 // Auto SortOrder
                 if (ProductAttributeValue.SortOrder <= 0)
                 {
-                    ProductAttributeValue.SortOrder = (await Query()
-                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                    ProductAttributeValue.SortOrder = (await Query().MaxAsync(x => (int? )x.SortOrder) ?? 0) + 1;
                 }
 
                 var ProductAttributeValueResult = await CreateAsync(ProductAttributeValue);
@@ -118,28 +108,28 @@ namespace Velora.Application.Services
             }
         }
 
-        public async Task<ResultDto<ProductAttributeValueDto>> UpdateAsync(ProductAttributeValueCrud input)
+        public async Task<ResultDto<ProductAttributeValueCrud>> UpdateAsync(ProductAttributeValueCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductAttributeValueDto>
+                    return new ResultDto<ProductAttributeValueCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductAttributeValueDto>
+                    return new ResultDto<ProductAttributeValueCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ProductAttributeValueDto
                 {
@@ -149,18 +139,39 @@ namespace Velora.Application.Services
                     ProductId = input.ParentId,
                     Value = input.Value,
                 };
-
                 var ProductAttributeValueResult = await UpdateAsync(updateDto, input.Id);
                 if (!ProductAttributeValueResult.Success)
-                    return ProductAttributeValueResult;
+                {
+                    return new ResultDto<ProductAttributeValueCrud>
+                    {
+                        Success = false,
+                        Message = ProductAttributeValueResult.Message,
+                        Errors = ProductAttributeValueResult.Errors
+                    };
+                }
 
                 await _transactionService.CommitAsync();
-                return ProductAttributeValueResult;
+                var viewResult = await GetProductAttributeValueById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductAttributeValueCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductAttributeValueCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ProductAttributeValueDto>
+                var result = new ResultDto<ProductAttributeValueCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -169,44 +180,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProductAttributeValues= new List<ProductAttributeValueDto>();
+            var createdProductAttributeValues = new List<ProductAttributeValueDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ProductAttributeValues = dt.ToModelList<ProductAttributeValueCrud>();
-
                 for (int i = 0; i < ProductAttributeValues.Count; i++)
                 {
                     var ProductAttributeValue = ProductAttributeValues[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ProductAttributeValue);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProductAttributeValues.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -216,9 +218,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProductAttributeValues.Count,
@@ -235,44 +235,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentProductAttributeValue,
-int ProductAttributeValueNumber,
-int ProductAttributeValueSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentProductAttributeValue, int ProductAttributeValueNumber, int ProductAttributeValueSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductAttributeValueCrud> data;
-
             if (exportCurrentProductAttributeValue)
             {
-                data = query
-                    .Skip((ProductAttributeValueNumber - 1) * ProductAttributeValueSize)
-                    .Take(ProductAttributeValueSize)
-                    .ToList();
+                data = query.Skip((ProductAttributeValueNumber - 1) * ProductAttributeValueSize).Take(ProductAttributeValueSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductAttributeValueCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ProductAttributeValue, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ProductAttributeValue, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -280,24 +271,21 @@ int ProductAttributeValueSize)
         {
             return await GetSqlViewByIdQueryable<SqlProductAttributeValueView, ProductAttributeValueCrud>(id);
         }
-        public async Task<ResultDto<ProductAttributeValueCrud>> CreateAdvancedAsync(
-    ProductAttributeValueCrud input)
+
+        public async Task<ResultDto<ProductAttributeValueCrud>> CreateAdvancedAsync(ProductAttributeValueCrud input)
         {
             var validation = await _modelValidationService.ValidateAsync(input);
-
             if (!validation.Success)
             {
                 return new ResultDto<ProductAttributeValueCrud>
                 {
                     Success = false,
-                    Message = await _messageService.Value.GetMessageAsync(
-                        LocalizationKeys.ValidationFailed,
-                        "Form has errors. Please fix them."),
+                    Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                     Errors = validation.Data
                 };
             }
-            var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
 
+            var uniqueErrors = await ValidateProductAttributeValueUniquenessAsync(input);
             if (uniqueErrors.Any())
             {
                 return new ResultDto<ProductAttributeValueCrud>
@@ -307,6 +295,7 @@ int ProductAttributeValueSize)
                     Errors = uniqueErrors
                 };
             }
+
             var productAttributeValue = new ProductAttributeValueDto
             {
                 SortOrder = input.SortOrder,
@@ -314,38 +303,25 @@ int ProductAttributeValueSize)
                 ProductId = input.ParentId,
                 Value = input.Value
             };
-
             // Auto SortOrder
             if (productAttributeValue.SortOrder <= 0)
             {
-                productAttributeValue.SortOrder = (await Query()
-                    .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                productAttributeValue.SortOrder = (await Query().MaxAsync(x => (int? )x.SortOrder) ?? 0) + 1;
             }
 
-            return await CreateWithViewAsync(
-                productAttributeValue,
-                GetProductAttributeValueById,
-                x => x.Id
-            );
+            return await CreateWithViewAsync(productAttributeValue, GetProductAttributeValueById, x => x.Id);
         }
-        private async Task<List<string>> ValidateProductAttributeValueUniquenessAsync(
-    ProductAttributeValueCrud input,
-    Guid? excludeId = null)
+
+        private async Task<List<string>> ValidateProductAttributeValueUniquenessAsync(ProductAttributeValueCrud input, Guid? excludeId = null)
         {
             var errors = new List<string>();
-
             var query = Query();
-
             if (excludeId.HasValue)
             {
                 query = query.Where(x => x.Id != excludeId.Value);
             }
 
-            var exists = await query.AnyAsync(x =>
-                x.ProductId == input.ParentId &&
-                x.ProductAttributeId == input.ProductAttributeId
-            );
-
+            var exists = await query.AnyAsync(x => x.ProductId == input.ParentId && x.ProductAttributeId == input.ProductAttributeId);
             if (exists)
             {
                 errors.Add("این ویژگی قبلاً برای این محصول ثبت شده است");
@@ -354,5 +330,4 @@ int ProductAttributeValueSize)
             return errors;
         }
     }
-
 }

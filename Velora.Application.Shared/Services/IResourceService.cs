@@ -13,7 +13,7 @@ namespace Velora.Application.Shared.Services
         Task<IQueryable<ResourcesViewDto>> GetAllViews();
         Task<List<ResourcesViewDto>> GetAllMenusAsync(string languageCode);
         Task<ResultDto<ResourceDto>> CreateAsync(ResourceCrud input);
-        Task<ResultDto<ResourceDto>> UpdateAsync(ResourceCrud input);
+        Task<ResultDto<ResourceCrud>> UpdateAsync(ResourceCrud input);
         Task<byte[]> ExportAsync(
     bool exportCurrentPage,
     int pageNumber,

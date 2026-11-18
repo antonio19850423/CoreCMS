@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<SmsLogCrud>> GetAllViews();
         Task<ResultDto<SmsLogDto>> CreateAsync(SmsLogCrud input);
-        Task<ResultDto<SmsLogDto>> UpdateAsync(SmsLogCrud input);
+        Task<ResultDto<SmsLogCrud>> UpdateAsync(SmsLogCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

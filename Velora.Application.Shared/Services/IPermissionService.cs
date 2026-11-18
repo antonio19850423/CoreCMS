@@ -10,7 +10,7 @@ namespace Velora.Application.Shared.Services
     public interface IPermissionService : IGenericService<SqlPermission, PgPermission, PermissionDto>, IBaseService
     {
         Task<ResultDto<PermissionDto>> CreateAsync(PermissionCrud input);
-        Task<ResultDto<PermissionDto>> UpdateAsync(PermissionCrud input);
+        Task<ResultDto<PermissionCrud>> UpdateAsync(PermissionCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

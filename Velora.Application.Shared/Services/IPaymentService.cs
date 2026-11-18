@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<PaymentCrud>> GetAllViews();
         Task<ResultDto<PaymentDto>> CreateAsync(PaymentCrud input);
-        Task<ResultDto<PaymentDto>> UpdateAsync(PaymentCrud input);
+        Task<ResultDto<PaymentCrud>> UpdateAsync(PaymentCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

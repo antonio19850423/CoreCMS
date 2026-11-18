@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly ISiteMenuService _roleSiteMenuService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly ILinkResolverService _linkResolverService;
-        public SiteMenuService(
-              ISqlRepository<SqlSiteMenu> sqlRepository,
-              IPosgreSqlRepository<SqlSiteMenu> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, ILinkResolverService linkResolverService  )
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public SiteMenuService(ISqlRepository<SqlSiteMenu> sqlRepository, IPosgreSqlRepository<SqlSiteMenu> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, ILinkResolverService linkResolverService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -51,15 +44,15 @@ namespace Velora.Application.Services
             _currentUserService = currentUserService;
             _linkResolverService = linkResolverService;
         }
+
         public async Task<IQueryable<SiteMenuCrud>> GetAllViews()
         {
-            return await GetAllViewQueryable<
-                VwSiteMenuForm,
-                SiteMenuCrud>();
+            return await GetAllViewQueryable<VwSiteMenuForm, SiteMenuCrud>();
         }
+
         public async Task<ResultDto<SiteMenuDto>> CreateAsync(SiteMenuCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -73,23 +66,21 @@ namespace Velora.Application.Services
                 var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
                 var SiteMenu = new SiteMenuDto
                 {
-                 Icon = input.Icon,
-                 IconColor = input.IconColor,
-                 IsActive = input.IsActive,
-                 Link1Color = input.Link1Color,
-                 Link1OpenInNewTab = input.Link1OpenInNewTab,
-                 Link1TargetId = input.Link1TargetId,
-                 Link1Text=input.Link1Text,
-                 Link1TypeId = input.Link1TypeId,
-                 Link1Url = link1Url,
-                 ParentId = input.ParentId,
-                 SortOrder = input.SortOrder,
+                    Icon = input.Icon,
+                    IconColor = input.IconColor,
+                    IsActive = input.IsActive,
+                    Link1Color = input.Link1Color,
+                    Link1OpenInNewTab = input.Link1OpenInNewTab,
+                    Link1TargetId = input.Link1TargetId,
+                    Link1Text = input.Link1Text,
+                    Link1TypeId = input.Link1TypeId,
+                    Link1Url = link1Url,
+                    ParentId = input.ParentId,
+                    SortOrder = input.SortOrder,
                 };
-
                 var result = await CreateAsync(SiteMenu);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -105,20 +96,13 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<SiteMenuCrud>> CreateAdvancedAsync(
-    SiteMenuCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<SiteMenuCrud>> CreateAdvancedAsync(SiteMenuCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-                var link1Url = await _linkResolverService.GetUrlAsync(
-                    input.Link1TypeId,
-                    input.Link1TargetId,
-                    input.Link1Url
-                );
-
+                var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
                 var siteMenu = new SiteMenuDto
                 {
                     Icon = input.Icon,
@@ -133,49 +117,41 @@ namespace Velora.Application.Services
                     ParentId = input.ParentId,
                     SortOrder = input.SortOrder
                 };
-
-                var result = await CreateWithViewAsync(
-                    siteMenu,
-                    GetSiteMenuById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(siteMenu, GetSiteMenuById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<SiteMenuCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<SiteMenuDto>> UpdateAsync(SiteMenuCrud input)
+
+        public async Task<ResultDto<SiteMenuCrud>> UpdateAsync(SiteMenuCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<SiteMenuDto>
+                    return new ResultDto<SiteMenuCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<SiteMenuDto>
+                    return new ResultDto<SiteMenuCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
@@ -198,17 +174,39 @@ namespace Velora.Application.Services
                     ParentId = input.ParentId,
                     SortOrder = input.SortOrder,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<SiteMenuCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetSiteMenuById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<SiteMenuCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<SiteMenuCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SiteMenuDto>
+                var result = new ResultDto<SiteMenuCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -217,44 +215,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdSiteMenus= new List<SiteMenuDto>();
+            var createdSiteMenus = new List<SiteMenuDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var SiteMenus = dt.ToModelList<SiteMenuCrud>();
-
                 for (int i = 0; i < SiteMenus.Count; i++)
                 {
                     var SiteMenu = SiteMenus[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(SiteMenu);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdSiteMenus.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -264,9 +253,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdSiteMenus.Count,
@@ -283,44 +270,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentSiteMenu,
-int SiteMenuNumber,
-int SiteMenuSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentSiteMenu, int SiteMenuNumber, int SiteMenuSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<SiteMenuCrud> data;
-
             if (exportCurrentSiteMenu)
             {
-                data = query
-                    .Skip((SiteMenuNumber - 1) * SiteMenuSize)
-                    .Take(SiteMenuSize)
-                    .ToList();
+                data = query.Skip((SiteMenuNumber - 1) * SiteMenuSize).Take(SiteMenuSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<SiteMenuCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.SiteMenu, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.SiteMenu, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -328,8 +306,5 @@ int SiteMenuSize)
         {
             return await GetSqlViewByIdQueryable<SqlSiteMenuView, SiteMenuCrud>(id);
         }
-
-
     }
-
 }

@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<SectionGroupItemCrud>> GetAllViews();
         Task<ResultDto<SectionGroupItemDto>> CreateAsync(SectionGroupItemCrud input);
-        Task<ResultDto<SectionGroupItemDto>> UpdateAsync(SectionGroupItemCrud input);
+        Task<ResultDto<SectionGroupItemCrud>> UpdateAsync(SectionGroupItemCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

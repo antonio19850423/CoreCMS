@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IShippingMethodService _roleShippingMethodService;
         protected readonly ICurrentUserService _currentUserService;
-        public ShippingMethodService(
-              ISqlRepository<SqlShippingMethod> sqlRepository,
-              IPosgreSqlRepository<SqlShippingMethod> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ShippingMethodService(ISqlRepository<SqlShippingMethod> sqlRepository, IPosgreSqlRepository<SqlShippingMethod> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -50,6 +43,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ShippingMethodCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlShippingMethodView, SqlShippingMethodView, ShippingMethodCrud>();
@@ -57,7 +51,7 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<ShippingMethodDto>> CreateAsync(ShippingMethodCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -68,21 +62,17 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
-
                 var ShippingMethod = new ShippingMethodDto
                 {
-                    Description=input.Description,
-                    IsActive=input.IsActive,
-                    EstimatedDays=input.EstimatedDays,
-                    IsDefault=input.IsDefault,
-                    IsNationwide=input.IsNationwide,
-                    Name=input.Name,
-                    Price=input.Price,
-                    SortOrder=input.SortOrder,
+                    Description = input.Description,
+                    IsActive = input.IsActive,
+                    EstimatedDays = input.EstimatedDays,
+                    IsDefault = input.IsDefault,
+                    IsNationwide = input.IsNationwide,
+                    Name = input.Name,
+                    Price = input.Price,
+                    SortOrder = input.SortOrder,
                 };
-
                 var ShippingMethodResult = await CreateAsync(ShippingMethod);
                 await _transactionService.CommitAsync();
                 return ShippingMethodResult;
@@ -99,12 +89,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ShippingMethodCrud>> CreateAdvancedAsync(
-    ShippingMethodCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ShippingMethodCrud>> CreateAdvancedAsync(ShippingMethodCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var shippingMethod = new ShippingMethodDto
@@ -118,55 +106,46 @@ namespace Velora.Application.Services
                     Price = input.Price,
                     SortOrder = input.SortOrder
                 };
-
-                var result = await CreateWithViewAsync(
-                    shippingMethod,
-                    GetShippingMethodById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(shippingMethod, GetShippingMethodById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ShippingMethodCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ShippingMethodDto>> UpdateAsync(ShippingMethodCrud input)
+
+        public async Task<ResultDto<ShippingMethodCrud>> UpdateAsync(ShippingMethodCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ShippingMethodDto>
+                    return new ResultDto<ShippingMethodCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ShippingMethodDto>
+                    return new ResultDto<ShippingMethodCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ShippingMethodDto
                 {
@@ -180,15 +159,39 @@ namespace Velora.Application.Services
                     Price = input.Price,
                     SortOrder = input.SortOrder
                 };
-
                 var ShippingMethodResult = await UpdateAsync(updateDto, input.Id);
+                if (!ShippingMethodResult.Success)
+                {
+                    return new ResultDto<ShippingMethodCrud>
+                    {
+                        Success = false,
+                        Message = ShippingMethodResult.Message,
+                        Errors = ShippingMethodResult.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return ShippingMethodResult;
+                var viewResult = await GetShippingMethodById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ShippingMethodCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ShippingMethodCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ShippingMethodDto>
+                var result = new ResultDto<ShippingMethodCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -197,44 +200,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdShippingMethods= new List<ShippingMethodDto>();
+            var createdShippingMethods = new List<ShippingMethodDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ShippingMethods = dt.ToModelList<ShippingMethodCrud>();
-
                 for (int i = 0; i < ShippingMethods.Count; i++)
                 {
                     var ShippingMethod = ShippingMethods[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ShippingMethod);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdShippingMethods.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -244,9 +238,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdShippingMethods.Count,
@@ -263,44 +255,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentShippingMethod,
-int ShippingMethodNumber,
-int ShippingMethodSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentShippingMethod, int ShippingMethodNumber, int ShippingMethodSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ShippingMethodCrud> data;
-
             if (exportCurrentShippingMethod)
             {
-                data = query
-                    .Skip((ShippingMethodNumber - 1) * ShippingMethodSize)
-                    .Take(ShippingMethodSize)
-                    .ToList();
+                data = query.Skip((ShippingMethodNumber - 1) * ShippingMethodSize).Take(ShippingMethodSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ShippingMethodCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ShippingMethod, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ShippingMethod, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -308,7 +291,5 @@ int ShippingMethodSize)
         {
             return await GetSqlViewByIdQueryable<SqlShippingMethodView, ShippingMethodCrud>(id);
         }
-
     }
-
 }

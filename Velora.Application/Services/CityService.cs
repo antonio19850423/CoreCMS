@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly ICityService _roleCityService;
         protected readonly ICurrentUserService _currentUserService;
-        public CityService(
-              ISqlRepository<SqlCity> sqlRepository,
-              IPosgreSqlRepository<SqlCity> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public CityService(ISqlRepository<SqlCity> sqlRepository, IPosgreSqlRepository<SqlCity> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -50,15 +43,15 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<CityCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<VwCityForm, VwCityForm, CityCrud>();
         }
 
-
         public async Task<ResultDto<CityDto>> CreateAsync(CityCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -71,14 +64,12 @@ namespace Velora.Application.Services
                     };
                 var City = new CityDto
                 {
-                    Name=input.StateTitle,
-                    StateId=input.StateId,
+                    Name = input.StateTitle,
+                    StateId = input.StateId,
                 };
-
                 var result = await CreateAsync(City);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -94,12 +85,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<CityCrud>> CreateAdvancedAsync(
-    CityCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<CityCrud>> CreateAdvancedAsync(CityCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var city = new CityDto
@@ -107,56 +96,46 @@ namespace Velora.Application.Services
                     Name = input.StateTitle,
                     StateId = input.StateId
                 };
-
-                var result = await CreateWithViewAsync(
-                    city,
-                    GetCityById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(city, GetCityById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<CityCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<CityDto>> UpdateAsync(CityCrud input)
+
+        public async Task<ResultDto<CityCrud>> UpdateAsync(CityCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<CityDto>
+                    return new ResultDto<CityCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<CityDto>
+                    return new ResultDto<CityCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new CityDto
                 {
@@ -164,17 +143,39 @@ namespace Velora.Application.Services
                     Name = input.StateTitle,
                     StateId = input.StateId,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<CityCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetCityById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<CityCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<CityCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<CityDto>
+                var result = new ResultDto<CityCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -183,44 +184,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdCitys = new List<CityDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var Citys = dt.ToModelList<CityCrud>();
-
                 for (int i = 0; i < Citys.Count; i++)
                 {
                     var City = Citys[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(City);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdCitys.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -230,9 +222,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdCitys.Count,
@@ -249,44 +239,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<CityCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<CityCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.City, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.City, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -294,13 +275,11 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlCityView, CityCrud>(id);
         }
+
         /// <summary>
         /// دریافت لیست شهرهای مربوط به یک استان
         /// </summary>
-        public async Task<
-            ResultDto<List<CityDto>>>
-            GetCitiesByStateIdAsync(
-                Guid stateId)
+        public async Task<ResultDto<List<CityDto>>> GetCitiesByStateIdAsync(Guid stateId)
         {
             try
             {
@@ -312,12 +291,8 @@ int pageSize)
                     return new ResultDto<List<CityDto>>
                     {
                         Success = false,
-
-                        Message =
-                            "شناسه استان معتبر نیست.",
-
-                        Data =
-                            new List<CityDto>()
+                        Message = "شناسه استان معتبر نیست.",
+                        Data = new List<CityDto>()
                     };
                 }
 
@@ -327,48 +302,19 @@ int pageSize)
                  * GetAllViews خروجی IQueryable<CityCrud>
                  * برمی‌گرداند.
                  */
-                var query =
-                    await GetAllViews();
-
+                var query = await GetAllViews();
                 /*
                  * فیلتر شهرها بر اساس شناسه استان
                  *
                  * در CityCrud طبق کد فعلی شما
                  * نام فیلد StateId است.
                  */
-                var cities =
-                    query
-                        .Where(
-                            x =>
-                                x.StateId == stateId
-                        )
-                        .OrderBy(
-                            x => x.StateTitle
-                        )
-                        .Select(
-                            x => new CityDto
-                            {
-                                Id =
-                                    x.Id,
-
-                                Name =
-                                    x.CityTitle,
-
-                                StateId =
-                                    x.StateId
-                            }
-                        )
-                        .ToList();
-
+                var cities = query.Where(x => x.StateId == stateId).OrderBy(x => x.StateTitle).Select(x => new CityDto { Id = x.Id, Name = x.CityTitle, StateId = x.StateId }).ToList();
                 return new ResultDto<List<CityDto>>
                 {
                     Success = true,
-
-                    Message =
-                        "لیست شهرها با موفقیت دریافت شد.",
-
-                    Data =
-                        cities
+                    Message = "لیست شهرها با موفقیت دریافت شد.",
+                    Data = cities
                 };
             }
             catch (Exception ex)
@@ -376,22 +322,14 @@ int pageSize)
                 return new ResultDto<List<CityDto>>
                 {
                     Success = false,
-
-                    Message =
-                        "خطا در دریافت لیست شهرها.",
-
-                    Data =
-                        new List<CityDto>(),
-
-                    Errors =
-                        new List<string>
-                        {
-                    ex.Message
-                        }
+                    Message = "خطا در دریافت لیست شهرها.",
+                    Data = new List<CityDto>(),
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
-
     }
-
 }

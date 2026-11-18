@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     public interface IRoleService: IGenericService<SqlRole, PgRole, RoleDto>, IBaseService
     {
         Task<ResultDto<RoleDto>> CreateAsync(RoleCrud input);
-        Task<ResultDto<RoleDto>> UpdateAsync(RoleCrud input);
+        Task<ResultDto<RoleCrud>> UpdateAsync(RoleCrud input);
         Task<IEnumerable<RoleDto>> GetByNamesAsync(List<string> roles);
     
         Task<RoleCrud?> GetRoleById(Guid id);

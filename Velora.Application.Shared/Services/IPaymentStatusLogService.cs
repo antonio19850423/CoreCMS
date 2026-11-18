@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<PaymentStatusLogCrud>> GetAllViews();
         Task<ResultDto<PaymentStatusLogDto>> CreateAsync(PaymentStatusLogCrud input);
-        Task<ResultDto<PaymentStatusLogDto>> UpdateAsync(PaymentStatusLogCrud input);
+        Task<ResultDto<PaymentStatusLogCrud>> UpdateAsync(PaymentStatusLogCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

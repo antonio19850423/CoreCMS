@@ -30,14 +30,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductBrandService _roleProductBrandService;
         protected readonly ICurrentUserService _currentUserService;
-        public ProductBrandService(
-              ISqlRepository<SqlProductBrand> sqlRepository,
-              IPosgreSqlRepository<SqlProductBrand> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductBrandService(ISqlRepository<SqlProductBrand> sqlRepository, IPosgreSqlRepository<SqlProductBrand> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -46,15 +39,17 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ProductBrandCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlProductBrandView, SqlProductBrandView, ProductBrandCrud>();
         }
+
         public async Task<ResultDto<ProductBrandDto>> CreateAsync(ProductBrandCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -65,23 +60,19 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 var ProductBrand = new ProductBrandDto
                 {
                     Slug = input.Slug,
-                    SortOrder=input.SortOrder.Value,
-                    Website=input.Website,
-                    Logo=input.Logo,
+                    SortOrder = input.SortOrder.Value,
+                    Website = input.Website,
+                    Logo = input.Logo,
                     Name = input.Name,
                     IsActive = input.IsActive.Value,
                     Description = input.Description,
-
                 };
-
                 var result = await CreateAsync(ProductBrand);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -97,12 +88,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ProductBrandCrud>> CreateAdvancedAsync(
-    ProductBrandCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductBrandCrud>> CreateAdvancedAsync(ProductBrandCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var productBrand = new ProductBrandDto
@@ -115,78 +104,91 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive.Value,
                     Description = input.Description
                 };
-
-                var result = await CreateWithViewAsync(
-                    productBrand,
-                    GetProductBrandById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(productBrand, GetProductBrandById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ProductBrandCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ProductBrandDto>> UpdateAsync(ProductBrandCrud input)
+
+        public async Task<ResultDto<ProductBrandCrud>> UpdateAsync(ProductBrandCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductBrandDto>
+                    return new ResultDto<ProductBrandCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductBrandDto>
+                    return new ResultDto<ProductBrandCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new ProductBrandDto
                 {
                     Id = input.Id.Value,
                     Slug = input.Slug,
                     SortOrder = input.SortOrder.Value,
-                    Logo=input.Logo,
-                    Website=input.Website,
+                    Logo = input.Logo,
+                    Website = input.Website,
                     Name = input.Name,
                     IsActive = input.IsActive.Value,
                     Description = input.Description
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<ProductBrandCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetProductBrandById(input.Id.Value);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductBrandCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductBrandCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ProductBrandDto>
+                var result = new ResultDto<ProductBrandCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -195,44 +197,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProductBrands= new List<ProductBrandDto>();
+            var createdProductBrands = new List<ProductBrandDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ProductBrands = dt.ToModelList<ProductBrandCrud>();
-
                 for (int i = 0; i < ProductBrands.Count; i++)
                 {
                     var ProductBrand = ProductBrands[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ProductBrand);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProductBrands.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -242,9 +235,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProductBrands.Count,
@@ -261,44 +252,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductBrandCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductBrandCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ProductBrand, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ProductBrand, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -311,56 +293,26 @@ int pageSize)
         {
             try
             {
-
                 var query = await GetAllViews();
-
-
-                var brands =
-                     query
-                    .Where(x => x.IsActive==true)
-                    .OrderBy(x => x.SortOrder)
-                    .Select(x => new ProductBrandOptionDto
-                    {
-                        Id = x.Id,
-
-                        Name = x.Name,
-
-                        Slug = x.Slug,
-
-                        Logo = x.Logo
-
-                    })
-                    .ToList();
-
-
-
+                var brands = query.Where(x => x.IsActive == true).OrderBy(x => x.SortOrder).Select(x => new ProductBrandOptionDto { Id = x.Id, Name = x.Name, Slug = x.Slug, Logo = x.Logo }).ToList();
                 return new ResultDto<List<ProductBrandOptionDto>>
                 {
                     Success = true,
-
                     Data = brands
                 };
-
             }
             catch (Exception ex)
             {
-
                 return new ResultDto<List<ProductBrandOptionDto>>
                 {
                     Success = false,
-
                     Message = "خطا در دریافت برند محصولات",
-
                     Errors = new List<string>
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
-
             }
         }
-
-
     }
-
 }

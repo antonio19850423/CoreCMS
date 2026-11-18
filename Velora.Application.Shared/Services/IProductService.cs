@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ProductCrud>> GetAllViews();
         Task<ResultDto<ProductCrud>> CreateAsync(ProductCrud input);
-        Task<ResultDto<ProductDto>> UpdateAsync(ProductCrud input);
+        Task<ResultDto<ProductCrud>> UpdateAsync(ProductCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<ResultDto<ProductDetailViewDto>> GetProductDetailAsync(string? slug);
         Task<ResultDto<ProductListResultDto>> GetProductsAsync(

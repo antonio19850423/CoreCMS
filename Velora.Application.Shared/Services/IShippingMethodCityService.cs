@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ShippingMethodCityCrud>> GetAllViews();
         Task<ResultDto<ShippingMethodCityDto>> CreateAsync(ShippingMethodCityCrud input);
-        Task<ResultDto<ShippingMethodCityDto>> UpdateAsync(ShippingMethodCityCrud input);
+        Task<ResultDto<ShippingMethodCityCrud>> UpdateAsync(ShippingMethodCityCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

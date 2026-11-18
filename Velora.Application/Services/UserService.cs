@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +13,7 @@ using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.PostgreSQL;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+
 namespace Velora.Application.Services
 {
     public class UserService : GenericService<SqlUser, PgUser, UserDto>, IUserService
@@ -29,14 +29,7 @@ namespace Velora.Application.Services
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
-        public UserService(
-              ISqlRepository<SqlUser> sqlRepository,
-              IPosgreSqlRepository<PgUser> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, IUserProfileService userProfileService, IUserRoleService userRoleService, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public UserService(ISqlRepository<SqlUser> sqlRepository, IPosgreSqlRepository<PgUser> pgRepository, IMapper mapper, IConfiguration configuration, IUserProfileService userProfileService, IUserRoleService userRoleService, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _userProfileService = userProfileService;
@@ -48,6 +41,7 @@ namespace Velora.Application.Services
             _config = config;
             _excelTemplateService = excelTemplateService;
         }
+
         public async Task<UserDto?> GetByUserNameAsync(string UserName)
         {
             if (_dbType == DatabaseType.SqlServer)
@@ -63,13 +57,15 @@ namespace Velora.Application.Services
                 return _mapper.Map<UserDto>(entity);
             }
         }
+
         public async Task<IQueryable<UserCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<PgUserDetailView, SqlUserDetailView, UserCrud>();
         }
+
         public async Task<ResultDto<UserDto>> CreateAsync(UserCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -80,9 +76,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
-
                 // 1️⃣ ایجاد کاربر
                 var user = new UserDto
                 {
@@ -94,13 +87,10 @@ namespace Velora.Application.Services
                     MobileNumber = input.MobileNumber,
                     NationalCode = input.NationalCode,
                 };
-
                 var userResult = await CreateAsync(user);
                 if (!userResult.Success)
                     return userResult;
-
                 var userId = userResult.Data.Id;
-
                 // 2️⃣ ایجاد پروفایل
                 var userProfile = new UserProfileDto
                 {
@@ -112,22 +102,16 @@ namespace Velora.Application.Services
                     Age = input.Age,
                 };
                 await _userProfileService.CreateAsync(userProfile);
-
-                var RoleIds = input.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                       .Select(Guid.Parse)
-                       .ToList();
+                var RoleIds = input.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).ToList();
                 // دریافت نقش‌های فعلی کاربر
                 var userRoles = await _userRoleService.GetByUserRolesAsync(userId);
-
                 // حذف نقش‌هایی که در RoleIds جدید نیستند
-                var rolesToRemove = userRoles
-                    .Where(r => !RoleIds.Contains(r.Roleid))
-                    .ToList();
-
+                var rolesToRemove = userRoles.Where(r => !RoleIds.Contains(r.Roleid)).ToList();
                 foreach (var r in rolesToRemove)
                 {
                     await _userRoleService.DeleteAsync(r.Id); // فرض بر این است که UserRoleDto شامل Id است
                 }
+
                 // 3️⃣ نقش کاربر
                 if (RoleIds.Any())
                 {
@@ -140,7 +124,6 @@ namespace Velora.Application.Services
                         };
                         await _userRoleService.CreateAsync(userRole);
                     }
-
                 }
 
                 await _transactionService.CommitAsync();
@@ -158,12 +141,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<UserCrud>> CreateAdvancedAsync(
-    UserCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<UserCrud>> CreateAdvancedAsync(UserCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var user = new UserDto
@@ -176,18 +157,10 @@ namespace Velora.Application.Services
                     MobileNumber = input.MobileNumber,
                     NationalCode = input.NationalCode
                 };
-
-                var userResult = await CreateWithViewAsync(
-                    user,
-                    GetUserById,
-                    x => x.Id
-                );
-
+                var userResult = await CreateWithViewAsync(user, GetUserById, x => x.Id);
                 if (!userResult.Success)
                     return userResult;
-
                 var userId = userResult.Data.Id;
-
                 var userProfile = new UserProfileDto
                 {
                     Address = input.Address,
@@ -197,20 +170,10 @@ namespace Velora.Application.Services
                     ProfileImage = input.ProfileImage,
                     Age = input.Age
                 };
-
                 await _userProfileService.CreateAsync(userProfile);
-
-                var roleIds = input.RoleIds?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(Guid.Parse)
-                    .ToList() ?? new List<Guid>();
-
+                var roleIds = input.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).ToList() ?? new List<Guid>();
                 var userRoles = await _userRoleService.GetByUserRolesAsync(userId.Value);
-
-                var rolesToRemove = userRoles
-                    .Where(r => !roleIds.Contains(r.Roleid))
-                    .ToList();
-
+                var rolesToRemove = userRoles.Where(r => !roleIds.Contains(r.Roleid)).ToList();
                 foreach (var role in rolesToRemove)
                 {
                     await _userRoleService.DeleteAsync(role.Id);
@@ -225,53 +188,49 @@ namespace Velora.Application.Services
                             Roleid = roleId,
                             Userid = userId.Value
                         };
-
                         await _userRoleService.CreateAsync(userRole);
                     }
                 }
 
                 if (userResult.Success)
                     userResult.Message = successMessage;
-
                 return userResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<UserCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<UserDto>> UpdateAsync(UserCrud input)
+
+        public async Task<ResultDto<UserCrud>> UpdateAsync(UserCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<UserDto>
+                    return new ResultDto<UserCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<UserDto>
+                    return new ResultDto<UserCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new UserDto
                 {
@@ -281,20 +240,22 @@ namespace Velora.Application.Services
                     PhoneNumber = input.PhoneNumber,
                     UserName = input.UserName
                 };
-
                 if (!string.IsNullOrWhiteSpace(input.Password))
                     userUpdateDto.Password = BCrypt.Net.BCrypt.HashPassword(input.Password);
-
                 var userResult = await UpdateAsync(userUpdateDto, input.Id.Value);
                 if (!userResult.Success)
-                    return userResult;
+                {
+                    return new ResultDto<UserCrud>
+                    {
+                        Success = false,
+                        Message = userResult.Message,
+                        Errors = userResult.Errors
+                    };
+                }
 
                 var userId = userResult.Data.Id;
-
                 // 2️⃣ به‌روزرسانی یا ایجاد پروفایل
-                var existingProfile = await _userProfileService
-                    .GetByUserIdAsync(userId);
-
+                var existingProfile = await _userProfileService.GetByUserIdAsync(userId);
                 if (existingProfile != null)
                 {
                     var profileUpdate = existingProfile;
@@ -320,28 +281,23 @@ namespace Velora.Application.Services
                     };
                     await _userProfileService.CreateAsync(newProfile);
                 }
-                var RoleIds = input.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries)
-        .Select(Guid.Parse)
-        .ToList();
+
+                var RoleIds = input.RoleIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).ToList();
                 // دریافت نقش‌های فعلی کاربر
                 var userRoles = await _userRoleService.GetByUserRolesAsync(userId);
-
                 // حذف نقش‌هایی که در RoleIds جدید نیستند
-                var rolesToRemove = userRoles
-                    .Where(r => !RoleIds.Contains(r.Roleid))
-                    .ToList();
-
+                var rolesToRemove = userRoles.Where(r => !RoleIds.Contains(r.Roleid)).ToList();
                 foreach (var r in rolesToRemove)
                 {
                     await _userRoleService.DeleteAsync(r.Id); // فرض بر این است که UserRoleDto شامل Id است
                 }
+
                 // 3️⃣ نقش کاربر
                 if (RoleIds.Any())
                 {
                     foreach (var Role in RoleIds)
                     {
                         var existingRole = await _userRoleService.GetByUserRoleIdAsync(userId, Role);
-
                         if (existingRole == null)
                         {
                             var newRole = new UserRoleDto
@@ -352,16 +308,30 @@ namespace Velora.Application.Services
                             await _userRoleService.CreateAsync(newRole);
                         }
                     }
-
                 }
 
                 await _transactionService.CommitAsync();
-                return userResult;
+                var viewResult = await GetUserById(input.Id.Value);
+                if (viewResult == null)
+                {
+                    return new ResultDto<UserCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<UserCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<UserDto>
+                var result = new ResultDto<UserCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -370,44 +340,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdUsers = new List<UserDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var users = dt.ToModelList<UserCrud>();
-
                 for (int i = 0; i < users.Count; i++)
                 {
                     var user = users[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(user);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdUsers.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -417,9 +378,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdUsers.Count,
@@ -436,44 +395,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<UserCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<UserCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.User, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.User, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -481,48 +431,29 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlUserDetailView, UserCrud>(id);
         }
-        public async Task<UserDto?> GetByMobileNumberAsync(
-          string mobileNumber)
+
+        public async Task<UserDto?> GetByMobileNumberAsync(string mobileNumber)
         {
             if (string.IsNullOrWhiteSpace(mobileNumber))
                 return null;
-
             mobileNumber = mobileNumber.Trim();
-
             if (_dbType == DatabaseType.SqlServer)
             {
-                var repository =
-                    (ISqlRepository<SqlUser>)GetRepository();
-
-                var entity = await repository
-                    .FirstOrDefaultAsync(
-                        x => x.MobileNumber == mobileNumber);
-
-                return entity == null
-                    ? null
-                    : _mapper.Map<UserDto>(entity);
+                var repository = (ISqlRepository<SqlUser>)GetRepository();
+                var entity = await repository.FirstOrDefaultAsync(x => x.MobileNumber == mobileNumber);
+                return entity == null ? null : _mapper.Map<UserDto>(entity);
             }
             else
             {
-                var repository =
-                    (IPosgreSqlRepository<PgUser>)GetRepository();
-
-                var entity = await repository
-                    .FirstOrDefaultAsync(
-                        x => x.MobileNumber == mobileNumber);
-
-                return entity == null
-                    ? null
-                    : _mapper.Map<UserDto>(entity);
+                var repository = (IPosgreSqlRepository<PgUser>)GetRepository();
+                var entity = await repository.FirstOrDefaultAsync(x => x.MobileNumber == mobileNumber);
+                return entity == null ? null : _mapper.Map<UserDto>(entity);
             }
         }
-        public async Task<ResultDto<UserDto>> CreateCustomerAsync(
-            CustomerRegistrationDto input,
-            CancellationToken cancellationToken = default)
-        {
-            var (_, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<UserDto>> CreateCustomerAsync(CustomerRegistrationDto input, CancellationToken cancellationToken = default)
+        {
+            var(_, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (string.IsNullOrWhiteSpace(input.Mobile))
@@ -551,6 +482,7 @@ int pageSize)
                         Message = "نام خانوادگی الزامی است."
                     };
                 }
+
                 if (string.IsNullOrWhiteSpace(input.NationalCode))
                 {
                     return new ResultDto<UserDto>
@@ -561,16 +493,10 @@ int pageSize)
                 }
 
                 var mobile = input.Mobile.Trim();
-
                 var firstName = input.FirstName.Trim();
-
                 var lastName = input.LastName.Trim();
                 var nationalCode = input.NationalCode.Trim();
-
-                var customerRole =
-                    await _userRoleService.GetRoleByCodeAsync(
-                        RoleCodes.USER);
-
+                var customerRole = await _userRoleService.GetRoleByCodeAsync(RoleCodes.USER);
                 if (customerRole == null)
                 {
                     return new ResultDto<UserDto>
@@ -580,65 +506,36 @@ int pageSize)
                     };
                 }
 
-                var existingUser =
-                    await GetByMobileNumberAsync(
-                        mobile);
-
+                var existingUser = await GetByMobileNumberAsync(mobile);
                 // =====================================================
                 // کاربر قبلاً وجود دارد
                 // =====================================================
                 if (existingUser != null)
                 {
-                    var existingUserRoles =
-                        await _userRoleService
-                            .GetRolesByUserIdAsync(
-                                existingUser.Id);
-
-                    var hasUserRole =
-                        existingUserRoles.Any(
-                            x => x.Id == customerRole.Id);
-
+                    var existingUserRoles = await _userRoleService.GetRolesByUserIdAsync(existingUser.Id);
+                    var hasUserRole = existingUserRoles.Any(x => x.Id == customerRole.Id);
                     // اگر نقش USER ندارد، به کاربر اضافه می‌شود
                     if (!hasUserRole)
                     {
-                        var userRole =
-                            await _userRoleService.CreateAsync(
-                                new UserRoleDto
-                                {
-                                    Userid = existingUser.Id,
-                                    Roleid = customerRole.Id
-                                });
-
+                        var userRole = await _userRoleService.CreateAsync(new UserRoleDto { Userid = existingUser.Id, Roleid = customerRole.Id });
                         if (!userRole.Success)
                         {
-                            await _transactionService
-                                .RollbackAsync();
-
+                            await _transactionService.RollbackAsync();
                             return new ResultDto<UserDto>
                             {
                                 Success = false,
-                                Message =
-                                    userRole.Message
-                                    ?? "خطا در افزودن نقش کاربر.",
-
-                                Errors =
-                                    userRole.Errors
+                                Message = userRole.Message ?? "خطا در افزودن نقش کاربر.",
+                                Errors = userRole.Errors
                             };
                         }
 
-                        await _transactionService
-                            .CommitAsync();
+                        await _transactionService.CommitAsync();
                     }
 
                     return new ResultDto<UserDto>
                     {
                         Success = true,
-
-                        Message =
-                            hasUserRole
-                                ? "کاربر قبلاً ثبت‌نام شده است."
-                                : "نقش کاربر با موفقیت اضافه شد.",
-
+                        Message = hasUserRole ? "کاربر قبلاً ثبت‌نام شده است." : "نقش کاربر با موفقیت اضافه شد.",
                         Data = existingUser
                     };
                 }
@@ -646,128 +543,74 @@ int pageSize)
                 // =====================================================
                 // کاربر وجود ندارد؛ ایجاد کاربر جدید
                 // =====================================================
-
                 var user = new UserDto
                 {
                     UserName = mobile,
-
                     MobileNumber = mobile,
-
                     NationalCode = nationalCode,
-
                     IsActive = true
                 };
-
-                var userResult =
-                    await CreateAsync(user);
-
-                if (!userResult.Success ||
-                    userResult.Data == null)
+                var userResult = await CreateAsync(user);
+                if (!userResult.Success || userResult.Data == null)
                 {
-                    await _transactionService
-                        .RollbackAsync();
-
+                    await _transactionService.RollbackAsync();
                     return userResult;
                 }
 
-                var userId =
-                    userResult.Data.Id;
-
+                var userId = userResult.Data.Id;
                 // =====================================================
                 // ایجاد پروفایل
                 // =====================================================
-
-                var profile =
-                    new UserProfileDto
-                    {
-                        Userid = userId,
-
-                        Firstname = firstName,
-
-                        Lastname = lastName,
-                        Nationalcode = nationalCode,
-                    };
-
-                var profileResult =
-                    await _userProfileService
-                        .CreateAsync(profile);
-
+                var profile = new UserProfileDto
+                {
+                    Userid = userId,
+                    Firstname = firstName,
+                    Lastname = lastName,
+                    Nationalcode = nationalCode,
+                };
+                var profileResult = await _userProfileService.CreateAsync(profile);
                 if (!profileResult.Success)
                 {
-                    await _transactionService
-                        .RollbackAsync();
-
+                    await _transactionService.RollbackAsync();
                     return new ResultDto<UserDto>
                     {
                         Success = false,
-
-                        Message =
-                            profileResult.Message
-                            ?? "خطا در ایجاد پروفایل کاربر.",
-
-                        Errors =
-                            profileResult.Errors
+                        Message = profileResult.Message ?? "خطا در ایجاد پروفایل کاربر.",
+                        Errors = profileResult.Errors
                     };
                 }
 
                 // =====================================================
                 // اختصاص نقش USER
                 // =====================================================
-
-                var userRoleResult =
-                    await _userRoleService
-                        .CreateAsync(
-                            new UserRoleDto
-                            {
-                                Userid = userId,
-
-                                Roleid = customerRole.Id
-                            });
-
+                var userRoleResult = await _userRoleService.CreateAsync(new UserRoleDto { Userid = userId, Roleid = customerRole.Id });
                 if (!userRoleResult.Success)
                 {
-                    await _transactionService
-                        .RollbackAsync();
-
+                    await _transactionService.RollbackAsync();
                     return new ResultDto<UserDto>
                     {
                         Success = false,
-
-                        Message =
-                            userRoleResult.Message
-                            ?? "خطا در اختصاص نقش کاربر.",
-
-                        Errors =
-                            userRoleResult.Errors
+                        Message = userRoleResult.Message ?? "خطا در اختصاص نقش کاربر.",
+                        Errors = userRoleResult.Errors
                     };
                 }
 
-                await _transactionService
-                    .CommitAsync();
-
+                await _transactionService.CommitAsync();
                 return userResult;
             }
             catch (Exception ex)
             {
-                await _transactionService
-                    .RollbackAsync();
-
+                await _transactionService.RollbackAsync();
                 return new ResultDto<UserDto>
                 {
                     Success = false,
-
                     Message = errorMessage,
-
                     Errors = new List<string>
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
-
-
-
-
     }
 }

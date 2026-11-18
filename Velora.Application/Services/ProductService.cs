@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,15 +37,7 @@ namespace Velora.Application.Services
         protected readonly IProductInventoryTransactionService _productInventoryService;
         protected readonly IDiscountService _discountService;
         protected readonly IProductFileService _productFileService;
-        
-        public ProductService(
-              ISqlRepository<SqlProduct> sqlRepository,
-              IPosgreSqlRepository<SqlProduct> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService, IDiscountService discountService, IProductFileService productFileService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductService(ISqlRepository<SqlProduct> sqlRepository, IPosgreSqlRepository<SqlProduct> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, IProductTagService ProductTagService, IProductTagMappingService productTagMappingService, IProductInventoryTransactionService productInventoryService, IDiscountService discountService, IProductFileService productFileService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -61,18 +53,16 @@ namespace Velora.Application.Services
             _discountService = discountService;
             _productFileService = productFileService;
         }
+
         public async Task<IQueryable<ProductCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlProductView, SqlProductView, ProductCrud>();
         }
-        private async Task<List<string>> ValidateProductUniquenessAsync(
-    ProductCrud input,
-    Guid? excludeId = null)
+
+        private async Task<List<string>> ValidateProductUniquenessAsync(ProductCrud input, Guid? excludeId = null)
         {
             var errors = new List<string>();
-
             var products = Query();
-
             if (excludeId.HasValue)
             {
                 products = products.Where(x => x.Id != excludeId.Value);
@@ -82,7 +72,6 @@ namespace Velora.Application.Services
             if (!string.IsNullOrWhiteSpace(input.Name))
             {
                 var name = input.Name.Trim();
-
                 if (await products.AnyAsync(x => x.Name == name))
                     errors.Add("این نام محصول قبلاً ثبت شده است");
             }
@@ -91,7 +80,6 @@ namespace Velora.Application.Services
             if (!string.IsNullOrWhiteSpace(input.Barcode))
             {
                 var barcode = input.Barcode.Trim();
-
                 if (await products.AnyAsync(x => x.Barcode == barcode))
                     errors.Add("این بارکد قبلاً برای محصول دیگری ثبت شده است");
             }
@@ -100,7 +88,6 @@ namespace Velora.Application.Services
             if (!string.IsNullOrWhiteSpace(input.Sku))
             {
                 var sku = input.Sku.Trim();
-
                 if (await products.AnyAsync(x => x.Sku == sku))
                     errors.Add("این کد کالا قبلاً ثبت شده است");
             }
@@ -109,38 +96,32 @@ namespace Velora.Application.Services
             if (!string.IsNullOrWhiteSpace(input.Slug))
             {
                 var slug = input.Slug.Trim();
-
                 if (await products.AnyAsync(x => x.Slug == slug))
                     errors.Add("این اسلاگ قبلاً برای محصول دیگری ثبت شده است");
             }
 
             return errors;
         }
+
         public async Task<ResultDto<ProductCrud>> CreateAsync(ProductCrud input)
         {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
-
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 // Validation
                 var validation = await _modelValidationService.ValidateAsync(input);
-
                 if (!validation.Success)
                 {
                     return new ResultDto<ProductCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(
-                            LocalizationKeys.ValidationFailed,
-                            "Form has errors. Please fix them."),
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
                 }
 
                 // Uniqueness validation
                 var uniqueErrors = await ValidateProductUniquenessAsync(input);
-
                 if (uniqueErrors.Any())
                 {
                     return new ResultDto<ProductCrud>
@@ -175,17 +156,14 @@ namespace Velora.Application.Services
                     Thumbnail = input.Thumbnail,
                     Weight = input.Weight
                 };
-
                 // Auto SortOrder
                 if (product.SortOrder <= 0)
                 {
-                    product.SortOrder = (await Query()
-                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                    product.SortOrder = (await Query().MaxAsync(x => (int? )x.SortOrder) ?? 0) + 1;
                 }
 
                 // Create Product
                 var productResult = await CreateAsync(product);
-
                 if (!productResult.Success || productResult.Data == null)
                 {
                     return new ResultDto<ProductCrud>
@@ -197,26 +175,15 @@ namespace Velora.Application.Services
                 }
 
                 var productId = productResult.Data.Id;
-
                 // Parse Product Tags
-                var productTagIds = input.ProductTagIds?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => Guid.Parse(x.Trim()))
-                    .ToHashSet() ?? new HashSet<Guid>();
-
+                var productTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => Guid.Parse(x.Trim())).ToHashSet() ?? new HashSet<Guid>();
                 // Get Existing Tags
-                var existingTags = await _productTagMappingService
-                    .GetByProductTagMappingsAsync(productId);
-
-                var existingTagIds = existingTags
-                    .Select(x => x.ProductTagId)
-                    .ToHashSet();
-
+                var existingTags = await _productTagMappingService.GetByProductTagMappingsAsync(productId);
+                var existingTagIds = existingTags.Select(x => x.ProductTagId).ToHashSet();
                 // Remove Unselected Tags
                 foreach (var tag in existingTags.Where(x => !productTagIds.Contains(x.ProductTagId)))
                 {
                     var deleteResult = await _productTagMappingService.DeleteAsync(tag.Id);
-
                     if (!deleteResult.Success)
                         throw new Exception(deleteResult.Message);
                 }
@@ -224,22 +191,14 @@ namespace Velora.Application.Services
                 // Add New Tags
                 foreach (var tagId in productTagIds.Except(existingTagIds))
                 {
-                    var tagResult = await _productTagMappingService.CreateAsync(
-                        new ProductTagMappingDto
-                        {
-                            ProductId = productId,
-                            ProductTagId = tagId
-                        });
-
+                    var tagResult = await _productTagMappingService.CreateAsync(new ProductTagMappingDto { ProductId = productId, ProductTagId = tagId });
                     if (!tagResult.Success)
                         throw new Exception(tagResult.Message);
                 }
 
                 // Return Result
                 var output = _mapper.Map<ProductCrud>(productResult.Data);
-
                 output.ProductTagIds = string.Join(",", productTagIds);
-
                 return new ResultDto<ProductCrud>
                 {
                     Success = true,
@@ -250,25 +209,24 @@ namespace Velora.Application.Services
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 return new ResultDto<ProductCrud>
                 {
                     Success = false,
                     Message = errorMessage,
-                    Errors = { ex.Message }
+                    Errors =
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
-        public async Task<ResultDto<ProductCrud>> CreateAdvancedAsync(
-    ProductCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductCrud>> CreateAdvancedAsync(ProductCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var uniqueErrors = await ValidateProductUniquenessAsync(input);
-
                 if (uniqueErrors.Any())
                 {
                     return new ResultDto<ProductCrud>
@@ -302,103 +260,72 @@ namespace Velora.Application.Services
                     Thumbnail = input.Thumbnail,
                     Weight = input.Weight
                 };
-
                 if (product.SortOrder <= 0)
                 {
-                    product.SortOrder = (await Query()
-                        .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                    product.SortOrder = (await Query().MaxAsync(x => (int? )x.SortOrder) ?? 0) + 1;
                 }
 
-                var productResult = await CreateWithViewAsync(
-                    product,
-                    GetProductById,
-                    x => x.Id
-                );
-
+                var productResult = await CreateWithViewAsync(product, GetProductById, x => x.Id);
                 if (!productResult.Success || productResult.Data == null)
                     return productResult;
-
                 var productId = productResult.Data.Id;
-
-                var productTagIds = input.ProductTagIds?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => Guid.Parse(x.Trim()))
-                    .ToHashSet() ?? new HashSet<Guid>();
-
-                var existingTags = await _productTagMappingService
-                    .GetByProductTagMappingsAsync(productId);
-
-                var existingTagIds = existingTags
-                    .Select(x => x.ProductTagId)
-                    .ToHashSet();
-
-                foreach (var tag in existingTags.Where(
-                    x => !productTagIds.Contains(x.ProductTagId)))
+                var productTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => Guid.Parse(x.Trim())).ToHashSet() ?? new HashSet<Guid>();
+                var existingTags = await _productTagMappingService.GetByProductTagMappingsAsync(productId);
+                var existingTagIds = existingTags.Select(x => x.ProductTagId).ToHashSet();
+                foreach (var tag in existingTags.Where(x => !productTagIds.Contains(x.ProductTagId)))
                 {
-                    var deleteResult = await _productTagMappingService
-                        .DeleteAsync(tag.Id);
-
+                    var deleteResult = await _productTagMappingService.DeleteAsync(tag.Id);
                     if (!deleteResult.Success)
                         throw new Exception(deleteResult.Message);
                 }
 
                 foreach (var tagId in productTagIds.Except(existingTagIds))
                 {
-                    var tagResult = await _productTagMappingService.CreateAsync(
-                        new ProductTagMappingDto
-                        {
-                            ProductId = productId,
-                            ProductTagId = tagId
-                        });
-
+                    var tagResult = await _productTagMappingService.CreateAsync(new ProductTagMappingDto { ProductId = productId, ProductTagId = tagId });
                     if (!tagResult.Success)
                         throw new Exception(tagResult.Message);
                 }
 
                 productResult.Data.ProductTagIds = string.Join(",", productTagIds);
-
                 if (productResult.Success)
                     productResult.Message = successMessage;
-
                 return productResult;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ProductCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ProductDto>> UpdateAsync(ProductCrud input)
+
+        public async Task<ResultDto<ProductCrud>> UpdateAsync(ProductCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductDto>
+                    return new ResultDto<ProductCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductDto>
+                    return new ResultDto<ProductCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ProductDto
                 {
@@ -423,57 +350,55 @@ namespace Velora.Application.Services
                     Thumbnail = input.Thumbnail,
                     Weight = input.Weight,
                 };
-
                 var ProductResult = await UpdateAsync(updateDto, input.Id);
                 if (!ProductResult.Success)
-                    return ProductResult;
+                {
+                    return new ResultDto<ProductCrud>
+                    {
+                        Success = false,
+                        Message = ProductResult.Message,
+                        Errors = ProductResult.Errors
+                    };
+                }
+
                 var ProductId = ProductResult.Data.Id;
-
-                var ProductTagIds = input.ProductTagIds?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(Guid.Parse)
-                    .Distinct()
-                    .ToList() ?? new List<Guid>();
-
-                var existingProductTags = await _productTagMappingService
-                    .GetByProductTagMappingsAsync(ProductId);
-
-
+                var ProductTagIds = input.ProductTagIds?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse).Distinct().ToList() ?? new List<Guid>();
+                var existingProductTags = await _productTagMappingService.GetByProductTagMappingsAsync(ProductId);
                 // حذف مواردی که دیگر وجود ندارند
-                var tagsToRemove = existingProductTags
-                    .Where(x => !ProductTagIds.Contains(x.ProductTagId))
-                    .ToList();
-
+                var tagsToRemove = existingProductTags.Where(x => !ProductTagIds.Contains(x.ProductTagId)).ToList();
                 foreach (var tag in tagsToRemove)
                 {
                     await _productTagMappingService.DeleteAsync(tag.Id);
                 }
 
-
                 // اضافه کردن فقط موارد جدید
-                var existingTagIds = existingProductTags
-                    .Select(x => x.ProductTagId)
-                    .ToHashSet();
-
-
-                var tagsToAdd = ProductTagIds
-                    .Where(x => !existingTagIds.Contains(x))
-                    .ToList();
-
-
+                var existingTagIds = existingProductTags.Select(x => x.ProductTagId).ToHashSet();
+                var tagsToAdd = ProductTagIds.Where(x => !existingTagIds.Contains(x)).ToList();
                 foreach (var tagId in tagsToAdd)
                 {
-                    await _productTagMappingService.CreateAsync(new ProductTagMappingDto
-                    {
-                        ProductId = ProductId,
-                        ProductTagId = tagId
-                    });
+                    await _productTagMappingService.CreateAsync(new ProductTagMappingDto { ProductId = ProductId, ProductTagId = tagId });
                 }
-                return ProductResult;
+                await _transactionService.CommitAsync();
+                var viewResult = await GetProductById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
-                var result = new ResultDto<ProductDto>
+                var result = new ResultDto<ProductCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -482,44 +407,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProducts= new List<ProductCrud>();
+            var createdProducts = new List<ProductCrud>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var Products = dt.ToModelList<ProductCrud>();
-
                 for (int i = 0; i < Products.Count; i++)
                 {
                     var Product = Products[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(Product);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProducts.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -529,9 +445,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProducts.Count,
@@ -548,79 +462,49 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentProduct,
-int ProductNumber,
-int ProductSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentProduct, int ProductNumber, int ProductSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductCrud> data;
-
             if (exportCurrentProduct)
             {
-                data = query
-                    .Skip((ProductNumber - 1) * ProductSize)
-                    .Take(ProductSize)
-                    .ToList();
+                data = query.Skip((ProductNumber - 1) * ProductSize).Take(ProductSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.Product, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.Product, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
-        public async Task<ResultDto<ProductListResultDto>> GetRelatedProductsAsync(
-            string? categorySlug,
-            int count = 6,
-            Guid? excludeProductId = null)
+        public async Task<ResultDto<ProductListResultDto>> GetRelatedProductsAsync(string? categorySlug, int count = 6, Guid? excludeProductId = null)
         {
             try
             {
                 count = Math.Max(count, 6);
-
-                var result = await GetProductsAsync(
-                    page: 1,
-                    pageSize: count + 1,
-                    categorySlug: categorySlug,
-                    brandSlug: null,
-                    search: null,
-                    sort: "newest",
-                    excludeProductId: excludeProductId
-                );
-
+                var result = await GetProductsAsync(page: 1, pageSize: count + 1, categorySlug: categorySlug, brandSlug: null, search: null, sort: "newest", excludeProductId: excludeProductId);
                 if (!result.Success || result.Data == null)
                     return result;
-
                 // حذف شناسه‌های تکراری و اطمینان از حذف محصول فعلی
-                var items = result.Data.Items
-                    .Where(p => p.Id != excludeProductId)
-                    .GroupBy(p => p.Id)
-                    .Select(g => g.First())
-                    .Take(count)
-                    .ToList();
-
+                var items = result.Data.Items.Where(p => p.Id != excludeProductId).GroupBy(p => p.Id).Select(g => g.First()).Take(count).ToList();
                 result.Data.Items = items;
-
                 return result;
             }
             catch (Exception ex)
@@ -629,229 +513,94 @@ int ProductSize)
                 {
                     Success = false,
                     Message = "خطا در دریافت محصولات مرتبط",
-                    Errors = { ex.Message }
+                    Errors =
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<ResultDto<ProductListResultDto>> GetProductsAsync(
-            int page,
-            int pageSize,
-            string? categorySlug,
-            string? brandSlug,
-            string? search,
-            string sort,
-            decimal? minPrice = null,
-            decimal? maxPrice = null,
-           Guid? excludeProductId = null)
+        public async Task<ResultDto<ProductListResultDto>> GetProductsAsync(int page, int pageSize, string? categorySlug, string? brandSlug, string? search, string sort, decimal? minPrice = null, decimal? maxPrice = null, Guid? excludeProductId = null)
         {
             try
             {
-
-                var query =
-                    Query()
-
-                    .Include(x => x.Category)
-
-                    .Include(x => x.Brand)
-
-                    .Include(x => x.ProductFiles)
-                    .Include(x => x.ProductVariants)
-                    .Include(x => x.ProductTagMappings)
-                        .ThenInclude(x => x.ProductTag)
-
-                    .Where(x =>
-                        x.IsPublished == true &&
-                        x.IsActive == true &&
-                          (!excludeProductId.HasValue || x.Id != excludeProductId.Value));
-
-
-
+                var query = Query().Include(x => x.Category).Include(x => x.Brand).Include(x => x.ProductFiles).Include(x => x.ProductVariants).Include(x => x.ProductTagMappings).ThenInclude(x => x.ProductTag).Where(x => x.IsPublished == true && x.IsActive == true && (!excludeProductId.HasValue || x.Id != excludeProductId.Value));
                 // ===============================
                 // Category Filter
                 // ===============================
-
                 if (!string.IsNullOrWhiteSpace(categorySlug))
                 {
-                    query =
-                        query.Where(x =>
-                            x.Category != null &&
-                            x.Category.Slug == categorySlug);
+                    query = query.Where(x => x.Category != null && x.Category.Slug == categorySlug);
                 }
-
-
 
                 // ===============================
                 // Brand Filter
                 // ===============================
-
                 if (!string.IsNullOrWhiteSpace(brandSlug))
                 {
-                    query =
-                        query.Where(x =>
-                            x.Brand != null &&
-                            x.Brand.Slug == brandSlug);
+                    query = query.Where(x => x.Brand != null && x.Brand.Slug == brandSlug);
                 }
-
-
 
                 // ===============================
                 // Search
                 // ===============================
-
                 if (!string.IsNullOrWhiteSpace(search))
                 {
-                    query =
-                        query.Where(x =>
-                            x.Name.Contains(search));
+                    query = query.Where(x => x.Name.Contains(search));
                 }
-
 
                 // ===============================
                 // Price Filter
                 // ===============================
-
                 if (minPrice.HasValue)
                 {
-                    query =
-                        query.Where(x =>
-                            (x.ProductVariants.Any()
-                                ? x.ProductVariants.Min(v => v.Price)
-                                : x.Price) >= minPrice.Value);
+                    query = query.Where(x => (x.ProductVariants.Any() ? x.ProductVariants.Min(v => v.Price) : x.Price) >= minPrice.Value);
                 }
-
 
                 if (maxPrice.HasValue)
                 {
-                    query =
-                        query.Where(x =>
-                            (x.ProductVariants.Any()
-                                ? x.ProductVariants.Min(v => v.Price)
-                                : x.Price) <= maxPrice.Value);
+                    query = query.Where(x => (x.ProductVariants.Any() ? x.ProductVariants.Min(v => v.Price) : x.Price) <= maxPrice.Value);
                 }
 
                 // ===============================
                 // Sort
                 // ===============================
-
-                query =
-                    sort switch
-                    {
-                        "priceAsc" =>
-                            query.OrderBy(x =>
-                                x.ProductVariants.Any()
-                                    ? x.ProductVariants.Min(v => v.Price)
-                                    : x.Price),
-
-
-                        "priceDesc" =>
-                            query.OrderByDescending(x =>
-                                x.ProductVariants.Any()
-                                    ? x.ProductVariants.Max(v => v.Price)
-                                    : x.Price),
-
-
-                        "oldest" =>
-                            query.OrderBy(x => x.CreatedAt),
-
-
-                        _ =>
-                            query.OrderByDescending(x => x.CreatedAt)
-                    };
-
-
-
-
-
+                query = sort switch
+                {
+                    "priceAsc" => query.OrderBy(x => x.ProductVariants.Any() ? x.ProductVariants.Min(v => v.Price) : x.Price),
+                    "priceDesc" => query.OrderByDescending(x => x.ProductVariants.Any() ? x.ProductVariants.Max(v => v.Price) : x.Price),
+                    "oldest" => query.OrderBy(x => x.CreatedAt),
+                    _ => query.OrderByDescending(x => x.CreatedAt)};
                 // ===============================
                 // Total Count
                 // ===============================
-
-                var total =
-                    await query.CountAsync();
-
-
-
-
-
-
+                var total = await query.CountAsync();
                 // ===============================
                 // Pagination
                 // ===============================
-
-                var products =
-                    await query
-
-                    .Skip((page - 1) * pageSize)
-
-                    .Take(pageSize)
-
-                    .ToListAsync();
-
-
-                var activeDiscounts =
-    await _discountService.GetActiveDiscountsAsync();
-
-
-
-
-
+                var products = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+                var activeDiscounts = await _discountService.GetActiveDiscountsAsync();
                 // ===============================
                 // Inventory Bulk Calculation
                 // ===============================
-
-
-                var productIds =
-                    products
-                    .Select(x => x.Id)
-                    .ToList();
-
-
-
-                var inventories =
-                    await _productInventoryService
-                        .GetInventoryAsync(productIds);
-
-
-
-
+                var productIds = products.Select(x => x.Id).ToList();
+                var inventories = await _productInventoryService.GetInventoryAsync(productIds);
                 // ===============================
                 // Mapping
                 // ===============================
-
                 var data = products.Select(product =>
                 {
-                    var price =
-                        product.ProductVariants.Count == 1
-                            ? product.ProductVariants.First().Price
-                            : product.ProductVariants.Any()
-                                ? product.ProductVariants.Min(v => v.Price)
-                                : product.Price ?? 0;
-
-                    var discount = _discountService.CalculateDiscount(
-                        new DiscountCalculationInput
-                        {
-                            ProductId = product.Id,
-                            ProductVariantId = product.ProductVariants.Count == 1
-                                ? product.ProductVariants.First().Id
-                                : null,
-                            ProductBrandId = product.BrandId,
-                            ProductCategoryId = product.CategoryId,
-                            Price = price
-                        },
-                        activeDiscounts);
-
+                    var price = product.ProductVariants.Count == 1 ? product.ProductVariants.First().Price : product.ProductVariants.Any() ? product.ProductVariants.Min(v => v.Price) : product.Price ?? 0;
+                    var discount = _discountService.CalculateDiscount(new DiscountCalculationInput { ProductId = product.Id, ProductVariantId = product.ProductVariants.Count == 1 ? product.ProductVariants.First().Id : null, ProductBrandId = product.BrandId, ProductCategoryId = product.CategoryId, Price = price }, activeDiscounts);
                     inventories.TryGetValue(product.Id, out var inventory);
-
                     return new ProductListViewDto
                     {
                         Id = product.Id,
                         Name = product.Name,
                         Slug = product.Slug,
                         Summary = product.Summary,
-
                         Price = price,
-
                         // اطلاعات تخفیف
                         HasDiscount = discount.HasDiscount,
                         DiscountId = discount.DiscountId,
@@ -860,81 +609,44 @@ int ProductSize)
                         DiscountValue = discount.DiscountValue,
                         DiscountAmount = discount.DiscountAmount,
                         FinalPrice = discount.FinalPrice,
-
                         MainImage = product.MainImage,
                         Thumbnail = product.Thumbnail,
-
                         CategoryName = product.Category?.Name,
                         CategorySlug = product.Category?.Slug,
-
                         BrandName = product.Brand?.Name,
                         BrandSlug = product.Brand?.Slug,
-
                         Inventory = inventory,
-
                         CreatedAt = product.CreatedAt,
-
                         HasVariant = product.ProductVariants.Count > 1,
-
-                        DefaultVariantId = product.ProductVariants.Count == 1
-                            ? product.ProductVariants.First().Id
-                            : null,
-
-                        Gallery = product.ProductFiles
-                            .OrderBy(f => f.SortOrder)
-                            .Select(m => new ProductMediaViewDto
-                            {
-                                Id = m.Id,
-                                FileUrl = m.FileUrl,
-                                ThumbnailUrl = m.ThumbnailUrl,
-                                IsMain = m.IsMain,
-                                SortOrder = m.SortOrder
-                            })
-                            .ToList()
+                        DefaultVariantId = product.ProductVariants.Count == 1 ? product.ProductVariants.First().Id : null,
+                        Gallery = product.ProductFiles.OrderBy(f => f.SortOrder).Select(m => new ProductMediaViewDto { Id = m.Id, FileUrl = m.FileUrl, ThumbnailUrl = m.ThumbnailUrl, IsMain = m.IsMain, SortOrder = m.SortOrder }).ToList()
                     };
                 }).ToList();
-
-
-
-
-
-
-
                 return new ResultDto<ProductListResultDto>
                 {
                     Success = true,
-
                     Data = new ProductListResultDto
                     {
                         Items = data,
-
                         TotalCount = total,
-
                         Page = page,
-
                         PageSize = pageSize
                     }
                 };
-
             }
             catch (Exception ex)
             {
-
                 return new ResultDto<ProductListResultDto>
                 {
                     Success = false,
-
                     Message = "خطا در دریافت لیست محصولات",
-
                     Errors =
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
-
             }
         }
-
 
         public async Task<ResultDto<ProductDetailViewDto>> GetProductDetailAsync(string? slug)
         {
@@ -949,27 +661,7 @@ int ProductSize)
                     };
                 }
 
-                var product = await Query()
-
-                    .Include(x => x.Category)
-
-                    .Include(x => x.Brand)
-
-                    .Include(x => x.ProductFiles)
-
-                    .Include(x => x.ProductAttributeValues)
-                        .ThenInclude(x => x.ProductAttribute)
-
-                    .Include(x => x.ProductVariants)
-
-                    .Include(x => x.ProductTagMappings)
-                        .ThenInclude(x => x.ProductTag)
-
-                    .FirstOrDefaultAsync(x =>
-                        x.Slug == slug &&
-                        x.IsPublished == true &&
-                        x.IsActive == true);
-
+                var product = await Query().Include(x => x.Category).Include(x => x.Brand).Include(x => x.ProductFiles).Include(x => x.ProductAttributeValues).ThenInclude(x => x.ProductAttribute).Include(x => x.ProductVariants).Include(x => x.ProductTagMappings).ThenInclude(x => x.ProductTag).FirstOrDefaultAsync(x => x.Slug == slug && x.IsPublished == true && x.IsActive == true);
                 if (product == null)
                 {
                     return new ResultDto<ProductDetailViewDto>
@@ -979,308 +671,103 @@ int ProductSize)
                     };
                 }
 
-
                 // =========================================================
                 // Active Discounts
                 // =========================================================
-
-                var activeDiscounts =
-                    await _discountService.GetActiveDiscountsAsync();
-
-
+                var activeDiscounts = await _discountService.GetActiveDiscountsAsync();
                 // =========================================================
                 // Product Base Price
                 // =========================================================
-
-                var productBasePrice =
-                    product.ProductVariants.Count == 1
-                        ? product.ProductVariants.First().Price
-                        : product.ProductVariants.Any()
-                            ? product.ProductVariants.Min(x => x.Price)
-                            : product.Price ?? 0;
-
-
+                var productBasePrice = product.ProductVariants.Count == 1 ? product.ProductVariants.First().Price : product.ProductVariants.Any() ? product.ProductVariants.Min(x => x.Price) : product.Price ?? 0;
                 // =========================================================
                 // Product Discount
                 // =========================================================
-
-                var productDiscount =
-                    _discountService.CalculateDiscount(
-                        new DiscountCalculationInput
-                        {
-                            ProductId = product.Id,
-
-                            ProductVariantId =
-                                product.ProductVariants.Count == 1
-                                    ? product.ProductVariants.First().Id
-                                    : null,
-
-                            ProductBrandId = product.BrandId,
-
-                            ProductCategoryId = product.CategoryId,
-
-                            Price = productBasePrice
-                        },
-                        activeDiscounts);
-
-
+                var productDiscount = _discountService.CalculateDiscount(new DiscountCalculationInput { ProductId = product.Id, ProductVariantId = product.ProductVariants.Count == 1 ? product.ProductVariants.First().Id : null, ProductBrandId = product.BrandId, ProductCategoryId = product.CategoryId, Price = productBasePrice }, activeDiscounts);
                 // =========================================================
                 // Inventory
                 // =========================================================
-
-                var inventory =
-                    await _productInventoryService
-                        .GetInventoryAsync(product.Id);
-
-
+                var inventory = await _productInventoryService.GetInventoryAsync(product.Id);
                 // =========================================================
                 // Variants
                 // =========================================================
-
                 var variants = new List<ProductVariantViewDto>();
-
                 foreach (var x in product.ProductVariants.OrderBy(x => x.SortOrder))
                 {
-                    var stock =
-                        await _productInventoryService
-                            .GetInventoryAsync(product.Id, x.Id);
-
-
+                    var stock = await _productInventoryService.GetInventoryAsync(product.Id, x.Id);
                     // ==========================================
                     // Variant Discount
                     // ==========================================
-
-                    var variantDiscount =
-                        _discountService.CalculateDiscount(
-                            new DiscountCalculationInput
-                            {
-                                ProductId = product.Id,
-
-                                ProductVariantId = x.Id,
-
-                                ProductBrandId = product.BrandId,
-
-                                ProductCategoryId = product.CategoryId,
-
-                                Price = x.Price
-                            },
-                            activeDiscounts);
-
-
-                    variants.Add(new ProductVariantViewDto
-                    {
-                        Id = x.Id,
-
-                        ProductId = x.ProductId,
-
-                        Name = x.Name,
-
-                        Price = x.Price,
-
-                        ComparePrice = x.ComparePrice,
-
-                        Sku = x.Sku,
-
-                        Barcode = x.Barcode,
-
-                        Image = x.Image,
-
-                        IsDefault = x.IsDefault,
-
-                        SortOrder = x.SortOrder,
-
-                        IsActive = x.IsActive,
-
-                        Stock = stock,
-
-
-                        // ==========================================
-                        // Discount
-                        // ==========================================
-
-                        HasDiscount = variantDiscount.HasDiscount,
-
-                        DiscountId = variantDiscount.DiscountId,
-
-                        DiscountItemId = variantDiscount.DiscountItemId,
-
-                        DiscountType = variantDiscount.DiscountType,
-
-                        DiscountValue = variantDiscount.DiscountValue,
-
-                        DiscountAmount = variantDiscount.DiscountAmount,
-
-                        FinalPrice = variantDiscount.FinalPrice
-                    });
+                    var variantDiscount = _discountService.CalculateDiscount(new DiscountCalculationInput { ProductId = product.Id, ProductVariantId = x.Id, ProductBrandId = product.BrandId, ProductCategoryId = product.CategoryId, Price = x.Price }, activeDiscounts);
+                    variants.Add(new ProductVariantViewDto { Id = x.Id, ProductId = x.ProductId, Name = x.Name, Price = x.Price, ComparePrice = x.ComparePrice, Sku = x.Sku, Barcode = x.Barcode, Image = x.Image, IsDefault = x.IsDefault, SortOrder = x.SortOrder, IsActive = x.IsActive, Stock = stock, // ==========================================
+                    // Discount
+                    // ==========================================
+                    HasDiscount = variantDiscount.HasDiscount, DiscountId = variantDiscount.DiscountId, DiscountItemId = variantDiscount.DiscountItemId, DiscountType = variantDiscount.DiscountType, DiscountValue = variantDiscount.DiscountValue, DiscountAmount = variantDiscount.DiscountAmount, FinalPrice = variantDiscount.FinalPrice });
                 }
-
 
                 // =========================================================
                 // Mapping
                 // =========================================================
-
                 var data = new ProductDetailViewDto
                 {
                     Id = product.Id,
-
                     Name = product.Name,
-
                     Slug = product.Slug,
-
                     Summary = product.Summary,
-
                     Description = product.Description,
-
                     MainImage = product.MainImage,
-
                     Thumbnail = product.Thumbnail,
-
-
                     // =====================================================
                     // Price
                     // =====================================================
-
                     Price = productBasePrice,
-
-
                     // =====================================================
                     // Discount
                     // =====================================================
-
                     HasDiscount = productDiscount.HasDiscount,
-
                     DiscountId = productDiscount.DiscountId,
-
                     DiscountItemId = productDiscount.DiscountItemId,
-
                     DiscountType = productDiscount.DiscountType,
-
                     DiscountValue = productDiscount.DiscountValue,
-
                     DiscountAmount = productDiscount.DiscountAmount,
-
                     FinalPrice = productDiscount.FinalPrice,
-
-
                     // =====================================================
                     // Category
                     // =====================================================
-
-                    Category =
-                        product.Category == null
-                            ? null
-                            : new CategoryViewDto
-                            {
-                                Id = product.Category.Id,
-
-                                Name = product.Category.Name,
-
-                                Slug = product.Category.Slug
-                            },
-
-
+                    Category = product.Category == null ? null : new CategoryViewDto
+                    {
+                        Id = product.Category.Id,
+                        Name = product.Category.Name,
+                        Slug = product.Category.Slug
+                    },
                     // =====================================================
                     // Brand
                     // =====================================================
-
-                    Brand =
-                        product.Brand == null
-                            ? null
-                            : new BrandViewDto
-                            {
-                                Id = product.Brand.Id,
-
-                                Name = product.Brand.Name,
-
-                                Slug = product.Brand.Slug
-                            },
-
-
+                    Brand = product.Brand == null ? null : new BrandViewDto
+                    {
+                        Id = product.Brand.Id,
+                        Name = product.Brand.Name,
+                        Slug = product.Brand.Slug
+                    },
                     // =====================================================
                     // Gallery
                     // =====================================================
-
-                    Gallery =
-                        product.ProductFiles
-
-                        .OrderBy(x => x.SortOrder)
-
-                        .Select(x => new ProductMediaViewDto
-                        {
-                            Id = x.Id,
-
-                            ProductId = x.ProductId,
-
-                            FileUrl = x.FileUrl,
-
-                            ThumbnailUrl = x.ThumbnailUrl,
-
-                            Title = x.Title,
-
-                            Alt = x.Alt,
-
-                            MediaType = x.MediaType,
-
-                            IsMain = x.IsMain,
-
-                            SortOrder = x.SortOrder
-
-                        })
-                        .ToList(),
-
-
+                    Gallery = product.ProductFiles.OrderBy(x => x.SortOrder).Select(x => new ProductMediaViewDto { Id = x.Id, ProductId = x.ProductId, FileUrl = x.FileUrl, ThumbnailUrl = x.ThumbnailUrl, Title = x.Title, Alt = x.Alt, MediaType = x.MediaType, IsMain = x.IsMain, SortOrder = x.SortOrder }).ToList(),
                     // =====================================================
                     // Attributes
                     // =====================================================
-
-                    Attributes =
-                        product.ProductAttributeValues
-
-                        .Select(x => new ProductAttributeViewDto
-                        {
-                            Id = x.Id,
-
-                            Name = x.ProductAttribute.Name,
-
-                            Code = x.ProductAttribute.Code,
-
-                            Value = x.Value
-
-                        })
-                        .ToList(),
-
-
+                    Attributes = product.ProductAttributeValues.Select(x => new ProductAttributeViewDto { Id = x.Id, Name = x.ProductAttribute.Name, Code = x.ProductAttribute.Code, Value = x.Value }).ToList(),
                     // =====================================================
                     // Variants
                     // =====================================================
-
                     Variants = variants,
-
-
                     // =====================================================
                     // Tags
                     // =====================================================
-
-                    Tags =
-                        product.ProductTagMappings
-
-                        .Select(x => new ProductTagViewDto
-                        {
-                            Id = x.ProductTag.Id,
-
-                            Name = x.ProductTag.Name,
-
-                            Slug = x.ProductTag.Slug
-
-                        })
-                        .ToList()
+                    Tags = product.ProductTagMappings.Select(x => new ProductTagViewDto { Id = x.ProductTag.Id, Name = x.ProductTag.Name, Slug = x.ProductTag.Slug }).ToList()
                 };
-
-
                 return new ResultDto<ProductDetailViewDto>
                 {
                     Success = true,
-
                     Data = data
                 };
             }
@@ -1289,16 +776,15 @@ int ProductSize)
                 return new ResultDto<ProductDetailViewDto>
                 {
                     Success = false,
-
                     Message = "خطا در دریافت اطلاعات محصول",
-
                     Errors =
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
+
         public async Task<ResultDto<List<ProductSearchDto>>> SearchAsync(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -1311,56 +797,31 @@ int ProductSize)
             }
 
             var products = await GetAllViews();
-
-            var productList = await products
-                .Where(x =>
-                    x.IsActive==true &&
-                    (
-                        x.Name.Contains(search) ||
-                        x.Slug.Contains(search)
-                    ))
-                .Take(10)
-                .ToListAsync();
-
+            var productList = await products.Where(x => x.IsActive == true && (x.Name.Contains(search) || x.Slug.Contains(search))).Take(10).ToListAsync();
             var productFiles = await _productFileService.GetAllViews();
-
-            var productIds = productList
-                .Select(x => x.Id)
-                .ToList();
-
-            var mainFiles = await productFiles
-                .Where(x =>
-                    productIds.Contains(x.ParentId) &&
-                    x.IsMain &&
-                    x.IsActive)
-                .ToListAsync();
-
-            var result = productList
-                .Select(product =>
+            var productIds = productList.Select(x => x.Id).ToList();
+            var mainFiles = await productFiles.Where(x => productIds.Contains(x.ParentId) && x.IsMain && x.IsActive).ToListAsync();
+            var result = productList.Select(product =>
+            {
+                var mainFile = mainFiles.FirstOrDefault(x => x.ParentId == product.Id);
+                return new ProductSearchDto
                 {
-                    var mainFile = mainFiles
-                        .FirstOrDefault(x => x.ParentId == product.Id);
-
-                    return new ProductSearchDto
-                    {
-                        Id = product.Id,
-                        Name = product.Name,
-                        Slug = product.Slug,
-                        ImageUrl = mainFile?.ThumbnailUrl ?? mainFile?.FileUrl
-                    };
-                })
-                .ToList();
-
+                    Id = product.Id,
+                    Name = product.Name,
+                    Slug = product.Slug,
+                    ImageUrl = mainFile?.ThumbnailUrl ?? mainFile?.FileUrl
+                };
+            }).ToList();
             return new ResultDto<List<ProductSearchDto>>
             {
                 Success = true,
                 Data = result
             };
         }
+
         public async Task<ProductCrud?> GetProductById(Guid id)
         {
             return await GetSqlViewByIdQueryable<SqlProductView, ProductCrud>(id);
         }
     }
-
 }

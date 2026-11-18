@@ -105,8 +105,6 @@ namespace Velora.Host.Controllers
             var result = await _ProductService.UpdateAsync(dto);
             if (!result.Success)
                 return NotFound(result);
-
-            await _transactionService.CommitAsync();
             return Ok(result);
         }
 

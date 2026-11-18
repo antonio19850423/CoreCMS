@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<DiscountCrud>> GetAllViews();
         Task<ResultDto<DiscountDto>> CreateAsync(DiscountCrud input);
-        Task<ResultDto<DiscountDto>> UpdateAsync(DiscountCrud input);
+        Task<ResultDto<DiscountCrud>> UpdateAsync(DiscountCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<List<ActiveDiscountDto>> GetActiveDiscountsAsync();
         DiscountCalculationResultDto CalculateDiscount(

@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ProductQuestionCrud>> GetAllViews();
         Task<ResultDto<ProductQuestionDto>> CreateAsync(ProductQuestionCrud input);
-        Task<ResultDto<ProductQuestionDto>> UpdateAsync(ProductQuestionCrud input);
+        Task<ResultDto<ProductQuestionCrud>> UpdateAsync(ProductQuestionCrud input);
         Task<bool> HasRecentQuestionAsync(
     Guid productId);
         Task<ResultDto<ProductQuestionDto>> CreateUserQuestionAsync(

@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Velora.Application.Services;
 using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
+
 /// <summary>
 /// /// <summary>
 /// کنترلرهایی که در فرم‌های داینامیک استفاده می‌شوند،
@@ -31,7 +32,6 @@ public class RoleController : ControllerBase, IDynamicFormController<RoleCrud>
 {
     private readonly IRoleService _roleService;
     private readonly ITransactionService _transactionService;
-
     public RoleController(IRoleService roleService, ITransactionService transactionService)
     {
         _roleService = roleService;
@@ -51,7 +51,6 @@ public class RoleController : ControllerBase, IDynamicFormController<RoleCrud>
         var result = await _roleService.GetByIdAsync(id);
         if (!result.Success)
             return NotFound(result);
-
         return Ok(result);
     }
 
@@ -60,37 +59,23 @@ public class RoleController : ControllerBase, IDynamicFormController<RoleCrud>
     public async Task<IActionResult> Create([FromBody] RoleCrud role)
     {
         if (!ModelState.IsValid)
-            return BadRequest(new ResultDto<RoleDto>
-            {
-                Success = false,
-                Message = "Invalid model",
-                Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-            });
-
+            return BadRequest(new ResultDto<RoleDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
         var result = await _roleService.CreateAsync(role);
         if (!result.Success)
             return BadRequest(result);
-
         await _transactionService.CommitAsync();
         return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
     }
+
     [HttpPut]
     [Route("Update")]
     public async Task<IActionResult> Update([FromBody] RoleCrud dto)
     {
         if (!ModelState.IsValid)
-            return BadRequest(new ResultDto<UserDto>
-            {
-                Success = false,
-                Message = "Invalid model",
-                Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-            });
-
+            return BadRequest(new ResultDto<UserDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
         var result = await _roleService.UpdateAsync(dto);
         if (!result.Success)
             return NotFound(result);
-
-        await _transactionService.CommitAsync();
         return Ok(result);
     }
 
@@ -100,7 +85,6 @@ public class RoleController : ControllerBase, IDynamicFormController<RoleCrud>
         var result = await _roleService.DeleteAsync(id);
         if (!result.Success)
             return NotFound(result);
-
         await _transactionService.CommitAsync();
         return Ok(result);
     }

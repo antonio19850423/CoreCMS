@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<InventoryTransactionReasonCrud>> GetAllViews();
         Task<ResultDto<InventoryTransactionReasonDto>> CreateAsync(InventoryTransactionReasonCrud input);
-        Task<ResultDto<InventoryTransactionReasonDto>> UpdateAsync(InventoryTransactionReasonCrud input);
+        Task<ResultDto<InventoryTransactionReasonCrud>> UpdateAsync(InventoryTransactionReasonCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

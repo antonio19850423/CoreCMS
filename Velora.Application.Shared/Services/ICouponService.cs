@@ -12,7 +12,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<CouponCrud>> GetAllViews();
         Task<ResultDto<CouponDto>> CreateAsync(CouponCrud input);
-        Task<ResultDto<CouponDto>> UpdateAsync(CouponCrud input);
+        Task<ResultDto<CouponCrud>> UpdateAsync(CouponCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<SqlCoupon?> GetByCodeAsync(string couponCode);
         Task<byte[]> ExportAsync(

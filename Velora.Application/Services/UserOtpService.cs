@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IUserOtpService _roleUserOtpService;
         protected readonly ICurrentUserService _currentUserService;
-        public UserOtpService(
-              ISqlRepository<SqlUserOtp> sqlRepository,
-              IPosgreSqlRepository<SqlUserOtp> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public UserOtpService(ISqlRepository<SqlUserOtp> sqlRepository, IPosgreSqlRepository<SqlUserOtp> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -50,15 +43,15 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<UserOtpCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<VwUserOtpForm, VwUserOtpForm, UserOtpCrud>();
         }
 
-
         public async Task<ResultDto<UserOtpDto>> CreateAsync(UserOtpCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -76,18 +69,15 @@ namespace Velora.Application.Services
                     ExpiresAt = input.ExpiresAt,
                     IsUsed = input.IsUsed,
                     MaxAttempts = input.MaxAttempts,
-                    Mobile=input.Mobile,
-                    Purpose=input.Purpose,
-                    UsedAt=input.UsedAt,
-                    IsVerified=input.IsVerified,
-                    VerifiedAt=input.VerifiedAt,
-                    
+                    Mobile = input.Mobile,
+                    Purpose = input.Purpose,
+                    UsedAt = input.UsedAt,
+                    IsVerified = input.IsVerified,
+                    VerifiedAt = input.VerifiedAt,
                 };
-
                 var result = await CreateAsync(UserOtp);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -103,12 +93,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<UserOtpCrud>> CreateAdvancedAsync(
-    UserOtpCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<UserOtpCrud>> CreateAdvancedAsync(UserOtpCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var userOtp = new UserOtpDto
@@ -124,56 +112,46 @@ namespace Velora.Application.Services
                     IsVerified = input.IsVerified,
                     VerifiedAt = input.VerifiedAt
                 };
-
-                var result = await CreateWithViewAsync(
-                    userOtp,
-                    GetUserOtpById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(userOtp, GetUserOtpById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<UserOtpCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<UserOtpDto>> UpdateAsync(UserOtpCrud input)
+
+        public async Task<ResultDto<UserOtpCrud>> UpdateAsync(UserOtpCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<UserOtpDto>
+                    return new ResultDto<UserOtpCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<UserOtpDto>
+                    return new ResultDto<UserOtpCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new UserOtpDto
                 {
@@ -189,17 +167,39 @@ namespace Velora.Application.Services
                     VerifiedAt = input.VerifiedAt,
                     IsVerified = input.IsVerified,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<UserOtpCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetUserOtpById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<UserOtpCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<UserOtpCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<UserOtpDto>
+                var result = new ResultDto<UserOtpCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -208,44 +208,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdUserOtps = new List<UserOtpDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var UserOtps = dt.ToModelList<UserOtpCrud>();
-
                 for (int i = 0; i < UserOtps.Count; i++)
                 {
                     var UserOtp = UserOtps[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(UserOtp);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdUserOtps.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -255,9 +246,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdUserOtps.Count,
@@ -274,44 +263,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<UserOtpCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<UserOtpCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.UserOtp, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.UserOtp, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -319,32 +299,15 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlUserOtpView, UserOtpCrud>(id);
         }
-        public async Task<UserOtpCrud?> GetLatestOtpAsync(
-            string mobile,
-            int purpose)
+
+        public async Task<UserOtpCrud?> GetLatestOtpAsync(string mobile, int purpose)
         {
             if (string.IsNullOrWhiteSpace(mobile))
                 return null;
-
             mobile = mobile.Trim();
-
-            var query =
-                await GetAllViews();
-
-            var latestOtp =
-                query
-                    .Where(x =>
-                        x.Mobile == mobile &&
-                        x.Purpose == purpose
-                    )
-                    .OrderByDescending(
-                        x => x.CreatedAt
-                    )
-                    .FirstOrDefault();
-
+            var query = await GetAllViews();
+            var latestOtp = query.Where(x => x.Mobile == mobile && x.Purpose == purpose).OrderByDescending(x => x.CreatedAt).FirstOrDefault();
             return latestOtp;
         }
-
     }
-
 }

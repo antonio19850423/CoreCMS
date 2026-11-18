@@ -30,14 +30,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IInventoryTransactionReasonService _roleInventoryTransactionReasonService;
         protected readonly ICurrentUserService _currentUserService;
-        public InventoryTransactionReasonService(
-              ISqlRepository<SqlInventoryTransactionReason> sqlRepository,
-              IPosgreSqlRepository<SqlInventoryTransactionReason> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public InventoryTransactionReasonService(ISqlRepository<SqlInventoryTransactionReason> sqlRepository, IPosgreSqlRepository<SqlInventoryTransactionReason> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -46,29 +39,28 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<InventoryTransactionReasonCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlInventoryTransactionReasonView, SqlInventoryTransactionReasonView, InventoryTransactionReasonCrud>();
         }
+
         public async Task<ResultDto<InventoryTransactionReasonDto>> CreateAsync(InventoryTransactionReasonCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-
                 var InventoryTransactionReason = new InventoryTransactionReasonDto
                 {
                     Code = input.Code,
                     IsActive = input.IsActive,
                     Name = input.Name,
                 };
-
                 var result = await CreateAsync(InventoryTransactionReason);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -84,12 +76,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<InventoryTransactionReasonCrud>> CreateAdvancedAsync(
-    InventoryTransactionReasonCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<InventoryTransactionReasonCrud>> CreateAdvancedAsync(InventoryTransactionReasonCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var inventoryTransactionReason = new InventoryTransactionReasonDto
@@ -98,41 +88,32 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     Name = input.Name
                 };
-
-                var result = await CreateWithViewAsync(
-                    inventoryTransactionReason,
-                    GetInventoryTransactionReasonById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(inventoryTransactionReason, GetInventoryTransactionReasonById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<InventoryTransactionReasonCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<InventoryTransactionReasonDto>> UpdateAsync(InventoryTransactionReasonCrud input)
+
+        public async Task<ResultDto<InventoryTransactionReasonCrud>> UpdateAsync(InventoryTransactionReasonCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<InventoryTransactionReasonDto>
+                    return new ResultDto<InventoryTransactionReasonCrud>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -147,17 +128,39 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     Name = input.Name,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetInventoryTransactionReasonById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<InventoryTransactionReasonCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<InventoryTransactionReasonDto>
+                var result = new ResultDto<InventoryTransactionReasonCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -166,44 +169,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdInventoryTransactionReasons= new List<InventoryTransactionReasonDto>();
+            var createdInventoryTransactionReasons = new List<InventoryTransactionReasonDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var InventoryTransactionReasons = dt.ToModelList<InventoryTransactionReasonCrud>();
-
                 for (int i = 0; i < InventoryTransactionReasons.Count; i++)
                 {
                     var InventoryTransactionReason = InventoryTransactionReasons[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(InventoryTransactionReason);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdInventoryTransactionReasons.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -213,9 +207,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdInventoryTransactionReasons.Count,
@@ -232,44 +224,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<InventoryTransactionReasonCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<InventoryTransactionReasonCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.InventoryTransactionReason, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.InventoryTransactionReason, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -277,8 +260,5 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlInventoryTransactionReasonView, InventoryTransactionReasonCrud>(id);
         }
-
-
     }
-
 }

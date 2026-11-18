@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<ProductAttributeValueCrud>> GetAllViews();
         Task<ResultDto<ProductAttributeValueDto>> CreateAsync(ProductAttributeValueCrud input);
-        Task<ResultDto<ProductAttributeValueDto>> UpdateAsync(ProductAttributeValueCrud input);
+        Task<ResultDto<ProductAttributeValueCrud>> UpdateAsync(ProductAttributeValueCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

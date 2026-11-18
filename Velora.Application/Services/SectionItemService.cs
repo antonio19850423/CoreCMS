@@ -31,14 +31,7 @@ namespace Velora.Application.Services
         private readonly ISectionItemService _roleSectionItemService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly ILinkResolverService _linkResolverService;
-        public SectionItemService(
-              ISqlRepository<SqlSectionItem> sqlRepository,
-              IPosgreSqlRepository<SqlSectionItem> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, ILinkResolverService linkResolverService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public SectionItemService(ISqlRepository<SqlSectionItem> sqlRepository, IPosgreSqlRepository<SqlSectionItem> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, ILinkResolverService linkResolverService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -50,13 +43,15 @@ namespace Velora.Application.Services
             _currentUserService = currentUserService;
             _linkResolverService = linkResolverService;
         }
+
         public async Task<IQueryable<SectionItemCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlSectionItemView, SqlSectionItemView, SectionItemCrud>();
         }
+
         public async Task<ResultDto<SectionItemDto>> CreateAsync(SectionItemCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -110,31 +105,26 @@ namespace Velora.Application.Services
                     Link4Text = input.Link4Text,
                     Link4Url = link4Url,
                     Price = input.Price,
-                    SectionId=input.ParentId,
-                    SortOrder=input.SortOrder,
-                    Subtitle=input.Subtitle,
-                    SubtitleColor=input.SubtitleColor,
-                    TitleColor=input.TitleColor,
+                    SectionId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    Subtitle = input.Subtitle,
+                    SubtitleColor = input.SubtitleColor,
+                    TitleColor = input.TitleColor,
                     Features = input.Features,
-                    SectionGroupItemId=input.SectionGroupItemId,
+                    SectionGroupItemId = input.SectionGroupItemId,
                     Question = input.Question,
-                    Role= input.Role,
-                    Name=input.Name,
-                    BrandId=input.BrandId,
-                    CategoryId=input.CategoryId,
-                    Answer=input.Answer,
-                    ProductId=input.ProductId,
+                    Role = input.Role,
+                    Name = input.Name,
+                    BrandId = input.BrandId,
+                    CategoryId = input.CategoryId,
+                    Answer = input.Answer,
+                    ProductId = input.ProductId,
                     TextColor = input.TextColor,
-                    BackgroundGradient=input.BackgroundGradient,
-                    
-
-
+                    BackgroundGradient = input.BackgroundGradient,
                 };
-
                 var result = await CreateAsync(SectionItem);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -150,26 +140,16 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<SectionItemCrud>> CreateAdvancedAsync(
-    SectionItemCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<SectionItemCrud>> CreateAdvancedAsync(SectionItemCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-                var link1Url = await _linkResolverService.GetUrlAsync(
-                    input.Link1TypeId, input.Link1TargetId, input.Link1Url);
-
-                var link2Url = await _linkResolverService.GetUrlAsync(
-                    input.Link2TypeId, input.Link2TargetId, input.Link2Url);
-
-                var link3Url = await _linkResolverService.GetUrlAsync(
-                    input.Link3TypeId, input.Link3TargetId, input.Link3Url);
-
-                var link4Url = await _linkResolverService.GetUrlAsync(
-                    input.Link4TypeId, input.Link4TargetId, input.Link4Url);
-
+                var link1Url = await _linkResolverService.GetUrlAsync(input.Link1TypeId, input.Link1TargetId, input.Link1Url);
+                var link2Url = await _linkResolverService.GetUrlAsync(input.Link2TypeId, input.Link2TargetId, input.Link2Url);
+                var link3Url = await _linkResolverService.GetUrlAsync(input.Link3TypeId, input.Link3TargetId, input.Link3Url);
+                var link4Url = await _linkResolverService.GetUrlAsync(input.Link4TypeId, input.Link4TargetId, input.Link4Url);
                 var sectionItem = new SectionItemDto
                 {
                     AvatarAlt = input.AvatarAlt,
@@ -184,35 +164,30 @@ namespace Velora.Application.Services
                     ImageAlt = input.ImageAlt,
                     IsActive = input.IsActive,
                     ImageUrl = input.ImageUrl,
-
                     Link1Color = input.Link1Color,
                     Link1TargetId = input.Link1TargetId,
                     Link1TypeId = input.Link1TypeId,
                     Link1OpenInNewTab = input.Link1OpenInNewTab,
                     Link1Text = input.Link1Text,
                     Link1Url = link1Url,
-
                     Link2Color = input.Link2Color,
                     Link2TargetId = input.Link2TargetId,
                     Link2TypeId = input.Link2TypeId,
                     Link2OpenInNewTab = input.Link2OpenInNewTab,
                     Link2Text = input.Link2Text,
                     Link2Url = link2Url,
-
                     Link3Color = input.Link3Color,
                     Link3TargetId = input.Link3TargetId,
                     Link3TypeId = input.Link3TypeId,
                     Link3OpenInNewTab = input.Link3OpenInNewTab,
                     Link3Text = input.Link3Text,
                     Link3Url = link3Url,
-
                     Link4Color = input.Link4Color,
                     Link4TargetId = input.Link4TargetId,
                     Link4TypeId = input.Link4TypeId,
                     Link4OpenInNewTab = input.Link4OpenInNewTab,
                     Link4Text = input.Link4Text,
                     Link4Url = link4Url,
-
                     Price = input.Price,
                     SectionId = input.ParentId,
                     SortOrder = input.SortOrder,
@@ -231,78 +206,69 @@ namespace Velora.Application.Services
                     TextColor = input.TextColor,
                     BackgroundGradient = input.BackgroundGradient
                 };
-
-                var result = await CreateWithViewAsync(
-                    sectionItem,
-                    GetSectionItemById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(sectionItem, GetSectionItemById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<SectionItemCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<SectionItemDto>> UpdateAsync(SectionItemCrud input)
+
+        public async Task<ResultDto<SectionItemCrud>> UpdateAsync(SectionItemCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<SectionItemDto>
+                    return new ResultDto<SectionItemCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<SectionItemDto>
+                    return new ResultDto<SectionItemCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SectionItemDto
                 {
                     Id = input.Id,
                     Title = input.Title,
-                    Subtitle= input.Subtitle,
-                    SortOrder= input.SortOrder,
+                    Subtitle = input.Subtitle,
+                    SortOrder = input.SortOrder,
                     Description = input.Description,
                     ImageUrl = input.ImageUrl,
                     IsActive = input.IsActive,
-                    SectionId=input.ParentId,
-                    IconAlt = input.IconAlt ,
-                    ImageAlt = input.ImageAlt , 
+                    SectionId = input.ParentId,
+                    IconAlt = input.IconAlt,
+                    ImageAlt = input.ImageAlt,
                     TitleColor = input.TitleColor,
                     SubtitleColor = input.SubtitleColor,
-                    AvatarAlt = input.AvatarAlt ,
-                    AvatarUrl = input.AvatarUrl ,
+                    AvatarAlt = input.AvatarAlt,
+                    AvatarUrl = input.AvatarUrl,
                     BackgroundColor = input.BackgroundColor,
                     DescriptionColor = input.DescriptionColor,
-                    Icon= input.Icon,
+                    Icon = input.Icon,
                     IconColor = input.IconColor,
-                    Price=input.Price,
-                    Features=input.Features,
+                    Price = input.Price,
+                    Features = input.Features,
                     Link1Color = input.Link1Color,
                     Link1TargetId = input.Link1TargetId,
                     Link1TypeId = input.Link1TypeId,
@@ -327,28 +293,50 @@ namespace Velora.Application.Services
                     Link4OpenInNewTab = input.Link4OpenInNewTab,
                     Link4Text = input.Link4Text,
                     Link4Url = input.Link4Url,
-                    Answer=input.Answer,
-                    Question=input.Question,
-                    Name=input.Name,
-                    Role=input.Role,
-                    SectionGroupItemId=input.SectionGroupItemId,
+                    Answer = input.Answer,
+                    Question = input.Question,
+                    Name = input.Name,
+                    Role = input.Role,
+                    SectionGroupItemId = input.SectionGroupItemId,
                     BrandId = input.BrandId,
                     CategoryId = input.CategoryId,
                     ProductId = input.ProductId,
                     TextColor = input.TextColor,
-                    BackgroundGradient=input.BackgroundGradient,
+                    BackgroundGradient = input.BackgroundGradient,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<SectionItemCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetSectionItemById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<SectionItemCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<SectionItemCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SectionItemDto>
+                var result = new ResultDto<SectionItemCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -357,44 +345,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdSectionItems= new List<SectionItemDto>();
+            var createdSectionItems = new List<SectionItemDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var SectionItems = dt.ToModelList<SectionItemCrud>();
-
                 for (int i = 0; i < SectionItems.Count; i++)
                 {
                     var SectionItem = SectionItems[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(SectionItem);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdSectionItems.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -404,9 +383,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdSectionItems.Count,
@@ -423,44 +400,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentSectionItem,
-int SectionItemNumber,
-int SectionItemSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentSectionItem, int SectionItemNumber, int SectionItemSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<SectionItemCrud> data;
-
             if (exportCurrentSectionItem)
             {
-                data = query
-                    .Skip((SectionItemNumber - 1) * SectionItemSize)
-                    .Take(SectionItemSize)
-                    .ToList();
+                data = query.Skip((SectionItemNumber - 1) * SectionItemSize).Take(SectionItemSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<SectionItemCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.SectionItem, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.SectionItem, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -468,8 +436,5 @@ int SectionItemSize)
         {
             return await GetSqlViewByIdQueryable<SqlSectionItemView, SectionItemCrud>(id);
         }
-
-
     }
-
 }

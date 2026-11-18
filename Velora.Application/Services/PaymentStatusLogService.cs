@@ -34,15 +34,7 @@ namespace Velora.Application.Services
         private readonly IPaymentStatusLogService _rolePaymentStatusLogService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IDiscountService _discountService;
-
-        public PaymentStatusLogService(
-              ISqlRepository<SqlPaymentStatusLog> sqlRepository,
-              IPosgreSqlRepository<SqlPaymentStatusLog> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService, IDiscountService discountService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public PaymentStatusLogService(ISqlRepository<SqlPaymentStatusLog> sqlRepository, IPosgreSqlRepository<SqlPaymentStatusLog> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, IDiscountService discountService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -54,6 +46,7 @@ namespace Velora.Application.Services
             _currentUserService = currentUserService;
             _discountService = discountService;
         }
+
         public async Task<IQueryable<PaymentStatusLogCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlPaymentStatusLogView, SqlPaymentStatusLogView, PaymentStatusLogCrud>();
@@ -61,7 +54,7 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<PaymentStatusLogDto>> CreateAsync(PaymentStatusLogCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -72,18 +65,13 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
-
                 var PaymentStatusLog = new PaymentStatusLogDto
                 {
-                    Description=input.Description,
+                    Description = input.Description,
                     NewStatus = input.NewStatus,
                     OldStatus = input.OldStatus,
-                    PaymentId=input.ParentId,
-
+                    PaymentId = input.ParentId,
                 };
-
                 var PaymentStatusLogResult = await CreateAsync(PaymentStatusLog);
                 if (!PaymentStatusLogResult.Success)
                     return PaymentStatusLogResult;
@@ -102,12 +90,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<PaymentStatusLogCrud>> CreateAdvancedAsync(
-    PaymentStatusLogCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<PaymentStatusLogCrud>> CreateAdvancedAsync(PaymentStatusLogCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var paymentStatusLog = new PaymentStatusLogDto
@@ -117,55 +103,46 @@ namespace Velora.Application.Services
                     OldStatus = input.OldStatus,
                     PaymentId = input.ParentId
                 };
-
-                var result = await CreateWithViewAsync(
-                    paymentStatusLog,
-                    GetPaymentStatusLogById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(paymentStatusLog, GetPaymentStatusLogById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<PaymentStatusLogCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<PaymentStatusLogDto>> UpdateAsync(PaymentStatusLogCrud input)
+
+        public async Task<ResultDto<PaymentStatusLogCrud>> UpdateAsync(PaymentStatusLogCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<PaymentStatusLogDto>
+                    return new ResultDto<PaymentStatusLogCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<PaymentStatusLogDto>
+                    return new ResultDto<PaymentStatusLogCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new PaymentStatusLogDto
                 {
@@ -174,19 +151,40 @@ namespace Velora.Application.Services
                     NewStatus = input.NewStatus,
                     OldStatus = input.OldStatus,
                     PaymentId = input.ParentId,
-
                 };
-
                 var PaymentStatusLogResult = await UpdateAsync(updateDto, input.Id);
                 if (!PaymentStatusLogResult.Success)
-                    return PaymentStatusLogResult;
+                {
+                    return new ResultDto<PaymentStatusLogCrud>
+                    {
+                        Success = false,
+                        Message = PaymentStatusLogResult.Message,
+                        Errors = PaymentStatusLogResult.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return PaymentStatusLogResult;
+                var viewResult = await GetPaymentStatusLogById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<PaymentStatusLogCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<PaymentStatusLogCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<PaymentStatusLogDto>
+                var result = new ResultDto<PaymentStatusLogCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -195,44 +193,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdPaymentStatusLogs= new List<PaymentStatusLogDto>();
+            var createdPaymentStatusLogs = new List<PaymentStatusLogDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var PaymentStatusLogs = dt.ToModelList<PaymentStatusLogCrud>();
-
                 for (int i = 0; i < PaymentStatusLogs.Count; i++)
                 {
                     var PaymentStatusLog = PaymentStatusLogs[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(PaymentStatusLog);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdPaymentStatusLogs.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -242,9 +231,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdPaymentStatusLogs.Count,
@@ -261,44 +248,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPaymentStatusLog,
-int PaymentStatusLogNumber,
-int PaymentStatusLogSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPaymentStatusLog, int PaymentStatusLogNumber, int PaymentStatusLogSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<PaymentStatusLogCrud> data;
-
             if (exportCurrentPaymentStatusLog)
             {
-                data = query
-                    .Skip((PaymentStatusLogNumber - 1) * PaymentStatusLogSize)
-                    .Take(PaymentStatusLogSize)
-                    .ToList();
+                data = query.Skip((PaymentStatusLogNumber - 1) * PaymentStatusLogSize).Take(PaymentStatusLogSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<PaymentStatusLogCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.PaymentStatusLog, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.PaymentStatusLog, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -307,5 +285,4 @@ int PaymentStatusLogSize)
             return await GetSqlViewByIdQueryable<SqlPaymentStatusLogView, PaymentStatusLogCrud>(id);
         }
     }
-
 }

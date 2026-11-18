@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Velora.Application.Shared;
 using Velora.Application.Shared.Dtos;
@@ -35,7 +35,6 @@ namespace Velora.Host.Controllers
     {
         private readonly IUserRoleService _userRoleService;
         private readonly ITransactionService _transactionService;
-
         public UserRoleController(IUserRoleService userRoleService, ITransactionService transactionService)
         {
             _userRoleService = userRoleService;
@@ -55,7 +54,6 @@ namespace Velora.Host.Controllers
             var result = await _userRoleService.GetByIdAsync(id);
             if (!result.Success)
                 return NotFound(result);
-
             return Ok(result);
         }
 
@@ -64,18 +62,12 @@ namespace Velora.Host.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultDto<UserRoleDto>
-                {
-                    Success = false,
-                    Message = "Invalid model",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-                });
+                return BadRequest(new ResultDto<UserRoleDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             }
 
             var result = await _userRoleService.CreateAsync(dto);
             if (!result.Success)
                 return BadRequest(result);
-
             await _transactionService.CommitAsync();
             return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
         }
@@ -85,22 +77,14 @@ namespace Velora.Host.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResultDto<UserRoleDto>
-                {
-                    Success = false,
-                    Message = "Invalid model",
-                    Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList()
-                });
+                return BadRequest(new ResultDto<UserRoleDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             }
 
             if (id != dto.Id)
                 return BadRequest(new ResultDto<UserRoleDto> { Success = false, Message = "Id mismatch" });
-
             var result = await _userRoleService.UpdateAsync(dto, dto.Id);
             if (!result.Success)
                 return NotFound(result);
-
-            await _transactionService.CommitAsync();
             return Ok(result);
         }
 
@@ -110,7 +94,6 @@ namespace Velora.Host.Controllers
             var result = await _userRoleService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);
-
             await _transactionService.CommitAsync();
             return Ok(result);
         }

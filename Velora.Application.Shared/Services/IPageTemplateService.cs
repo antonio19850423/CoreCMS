@@ -11,7 +11,7 @@ namespace Velora.Application.Shared.Services
     {
         Task<IQueryable<PageTemplateCrud>> GetAllViews();
         Task<ResultDto<PageTemplateDto>> CreateAsync(PageTemplateCrud input);
-        Task<ResultDto<PageTemplateDto>> UpdateAsync(PageTemplateCrud input);
+        Task<ResultDto<PageTemplateCrud>> UpdateAsync(PageTemplateCrud input);
         Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream);
         Task<byte[]> ExportAsync(
 bool exportCurrentPage,

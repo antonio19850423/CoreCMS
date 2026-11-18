@@ -30,14 +30,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IComponentTypeService _roleComponentTypeService;
         protected readonly ICurrentUserService _currentUserService;
-        public ComponentTypeService(
-              ISqlRepository<SqlComponentType> sqlRepository,
-              IPosgreSqlRepository<PgComponentType> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ComponentTypeService(ISqlRepository<SqlComponentType> sqlRepository, IPosgreSqlRepository<PgComponentType> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -46,31 +39,30 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ComponentTypeCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlComponentTypeView, SqlComponentTypeView, ComponentTypeCrud>();
         }
+
         public async Task<ResultDto<ComponentTypeDto>> CreateAsync(ComponentTypeCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-
                 var ComponentType = new ComponentTypeDto
                 {
                     Code = input.Code,
                     IsActive = input.IsActive.Value,
-                    Type=input.Type,
+                    Type = input.Type,
                     Description = input.Description,
                     Name = input.Name,
                 };
-
                 var result = await CreateAsync(ComponentType);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -86,12 +78,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ComponentTypeCrud>> CreateAdvancedAsync(
-    ComponentTypeCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ComponentTypeCrud>> CreateAdvancedAsync(ComponentTypeCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var componentType = new ComponentTypeDto
@@ -102,41 +92,32 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name
                 };
-
-                var result = await CreateWithViewAsync(
-                    componentType,
-                    GetComponentTypeById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(componentType, GetComponentTypeById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ComponentTypeCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ComponentTypeDto>> UpdateAsync(ComponentTypeCrud input)
+
+        public async Task<ResultDto<ComponentTypeCrud>> UpdateAsync(ComponentTypeCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ComponentTypeDto>
+                    return new ResultDto<ComponentTypeCrud>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -151,19 +132,41 @@ namespace Velora.Application.Services
                     Name = input.Name,
                     Description = input.Description,
                     Type = input.Type,
-                    IsActive=input.IsActive??false,
+                    IsActive = input.IsActive ?? false,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<ComponentTypeCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetComponentTypeById(input.Id.Value);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ComponentTypeCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ComponentTypeCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ComponentTypeDto>
+                var result = new ResultDto<ComponentTypeCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -172,44 +175,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdComponentTypes= new List<ComponentTypeDto>();
+            var createdComponentTypes = new List<ComponentTypeDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var componentTypes = dt.ToModelList<ComponentTypeCrud>();
-
                 for (int i = 0; i < componentTypes.Count; i++)
                 {
                     var componentType = componentTypes[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(componentType);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdComponentTypes.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -219,9 +213,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdComponentTypes.Count,
@@ -238,44 +230,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ComponentTypeCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ComponentTypeCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ComponentType, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ComponentType, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -283,8 +266,5 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlComponentTypeView, ComponentTypeCrud>(id);
         }
-
-
     }
-
 }

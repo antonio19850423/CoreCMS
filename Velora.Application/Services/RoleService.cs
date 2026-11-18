@@ -1,4 +1,3 @@
-﻿
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,19 +8,15 @@ using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
+
 namespace Velora.Application.Services
 {
-    public class RoleService : GenericService<SqlRole,PgRole,RoleDto>, IRoleService
+    public class RoleService : GenericService<SqlRole, PgRole, RoleDto>, IRoleService
     {
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
         protected readonly Lazy<ILocalizationMessageService> _messageService;
-        public RoleService(
-          ISqlRepository<SqlRole> sqlRepository,
-          IPosgreSqlRepository<PgRole> pgRepository,
-          IMapper mapper,
-          IConfiguration configuration,Lazy<ILocalizationMessageService> messageService, ITransactionService transactionService, ICurrentUserService currentUserService)
-          : base(sqlRepository, pgRepository, mapper, configuration, messageService,currentUserService)
+        public RoleService(ISqlRepository<SqlRole> sqlRepository, IPosgreSqlRepository<PgRole> pgRepository, IMapper mapper, IConfiguration configuration, Lazy<ILocalizationMessageService> messageService, ITransactionService transactionService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _messageService = messageService;
@@ -35,9 +30,10 @@ namespace Velora.Application.Services
             var entity = await repo.FirstOrDefaultAsync((Expression<Func<PgRole, bool>>)(x => x.Code == code));
             return _mapper.Map<RoleDto>(entity);
         }
+
         public async Task<ResultDto<RoleDto>> CreateAsync(RoleCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 // 1️⃣ ایجاد کاربر
@@ -47,11 +43,9 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name,
                 };
-
                 var userResult = await CreateAsync(role);
                 if (!userResult.Success)
                     return userResult;
-
                 await _transactionService.CommitAsync();
                 return userResult;
             }
@@ -67,12 +61,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<RoleCrud>> CreateAdvancedAsync(
-    RoleCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<RoleCrud>> CreateAdvancedAsync(RoleCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var role = new RoleDto
@@ -81,41 +73,32 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name
                 };
-
-                var result = await CreateWithViewAsync(
-                    role,
-                    GetRoleById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(role, GetRoleById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<RoleCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<RoleDto>> UpdateAsync(RoleCrud input)
+
+        public async Task<ResultDto<RoleCrud>> UpdateAsync(RoleCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<RoleDto>
+                    return new ResultDto<RoleCrud>
                     {
                         Success = false,
                         Message = "Id is required"
@@ -130,17 +113,39 @@ namespace Velora.Application.Services
                     Name = input.Name,
                     Description = input.Description
                 };
-
                 var userResult = await UpdateAsync(userUpdateDto, input.Id.Value);
                 if (!userResult.Success)
-                    return userResult;
+                {
+                    return new ResultDto<RoleCrud>
+                    {
+                        Success = false,
+                        Message = userResult.Message,
+                        Errors = userResult.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return userResult;
+                var viewResult = await GetRoleById(input.Id.Value);
+                if (viewResult == null)
+                {
+                    return new ResultDto<RoleCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<RoleCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<RoleDto>
+                var result = new ResultDto<RoleCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -149,13 +154,12 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<IEnumerable<RoleDto>> GetByNamesAsync(List<string> roles)
         {
             if (roles == null || !roles.Any())
                 return Enumerable.Empty<RoleDto>();
-
             var upperRoles = roles.Select(r => r.ToUpper()).ToArray();
-
             if (_dbType == DatabaseType.SqlServer)
             {
                 var repo = GetSqlRepository(); // ISqlRepository<PgRole>
@@ -169,13 +173,10 @@ namespace Velora.Application.Services
                 return _mapper.Map<IEnumerable<RoleDto>>(list);
             }
         }
+
         public async Task<RoleCrud?> GetRoleById(Guid id)
         {
             return await GetSqlViewByIdQueryable<SqlRole, RoleCrud>(id);
         }
-
-
-
     }
-
 }

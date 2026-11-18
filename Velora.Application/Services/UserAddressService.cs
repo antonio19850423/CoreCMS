@@ -32,14 +32,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IUserAddressService _roleUserAddressService;
         protected readonly ICurrentUserService _currentUserService;
-        public UserAddressService(
-              ISqlRepository<SqlUserAddress> sqlRepository,
-              IPosgreSqlRepository<SqlUserAddress> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public UserAddressService(ISqlRepository<SqlUserAddress> sqlRepository, IPosgreSqlRepository<SqlUserAddress> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -50,15 +43,15 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<UserAddressCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<VwUserAddressForm, VwUserAddressForm, UserAddressCrud>();
         }
 
-
         public async Task<ResultDto<UserAddressDto>> CreateAsync(UserAddressCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -80,13 +73,10 @@ namespace Velora.Application.Services
                     ProvinceId = input.ProvinceId,
                     Title = input.Title,
                     UserId = input.UserId,
-
                 };
-
                 var result = await CreateAsync(UserAddress);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -102,12 +92,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<UserAddressCrud>> CreateAdvancedAsync(
-    UserAddressCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<UserAddressCrud>> CreateAdvancedAsync(UserAddressCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var userAddress = new UserAddressDto
@@ -122,56 +110,46 @@ namespace Velora.Application.Services
                     Title = input.Title,
                     UserId = input.UserId
                 };
-
-                var result = await CreateWithViewAsync(
-                    userAddress,
-                    GetUserAddressById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(userAddress, GetUserAddressById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<UserAddressCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<UserAddressDto>> UpdateAsync(UserAddressCrud input)
+
+        public async Task<ResultDto<UserAddressCrud>> UpdateAsync(UserAddressCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<UserAddressDto>
+                    return new ResultDto<UserAddressCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<UserAddressDto>
+                    return new ResultDto<UserAddressCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new UserAddressDto
                 {
@@ -181,22 +159,44 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     IsDefault = input.IsDefault,
                     PhoneNumber = input.PhoneNumber,
-                    PostalCode = input.PostalCode,  
+                    PostalCode = input.PostalCode,
                     ProvinceId = input.ProvinceId,
                     Title = input.Title,
                     UserId = input.UserId,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<UserAddressCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetUserAddressById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<UserAddressCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<UserAddressCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<UserAddressDto>
+                var result = new ResultDto<UserAddressCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -205,44 +205,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdUserAddresss = new List<UserAddressDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var UserAddresss = dt.ToModelList<UserAddressCrud>();
-
                 for (int i = 0; i < UserAddresss.Count; i++)
                 {
                     var UserAddress = UserAddresss[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(UserAddress);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdUserAddresss.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -252,9 +243,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdUserAddresss.Count,
@@ -271,44 +260,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<UserAddressCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<UserAddressCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.UserAddress, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.UserAddress, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -320,21 +300,15 @@ int pageSize)
         public async Task<ResultDto<IEnumerable<UserAddressDto>>> GetUserAddressesAsync()
         {
             var userId = _currentUserService.GetUserId();
-            return await GetByPredicateAsync<SqlUserAddress>(
-                x =>
-                    x.UserId == userId &&
-                    !x.IsDeleted);
+            return await GetByPredicateAsync<SqlUserAddress>(x => x.UserId == userId && !x.IsDeleted);
         }
-        public async Task<ResultDto<IEnumerable<UserAddressDto>>> GetUserAddressesByUserIdAsync(
-    Guid userId)
+
+        public async Task<ResultDto<IEnumerable<UserAddressDto>>> GetUserAddressesByUserIdAsync(Guid userId)
         {
-            return await GetByPredicateAsync<SqlUserAddress>(
-                x =>
-                    x.UserId == userId &&
-                    !x.IsDeleted);
+            return await GetByPredicateAsync<SqlUserAddress>(x => x.UserId == userId && !x.IsDeleted);
         }
-        public async Task<ResultDto<UserAddressDto?>> GetUserAddressByIdAsync(
-    Guid addressId)
+
+        public async Task<ResultDto<UserAddressDto?>> GetUserAddressByIdAsync(Guid addressId)
         {
             try
             {
@@ -357,15 +331,7 @@ int pageSize)
                     };
                 }
 
-
-                var result =
-                    await FirstOrDefaultAsync<SqlUserAddress>(
-                        x =>
-                            x.Id == addressId &&
-                            x.UserId == userId &&
-                            !x.IsDeleted);
-
-
+                var result = await FirstOrDefaultAsync<SqlUserAddress>(x => x.Id == addressId && x.UserId == userId && !x.IsDeleted);
                 if (!result.Success || result.Data == null)
                 {
                     return new ResultDto<UserAddressDto?>
@@ -375,13 +341,10 @@ int pageSize)
                     };
                 }
 
-
                 return new ResultDto<UserAddressDto?>
                 {
                     Success = true,
-
                     Message = "آدرس با موفقیت دریافت شد.",
-
                     Data = result.Data
                 };
             }
@@ -390,16 +353,13 @@ int pageSize)
                 return new ResultDto<UserAddressDto?>
                 {
                     Success = false,
-
                     Message = "خطا در دریافت آدرس.",
-
                     Errors = new List<string>
-            {
-                ex.Message
-            }
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
     }
-
 }

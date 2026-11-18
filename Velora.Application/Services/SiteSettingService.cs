@@ -31,14 +31,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly ISiteSettingService _roleSiteSettingService;
         protected readonly ICurrentUserService _currentUserService;
-        public SiteSettingService(
-              ISqlRepository<SqlSiteSetting> sqlRepository,
-              IPosgreSqlRepository<SqlSiteSetting> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public SiteSettingService(ISqlRepository<SqlSiteSetting> sqlRepository, IPosgreSqlRepository<SqlSiteSetting> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -47,8 +40,9 @@ namespace Velora.Application.Services
             _env = env;
             _config = config;
             _excelTemplateService = excelTemplateService;
-            _currentUserService= currentUserService;
+            _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<SiteSettingCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlSiteSettingView, SqlSiteSettingView, SiteSettingCrud>();
@@ -56,7 +50,7 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<SiteSettingDto>> CreateAsync(SiteSettingCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -81,7 +75,7 @@ namespace Velora.Application.Services
                     DomainName = input.DomainName,
                     Email = input.Email,
                     FaviconUrl = input.FaviconUrl,
-                    Fax= input.Fax,
+                    Fax = input.Fax,
                     FaxTitle = input.FaxTitle,
                     IsActive = input.IsActive,
                     LogoAlt = input.LogoAlt,
@@ -105,28 +99,24 @@ namespace Velora.Application.Services
                     OtpRequestCooldownSeconds = input.OtpRequestCooldownSeconds,
                     DutyPercentage = input.DutyPercentage,
                     TaxPercentage = input.TaxPercentage,
-                    HasDuty=input.HasDuty,
-                    HasTax=input.HasTax,
+                    HasDuty = input.HasDuty,
+                    HasTax = input.HasTax,
                     HasCardToCardPayment = input.HasCardToCardPayment,
-                    Background=input.Background,
-                    BackgroundGradient=input.BackgroundGradient,
-                    HeaderPhone=input.HeaderPhone,
-                    HeaderPhoneColor=input.HeaderPhoneColor,
-                    HeaderPhoneEnabled=input.HeaderPhoneEnabled,
-                    HeaderPhoneIcon=input.HeaderPhoneIcon,
-                    FooterBackgroundColor=input.FooterBackgroundColor,
-                    HeaderBackgroundColor=input.HeaderBackgroundColor,
-                    HeaderTextColor=input.HeaderTextColor,
-                    FooterTextColor=input.FooterTextColor,
-                    TextColor=input.TextColor,
-
-
+                    Background = input.Background,
+                    BackgroundGradient = input.BackgroundGradient,
+                    HeaderPhone = input.HeaderPhone,
+                    HeaderPhoneColor = input.HeaderPhoneColor,
+                    HeaderPhoneEnabled = input.HeaderPhoneEnabled,
+                    HeaderPhoneIcon = input.HeaderPhoneIcon,
+                    FooterBackgroundColor = input.FooterBackgroundColor,
+                    HeaderBackgroundColor = input.HeaderBackgroundColor,
+                    HeaderTextColor = input.HeaderTextColor,
+                    FooterTextColor = input.FooterTextColor,
+                    TextColor = input.TextColor,
                 };
-
                 var result = await CreateAsync(SiteSetting);
                 if (!result.Success)
                     return result;
-
                 await _transactionService.CommitAsync();
                 return result;
             }
@@ -142,12 +132,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<SiteSettingCrud>> CreateAdvancedAsync(
-    SiteSettingCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<SiteSettingCrud>> CreateAdvancedAsync(SiteSettingCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var siteSetting = new SiteSettingDto
@@ -203,56 +191,46 @@ namespace Velora.Application.Services
                     FooterTextColor = input.FooterTextColor,
                     TextColor = input.TextColor
                 };
-
-                var result = await CreateWithViewAsync(
-                    siteSetting,
-                    GetSiteSettingById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(siteSetting, GetSiteSettingById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<SiteSettingCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<SiteSettingDto>> UpdateAsync(SiteSettingCrud input)
+
+        public async Task<ResultDto<SiteSettingCrud>> UpdateAsync(SiteSettingCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<SiteSettingDto>
+                    return new ResultDto<SiteSettingCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<SiteSettingDto>
+                    return new ResultDto<SiteSettingCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SiteSettingDto
                 {
@@ -260,7 +238,7 @@ namespace Velora.Application.Services
                     Address = input.Address,
                     Address2 = input.Address2,
                     SiteName = input.SiteName,
-                    Phone2Title= input.Phone2Title,
+                    Phone2Title = input.Phone2Title,
                     PhoneTitle = input.PhoneTitle,
                     Address2Title = input.Address2Title,
                     AddressTitle = input.AddressTitle,
@@ -273,20 +251,20 @@ namespace Velora.Application.Services
                     //DomainName = input.DomainName,
                     Email = input.Email,
                     FaviconUrl = input.FaviconUrl,
-                    Fax= input.Fax,
+                    Fax = input.Fax,
                     FaxTitle = input.FaxTitle,
                     IsActive = input.IsActive,
                     LogoAlt = input.LogoAlt,
                     LogoUrl = input.LogoUrl,
-                    Mobile= input.Mobile,
+                    Mobile = input.Mobile,
                     MobileTitle = input.MobileTitle,
                     Phone = input.Phone,
                     Phone2 = input.Phone2,
-                    SmtpEnableSsl=input.SmtpEnableSsl,
-                    SmtpPassword=input.SmtpPassword,
-                    SmtpUserName=input.SmtpUserName,
-                    SmtpPort=input.SmtpPort,
-                    SmtpHost=input.SmtpHost,
+                    SmtpEnableSsl = input.SmtpEnableSsl,
+                    SmtpPassword = input.SmtpPassword,
+                    SmtpUserName = input.SmtpUserName,
+                    SmtpPort = input.SmtpPort,
+                    SmtpHost = input.SmtpHost,
                     OtpCodeLength = input.OtpCodeLength,
                     OtpExpirationMinutes = input.OtpExpirationMinutes,
                     OtpMaxRequestsPerHour = input.OtpMaxRequestsPerHour,
@@ -297,8 +275,8 @@ namespace Velora.Application.Services
                     HasDuty = input.HasDuty,
                     HasTax = input.HasTax,
                     HasCardToCardPayment = input.HasCardToCardPayment,
-                    Background=input.Background,
-                    BackgroundGradient=input.BackgroundGradient,
+                    Background = input.Background,
+                    BackgroundGradient = input.BackgroundGradient,
                     HeaderPhone = input.HeaderPhone,
                     HeaderPhoneColor = input.HeaderPhoneColor,
                     HeaderPhoneEnabled = input.HeaderPhoneEnabled,
@@ -309,17 +287,39 @@ namespace Velora.Application.Services
                     FooterTextColor = input.FooterTextColor,
                     TextColor = input.TextColor,
                 };
-
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
-                    return result;
+                {
+                    return new ResultDto<SiteSettingCrud>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Errors = result.Errors
+                    };
+                }
+
                 await _transactionService.CommitAsync();
-                return result;
+                var viewResult = await GetSiteSettingById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<SiteSettingCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<SiteSettingCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<SiteSettingDto>
+                var result = new ResultDto<SiteSettingCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -328,44 +328,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdSiteSettings= new List<SiteSettingDto>();
+            var createdSiteSettings = new List<SiteSettingDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var SiteSettings = dt.ToModelList<SiteSettingCrud>();
-
                 for (int i = 0; i < SiteSettings.Count; i++)
                 {
                     var SiteSetting = SiteSettings[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(SiteSetting);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdSiteSettings.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -375,9 +366,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdSiteSettings.Count,
@@ -394,44 +383,35 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentPage,
-int pageNumber,
-int pageSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentPage, int pageNumber, int pageSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<SiteSettingCrud> data;
-
             if (exportCurrentPage)
             {
-                data = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                data = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<SiteSettingCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.SiteSetting, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.SiteSetting, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
 
@@ -439,8 +419,5 @@ int pageSize)
         {
             return await GetSqlViewByIdQueryable<SqlSiteSettingView, SiteSettingCrud>(id);
         }
-
-
     }
-
 }

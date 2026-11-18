@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,14 +33,7 @@ namespace Velora.Application.Services
         private readonly Lazy<IExcelTemplateService> _excelTemplateService;
         private readonly IProductFileService _roleProductFileService;
         protected readonly ICurrentUserService _currentUserService;
-        public ProductFileService(
-              ISqlRepository<SqlProductFile> sqlRepository,
-              IPosgreSqlRepository<SqlProductFile> pgRepository,
-              IMapper mapper,
-              IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env,
-              Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService,
-              ICurrentUserService currentUserService)
-              : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        public ProductFileService(ISqlRepository<SqlProductFile> sqlRepository, IPosgreSqlRepository<SqlProductFile> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -51,6 +44,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
         }
+
         public async Task<IQueryable<ProductFileCrud>> GetAllViews()
         {
             return await GetAllViewQueryable<SqlProductFileView, SqlProductFileView, ProductFileCrud>();
@@ -58,7 +52,7 @@ namespace Velora.Application.Services
 
         public async Task<ResultDto<ProductFileDto>> CreateAsync(ProductFileCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var validation = await _modelValidationService.ValidateAsync(input);
@@ -69,9 +63,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
-
-
                 var ProductFile = new ProductFileDto
                 {
                     Title = input.Title,
@@ -80,11 +71,10 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     IsMain = input.IsMain,
                     MediaType = input.MediaType,
-                    ProductId=input.ParentId,
-                    SortOrder=input.SortOrder,
-                    ThumbnailUrl=input.ThumbnailUrl,
+                    ProductId = input.ParentId,
+                    SortOrder = input.SortOrder,
+                    ThumbnailUrl = input.ThumbnailUrl,
                 };
-
                 var ProductFileResult = await CreateAsync(ProductFile);
                 if (!ProductFileResult.Success)
                     return ProductFileResult;
@@ -103,12 +93,10 @@ namespace Velora.Application.Services
                 return result;
             }
         }
-        public async Task<ResultDto<ProductFileCrud>> CreateAdvancedAsync(
-    ProductFileCrud input)
-        {
-            var (successMessage, errorMessage) =
-                await _messageService.Value.GetSaveMessagesAsync();
 
+        public async Task<ResultDto<ProductFileCrud>> CreateAdvancedAsync(ProductFileCrud input)
+        {
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 var productFile = new ProductFileDto
@@ -123,55 +111,46 @@ namespace Velora.Application.Services
                     SortOrder = input.SortOrder,
                     ThumbnailUrl = input.ThumbnailUrl
                 };
-
-                var result = await CreateWithViewAsync(
-                    productFile,
-                    GetProductFileById,
-                    x => x.Id
-                );
-
+                var result = await CreateWithViewAsync(productFile, GetProductFileById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
-
                 return result;
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-
                 var result = new ResultDto<ProductFileCrud>
                 {
                     Success = false,
                     Message = errorMessage
                 };
-
                 result.Errors.Add(ex.Message);
-
                 return result;
             }
         }
-        public async Task<ResultDto<ProductFileDto>> UpdateAsync(ProductFileCrud input)
+
+        public async Task<ResultDto<ProductFileCrud>> UpdateAsync(ProductFileCrud input)
         {
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
                 if (input.Id == null)
                 {
-                    return new ResultDto<ProductFileDto>
+                    return new ResultDto<ProductFileCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
-                    return new ResultDto<ProductFileDto>
+                    return new ResultDto<ProductFileCrud>
                     {
                         Success = false,
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ProductFileDto
                 {
@@ -186,18 +165,39 @@ namespace Velora.Application.Services
                     SortOrder = input.SortOrder,
                     ThumbnailUrl = input.ThumbnailUrl,
                 };
-
                 var ProductFileResult = await UpdateAsync(updateDto, input.Id);
                 if (!ProductFileResult.Success)
-                    return ProductFileResult;
+                {
+                    return new ResultDto<ProductFileCrud>
+                    {
+                        Success = false,
+                        Message = ProductFileResult.Message,
+                        Errors = ProductFileResult.Errors
+                    };
+                }
 
                 await _transactionService.CommitAsync();
-                return ProductFileResult;
+                var viewResult = await GetProductFileById(input.Id);
+                if (viewResult == null)
+                {
+                    return new ResultDto<ProductFileCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات پس از ویرایش قابل دریافت نیست."
+                    };
+                }
+
+                return new ResultDto<ProductFileCrud>
+                {
+                    Success = true,
+                    Message = successMessage,
+                    Data = viewResult
+                };
             }
             catch (Exception ex)
             {
                 await _transactionService.RollbackAsync();
-                var result = new ResultDto<ProductFileDto>
+                var result = new ResultDto<ProductFileCrud>
                 {
                     Success = false,
                     Message = errorMessage,
@@ -206,44 +206,35 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
-            var createdProductFiles= new List<ProductFileDto>();
+            var createdProductFiles = new List<ProductFileDto>();
             var errors = new List<string>();
-            var (successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
+            var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             var errorFileTitle = await _messageService.Value.GetMessageAsync(LocalizationKeys.ErrorFile);
             try
             {
-                var (dt, rowContexts) = excelStream.LoadExcelWithErrors();
+                var(dt, rowContexts) = excelStream.LoadExcelWithErrors();
                 var ProductFiles = dt.ToModelList<ProductFileCrud>();
-
                 for (int i = 0; i < ProductFiles.Count; i++)
                 {
                     var ProductFile = ProductFiles[i];
                     var context = rowContexts[i];
-
                     var createResult = await CreateAsync(ProductFile);
-
                     if (createResult.Success && createResult.Data != null)
                     {
                         createdProductFiles.Add(createResult.Data);
                     }
                     else
                     {
-                        string errorMsg =
-                            createResult.Errors != null && createResult.Errors.Any()
-                                ? string.Join("; ", createResult.Errors)
-                                : !string.IsNullOrWhiteSpace(createResult.Message)
-                                    ? createResult.Message
-                                    : "Unknown error";
-
+                        string errorMsg = createResult.Errors != null && createResult.Errors.Any() ? string.Join("; ", createResult.Errors) : !string.IsNullOrWhiteSpace(createResult.Message) ? createResult.Message : "Unknown error";
                         dt.SetRowError(context.DataTableRowIndex, errorMsg);
                         errors.Add($"Row {context.ExcelRowNumber}: {errorMsg}");
                     }
                 }
 
                 await _transactionService.CommitAsync();
-
                 string? errorFileUrl = null;
                 if (errors.Any())
                 {
@@ -253,9 +244,7 @@ namespace Velora.Application.Services
                 return new ResultDto<BulkInsertResult>
                 {
                     Success = errors.Count == 0,
-                    Message = errors.Count == 0
-                        ? successMessage
-                        : errorFileTitle,
+                    Message = errors.Count == 0 ? successMessage : errorFileTitle,
                     Data = new BulkInsertResult
                     {
                         InsertedCount = createdProductFiles.Count,
@@ -272,59 +261,47 @@ namespace Velora.Application.Services
                 {
                     Success = false,
                     Message = errorFileTitle,
-                    Errors = new List<string> { ex.Message }
+                    Errors = new List<string>
+                    {
+                        ex.Message
+                    }
                 };
             }
         }
 
-        public async Task<byte[]> ExportAsync(
-bool exportCurrentProductFile,
-int ProductFileNumber,
-int ProductFileSize)
+        public async Task<byte[]> ExportAsync(bool exportCurrentProductFile, int ProductFileNumber, int ProductFileSize)
         {
             // 1️⃣ گرفتن همه داده‌ها از query
             var query = await GetAllViews(); // IQueryable<Resource>
-
             // 2️⃣ Paging و Mapping به DTO
             List<ProductFileCrud> data;
-
             if (exportCurrentProductFile)
             {
-                data = query
-                    .Skip((ProductFileNumber - 1) * ProductFileSize)
-                    .Take(ProductFileSize)
-                    .ToList();
+                data = query.Skip((ProductFileNumber - 1) * ProductFileSize).Take(ProductFileSize).ToList();
             }
             else
             {
                 data = query.ToList();
             }
+
             var resource = _mapper.Map<List<ProductFileCrud>>(data);
-
             // 3️⃣ تولید Template اکسل با Lookup (مثلاً 5 ردیف خالی اضافه)
-            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(
-                LookupEntities.ProductFile, // نام مدل DTO
-                data.Count + 5
-            );
-
+            var templateBytes = await _excelTemplateService.Value.GenerateTemplateWithLookupsAsync(LookupEntities.ProductFile, // نام مدل DTO
+ data.Count + 5);
             // 4️⃣ پر کردن داده‌ها در Template با Extension Method
             var resultBytes = templateBytes.FillDataIntoTemplate(data, startRow: 3);
-
             return resultBytes;
         }
-        public async Task<ResultDto<ProductFileCrud>> CreateWithViewAsync(
-        ProductFileCrud input)
+
+        public async Task<ResultDto<ProductFileCrud>> CreateWithViewAsync(ProductFileCrud input)
         {
             var validation = await _modelValidationService.ValidateAsync(input);
-
             if (!validation.Success)
             {
                 return new ResultDto<ProductFileCrud>
                 {
                     Success = false,
-                    Message = await _messageService.Value.GetMessageAsync(
-                        LocalizationKeys.ValidationFailed,
-                        "Form has errors. Please fix them."),
+                    Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                     Errors = validation.Data
                 };
             }
@@ -344,20 +321,15 @@ int ProductFileSize)
             // Auto SortOrder
             if (dto.SortOrder <= 0)
             {
-                dto.SortOrder = (await Query()
-                    .MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                dto.SortOrder = (await Query().MaxAsync(x => (int? )x.SortOrder) ?? 0) + 1;
             }
-            return await CreateWithViewAsync(
-                dto,
-                GetProductFileById,
-                x => x.Id
-            );
+
+            return await CreateWithViewAsync(dto, GetProductFileById, x => x.Id);
         }
+
         public async Task<ProductFileCrud?> GetProductFileById(Guid id)
         {
             return await GetSqlViewByIdQueryable<SqlProductFileView, ProductFileCrud>(id);
         }
     }
-
-
 }
