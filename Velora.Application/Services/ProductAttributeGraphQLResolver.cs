@@ -33,7 +33,7 @@ public class ProductAttributeGqlResolver : IProductAttributeGqlResolver
     {
         var query = await _ProductAttributeService
             .GetAllViewQueryable<SqlProductAttributeView, SqlProductAttributeView, ProductAttributeCrud>();
-        return query.Select(x => new ProductAttributeCrud
+        var result= query.Select(x => new ProductAttributeCrud
         {
             Id = x.Id,
             SortOrder=x.SortOrder,
@@ -47,6 +47,7 @@ public class ProductAttributeGqlResolver : IProductAttributeGqlResolver
             Code=x.Code ??"",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(x => x.SortOrder);
     }
 
 }

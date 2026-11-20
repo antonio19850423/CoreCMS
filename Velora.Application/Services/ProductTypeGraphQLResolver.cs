@@ -33,7 +33,7 @@ public class ProductTypeGqlResolver : IProductTypeGqlResolver
     {
         var query = await _ProductTypeService
             .GetAllViewQueryable<SqlProductTypeView, SqlProductTypeView, ProductTypeCrud>();
-        return query.Select(x => new ProductTypeCrud
+        var result= query.Select(x => new ProductTypeCrud
         {
             Id = x.Id,
             Code = x.Code,
@@ -47,6 +47,7 @@ public class ProductTypeGqlResolver : IProductTypeGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(c=>c.SortOrder);
     }
 
 }

@@ -33,7 +33,7 @@ public class CategoryAttributeGqlResolver : ICategoryAttributeGqlResolver
     {
         var query = await _CategoryAttributeService
             .GetAllViewQueryable<SqlCategoryAttributeView, SqlCategoryAttributeView, CategoryAttributeCrud>();
-        return query.Select(x => new CategoryAttributeCrud
+        var result= query.Select(x => new CategoryAttributeCrud
         {
             Id = x.Id,
             SortOrder=x.SortOrder,
@@ -49,6 +49,7 @@ public class CategoryAttributeGqlResolver : ICategoryAttributeGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(c=>c.SortOrder);
     }
 
 }

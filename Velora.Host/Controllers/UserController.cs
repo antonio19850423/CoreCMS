@@ -60,7 +60,7 @@ public class UserController : ControllerBase, IDynamicFormController<UserCrud>
     [Route("Create")]
     public async Task<IActionResult> Create([FromBody] UserCrud dto)
     {
-        var result = await _userService.CreateAsync(dto);
+        var result = await _userService.CreateAdvancedAsync(dto);
         if (!result.Success)
             return BadRequest(result);
         await _transactionService.CommitAsync();

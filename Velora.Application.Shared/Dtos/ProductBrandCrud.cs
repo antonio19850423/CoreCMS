@@ -29,4 +29,8 @@ public class ProductBrandCrud : BulkInsert
     public string? CreatedByName { get; set; }
     [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 11, GridOrder = 11, ShowInGrid = true, ShowInForm = false)]
     public string? UpdatedByName { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = false)]
+    public DateTime CreatedAt { get; set; }
+    [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = false)]
+    public DateTime? UpdatedAt { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using GreenDonut;
+using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Velora.Application.Services;
@@ -33,7 +34,7 @@ public class ProductInventoryTransactionGqlResolver : IProductInventoryTransacti
     {
         var query = await _ProductInventoryTransactionService
             .GetAllViewQueryable<SqlProductInventoryTransactionView, SqlProductInventoryTransactionView, ProductInventoryTransactionCrud>();
-        return query.OrderByDescending(c => c.UpdatedAt ?? c.CreatedAt).Select(x => new ProductInventoryTransactionCrud
+        var result= query.OrderByDescending(c => c.UpdatedAt ?? c.CreatedAt).Select(x => new ProductInventoryTransactionCrud
         {
             Id = x.Id,
             ParentId = x.ParentId,
@@ -58,6 +59,7 @@ public class ProductInventoryTransactionGqlResolver : IProductInventoryTransacti
             UpdatedAtPersian=x.UpdatedAtPersian??"",
             UpdatedByName= x.UpdatedByName??""
         });
+        return result.OrderByDescending(x => x.UpdatedAt ?? x.CreatedAt);
     }
 
 }

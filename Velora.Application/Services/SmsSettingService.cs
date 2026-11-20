@@ -12,6 +12,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
@@ -93,6 +94,31 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SmsSettingCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.ApiKey.ToLower() == input.ApiKey.Trim().ToLower(),
+                        "این کلید API قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
+                    return new ResultDto<SmsSettingCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var smsSetting = new SmsSettingDto
                 {
                     ApiKey = input.ApiKey,
@@ -140,6 +166,23 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.ApiKey.ToLower() == input.ApiKey.Trim().ToLower(),
+                        "این کلید API قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
+                    return new ResultDto<SmsSettingCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SmsSettingDto
                 {

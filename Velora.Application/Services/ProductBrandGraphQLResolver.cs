@@ -33,22 +33,26 @@ public class ProductBrandGqlResolver : IProductBrandGqlResolver
     {
         var query = await _ProductBrandService
             .GetAllViewQueryable<SqlProductBrandView, SqlProductBrandView, ProductBrandCrud>();
-        return query.Select(x => new ProductBrandCrud
+        var result = query.Select(x => new ProductBrandCrud
         {
             Id = x.Id,
-            Slug=x.Slug??"",
-            SortOrder=x.SortOrder,
-            Name = x.Name??"",
-            CreatedAtPersian = x.CreatedAtPersian??"",
+            Slug = x.Slug ?? "",
+            SortOrder = x.SortOrder,
+            Name = x.Name ?? "",
+            CreatedAtPersian = x.CreatedAtPersian ?? "",
             Description = x.Description ?? "",
-            IsActive = x.IsActive??false,
-            UpdatedAtPersian= x.UpdatedAtPersian??"",
+            IsActive = x.IsActive ?? false,
+            UpdatedAtPersian = x.UpdatedAtPersian ?? "",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
-            Logo = x.Logo ??"",
-            Website=x.Website ??"",
-            ShouldInsert = x.ShouldInsert
+            Logo = x.Logo ?? "",
+            Website = x.Website ?? "",
+            ShouldInsert = x.ShouldInsert,
+            CreatedAt = x.CreatedAt,
+            UpdatedAt = x.UpdatedAt,
         });
+
+        return result.OrderByDescending(x => x.UpdatedAt??x.CreatedAt);
     }
 
 }

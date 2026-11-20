@@ -124,7 +124,7 @@
     <value>SortOrder</value>
   </data>
   <data name="ProductBrand.CreatedAtPersian" xml:space="preserve">
-    <value>CreatedAt</value>
+    <value>CreatedAtPersian</value>
   </data>
   <data name="ProductBrand.CreatedByName" xml:space="preserve">
     <value>CreatedByName</value>
@@ -149,5 +149,11 @@
   </data>
   <data name="ProductBrand.Website" xml:space="preserve">
     <value>Website</value>
+  </data>
+  <data name="ProductBrand.CreatedAt" xml:space="preserve">
+    <value>CreatedAt</value>
+  </data>
+  <data name="ProductBrand.UpdatedAt" xml:space="preserve">
+    <value>UpdatedAt</value>
   </data>
 </root>

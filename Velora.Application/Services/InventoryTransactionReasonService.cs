@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -82,6 +83,31 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.Code.ToLower() == input.Code.Trim().ToLower(),
+                        "این کد قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var inventoryTransactionReason = new InventoryTransactionReasonDto
                 {
                     Code = input.Code,
@@ -119,7 +145,31 @@ namespace Velora.Application.Services
                         Message = "Id is required"
                     };
                 }
-
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.Code.ToLower() == input.Code.Trim().ToLower(),
+                        "این کد قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
+                    return new ResultDto<InventoryTransactionReasonCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new InventoryTransactionReasonDto
                 {

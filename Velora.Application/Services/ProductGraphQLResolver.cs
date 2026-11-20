@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using GreenDonut;
+using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Velora.Application.Services;
@@ -33,7 +34,7 @@ public class ProductGqlResolver : IProductGqlResolver
     {
         var query = await _ProductService
             .GetAllViewQueryable<SqlProductView, SqlProductView, ProductCrud>();
-        return query.OrderByDescending(c=>c.SortOrder).ThenBy(c=>c.CreatedAt).Select(x => new ProductCrud
+        var result= query.OrderByDescending(c=>c.SortOrder).ThenBy(c=>c.CreatedAt).Select(x => new ProductCrud
         {
             Id = x.Id,
             IsActive = x.IsActive,
@@ -65,6 +66,7 @@ public class ProductGqlResolver : IProductGqlResolver
             ProductTagNames=x.ProductTagNames??"",
             CreatedAt=x.CreatedAt,
         });
+        return result.OrderByDescending(x => x.CreatedAt);
     }
 
 }

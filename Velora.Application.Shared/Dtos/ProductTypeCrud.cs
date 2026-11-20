@@ -15,10 +15,10 @@ namespace Velora.Application.Shared.Dtos
         public Guid Id { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 100, ShowInSelectBox = true,IsRequired =true)]
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; } = null!;
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 50, ShowInSelectBox = true, IsRequired = true)]
-        public string Code { get; set; } = null!;
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true,IsRequired =true, MaxLength = 50, ShowInSelectBox = true)]
+        public string? Code { get; set; } = null!;
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, MaxLength = 300)]
         public string? Description { get; set; }

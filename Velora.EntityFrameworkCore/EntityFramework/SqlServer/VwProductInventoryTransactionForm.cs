@@ -46,15 +46,13 @@ public partial class VwProductInventoryTransactionForm
     [StringLength(19)]
     public string? CreatedAtPersian { get; set; }
 
-
-
+    [StringLength(19)]
+    public string? UpdatedAtPersian { get; set; }
 
     [StringLength(201)]
     public string? CreatedByName { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    [StringLength(19)]
-    public string? UpdatedAtPersian { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 

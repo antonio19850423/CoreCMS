@@ -150,4 +150,10 @@
   <data name="ProductBrand.Website" xml:space="preserve">
     <value>وب سایت</value>
   </data>
+  <data name="ProductBrand.CreatedAt" xml:space="preserve">
+    <value>تاریخ ایجاد</value>
+  </data>
+  <data name="ProductBrand.UpdatedAt" xml:space="preserve">
+    <value>تاریخ بروزرسانی</value>
+  </data>
 </root>

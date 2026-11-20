@@ -147,6 +147,31 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<UserCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.MobileNumber.ToLower() == input.MobileNumber.Trim().ToLower(),
+                        "این تلفن همراه قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
+                    return new ResultDto<UserCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var user = new UserDto
                 {
                     Email = input.Email,
@@ -223,14 +248,23 @@ namespace Velora.Application.Services
                     };
                 }
 
-                var validation = await _modelValidationService.ValidateAsync(input);
-                if (!validation.Success)
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                        await GetAllQuery(),
+                        input.Id,
+                        (
+                        x => x.MobileNumber.ToLower() == input.MobileNumber.Trim().ToLower(),
+                        "این تلفن همراه قبلاً ثبت شده است"
+                        )
+                        );
+                if (errors.Any())
+                {
                     return new ResultDto<UserCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
-                        Errors = validation.Data
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
                     };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new UserDto
                 {

@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using GreenDonut;
+using HotChocolate;
 using HotChocolate.Authorization;
 using HotChocolate.Types;
 using Velora.Application.Services;
@@ -33,7 +34,7 @@ public class TagGqlResolver : ITagGqlResolver
     {
         var query = await _TagService
             .GetAllViewQueryable<SqlTagView, SqlTagView, TagCrud>();
-        return query.OrderByDescending(c=>c.SortOrder).Select(x => new TagCrud
+        var result= query.Select(x => new TagCrud
         {
             Id = x.Id,
             Color = x.Color??"",
@@ -48,6 +49,7 @@ public class TagGqlResolver : ITagGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(x => x.SortOrder);
     }
 
 }

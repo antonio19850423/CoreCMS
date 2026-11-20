@@ -36,7 +36,7 @@ public class SmsLogGqlResolver : ISmsLogGqlResolver
         var query = await _SmsLogService
             .GetAllViewQueryable<VwSmsLogForm, VwSmsLogForm, SmsLogCrud>();
 
-        return query.Select(x => new SmsLogCrud
+        var result= query.Select(x => new SmsLogCrud
         {
             Id = x.Id,
             SmsType = x.SmsType??"",
@@ -50,6 +50,7 @@ public class SmsLogGqlResolver : ISmsLogGqlResolver
             SentAtPersian=x.SentAtPersian ??"",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(c=>c.SentAtPersian);
     }
 
 }

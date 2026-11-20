@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,15 +8,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
-using MongoDB.Driver.Linq;
 
 namespace Velora.Application.Services
 {
@@ -85,6 +86,33 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ProductTypeCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => x.Code != null &&
+     input.Code != null &&
+     x.Code.ToLower() == input.Code.ToLower(),
+                          "این کد قبلاً ثبت شده است"
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ProductTypeCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var productType = new ProductTypeDto
                 {
                     Code = input.Code,
@@ -93,6 +121,10 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     Name = input.Name
                 };
+                if (productType.SortOrder <= 0)
+                {
+                    productType.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(productType, GetProductTypeById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -124,7 +156,33 @@ namespace Velora.Application.Services
                         Message = "Id is required"
                     };
                 }
-
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ProductTypeCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => x.Code != null &&
+     input.Code != null &&
+     x.Code.ToLower() == input.Code.ToLower(),
+                          "این کد قبلاً ثبت شده است"
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ProductTypeCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new ProductTypeDto
                 {

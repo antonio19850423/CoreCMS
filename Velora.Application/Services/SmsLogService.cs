@@ -97,6 +97,14 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SmsLogCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
                 var smsLog = new SmsLogDto
                 {
                     ErrorMessage = input.ErrorMessage,

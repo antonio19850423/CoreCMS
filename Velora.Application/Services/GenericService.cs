@@ -312,7 +312,7 @@ namespace Velora.Application.Services
 
                     if (type == typeof(DateTime))
                     {
-                        updatedAtProp.SetValue(existing, DateTime.UtcNow);
+                        updatedAtProp.SetValue(existing, DateTime.Now);
                     }
                 }
 

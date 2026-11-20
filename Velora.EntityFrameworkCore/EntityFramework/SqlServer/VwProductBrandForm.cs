@@ -41,4 +41,8 @@ public partial class VwProductBrandForm
 
     [StringLength(201)]
     public string? UpdatedByName { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
 }

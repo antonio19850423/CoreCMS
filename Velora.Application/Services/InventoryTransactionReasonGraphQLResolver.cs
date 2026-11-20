@@ -33,17 +33,19 @@ public class InventoryTransactionReasonGqlResolver : IInventoryTransactionReason
     {
         var query = await _InventoryTransactionReasonService
             .GetAllViewQueryable<SqlInventoryTransactionReasonView, SqlInventoryTransactionReasonView, InventoryTransactionReasonCrud>();
-        return query.Select(x => new InventoryTransactionReasonCrud
+        var result= query.Select(x => new InventoryTransactionReasonCrud
         {
             Id = x.Id,
             Code = x.Code,
             Name = x.Name,
+            IsActive=x.IsActive,
             CreatedAtPersian = x.CreatedAtPersian??"",
             UpdatedAtPersian= x.UpdatedAtPersian??"",
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(c=>c.Name);
     }
 
 }
