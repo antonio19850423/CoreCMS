@@ -60,7 +60,7 @@ public class RoleController : ControllerBase, IDynamicFormController<RoleCrud>
     {
         if (!ModelState.IsValid)
             return BadRequest(new ResultDto<RoleDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
-        var result = await _roleService.CreateAsync(role);
+        var result = await _roleService.CreateAdvancedAsync(role);
         if (!result.Success)
             return BadRequest(result);
         await _transactionService.CommitAsync();

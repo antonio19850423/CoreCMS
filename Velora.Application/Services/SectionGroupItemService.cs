@@ -1,6 +1,7 @@
 using AutoMapper;
 using GreenDonut;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
@@ -82,6 +84,7 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+
                 var SectionGroupItem = new SectionGroupItemDto
                 {
                     Code = input.Code,
@@ -117,17 +120,59 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<SectionGroupItemCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+            await GetAllQuery(),
+            input.Id,
+             (
+              x => x.Code.ToLower() == input.Code.Trim().ToLower(),
+              "این کد قبلاً ثبت شده است"
+             )
+        );
+                var footerGroup = await FirstOrDefaultAsync<SqlSectionGroupItem>(
+    x => x.Code == "FOOTER"
+);
+
+                if (!footerGroup.Success || footerGroup.Data == null)
+                {
+                    return new ResultDto<SectionGroupItemCrud>
+                    {
+                        Success = false,
+                        Message = "گروه اصلی فوتر یافت نشد"
+                    };
+                }
+                if (errors.Any())
+                {
+                    return new ResultDto<SectionGroupItemCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var sectionGroupItem = new SectionGroupItemDto
                 {
                     Code = input.Code,
                     Name = input.Name,
                     Color = input.Color,
                     Description = input.Description,
-                    GroupId = input.GroupId,
+                    GroupId = footerGroup.Data.Id,
                     Icon = input.Icon,
                     IsActive = input.IsActive,
                     SortOrder = input.SortOrder
                 };
+                // Auto SortOrder
+                if (sectionGroupItem.SortOrder <= 0)
+                {
+                    sectionGroupItem.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(sectionGroupItem, GetSectionGroupItemById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -168,15 +213,44 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var footerGroup = await FirstOrDefaultAsync<SqlSectionGroupItem>(
+x => x.Code == "FOOTER"
+);
+
+                if (!footerGroup.Success || footerGroup.Data == null)
+                {
+                    return new ResultDto<SectionGroupItemCrud>
+                    {
+                        Success = false,
+                        Message = "گروه اصلی فوتر یافت نشد"
+                    };
+                }
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+            await GetAllQuery(),
+            input.Id,
+             (
+              x => x.Code.ToLower() == input.Code.Trim().ToLower(),
+              "این کد قبلاً ثبت شده است"
+             )
+        );
+                if (errors.Any())
+                {
+                    return new ResultDto<SectionGroupItemCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new SectionGroupItemDto
                 {
                     Id = input.Id.Value,
+                    GroupId = footerGroup.Data.Id,
                     Code = input.Code,
                     Name = input.Name,
                     Color = input.Color,
                     Description = input.Description,
-                    GroupId = input.GroupId,
                     Icon = input.Icon,
                     IsActive = input.IsActive,
                     SortOrder = input.SortOrder

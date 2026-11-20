@@ -62,7 +62,7 @@ namespace Velora.Host.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<ResourceTypeDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
-            var result = await _resourceTypeService.CreateAsync(resourceType);
+            var result = await _resourceTypeService.CreateAdvancedAsync(resourceType);
             if (!result.Success)
                 return BadRequest(result);
             await _transactionService.CommitAsync();

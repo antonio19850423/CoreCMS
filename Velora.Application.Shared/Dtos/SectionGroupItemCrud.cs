@@ -16,8 +16,8 @@ namespace Velora.Application.Shared.Dtos
         public Guid? Id { get; set; }
 
         // Basic info
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 150,IsRequired =true)]
-        public string? Code { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true, MaxLength = 150, IsRequired = true)]
+        public string? Code { get; set; } = "FOOTER";
 
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 150, IsRequired = true)]
         public string? Name { get; set; }
@@ -30,7 +30,7 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true, MaxLength = 50)]
         public string? Color { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "GroupName", Route = "/api/ComboBox/SectionGroupItems", SelectDisplayFields = "[\"name\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "GroupName", Route = "/api/ComboBox/SectionGroupItems", SelectDisplayFields = "[\"name\"]")]
         public Guid? GroupId { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.SectionGroupItem, ServiceName = "sectionGroupItemView", LinkedFieldCode = "GroupId", Route = "/api/ComboBox/SectionGroupItems", ShowInSelectBox = true, SelectDisplayFields = "[\"name\"]")]
         public string? GroupName { get; set; }

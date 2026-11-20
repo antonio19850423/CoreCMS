@@ -33,7 +33,7 @@ public class ProductTagGqlResolver : IProductTagGqlResolver
     {
         var query = await _ProductTagService
             .GetAllViewQueryable<SqlProductTagView, SqlProductTagView, ProductTagCrud>();
-        return query.Select(x => new ProductTagCrud
+        return query.OrderByDescending(c=>c.SortOrder).Select(x => new ProductTagCrud
         {
             Id = x.Id,
             Color = x.Color??"",

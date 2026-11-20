@@ -97,54 +97,6 @@
         },
         {
           "Type": "MENU",
-          "Code": "COMPONENTTYPE_MANAGEMENT",
-          "Name": "ComponentType Management",
-          "Route": "basic-info/component-type-management",
-          "DisplayName": {
-            "en": "ComponentType Management",
-            "fa": "مدیریت نوع کامپوننت"
-          },
-          "Order": 3,
-          "Roles": [ "DEV" ],
-          "Children": [
-            {
-              "Type": "PAGE",
-              "Code": "COMPONENTTYPE_MANAGEMENT_PAGE",
-              "Name": "ComponentType Management Page",
-              "DisplayName": {
-                "en": "ComponentType Management Page",
-                "fa": "مدیریت نوع کامپوننت"
-              },
-              "Order": 1
-            }
-          ]
-        },
-        {
-          "Type": "MENU",
-          "Code": "TEMPLATE_MANAGEMENT",
-          "Name": "Template Management",
-          "Route": "basic-info/template-management",
-          "DisplayName": {
-            "en": "Template Management",
-            "fa": "مدیریت الگو"
-          },
-          "Order": 4,
-          "Roles": [ "DEV" ],
-          "Children": [
-            {
-              "Type": "PAGE",
-              "Code": "TEMPLATE_MANAGEMENT_PAGE",
-              "Name": "Template Management Page",
-              "DisplayName": {
-                "en": "Page Template Management Page",
-                "fa": "مدیریت الگو"
-              },
-              "Order": 1
-            }
-          ]
-        },
-        {
-          "Type": "MENU",
           "Code": "SECTIONGROUPITEM_MANAGEMENT",
           "Name": "Section Group Item Management",
           "Route": "basic-info/sectiongroupitem-management",

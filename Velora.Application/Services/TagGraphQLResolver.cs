@@ -33,7 +33,7 @@ public class TagGqlResolver : ITagGqlResolver
     {
         var query = await _TagService
             .GetAllViewQueryable<SqlTagView, SqlTagView, TagCrud>();
-        return query.Select(x => new TagCrud
+        return query.OrderByDescending(c=>c.SortOrder).Select(x => new TagCrud
         {
             Id = x.Id,
             Color = x.Color??"",

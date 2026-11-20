@@ -162,4 +162,7 @@
   <data name="ProductCategory.SeoDescription" xml:space="preserve">
     <value>SeoDescription</value>
   </data>
+  <data name="ProductCategory.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,11 +8,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -94,6 +96,35 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+       await GetAllQuery(),
+       input.Id,
+        (
+         x => x.Slug.ToLower() == input.Slug.Trim().ToLower(),
+         "این اسلاگ قبلاً ثبت شده است"
+        ),
+          (
+         x => x.Name.ToLower() == input.Name.Trim().ToLower(),
+         "این نام قبلاً ثبت شده است"
+        )
+   );
+                if (errors.Any())
+                {
+                    return new ResultDto<ProductTagCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ProductTagCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
                 var productTag = new ProductTagDto
                 {
                     Slug = input.Slug,
@@ -104,6 +135,10 @@ namespace Velora.Application.Services
                     Description = input.Description,
                     TextColor = input.TextColor
                 };
+                if (productTag.SortOrder <= 0)
+                {
+                    productTag.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(productTag, GetProductTagById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -127,15 +162,27 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-                if (input.Id == null)
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+await GetAllQuery(),
+input.Id,
+(
+x => x.Slug.ToLower() == input.Slug.Trim().ToLower(),
+"این اسلاگ قبلاً ثبت شده است"
+),
+(
+x => x.Name.ToLower() == input.Name.Trim().ToLower(),
+"این نام قبلاً ثبت شده است"
+)
+);
+                if (errors.Any())
                 {
                     return new ResultDto<ProductTagCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<ProductTagCrud>
@@ -144,6 +191,14 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                if (input.Id == null)
+                {
+                    return new ResultDto<ProductTagCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new ProductTagDto
                 {
