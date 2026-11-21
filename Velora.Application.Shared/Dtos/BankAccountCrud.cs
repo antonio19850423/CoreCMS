@@ -13,7 +13,7 @@ namespace Velora.Application.Shared.Dtos
     public class BankAccountCrud : BulkInsert
     {
         public Guid Id { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,MaxLength =200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,IsRequired =true,MaxLength =200)]
         public string AccountOwnerName { get; set; } = null!;
 
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 1000)]

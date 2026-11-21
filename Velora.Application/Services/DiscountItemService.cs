@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,16 +8,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
-using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
-using Microsoft.EntityFrameworkCore;
+using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
 {
@@ -105,6 +106,31 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                if (input.ProductVariantId.HasValue && input.ProductVariantId != Guid.Empty)
+                {
+                    input.ProductId = Guid.Empty;
+                    input.ProductBrandId = null;
+                    input.ProductCategoryId = null;
+                }
+                else if (input.ProductId != Guid.Empty)
+                {
+                    input.ProductVariantId = null;
+                    input.ProductBrandId = null;
+                    input.ProductCategoryId = null;
+                }
+                else if (input.ProductBrandId.HasValue && input.ProductBrandId != Guid.Empty)
+                {
+                    input.ProductVariantId = null;
+                    input.ProductCategoryId = null;
+                }
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<DiscountItemCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
                 var validationMessage = await ValidateDiscountItemAsync(input.ParentId.Value, input.ProductVariantId, input.ProductId, input.ProductBrandId, input.ProductCategoryId);
                 if (validationMessage != null)
                 {
@@ -124,6 +150,10 @@ namespace Velora.Application.Services
                     ProductVariantId = input.ProductVariantId == Guid.Empty ? null : input.ProductVariantId,
                     SortOrder = input.SortOrder
                 };
+                if (discountItem.SortOrder <= 0)
+                {
+                    discountItem.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(discountItem, GetDiscountItemById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -156,6 +186,23 @@ namespace Velora.Application.Services
                     };
                 }
 
+                if (input.ProductVariantId.HasValue && input.ProductVariantId != Guid.Empty)
+                {
+                    input.ProductId = Guid.Empty;
+                    input.ProductBrandId = null;
+                    input.ProductCategoryId = null;
+                }
+                else if (input.ProductId != Guid.Empty)
+                {
+                    input.ProductVariantId = null;
+                    input.ProductBrandId = null;
+                    input.ProductCategoryId = null;
+                }
+                else if (input.ProductBrandId.HasValue && input.ProductBrandId != Guid.Empty)
+                {
+                    input.ProductVariantId = null;
+                    input.ProductCategoryId = null;
+                }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<DiscountItemCrud>
@@ -164,7 +211,7 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                var validationMessage = await ValidateDiscountItemAsync(input.ParentId.Value, input.ProductVariantId, input.ProductId, input.ProductBrandId, input.ProductCategoryId, input.Id);
+                var validationMessage = await ValidateDiscountItemAsync(input.ParentId.Value, input.ProductVariantId, input.ProductId, input.ProductBrandId, input.ProductCategoryId);
                 if (validationMessage != null)
                 {
                     return new ResultDto<DiscountItemCrud>
@@ -185,6 +232,7 @@ namespace Velora.Application.Services
                     ProductVariantId = input.ProductVariantId == Guid.Empty ? null : input.ProductVariantId,
                     SortOrder = input.SortOrder,
                 };
+             
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
                 {

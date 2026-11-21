@@ -23,73 +23,73 @@ namespace Velora.Application.Shared.Dtos
         [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 3, GridOrder = 3, ShowInGrid = false, ShowInForm = true, MaxLength = 900, IsRequired = true)]
         public string? Content { get; set; }
         public string ContentType { get; set; } = null!;
+        [ResourceColumn(FieldType = FieldTypes.Lable, IsRequired = false, FormOrder = 4, GridOrder = 4, ShowInGrid = true, ShowInForm = true)]
+        public string? ContentTypeName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 4, GridOrder = 4, ShowInGrid = false, ShowInForm = true, MaxLength = 300)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = true, MaxLength = 300)]
         public string? AuthorAvatarUrl { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 5, GridOrder = 5, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? AuthorName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 6, GridOrder = 6, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? AuthorTitle { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 7, GridOrder = 7, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        [ResourceColumn(FieldType = FieldTypes.Textarea, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? ExternalUrl { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 8, GridOrder = 8, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
         public string? ImageUrl { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 9, GridOrder = 9, ShowInGrid = false, ShowInForm = true, MaxLength = 250)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true, MaxLength = 250)]
         public string? ImageAlt { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 10, GridOrder = 10, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
+        [ResourceColumn(FieldType = FieldTypes.Image, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, MaxLength = 512)]
         public string? ImageDetailUrl { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 11, GridOrder = 11, ShowInGrid = false, ShowInForm = true, MaxLength = 250)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true, MaxLength = 250)]
         public string? ImageDetailAlt { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 12, GridOrder = 12, ShowInGrid = false, ShowInForm = true)]
-
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true)]
         public DateTime? PublishedAt { get; set; }
 
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 13, GridOrder = 13, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ContentCategory,Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryName")]
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.ContentCategory,Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryName")]
         public Guid? CategoryId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 14, GridOrder = 14, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ContentCategory, Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryId")]
-
+        [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 15, GridOrder = 15, ShowInGrid = false, ShowInForm = false, EntityName = LookupEntities.ContentCategory, Route = "/api/ComboBox/ContentCategories", ServiceName = "contentCategoryView", LinkedFieldCode = "CategoryId")]
         public string? CategoryName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 15, GridOrder = 15, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 16, GridOrder = 16, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
         public string? CategorySlug { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.MultiSelectBox, IsRequired = true, FormOrder = 16, GridOrder = 16, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.Tag, ServiceName = "tagView", LinkedFieldCode = "TagNames", Route = "/api/ComboBox/tags", SelectDisplayFields = "[\"name\",\"slug\"]")]
+        [ResourceColumn(FieldType = FieldTypes.MultiSelectBox, IsRequired = true, FormOrder = 17, GridOrder = 17, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.Tag, ServiceName = "tagView", LinkedFieldCode = "TagNames", Route = "/api/ComboBox/tags", SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string TagIds { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = true, FormOrder = 17, GridOrder = 17, ShowInGrid = true, ShowInForm = false, EntityName = LookupEntities.Tag, ServiceName = "tagView", LinkedFieldCode = "TagIds", Route = "/api/ComboBox/tags", SelectDisplayFields = "[\"name\",\"slug\"]")]
+        [ResourceColumn(FieldType = FieldTypes.Text, IsRequired = true, FormOrder = 18, GridOrder = 18, ShowInGrid = true, ShowInForm = false, EntityName = LookupEntities.Tag, ServiceName = "tagView", LinkedFieldCode = "TagIds", Route = "/api/ComboBox/tags", SelectDisplayFields = "[\"name\",\"slug\"]")]
         public string? TagNames { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 18, GridOrder = 18, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 19, GridOrder = 19, ShowInGrid = false, ShowInForm = true, MaxLength = 150)]
         public string? SourceTitle { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 19, GridOrder = 19, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 20, GridOrder = 20, ShowInGrid = false, ShowInForm = true, MaxLength = 500)]
         public string? SourceUrl { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 20, GridOrder = 20, ShowInGrid = true, ShowInForm = true)]
-        public bool IsActive { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
+        public bool IsActive { get; set; }
+        [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 22, GridOrder = 22, ShowInGrid = true, ShowInForm = true)]
         public bool IsPublished { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 21, GridOrder = 21, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = true)]
         public int SortOrder { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 22, GridOrder = 22, ShowInGrid = false, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 24, GridOrder = 24, ShowInGrid = false, ShowInForm = false)]
         public Guid? ParentId { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 23, GridOrder = 23, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 25, GridOrder = 25, ShowInGrid = true, ShowInForm = false)]
         public string CreatedAtPersian { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 24, GridOrder = 24, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 26, GridOrder = 26, ShowInGrid = true, ShowInForm = false)]
         public string UpdatedAtPersian { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 25, GridOrder = 25, ShowInGrid = true, ShowInForm = false)]
         public string? CreatedByName { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 26, GridOrder = 26, ShowInGrid = true, ShowInForm = false)]
+        [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 27, GridOrder = 27, ShowInGrid = true, ShowInForm = false)]
         public string? UpdatedByName { get; set; }
     }
 }

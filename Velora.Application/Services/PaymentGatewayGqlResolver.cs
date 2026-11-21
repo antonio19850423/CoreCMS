@@ -33,7 +33,7 @@ public class PaymentGatewayGqlResolver : IPaymentGatewayGqlResolver
     {
         var query = await _PaymentGatewayService
             .GetAllViewQueryable<SqlPaymentGatewayView, SqlPaymentGatewayView, PaymentGatewayCrud>();
-        return query.Select(x => new PaymentGatewayCrud
+        var result= query.Select(x => new PaymentGatewayCrud
         {
             Id = x.Id,
             SettingsJson = x.SettingsJson??"",
@@ -54,6 +54,7 @@ public class PaymentGatewayGqlResolver : IPaymentGatewayGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
 
         });
+        return result.OrderByDescending(c=>c.DisplayOrder);
     }
 
 }

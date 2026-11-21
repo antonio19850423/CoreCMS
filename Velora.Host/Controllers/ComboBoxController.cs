@@ -582,6 +582,19 @@ namespace Velora.Host.Controllers
                 Success = true
             };
         }
+        [HttpGet("ContentTypes")]
+        public ResultDto<IEnumerable<ComboBoxItemDto<string>>> ContentTypes()
+        {
+            return new ResultDto<IEnumerable<ComboBoxItemDto<string>>>
+            {
+                Data = new List<ComboBoxItemDto<string>>
+        {
+            new() { Value = "0",  Label = "خبر" },
+            new() { Value = "1", Label = "مقاله" }
+        },
+                Success = true
+            };
+        }
         [HttpGet("News")]
         public async Task<ResultDto<IEnumerable<ComboBoxItemDto<Guid>>>> News()
         {

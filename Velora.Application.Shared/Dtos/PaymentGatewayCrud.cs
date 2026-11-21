@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
 
         public Guid Id { get; set; }
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, MaxLength = 100)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true, IsRequired = true, MaxLength = 100)]
         public string Name { get; set; } = null!;
 
 

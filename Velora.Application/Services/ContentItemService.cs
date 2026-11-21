@@ -13,8 +13,10 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -33,7 +35,8 @@ namespace Velora.Application.Services
         private readonly IContentItemService _roleContentItemService;
         protected readonly ICurrentUserService _currentUserService;
         protected readonly IContentItemTagService _contentItemTagService;
-        public ContentItemService(ISqlRepository<SqlContentItem> sqlRepository, IPosgreSqlRepository<SqlContentItem> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, IContentItemTagService contentItemTagService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
+        protected readonly Lazy<IPageService> _pageService;
+        public ContentItemService(ISqlRepository<SqlContentItem> sqlRepository, IPosgreSqlRepository<SqlContentItem> pgRepository, IMapper mapper, IConfiguration configuration, ITransactionService transactionService, IWebHostEnvironment env, Lazy<ILocalizationMessageService> messageService, IModelValidationService modelValidationService, IConfiguration config, Lazy<IExcelTemplateService> excelTemplateService, ICurrentUserService currentUserService, IContentItemTagService contentItemTagService, Lazy<IPageService> pageService) : base(sqlRepository, pgRepository, mapper, configuration, messageService, currentUserService)
         {
             _mapper = mapper;
             _transactionService = transactionService;
@@ -44,6 +47,7 @@ namespace Velora.Application.Services
             _excelTemplateService = excelTemplateService;
             _currentUserService = currentUserService;
             _contentItemTagService = contentItemTagService;
+            _pageService = pageService;
         }
 
         public async Task<IQueryable<ContentItemCrud>> GetAllViews()
@@ -134,6 +138,34 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ContentItemCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => x.Slug != null &&
+     input.Slug != null &&
+     x.Slug.ToLower() == input.Slug.ToLower() && x.ContentType == input.ContentType,
+                          "این اسلاگ قبلاً ثبت شده است"
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ContentItemCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
+                    };
+                }
+                await SetContentTypeAsync(input);
                 var contentItem = new ContentItemDto
                 {
                     Title = input.Title,
@@ -158,6 +190,11 @@ namespace Velora.Application.Services
                     ImageDetailUrl = input.ImageDetailUrl,
                     IsPublished = input.IsPublished
                 };
+                if (contentItem.SortOrder <= 0)
+                {
+                    contentItem.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
+
                 var result = await CreateWithViewAsync(contentItem, GetContentItemById, x => x.Id);
                 if (!result.Success)
                     return result;
@@ -182,9 +219,9 @@ namespace Velora.Application.Services
                         await _contentItemTagService.CreateAsync(contentItemTag);
                     }
                 }
-
                 result.Message = successMessage;
                 return result;
+
             }
             catch (Exception ex)
             {
@@ -204,6 +241,7 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                await SetContentTypeAsync(input);
                 if (input.Id == null)
                 {
                     return new ResultDto<ContentItemCrud>
@@ -221,6 +259,25 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => x.Slug != null &&
+     input.Slug != null &&
+     x.Slug.ToLower() == input.Slug.ToLower() && x.ContentType==input.ContentType,
+                          "این اسلاگ قبلاً ثبت شده است"
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ContentItemCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ContentItemDto
                 {
@@ -309,7 +366,23 @@ namespace Velora.Application.Services
                 return result;
             }
         }
+        private async Task SetContentTypeAsync(ContentItemCrud dto)
+        {
+            if (dto.ParentId == null)
+                return;
 
+            var page = await _pageService.Value.GetByIdAsync(dto.ParentId);
+
+            if (page == null|| page.Data == null)
+                return;
+
+            dto.ContentType = page.Data.Slug?.ToLowerInvariant() switch
+            {
+                "news" => "0",
+                "articles" => "1",
+                _ => dto.ContentType
+            };
+        }
         public async Task<ResultDto<BulkInsertResult>> BulkInsertAsync(Stream excelStream)
         {
             var createdContentItems = new List<ContentItemDto>();

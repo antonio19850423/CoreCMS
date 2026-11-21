@@ -34,7 +34,7 @@ public class CouponGqlResolver : ICouponGqlResolver
     {
         var query = await _CouponService
             .GetAllViewQueryable<VwCouponForm, VwCouponForm, CouponCrud>();
-        return query.Select(x => new CouponCrud
+        var result= query.Select(x => new CouponCrud
         {
             Id = x.Id,
             UsedCount = x.UsedCount,
@@ -58,6 +58,7 @@ public class CouponGqlResolver : ICouponGqlResolver
             CouponTypeName=x.CouponTypeName??"",
             ShouldInsert = x.ShouldInsert
         });
+        return result.OrderByDescending(x => x.StartDate);
     }
 
 }

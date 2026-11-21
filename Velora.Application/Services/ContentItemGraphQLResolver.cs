@@ -33,7 +33,7 @@ public class ContentItemGqlResolver : IContentItemGqlResolver
     {
         var query = await _ContentItemService
             .GetAllViewQueryable<SqlContentItemView, SqlContentItemView, ContentItemCrud>();
-        return query.Select(x => new ContentItemCrud
+        var result= query.Select(x => new ContentItemCrud
         {
             Id = x.Id,
             ParentId = x.ParentId,
@@ -67,6 +67,7 @@ public class ContentItemGqlResolver : IContentItemGqlResolver
             ImageDetailUrl=x.ImageDetailUrl ??"",
             IsPublished=x.IsPublished
         });
+        return result.OrderByDescending(x => x.PublishedAt);    
     }
 
 }

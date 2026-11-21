@@ -64,6 +64,11 @@ namespace Velora.Host.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] ProductQuestionCrud ProductQuestion)
         {
+            return BadRequest(new ResultDto<ProductQuestionDto>
+            {
+                Success = false,
+                Message = "امکان ثبت پرسش های محصولات در حال حاضر غیرفعال است."
+            });
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<ProductQuestionDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             var result = await _ProductQuestionService.CreateAsync(ProductQuestion);
@@ -88,6 +93,11 @@ namespace Velora.Host.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            return BadRequest(new ResultDto<ProductQuestionDto>
+            {
+                Success = false,
+                Message = "امکان حذف پرسش های محصولات در حال حاضر غیرفعال است."
+            });
             var result = await _ProductQuestionService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);

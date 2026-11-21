@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -105,7 +106,15 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-                var cmsConfiguration = new CmsConfigurationDto
+                    var validation = await _modelValidationService.ValidateAsync(input);
+                    if (!validation.Success)
+                        return new ResultDto<CmsConfigurationCrud>
+                        {
+                            Success = false,
+                            Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                            Errors = validation.Data
+                        };
+                    var cmsConfiguration = new CmsConfigurationDto
                 {
                     DefaultTheme = input.DefaultTheme,
                     EnableBlog = input.EnableBlog,
@@ -157,7 +166,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<CmsConfigurationCrud>

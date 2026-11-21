@@ -13,8 +13,10 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -98,6 +100,32 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<PaymentGatewayCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.ProviderType == input.ProviderType),
+                           "ارائه دهنده تکراری است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<PaymentGatewayCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
+                    };
+                }
+
                 var providerType = (PaymentProvider)input.ProviderType;
                 var paymentGateway = new PaymentGatewayDto
                 {
@@ -112,6 +140,10 @@ namespace Velora.Application.Services
                     ProviderType = input.ProviderType,
                     SettingsJson = input.SettingsJson
                 };
+                if (paymentGateway.DisplayOrder <= 0)
+                {
+                    paymentGateway.DisplayOrder = (await Query().MaxAsync(x => (int?)x.DisplayOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(paymentGateway, GetPaymentGatewayById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -143,7 +175,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<PaymentGatewayCrud>
@@ -152,6 +183,14 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.ProviderType == input.ProviderType),
+                           "ارائه دهنده تکراری است."
+                      )
+                  );
                 var ProviderType = (PaymentProvider)input.ProviderType;
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new PaymentGatewayDto

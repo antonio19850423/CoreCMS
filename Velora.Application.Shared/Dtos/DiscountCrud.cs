@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1,IsRequired =true, ShowInGrid = false, ShowInForm = true, MaxLength = 200)]
         public string Name { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 2, GridOrder = 2, ShowInGrid = false, ShowInForm = true,
             ServiceName = "",
@@ -31,7 +31,7 @@ namespace Velora.Application.Shared.Dtos
 
 
 
-        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true)]
+        [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 3, GridOrder = 3,IsRequired =true, ShowInGrid = true, ShowInForm = true)]
         public decimal DiscountValue { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Date, FormOrder = 4, GridOrder = 4, ShowInGrid = false, ShowInForm = true)]
         public DateTime StartDate { get; set; }

@@ -64,6 +64,11 @@ namespace Velora.Host.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] PaymentCrud Payment)
         {
+            return BadRequest(new ResultDto<PaymentCrud>
+            {
+                Success = false,
+                Message = "امکان ثبت پرداخت در حال حاضر غیرفعال است."
+            });
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<PaymentDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             var result = await _PaymentService.CreateAsync(Payment);
@@ -88,6 +93,11 @@ namespace Velora.Host.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            return BadRequest(new ResultDto<PaymentCrud>
+            {
+                Success = false,
+                Message = "امکان حذف پرداخت در حال حاضر غیرفعال است."
+            });
             var result = await _PaymentService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);
@@ -100,6 +110,11 @@ namespace Velora.Host.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 50_000_000)] // 50 MB
         public async Task<IActionResult> BulkInsert()
         {
+            return BadRequest(new ResultDto<PaymentCrud>
+            {
+                Success = false,
+                Message = "امکان ثبت دسته ای پرداخت در حال حاضر غیرفعال است."
+            });
             // اطمینان از اینکه فرم ارسال شده
             if (!Request.HasFormContentType)
                 return BadRequest(new { Message = "Invalid content type, expected multipart/form-data." });

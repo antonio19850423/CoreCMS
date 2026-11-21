@@ -22,6 +22,9 @@ public partial class VwContentItemForm
     [StringLength(50)]
     public string ContentType { get; set; } = null!;
 
+    [StringLength(6)]
+    public string ContentTypeName { get; set; } = null!;
+
     [StringLength(300)]
     public string? AuthorAvatarUrl { get; set; }
 

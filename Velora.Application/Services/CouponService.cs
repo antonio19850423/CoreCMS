@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,16 +8,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
-using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
-using Microsoft.EntityFrameworkCore;
+using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
 {
@@ -110,15 +111,33 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
-                if (await IsCouponCodeDuplicateAsync(input.Code))
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<CouponCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.Code != null &&
+                             input.Code != null &&
+                             x.Code.ToLower() == input.Code.ToLower()),
+                           "کد کوپن تکراری است."
+                      )
+                  );
+                if (errors.Any())
                 {
                     return new ResultDto<CouponCrud>
                     {
                         Success = false,
-                        Message = "کد کوپن تکراری است."
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
                     };
                 }
-
                 var coupon = new CouponDto
                 {
                     CouponType = input.CouponType,
@@ -165,7 +184,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<CouponCrud>
@@ -174,12 +192,23 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
-                if (await IsCouponCodeDuplicateAsync(input.Code, input.Id))
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.Code != null &&
+                             input.Code != null &&
+                             x.Code.ToLower() == input.Code.ToLower()),
+                           "کد کوپن تکراری است."
+                      )
+                  );
+                if (errors.Any())
                 {
                     return new ResultDto<CouponCrud>
                     {
                         Success = false,
-                        Message = "کد کوپن تکراری است."
+                        Message = "اطلاعات آیتم‌ها تکراری است",
+                        Errors = errors
                     };
                 }
 

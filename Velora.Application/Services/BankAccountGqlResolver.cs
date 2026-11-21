@@ -33,7 +33,7 @@ public class BankAccountGqlResolver : IBankAccountGqlResolver
     {
         var query = await _BankAccountService
             .GetAllViewQueryable<SqlBankAccountView, SqlBankAccountView, BankAccountCrud>();
-        return query.Select(x => new BankAccountCrud
+        var result= query.Select(x => new BankAccountCrud
         {
             Id = x.Id,
             ParentId = x.ParentId,
@@ -53,6 +53,7 @@ public class BankAccountGqlResolver : IBankAccountGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
 
         });
+        return result.OrderByDescending(c=>c.DisplayOrder);
     }
 
 }

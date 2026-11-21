@@ -64,6 +64,11 @@ namespace Velora.Host.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] SiteSettingCrud SiteSetting)
         {
+            return BadRequest(new ResultDto<CmsConfigurationDto>
+            {
+                Success = false,
+                Message = "امکان ایجاد و ثبت تنظیمات سایت در حال حاضر غیرفعال است."
+            });
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<SiteSettingDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
             var result = await _SiteSettingService.CreateAsync(SiteSetting);
@@ -88,6 +93,11 @@ namespace Velora.Host.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            return BadRequest(new ResultDto<CmsConfigurationDto>
+            {
+                Success = false,
+                Message = "امکان حذف تنظیمات سایت در حال حاضر غیرفعال است."
+            });
             var result = await _SiteSettingService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);

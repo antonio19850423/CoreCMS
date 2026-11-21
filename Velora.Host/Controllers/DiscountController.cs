@@ -66,7 +66,7 @@ namespace Velora.Host.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<DiscountDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
-            var result = await _DiscountService.CreateAsync(Discount);
+            var result = await _DiscountService.CreateAdvancedAsync(Discount);
             if (!result.Success)
                 return BadRequest(result);
             await _transactionService.CommitAsync();

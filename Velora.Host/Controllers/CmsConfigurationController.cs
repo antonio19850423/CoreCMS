@@ -64,9 +64,14 @@ namespace Velora.Host.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] CmsConfigurationCrud CmsConfiguration)
         {
+            return BadRequest(new ResultDto<CmsConfigurationDto>
+            {
+                Success = false,
+                Message = "امکان ایجاد و ثبت تنظیمات جدید در حال حاضر غیرفعال است."
+            });
             if (!ModelState.IsValid)
                 return BadRequest(new ResultDto<CmsConfigurationDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
-            var result = await _CmsConfigurationService.CreateAsync(CmsConfiguration);
+            var result = await _CmsConfigurationService.CreateAdvancedAsync(CmsConfiguration);
             if (!result.Success)
                 return BadRequest(result);
             await _transactionService.CommitAsync();
@@ -88,6 +93,11 @@ namespace Velora.Host.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            return BadRequest(new ResultDto<CmsConfigurationDto>
+            {
+                Success = false,
+                Message = "امکان حذف تنظیمات جدید در حال حاضر غیرفعال است."
+            });
             var result = await _CmsConfigurationService.DeleteAsync(id);
             if (!result.Success)
                 return NotFound(result);

@@ -62,15 +62,50 @@ namespace Velora.Host.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create([FromBody] ContentItemCrud ContentItem)
+        public async Task<IActionResult> Create([FromBody] ContentItemCrud contentItem)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<ContentItemDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
-            var result = await _ContentItemService.CreateAsync(ContentItem);
+            {
+                return BadRequest(new ResultDto<ContentItemCrud>
+                {
+                    Success = false,
+                    Message = "Invalid model",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
+                });
+            }
+
+            var result = await _ContentItemService.CreateAdvancedAsync(contentItem);
+
             if (!result.Success)
                 return BadRequest(result);
+
             await _transactionService.CommitAsync();
-            return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result);
+
+            // دریافت مجدد اطلاعات کامل پس از ثبت
+            var viewResult = await _ContentItemService.GetContentItemById(result.Data!.Id);
+
+            if (viewResult == null)
+            {
+                return StatusCode(500, new ResultDto<ContentItemCrud>
+                {
+                    Success = false,
+                    Message = "اطلاعات پس از ثبت قابل دریافت نیست."
+                });
+            }
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = result.Data.Id },
+                new ResultDto<ContentItemCrud>
+                {
+                    Success = true,
+                    Message = result.Message,
+                    Data = viewResult
+                }
+            );
         }
 
         [HttpPut]
