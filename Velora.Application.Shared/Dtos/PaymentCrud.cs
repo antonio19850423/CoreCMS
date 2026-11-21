@@ -105,7 +105,7 @@ namespace Velora.Application.Shared.Dtos
             GridOrder = 9,
             ShowInGrid = true,
             ShowInForm = true)]
-        public decimal FinalAmount { get; set; }
+        public decimal? FinalAmount { get; set; }
         [ResourceColumn(
             FieldType = FieldTypes.Currency,
             FormOrder = 10,
@@ -158,7 +158,7 @@ namespace Velora.Application.Shared.Dtos
             GridOrder = 15,
             ShowInGrid = true,
             ShowInForm = true)]
-        public decimal ShippingPrice { get; set; }
+        public decimal? ShippingPrice { get; set; }
 
         // =========================
         // Payment Information
@@ -207,7 +207,7 @@ namespace Velora.Application.Shared.Dtos
         public string? PaidAtPersian { get; set; }
         [ResourceColumn(
             FieldType = FieldTypes.Autocomplete,
-            IsRequired = false,
+            IsRequired = true,
             FormOrder = 20,
             GridOrder = 20,
             ShowInGrid = false,
@@ -280,7 +280,7 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid? CouponId { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         public string ShoppingCartStatusTitle { get; set; } = null!;
 

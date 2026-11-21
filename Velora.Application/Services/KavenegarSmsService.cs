@@ -2,6 +2,7 @@
 using Kavenegar;
 using Kavenegar.Exceptions;
 using Kavenegar.Exceptions;
+using Kavenegar.Models.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -102,9 +103,11 @@ namespace Velora.Application.Services
                 var result = api.VerifyLookup(
                     receptor: mobile,
                     token: code,
-                    token2: siteSetting.SiteName,
+                    token2: null,
                     token3: expirationMinutes.ToString(),
-                    template: SmsTemplateNames.AUTHOTP);
+                    token10:null,
+                    token20: siteSetting.SiteName,
+                    template: SmsTemplateNames.AUTHOTP,VerifyLookupType.Sms);
 
                 if (result == null)
                 {
@@ -130,6 +133,7 @@ namespace Velora.Application.Services
 
                             Message =
                                 result.Message,
+
 
                             IsSuccess = true
                         });

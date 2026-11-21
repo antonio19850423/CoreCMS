@@ -5,6 +5,7 @@ using Velora.Application.Shared;
 using Velora.Application.Shared.Attributes;
 using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
+using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Services;
 
 namespace Velora.Host.Controllers
@@ -64,13 +65,17 @@ namespace Velora.Host.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] PaymentCrud Payment)
         {
-            return BadRequest(new ResultDto<PaymentCrud>
-            {
-                Success = false,
-                Message = "امکان ثبت پرداخت در حال حاضر غیرفعال است."
-            });
             if (!ModelState.IsValid)
-                return BadRequest(new ResultDto<PaymentDto> { Success = false, Message = "Invalid model", Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList() });
+                return BadRequest(new ResultDto<PaymentDto>
+                {
+                    Success = false,
+                    Message = "Invalid model",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
+                });
+            Payment.OrderStatus ??= (int)OrderStatus.Registered;
             var result = await _PaymentService.CreateAsync(Payment);
             if (!result.Success)
                 return BadRequest(result);

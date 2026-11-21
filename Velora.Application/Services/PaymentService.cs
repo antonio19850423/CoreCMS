@@ -249,7 +249,7 @@ namespace Velora.Application.Services
                 var shoppingCart = await _shoppingCartService.Value
                     .GetByIdAsync(currentPayment.ShoppingCartId);
 
-                if (!shoppingCart.Success && shoppingCart.Data == null)
+                if (!shoppingCart.Success || shoppingCart.Data == null)
                 {
                     return new ResultDto<PaymentCrud>
                     {
@@ -258,19 +258,27 @@ namespace Velora.Application.Services
                     };
                 }
 
+                if (!input.OrderStatus.HasValue)
+                {
+                    return new ResultDto<PaymentCrud>
+                    {
+                        Success = false,
+                        Message = "وضعیت سفارش مشخص نشده است."
+                    };
+                }
+
                 var oldOrderStatus = shoppingCart.Data.OrderStatus;
-                var newOrderStatus = input.OrderStatus;
+                var newOrderStatus = input.OrderStatus.Value;
 
                 var orderStatusChanged = oldOrderStatus != newOrderStatus;
 
-                var shoppingCartInput = _mapper.Map<SqlShoppingCart>(shoppingCart.Data);
+                shoppingCart.Data.OrderStatus = input.OrderStatus.Value;
 
-                shoppingCartInput.OrderStatus = newOrderStatus.Value;
 
                 var shoppingCartResult =
                     await _shoppingCartService.Value.UpdateAsync(
-                        shoppingCartInput,
-                        shoppingCartInput.Id);
+                        shoppingCart.Data,
+                        shoppingCart.Data.Id);
 
                 if (!shoppingCartResult.Success)
                 {
@@ -301,7 +309,9 @@ namespace Velora.Application.Services
                     PaymentStatus = newStatus,
                     ReceiptFile = input.ReceiptFile,
                     ShoppingCartId = currentPayment.ShoppingCartId,
-                    Description = input.Description
+                    Description = input.Description,
+                    OrderStatus = newOrderStatus,
+                    
                 };
 
                 var paymentResult = await UpdateAsync(updateDto, input.Id);
