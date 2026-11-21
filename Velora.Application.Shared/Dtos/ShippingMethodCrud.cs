@@ -20,9 +20,9 @@ namespace Velora.Application.Shared.Dtos
         public string? Description { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 3, GridOrder = 3, ShowInGrid = true, ShowInForm = true, IsRequired = true)]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Number, FormOrder = 4, GridOrder =4, ShowInGrid = true, ShowInForm = true, IsRequired = true)]
-        public int EstimatedDays { get; set; }
+        public int? EstimatedDays { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 5, GridOrder = 5, ShowInGrid = true, ShowInForm = true)]
         public bool IsNationwide { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 6, GridOrder =6, ShowInGrid = true, ShowInForm = true)]

@@ -141,8 +141,8 @@ namespace Velora.Host.Controllers
                             Id = method.Id,
                             Name = method.Name,
                             Description = method.Description,
-                            Price = method.Price,
-                            EstimatedDays = method.EstimatedDays,
+                            Price = method.Price.Value,
+                            EstimatedDays = method.EstimatedDays.Value,
                             IsNationwide = method.IsNationwide,
                             IsDefault = method.IsDefault,
 
@@ -152,7 +152,7 @@ namespace Velora.Host.Controllers
                                     .Where(x => x.ParentId == method.Id)
                                     .Select(city => new ShippingMethodCityViewDto
                                     {
-                                        CityId = city.CityId,
+                                        CityId = city.CityId.Value,
                                         CityTitle = city.CityTitle,
                                         ParentId = city.ParentId
                                     })

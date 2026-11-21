@@ -52,7 +52,7 @@ public class PageGqlResolver : IPageGqlResolver
             CreatedByName = x.CreatedByName ?? "",
             UpdatedByName = x.UpdatedByName ?? "",
             IsActive=x.IsActive,
-            IsDynamic=x.IsDynamic
+            IsDynamic=x.IsDynamic??false
         });
     }
 

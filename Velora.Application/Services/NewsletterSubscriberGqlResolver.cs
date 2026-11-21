@@ -4,13 +4,14 @@ using HotChocolate.Types;
 using Velora.Application.Services;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Services;
+
 [ExtendObjectType("Query")]
 public class NewsletterSubscriberGqlResolver : INewsletterSubscriberGqlResolver
 {
-    INewsletterSubscriberService _NewsletterSubscriberService;
+    INewsletterSubscriberService _newsletterSubscriberService;
     public NewsletterSubscriberGqlResolver(INewsletterSubscriberService NewsletterSubscriberService)
     {
-        _NewsletterSubscriberService = NewsletterSubscriberService;
+        _newsletterSubscriberService = NewsletterSubscriberService;
     }
     /// <summary>
     /// قوانین کلی GraphQL Resolver:
@@ -31,20 +32,23 @@ public class NewsletterSubscriberGqlResolver : INewsletterSubscriberGqlResolver
     [UseSorting]
     public async Task<IQueryable<NewsletterSubscriberCrud>> newsletterSubscriberView()
     {
-        var query = await _NewsletterSubscriberService
-            .GetAllViewQueryable<SqlNewsletterSubscriberView, SqlNewsletterSubscriberView, NewsletterSubscriberCrud>();
-        return query.Select(x => new NewsletterSubscriberCrud
+        var query = await _newsletterSubscriberService
+            .GetAllViewQueryable<SqlNewsletterSubscriber, SqlNewsletterSubscriber, NewsletterSubscriberCrud>();
+        var result= query.Select(x => new NewsletterSubscriberCrud
         {
             Id = x.Id,
-            IsActive = x.IsActive,
-            IsConfirmed = x.IsConfirmed,
-            Email = x.Email??"",
-            CreatedAt = x.CreatedAt,
-            UpdatedAt = x.UpdatedAt,
-            CreatedAtPersian = x.CreatedAtPersian,
-            ShouldInsert = x.ShouldInsert,
-            UpdatedAtPersian = x.UpdatedAtPersian   
+            Email=x.Email??"",
+            IsActive=x.IsActive,
+            IsConfirmed=x.IsConfirmed,
+            CreatedAt=x.CreatedAt,
+            UpdatedAt=x.UpdatedAt,
+            CreatedAtPersian=x.CreatedAtPersian??"",
+            ShouldInsert=x.ShouldInsert,
+            UpdatedAtPersian = x.UpdatedAtPersian??""
+            
+            
         });
+        return result.OrderByDescending(c=>c.UpdatedAt??c.CreatedAt);
     }
 
 }

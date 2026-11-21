@@ -33,7 +33,7 @@ public class ShippingMethodGqlResolver : IShippingMethodGqlResolver
     {
         var query = await _ShippingMethodService
             .GetAllViewQueryable<SqlShippingMethodView, SqlShippingMethodView, ShippingMethodCrud>();
-        return query.Select(x => new ShippingMethodCrud
+        var result= query.Select(x => new ShippingMethodCrud
         {
             Id = x.Id,
             Description = x.Description??"",
@@ -51,6 +51,7 @@ public class ShippingMethodGqlResolver : IShippingMethodGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
 
         });
+        return result.OrderByDescending(c=>c.SortOrder);
     }
 
 }

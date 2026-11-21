@@ -33,7 +33,7 @@ public class ShippingMethodCityGqlResolver : IShippingMethodCityGqlResolver
     {
         var query = await _ShippingMethodCityService
             .GetAllViewQueryable<SqlShippingMethodCityView, SqlShippingMethodCityView, ShippingMethodCityCrud>();
-        return query.Select(x => new ShippingMethodCityCrud
+        var result= query.Select(x => new ShippingMethodCityCrud
         {
             Id = x.Id,
             CityId = x.CityId,
@@ -49,6 +49,7 @@ public class ShippingMethodCityGqlResolver : IShippingMethodCityGqlResolver
             UpdatedByName = x.UpdatedByName ?? "",
 
         });
+        return result.OrderByDescending(c=>c.SortOrder);
     }
 
 }

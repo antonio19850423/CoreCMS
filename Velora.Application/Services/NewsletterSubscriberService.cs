@@ -13,6 +13,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
@@ -90,6 +91,31 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<NewsletterSubscriberCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.Email !=null && x.Email.ToLower() == input.Email.ToLower()),
+                           "این ایمیل قبلا ثبت شده است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<NewsletterSubscriberCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var NewsletterSubscriber = new NewsletterSubscriberDto
                 {
                     Email = input.Email,
@@ -128,14 +154,23 @@ namespace Velora.Application.Services
                     };
                 }
 
-                var validation = await _modelValidationService.ValidateAsync(input);
-                if (!validation.Success)
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                    await GetAllQuery(),
+                    input.Id,
+                    (
+                        x => (x.Email != null && x.Email.ToLower() == input.Email.ToLower()),
+                         "این ایمیل قبلا ثبت شده است."
+                    )
+                );
+                if (errors.Any())
+                {
                     return new ResultDto<NewsletterSubscriberCrud>
                     {
                         Success = false,
-                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
-                        Errors = validation.Data
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
                     };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new NewsletterSubscriberDto
                 {

@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
     {
         public Guid Id { get; set; }
 
-        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = true, MaxLength = 320)]
+        [ResourceColumn(FieldType = FieldTypes.Text, FormOrder = 1, GridOrder = 1, ShowInGrid = true, ShowInForm = true,IsRequired =true, MaxLength = 320)]
         public string Email { get; set; } = null!;
         [ResourceColumn(FieldType = FieldTypes.Checkbox, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = true)]
         public bool IsActive { get; set; }

@@ -15,7 +15,7 @@ namespace Velora.Application.Shared.Dtos
 
         public Guid Id { get; set; }
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = true, FormOrder = 1, GridOrder = 1, ShowInGrid = false, ShowInForm = true, EntityName = LookupEntities.City, Route = "/api/ComboBox/AllCities", LinkedFieldCode = "CityTitle")]
-        public Guid CityId { get; set; }
+        public Guid? CityId { get; set; }
 
         [ResourceColumn(FieldType = FieldTypes.Autocomplete, IsRequired = false, FormOrder = 2, GridOrder = 2, ShowInGrid = true, ShowInForm = false, EntityName = LookupEntities.City, Route = "/api/ComboBox/AllCities", LinkedFieldCode = "CityId")]
         public string? CityTitle { get; set; }

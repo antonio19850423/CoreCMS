@@ -13,8 +13,10 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -66,11 +68,11 @@ namespace Velora.Application.Services
                 {
                     Description = input.Description,
                     IsActive = input.IsActive,
-                    EstimatedDays = input.EstimatedDays,
+                    EstimatedDays = input.EstimatedDays.Value,
                     IsDefault = input.IsDefault,
                     IsNationwide = input.IsNationwide,
                     Name = input.Name,
-                    Price = input.Price,
+                    Price = input.Price.Value,
                     SortOrder = input.SortOrder,
                 };
                 var ShippingMethodResult = await CreateAsync(ShippingMethod);
@@ -95,17 +97,46 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ShippingMethodCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.Name == input.Name),
+                           "این نام قبلا ثبت شده است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ShippingMethodCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var shippingMethod = new ShippingMethodDto
                 {
                     Description = input.Description,
                     IsActive = input.IsActive,
-                    EstimatedDays = input.EstimatedDays,
+                    EstimatedDays = input.EstimatedDays.Value,
                     IsDefault = input.IsDefault,
                     IsNationwide = input.IsNationwide,
                     Name = input.Name,
-                    Price = input.Price,
+                    Price = input.Price.Value,
                     SortOrder = input.SortOrder
                 };
+                if (shippingMethod.SortOrder <= 0)
+                {
+                    shippingMethod.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(shippingMethod, GetShippingMethodById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -137,7 +168,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<ShippingMethodCrud>
@@ -146,17 +176,34 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.Name == input.Name),
+                           "این نام قبلا ثبت شده است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ShippingMethodCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ShippingMethodDto
                 {
                     Id = input.Id,
                     Description = input.Description,
                     IsActive = input.IsActive,
-                    EstimatedDays = input.EstimatedDays,
+                    EstimatedDays = input.EstimatedDays.Value,
                     IsDefault = input.IsDefault,
                     IsNationwide = input.IsNationwide,
                     Name = input.Name,
-                    Price = input.Price,
+                    Price = input.Price.Value,
                     SortOrder = input.SortOrder
                 };
                 var ShippingMethodResult = await UpdateAsync(updateDto, input.Id);

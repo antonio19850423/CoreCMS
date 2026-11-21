@@ -13,8 +13,10 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
+using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
 using Velora.Infrastructure.ORM.Interfaces.MyApp.Orm.Interfaces;
 
 namespace Velora.Application.Services
@@ -67,7 +69,7 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     SortOrder = input.SortOrder,
                     ShippingMethodId = input.ParentId,
-                    CityId = input.CityId,
+                    CityId = input.CityId.Value,
                 };
                 var ShippingMethodCityResult = await CreateAsync(ShippingMethodCity);
                 await _transactionService.CommitAsync();
@@ -91,13 +93,43 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<ShippingMethodCityCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => ( x.CityId!= Guid.Empty &&x.CityId == input.CityId.Value),
+                           "این شهر قبلا ثبت شده است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ShippingMethodCityCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
+
                 var shippingMethodCity = new ShippingMethodCityDto
                 {
                     IsActive = input.IsActive,
                     SortOrder = input.SortOrder,
                     ShippingMethodId = input.ParentId,
-                    CityId = input.CityId
+                    CityId = input.CityId.Value
                 };
+                if (shippingMethodCity.SortOrder <= 0)
+                {
+                    shippingMethodCity.SortOrder = (await Query().MaxAsync(x => (int?)x.SortOrder) ?? 0) + 1;
+                }
                 var result = await CreateWithViewAsync(shippingMethodCity, GetShippingMethodCityById, x => x.Id);
                 if (result.Success)
                     result.Message = successMessage;
@@ -129,7 +161,6 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
-
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<ShippingMethodCityCrud>
@@ -138,6 +169,23 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                      await GetAllQuery(),
+                      input.Id,
+                      (
+                          x => (x.CityId != Guid.Empty && x.CityId == input.CityId),
+                           "این شهر قبلا ثبت شده است."
+                      )
+                  );
+                if (errors.Any())
+                {
+                    return new ResultDto<ShippingMethodCityCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var updateDto = new ShippingMethodCityDto
                 {
@@ -145,7 +193,7 @@ namespace Velora.Application.Services
                     IsActive = input.IsActive,
                     SortOrder = input.SortOrder,
                     ShippingMethodId = input.ParentId,
-                    CityId = input.CityId,
+                    CityId = input.CityId.Value,
                 };
                 var ShippingMethodCityResult = await UpdateAsync(updateDto, input.Id);
                 if (!ShippingMethodCityResult.Success)

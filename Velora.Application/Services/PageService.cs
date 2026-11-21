@@ -14,6 +14,7 @@ using Velora.Application.Shared.Constants;
 using Velora.Application.Shared.Dtos;
 using Velora.Application.Shared.Enums;
 using Velora.Application.Shared.Extensions;
+using Velora.Application.Shared.Infrastructure;
 using Velora.Application.Shared.Repositories;
 using Velora.Application.Shared.Services;
 using Velora.EntityFrameworkCore.EntityFramework.SqlServer;
@@ -122,6 +123,43 @@ namespace Velora.Application.Services
             var(successMessage, errorMessage) = await _messageService.Value.GetSaveMessagesAsync();
             try
             {
+                var validation = await _modelValidationService.ValidateAsync(input);
+                if (!validation.Success)
+                    return new ResultDto<PageCrud>
+                    {
+                        Success = false,
+                        Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
+                        Errors = validation.Data
+                    };
+                var query = await GetAllQuery();
+
+
+
+                // ساخت مسیر نهایی برای بررسی تکراری نبودن
+                var slugToCheck = input.Slug.Trim();
+
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                    query,
+                    input.Id,
+                    (
+                        x => (x.Slug!=null && x.Slug.ToLower()
+                            .ToLower() == slugToCheck.ToLower()),
+                        "این اسلاگ قبلاً ثبت شده است"
+                    ),
+                    (
+                        x => x.Name.ToLower() == input.Name.Trim().ToLower(),
+                        "این نام قبلاً ثبت شده است"
+                    )
+                );
+                if (errors.Any())
+                {
+                    return new ResultDto<PageCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 var page = new PageDto
                 {
                     CanonicalUrl = input.CanonicalUrl,
@@ -135,7 +173,7 @@ namespace Velora.Application.Services
                     Slug = input.Slug,
                     IsActive = input.IsActive,
                     Name = input.Name,
-                    IsDynamic = input.IsDynamic
+                    IsDynamic = true
                 };
                 var result = await CreateWithViewAsync(page, GetPageById, x => x.Id);
                 if (result.Success)
@@ -168,7 +206,16 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.IdRequired)
                     };
                 }
+                var existingPage = await GetPageById(input.Id);
 
+                if (existingPage == null)
+                {
+                    return new ResultDto<PageCrud>
+                    {
+                        Success = false,
+                        Message = "صفحه موردنظر پیدا نشد."
+                    };
+                }
                 var validation = await _modelValidationService.ValidateAsync(input);
                 if (!validation.Success)
                     return new ResultDto<PageCrud>
@@ -177,6 +224,46 @@ namespace Velora.Application.Services
                         Message = await _messageService.Value.GetMessageAsync(LocalizationKeys.ValidationFailed, "Form has errors. Please fix them."),
                         Errors = validation.Data
                     };
+
+                // صفحات غیرداینامیک اجازه تغییر اسلاگ ندارند
+                if (!existingPage.IsDynamic ?? false &&
+                    !string.Equals(
+                        existingPage.Slug?.Trim(),
+                        input.Slug?.Trim(),
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return new ResultDto<PageCrud>
+                    {
+                        Success = false,
+                        Message = "امکان تغییر اسلاگ صفحات غیرداینامیک وجود ندارد."
+                    };
+                }
+                var query = await GetAllQuery();
+                // ساخت مسیر نهایی برای بررسی تکراری نبودن
+                var slugToCheck = input.Slug.Trim();
+
+                var errors = await QueryValidationHelper.ValidateUniquenessAsync(
+                    query,
+                    input.Id,
+                      (
+                        x => (x.Slug != null && x.Slug.ToLower()
+                            .ToLower() == slugToCheck.ToLower()),
+                        "این اسلاگ قبلاً ثبت شده است"
+                    ),
+                    (
+                        x => x.Name.ToLower() == input.Name.Trim().ToLower(),
+                        "این نام قبلاً ثبت شده است"
+                    )
+                );
+                if (errors.Any())
+                {
+                    return new ResultDto<PageCrud>
+                    {
+                        Success = false,
+                        Message = "اطلاعات آیتم ها تکراری است",
+                        Errors = errors
+                    };
+                }
                 // 1️⃣ به‌روزرسانی کاربر
                 var userUpdateDto = new PageDto
                 {
@@ -192,6 +279,7 @@ namespace Velora.Application.Services
                     IsPublished = input.IsPublished,
                     CanonicalUrl = input.CanonicalUrl,
                     IsHome = input.IsHome,
+                    IsDynamic = existingPage.IsDynamic
                 };
                 var result = await UpdateAsync(userUpdateDto, input.Id);
                 if (!result.Success)
